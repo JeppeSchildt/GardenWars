@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class Assets extends AssetManager {
     public TextureAtlas textureAtlas;
     public Label.LabelStyle largeTextStyle;
-    public TextureRegionDrawable button;
+    public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon;
     //final Texture
 
     public Assets() {
@@ -30,16 +30,43 @@ public class Assets extends AssetManager {
     public void loadFiles(){
         this.load("pack5.atlas", TextureAtlas.class);
         this.load("arrow_button.png", Texture.class);
+        this.load("gold_icon.png", Texture.class);
+        this.load("water_icon.png", Texture.class);
+        this.load("dirt_icon.png", Texture.class);
+
         this.load("pixel.png", Texture.class);
         setLoader(TiledMap.class, new TmxMapLoader());
         load("map3.tmx", TiledMap.class);
+
+
         finishLoading();
+
         //button = this.get("arrow_button.png", TextureRegionDrawable.class);
         final Texture buttonSheet = this.get("arrow_button.png", Texture.class);
         final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 64, 64);
-        button = new TextureRegionDrawable(button_);
+        nextturnIcon = new TextureRegionDrawable(button_);
+
+        loadIcon();
+
 
     }
+
+    private void loadIcon(){
+
+
+        final Texture goldSheet = this.get("gold_icon.png", Texture.class);
+        final TextureRegion goldIcon_ = new TextureRegion(goldSheet, 0, 0, 64, 64);
+        goldIcon = new TextureRegionDrawable(goldIcon_);
+
+        final Texture waterSheet = this.get("water_icon.png", Texture.class);
+        final TextureRegion waterIcon_ = new TextureRegion(goldSheet, 0, 0, 64, 64);
+        waterIcon = new TextureRegionDrawable(waterIcon_);
+
+        final Texture dirtSheet = this.get("dirt_icon.png", Texture.class);
+        final TextureRegion dirtIcon_ = new TextureRegion(goldSheet, 0, 0, 64, 64);
+        dirtIcon = new TextureRegionDrawable(dirtIcon_);
+    }
+
 
     private void generateFonts() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Blazed.ttf"));

@@ -84,6 +84,7 @@ public class World {
 
     public void endTurn() {
         turnNumber++;
+
         user.dkk += 20;
     }
 }

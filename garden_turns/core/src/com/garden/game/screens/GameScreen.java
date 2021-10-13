@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label turnInfo;
+    public Label turnInfo, turnNumber;
     private final InputMultiplexer mux;
 
     public GameScreen(GardenGame app) {
@@ -63,9 +63,8 @@ public class GameScreen implements Screen {
         goldIcon.setPosition(0,  0);
 
 
+        // ----- NextTurn Setup----- //
         ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
-
-
 		btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,15 +75,24 @@ public class GameScreen implements Screen {
         });
 
         // 1/8 not good solution ...
-		btnEndTurn.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/8, 25);
+		btnEndTurn.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, 0);
+
+        turnNumber = new Label("Turn" + world.turnNumber, app.assets.largeTextStyle);
+        turnNumber.setAlignment(Align.bottomLeft);
+        turnNumber.setPosition(580, 15);
+
 
         hud.addActor(turnInfo);
+
         hud.addActor(btnEndTurn);
+        hud.addActor(turnNumber);
     }
+
 
 
     public void updateHUD() {
         turnInfo.setText("Gold:" + world.user.dkk);
+        turnNumber.setText("" + world.turnNumber);
     }
 
     @Override

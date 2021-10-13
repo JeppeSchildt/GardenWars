@@ -29,7 +29,7 @@ public class Assets extends AssetManager {
     // Load map and textures
     public void loadFiles(){
         this.load("pack5.atlas", TextureAtlas.class);
-        this.load("arrow_button.png", Texture.class);
+        this.load("NextTurn.png", Texture.class);
         this.load("gold_icon.png", Texture.class);
         this.load("water_icon.png", Texture.class);
         this.load("dirt_icon.png", Texture.class);
@@ -42,8 +42,8 @@ public class Assets extends AssetManager {
         finishLoading();
 
         //button = this.get("arrow_button.png", TextureRegionDrawable.class);
-        final Texture buttonSheet = this.get("arrow_button.png", Texture.class);
-        final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 64, 64);
+        final Texture buttonSheet = this.get("NextTurn.png", Texture.class);
+        final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 107, 122);
         nextturnIcon = new TextureRegionDrawable(button_);
 
         loadIcon();

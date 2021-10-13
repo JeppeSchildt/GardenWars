@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label turnInfo, turnNumber;
+    public Label goldText, waterText,  turnNumber;
     private final InputMultiplexer mux;
 
     public GameScreen(GardenGame app) {
@@ -52,16 +52,7 @@ public class GameScreen implements Screen {
 
     private void initHUD() {
 
-
-
-        turnInfo = new Label("GOLD: " + world.user.dkk, app.assets.largeTextStyle);
-        turnInfo.setAlignment(Align.bottomLeft);
-
-        turnInfo.setPosition(10,  Gdx.graphics.getHeight()-28);
-
-        Image goldIcon = new Image(app.assets.goldIcon);
-        goldIcon.setPosition(0,  0);
-
+        setUpIcon();
 
         // ----- NextTurn Setup----- //
         ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
@@ -79,19 +70,46 @@ public class GameScreen implements Screen {
 
         turnNumber = new Label("Turn" + world.turnNumber, app.assets.largeTextStyle);
         turnNumber.setAlignment(Align.bottomLeft);
-        turnNumber.setPosition(580, 15);
+        turnNumber.setPosition(575, 15);
 
 
-        hud.addActor(turnInfo);
+
 
         hud.addActor(btnEndTurn);
         hud.addActor(turnNumber);
     }
 
+    private void setUpIcon() {
+        // ----- Gold Icon Setup----- //
+        Image goldIcon = new Image(app.assets.goldIcon);
+        goldIcon.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/6 + 10);
+
+        goldText = new Label("" + world.user.dkk, app.assets.largeTextStyle);
+        goldText.setAlignment(Align.bottomLeft);
+
+        goldText.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/11+5,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/11);
+
+        hud.addActor(goldIcon);
+        hud.addActor(goldText);
+
+        // ----- Water Icon Setup----- //
+
+        Image waterIcon = new Image(app.assets.waterIcon);
+        waterIcon.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/3,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/6 + 10);
+
+        waterText = new Label("" + world.user.dkk, app.assets.largeTextStyle);
+        waterText.setAlignment(Align.bottomLeft);
+
+        waterText.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/4+5,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/11);
+
+        hud.addActor(waterIcon);
+        hud.addActor(waterText);
+
+    }
 
 
     public void updateHUD() {
-        turnInfo.setText("Gold:" + world.user.dkk);
+        goldText.setText("" + world.user.dkk);
         turnNumber.setText("" + world.turnNumber);
     }
 
@@ -108,17 +126,36 @@ public class GameScreen implements Screen {
         world.update(delta);
         world.render();
 
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        // Starting point of menu/hud in right side of screen.
-        int rect_x0 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;
-        int rect_x1 = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/15;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(242, 237, 201, 0);
-        shapeRenderer.rect(0, rect_x1, Gdx.graphics.getWidth(), rect_x0);
-        shapeRenderer.end();
-        updateHUD();
+
+        drawMenu();
+
         hud.draw();
         hud.act(delta);
+    }
+
+    public void drawMenu(){
+
+        // ----- Color line ----- //
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        // Starting point of menu/hud in right side of screen.
+        int rect_x = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;
+        int rect_y = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/10;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(10,100,50, 0);
+        shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+        shapeRenderer.end();
+        updateHUD();
+
+        // ----- Main Color ----- //
+        ShapeRenderer shapeRenderer2 = new ShapeRenderer();
+        // Starting point of menu/hud in right side of screen.
+        int rect_x2 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;
+        int rect_y2 = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/12;
+        shapeRenderer2.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer2.setColor(255,184,10, 0);
+        shapeRenderer2.rect(0, rect_y2, Gdx.graphics.getWidth(), rect_x2);
+        shapeRenderer2.end();
+        updateHUD();
     }
 
     @Override

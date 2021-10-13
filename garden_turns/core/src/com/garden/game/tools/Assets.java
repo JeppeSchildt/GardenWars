@@ -55,15 +55,15 @@ public class Assets extends AssetManager {
 
 
         final Texture goldSheet = this.get("gold_icon.png", Texture.class);
-        final TextureRegion goldIcon_ = new TextureRegion(goldSheet, 0, 0, 64, 64);
+        final TextureRegion goldIcon_ = new TextureRegion(goldSheet, 0, 0, 100, 70);
         goldIcon = new TextureRegionDrawable(goldIcon_);
 
         final Texture waterSheet = this.get("water_icon.png", Texture.class);
-        final TextureRegion waterIcon_ = new TextureRegion(goldSheet, 0, 0, 64, 64);
+        final TextureRegion waterIcon_ = new TextureRegion(waterSheet, 0, 0, 100, 70);
         waterIcon = new TextureRegionDrawable(waterIcon_);
 
         final Texture dirtSheet = this.get("dirt_icon.png", Texture.class);
-        final TextureRegion dirtIcon_ = new TextureRegion(goldSheet, 0, 0, 64, 64);
+        final TextureRegion dirtIcon_ = new TextureRegion(dirtSheet, 0, 0, 100, 70);
         dirtIcon = new TextureRegionDrawable(dirtIcon_);
     }
 

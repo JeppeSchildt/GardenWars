@@ -69,13 +69,13 @@ public class Assets extends AssetManager {
 
 
     private void generateFonts() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Blazed.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Chunk Five Print.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.incremental = true;
 
 
-        parameter.size = 14;
-        largeTextStyle = new Label.LabelStyle(generator.generateFont(parameter), Color.BLACK);
+        parameter.size = 23;
+        largeTextStyle = new Label.LabelStyle(generator.generateFont(parameter), Color.BROWN);
 
 
         generator.dispose();

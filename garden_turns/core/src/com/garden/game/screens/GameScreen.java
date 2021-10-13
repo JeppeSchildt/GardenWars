@@ -87,7 +87,7 @@ public class GameScreen implements Screen {
         goldText = new Label("" + world.user.dkk, app.assets.largeTextStyle);
         goldText.setAlignment(Align.bottomLeft);
 
-        goldText.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/11+5,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/11);
+        goldText.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/11,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/11-10);
 
         hud.addActor(goldIcon);
         hud.addActor(goldText);
@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
         waterText = new Label("" + world.user.dkk, app.assets.largeTextStyle);
         waterText.setAlignment(Align.bottomLeft);
 
-        waterText.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/4+5,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/11);
+        waterText.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/4,  Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/11-10);
 
         hud.addActor(waterIcon);
         hud.addActor(waterText);

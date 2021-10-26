@@ -20,7 +20,7 @@ public class World extends Stage {
     TiledMapRenderer tiledMapRenderer;
     TiledMapTileLayer tileLayer1, tileLayer2, improvementLayer;
     private int[] mapLayerIndices;
-    private final int[] improvementLayerIndex;
+    private int[] improvementLayerIndex;
     TiledMapTileLayer.Cell cellGrass;
     public Player user;
     Sprite spritePlayer, spriteHighlight, spriteGrass;
@@ -69,6 +69,37 @@ public class World extends Stage {
 
     }
 
+    // Den skal lave så det virker.... ctor/world skal ikke også init
+    public void init() {
+        //tiledMap = new TmxMapLoader().load("map3.tmx");
+        tiledMap = app.assets.get("map6.tmx", TiledMap.class);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        tileLayer1 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
+        tileLayer2 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 2");
+        MapLayers mapLayers = tiledMap.getLayers();
+        mapLayerIndices = new int[] {mapLayers.getIndex("Tile Layer 1")};
+        improvementLayerIndex = new int[] { 1 };
+
+        improvementLayer = new TiledMapTileLayer(32,32,32,32);
+        //highlightedTile = (TiledMapTile) app.textureAtlas.createSprite("highlight_tile");
+
+        tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
+        worldWidth = tiledMap.getProperties().get("width", Integer.class);
+        worldHeight = tiledMap.getProperties().get("height", Integer.class);
+
+        user = new Player(app);
+        addActor(user.unit);
+
+        spritePlayer = app.assets.textureAtlas.createSprite("character000");
+        spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+        spriteGrass = app.assets.textureAtlas.createSprite("grass");
+        cellGrass = tileLayer2.getCell(0, 0);
+        //cellGrass = app.assets.tileSet.getTile(0);
+        //cellGrass = app.assets.textureAtlas.createSprite("grass");
+        mapInput = new MapInput(app, this);
+        Gdx.input.setInputProcessor(mapInput);
+
+    }
     public void update(float delta) {
 
         mapInput.update(delta);

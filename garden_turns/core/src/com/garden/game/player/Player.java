@@ -17,9 +17,12 @@ public class Player {
     public int dkk;
 
 
+
     public Player(GardenGame app) {
         this.app = app;
         //world = this.app.gameScreen.world;
         unit = new Unit(this.app, "character000");
     }
+
+
 }

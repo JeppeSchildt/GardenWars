@@ -4,25 +4,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
 
-public class World {
+public class World extends Stage {
     private final GardenGame app;
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    TiledMapTileLayer tileLayer;
-    TiledMapTile highlightedTile;
-    TiledMapTileLayer.Cell highlightedCell;
+    TiledMapTileLayer tileLayer1, tileLayer2, improvementLayer;
+    private int[] mapLayerIndices;
+    private final int[] improvementLayerIndex;
+    TiledMapTileLayer.Cell cellGrass;
     public Player user;
-    Sprite spritePlayer, spriteHighlight;
+    Sprite spritePlayer, spriteHighlight, spriteGrass;
     public MapInput mapInput;
-    int worldWidth, worldHeight, tileSize;
+    public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
+    public Stage worldStage;
 
 
     public World(GardenGame app) {
@@ -31,12 +37,18 @@ public class World {
         worldCamera = new OrthographicCamera();
         // Do this to print map properly.
         worldCamera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        worldCamera.update();
+        setViewport(new ScreenViewport(worldCamera));
 
         //tiledMap = new TmxMapLoader().load("map3.tmx");
-        tiledMap = app.assets.get("map3.tmx", TiledMap.class);
+        tiledMap = app.assets.get("map6.tmx", TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
+        tileLayer1 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
+        tileLayer2 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 2");
+        MapLayers mapLayers = tiledMap.getLayers();
+        mapLayerIndices = new int[] {mapLayers.getIndex("Tile Layer 1")};
+        improvementLayerIndex = new int[] { 1 };
+
+        improvementLayer = new TiledMapTileLayer(32,32,32,32);
         //highlightedTile = (TiledMapTile) app.textureAtlas.createSprite("highlight_tile");
 
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
@@ -44,17 +56,23 @@ public class World {
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
         user = new Player(app);
-        //spritePlayer = app.textureAtlas.createSprite("character000");
-        //spriteHighlight = app.textureAtlas.createSprite("border_tile");
+        addActor(user.unit);
+
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+        spriteGrass = app.assets.textureAtlas.createSprite("grass");
+        cellGrass = tileLayer2.getCell(0, 0);
+        //cellGrass = app.assets.tileSet.getTile(0);
+        //cellGrass = app.assets.textureAtlas.createSprite("grass");
         mapInput = new MapInput(app, this);
         Gdx.input.setInputProcessor(mapInput);
 
     }
 
     public void update(float delta) {
+
         mapInput.update(delta);
+        tileLayer1.setCell(0,0, cellGrass);
     }
 
     public void render() {
@@ -65,11 +83,12 @@ public class World {
 
         worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
-        tiledMapRenderer.render();
+        tiledMapRenderer.render(mapLayerIndices);
+
 
         // Fix sprites when moving camera.
         app.batch.setProjectionMatrix(worldCamera.combined);
-
+        /*
         app.batch.begin();
 
         // The tileSize division and then multiplication seems... odd, but do this
@@ -78,12 +97,19 @@ public class World {
         app.batch.draw(spritePlayer, user.unit.position.x*tileSize, user.unit.position.y*tileSize);
         // Consider positioning character in middle of tile.
         app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
+        app.batch.end();*/
+
+        app.batch.begin();
+        app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
+        act(Gdx.graphics.getDeltaTime());
+        draw();
         app.batch.end();
 
     }
 
     public void endTurn() {
         turnNumber++;
+
         user.dkk += 20;
     }
 }

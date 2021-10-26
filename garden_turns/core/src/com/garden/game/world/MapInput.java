@@ -4,20 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.Logger;
 import com.garden.game.GardenGame;
+import jdk.internal.org.jline.terminal.Terminal;
 
 public class MapInput implements InputProcessor {
     private final GardenGame app;
     private final World world;
     private final boolean[] keyPressed;
     Logger debugLog;
+    int maxWidth, maxHeight;
+    boolean tileSelected;
+    private final float maxZoom = 1.75f;
 
     public MapInput(GardenGame app, World world) {
         this.app = app;
         this.world = world;
         keyPressed = new boolean[256];
         debugLog = new Logger("MapInput:");
+        maxWidth = world.tileSize*world.worldWidth;
+        maxHeight = Gdx.graphics.getHeight()-100; // Right now we can't go to top of map with character. Maybe resize map?
+        // Maybe fix with camera coordinates somehow??
     }
 
     @Override
@@ -37,19 +45,31 @@ public class MapInput implements InputProcessor {
         return false;
     }
 
-    @Override
+    @Override // Fix this function. We never want to move to a tile covered by HUD. Click should 'go' to HUD.
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        if(button == Input.Buttons.RIGHT)
-            return false;
-        //System.out.println(button);
         Vector3 position = world.worldCamera.unproject(clickCoordinates);
-        // Move selected unit or select tile, etc.
-        if(position.x > Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7)
-            return false; // Return false to pass input to other input processors
-        else
-            world.user.unit.move((int) position.x / world.tileSize, (int) position.y / world.tileSize);
-        return true;
+        int tileX = (int) position.x / world.tileSize;
+        int tileY = (int) position.y / world.tileSize;
+
+        if(button == Input.Buttons.RIGHT) {
+            tileSelected = true;
+            world.hoveredX = tileX;
+            world.hoveredY = tileY;
+        } else if(button == Input.Buttons.LEFT) {
+            tileSelected = false;
+
+            //System.out.println(tileX + " " + tileY);
+            if (world.user.unit.canMove(tileX, tileY)) {
+
+                world.user.unit.move(tileX, tileY);
+                world.user.unit.setPosition(position.x, position.y);
+
+                return true;
+            }
+
+        }
+       return false;
     }
 
     @Override
@@ -65,20 +85,20 @@ public class MapInput implements InputProcessor {
     // Adjust 'highlighted' tile
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        if(!tileSelected) {
+            Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
+            Vector3 position = world.worldCamera.unproject(mouseCoordinates);
 
-        Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = world.worldCamera.unproject(mouseCoordinates);
-
-        world.hoveredX = (int) (position.x) / world.tileSize;
-        world.hoveredY = (int) (position.y) / world.tileSize;
-
+            world.hoveredX = (int) (position.x) / world.tileSize;
+            world.hoveredY = (int) (position.y) / world.tileSize;
+        }
         return true;
     }
 
     // Zoom map.
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        if (Gdx.input.getX() > Gdx.graphics.getHeight())
+        if (world.worldCamera.zoom * (1 + amountY * 0.05f) > maxZoom)
             return false;
         world.worldCamera.zoom *= 1 + amountY * 0.05f;
         return true;
@@ -88,16 +108,29 @@ public class MapInput implements InputProcessor {
     void adjustCamera(float delta) {
         int xVelocity = 0;
         int yVelocity = 0;
-        if(keyPressed[Input.Keys.UP])
-            yVelocity = 100;
-        if(keyPressed[Input.Keys.LEFT])
-            xVelocity = -100;
-        if(keyPressed[Input.Keys.RIGHT])
-            xVelocity = 100;
-        if(keyPressed[Input.Keys.DOWN])
-            yVelocity = -100;
 
-        // Multiply by zoom to make scrolling through map faster when zoomed out.
+        if(keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.W]) {
+            if(world.worldCamera.position.y < Gdx.graphics.getHeight()*1.2)
+                yVelocity = 100;
+        }
+
+        if(keyPressed[Input.Keys.DOWN]|| keyPressed[Input.Keys.S]) {
+            if (200 < world.worldCamera.position.y)
+                yVelocity = -100;
+        }
+
+        if(keyPressed[Input.Keys.LEFT]|| keyPressed[Input.Keys.A]) {
+            if(200 < world.worldCamera.position.x)
+                xVelocity = -100;
+        }
+
+        if(keyPressed[Input.Keys.RIGHT] || keyPressed[Input.Keys.D]) {
+            if(world.worldCamera.position.x < 1500)
+                xVelocity = 100;
+        }
+
+
+        // Multiply by zoom to make scrolling through map faster when zoomed out. Within some bounds...
         world.worldCamera.position.x += xVelocity*delta*world.worldCamera.zoom;
         world.worldCamera.position.y += yVelocity*delta*world.worldCamera.zoom;
 
@@ -108,62 +141,3 @@ public class MapInput implements InputProcessor {
         adjustCamera(delta);
     }
 }
-
-/*
-
-    // Implement this to highlight tiles??
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        //world.tiledMap.s
-        //TiledMapTileLayer.Cell
-        //TiledMapTileLayer.Cell cell = world.tileLayer.getCell(screenX, screenY);
-        //TiledMapTile tile = cell.getTile();
-        Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = world.worldCamera.unproject(mouseCoordinates);
-        higlightedCell = world.tileLayer.getCell(screenX, screenY);
-        highlightedTile = higlightedCell.getTile();
-        world.hoveredX = (int) highlightedTile.getOffsetX();
-        world.hoveredY = (int) highlightedTile.getOffsetY();
-
-        //Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
-        //Vector3 position = world.worldCamera.unproject(mouseCoordinates);
-        //world.hoveredX = (int) position.x;// * world.worldWidth;
-        //world.hoveredY = (int) position.y;// * world.worldHeight;
-        return true;
-
-
-            // Implement this to highlight tiles??
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-
-        Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = world.worldCamera.unproject(mouseCoordinates);
-        //float x, y;
-        //x = position.x + world.worldCamera.position.x;
-        //y = position.y + world.worldCamera.position.y;
-
-        //higlightedCell = world.tileLayer.getCell(screenX, screenY);
-        //highlightedTile = higlightedCell.getTile();
-        //world.hoveredX = (int) highlightedTile.getOffsetX();
-        //world.hoveredY = (int) highlightedTile.getOffsetY();
-        //world.hoveredX = (int) x / world.tileSize;
-        //world.hoveredY = (int) y / world.tileSize;
-        //higlightedCell = world.tileLayer.getCell(screen, screenY);
-        //highlightedTile = higlightedCell.getTile();
-        //Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
-        //Vector3 position = world.worldCamera.unproject(mouseCoordinates);
-        //world.hoveredX = (int) position.x;// * world.worldWidth;
-        //world.hoveredY = (int) position.y;// * world.worldHeight;
-        int x = (int) (position.x + world.worldCamera.position.x) / world.tileSize;
-        int y = (int) (position.y + world.worldCamera.position.y) / world.tileSize;
-        world.hoveredX = x;
-        world.hoveredY = y;
-        //higlightedCell = world.tileLayer.getCell(x, y);
-        //highlightedTile = world.tileLayer.getCell(x, y);
-        //higlightedCell.setTile()
-        world.highlightedCell = world.tileLayer.getCell(x, y);
-        return true;
-    }
-
-    }
- */

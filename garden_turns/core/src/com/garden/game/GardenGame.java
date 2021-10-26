@@ -28,13 +28,7 @@ public class GardenGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		//assets = new AssetManager();
 		assets = new Assets();
-		//assets.load("pack5.atlas", TextureAtlas.class);
-		//assets.finishLoading();
-
-		//textureAtlas = assets.get("pack5.atlas");
-
 		gameScreen = new GameScreen(this);
 		setScreen(gameScreen);
 	}
@@ -43,7 +37,6 @@ public class GardenGame extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		//img.dispose();
 		assets.dispose();
 	}
 }

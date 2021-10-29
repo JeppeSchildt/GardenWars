@@ -66,8 +66,6 @@ public class World extends Stage {
         spriteGrass = app.assets.textureAtlas.createSprite("grass");
         cellGrass = tileLayer2.getCell(0, 0);
 
-        turnNumber = 0;
-        user.dkk += 550;
     }
 
 
@@ -105,6 +103,7 @@ public class World extends Stage {
 
     public void endTurn() {
         turnNumber++;
+
         user.dkk += 20;
     }
 }

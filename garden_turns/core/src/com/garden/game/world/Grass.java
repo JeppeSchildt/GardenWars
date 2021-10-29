@@ -10,6 +10,8 @@ public class Grass extends Plant {
         super(x, y);
         this.cell = cell;
         typeID = Constants.GRASS;
+        price = Constants.GRASS_PRICE;
+
     }
 
     public TiledMapTileLayer.Cell getCell() {

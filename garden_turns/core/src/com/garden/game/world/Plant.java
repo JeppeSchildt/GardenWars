@@ -8,10 +8,10 @@ import java.awt.*;
 
 public class Plant extends Actor {
     int water;
-    Integer typeID;
+    String typeID;
     TiledMapTileLayer.Cell cell;
     Sprite sprite;
-    int cost;
+    Integer price;
 
     // Move to constants?
     enum States {
@@ -44,7 +44,7 @@ public class Plant extends Actor {
         state = newState;
     }
 
-    public Integer getTypeID() {
+    public String getTypeID() {
         return typeID;
     }
 

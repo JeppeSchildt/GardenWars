@@ -1,6 +1,7 @@
 package com.garden.game.player;
 
 import com.garden.game.GardenGame;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.Plant;
 import com.garden.game.world.Unit;
 import com.garden.game.world.World;
@@ -41,7 +42,10 @@ public class Player {
         return cost <= dkk;
 
     }
-    public void plant(int x, int y) {
+    public void plant(int x, int y, String plantID) {
+        if ( canPlant(Constants.idPriceMap.get(plantID)) ) {
+            //addPlant();
+        }
 
     }
 

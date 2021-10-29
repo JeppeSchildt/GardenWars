@@ -159,6 +159,7 @@ public class GameScreen extends AbstractScreen {
                     //System.out.println("clicked " + textButton.getText());
                     Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
                     world.user.addPlant(plant);
+                    //world.user.plant(world.hoveredX, world.hoveredY, Constants.GRASS);
                     world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                     world.tileLayer1.setCell(world.hoveredX, world.hoveredY, plant.getCell());
                     outerTable.remove();

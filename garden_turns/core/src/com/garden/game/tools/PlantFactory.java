@@ -13,17 +13,17 @@ interface IFCreatePlant {
 
 public class PlantFactory {
     private final Assets assets;
-    Map<Integer, IFCreatePlant> createActorMap;
+    Map<String, IFCreatePlant> createActorMap;
 
     public PlantFactory(final Assets assets) {
         this.assets = assets;
-        createActorMap = new HashMap<Integer, IFCreatePlant>();
+        createActorMap = new HashMap<String, IFCreatePlant>();
         initMap();
     }
 
     private void initMap() {
         if(createActorMap == null) {
-            createActorMap = new HashMap<Integer, IFCreatePlant>();
+            createActorMap = new HashMap<String, IFCreatePlant>();
         }
         createActorMap.put(Constants.GRASS, new IFCreatePlant() {
             @Override
@@ -33,7 +33,7 @@ public class PlantFactory {
         });
     }
 
-    public Plant createPlant(Integer plantID, int x, int y) {
+    public Plant createPlant(String plantID, int x, int y) {
         return createActorMap.get(Constants.GRASS).create(x, y);
     }
 }

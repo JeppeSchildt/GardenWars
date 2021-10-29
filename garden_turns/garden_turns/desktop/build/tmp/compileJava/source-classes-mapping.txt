@@ -1,2 +1,0 @@
-com/garden/game/desktop/DesktopLauncher.java
- com.garden.game.desktop.DesktopLauncher

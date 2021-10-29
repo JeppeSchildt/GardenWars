@@ -14,7 +14,6 @@ public class MapInput implements InputProcessor {
     private final World world;
     private final boolean[] keyPressed;
     Logger debugLog;
-    int maxWidth, maxHeight;
     boolean tileSelected;
     private final float maxZoom = 1.75f;
 
@@ -23,9 +22,6 @@ public class MapInput implements InputProcessor {
         this.world = world;
         keyPressed = new boolean[256];
         debugLog = new Logger("MapInput:");
-        maxWidth = world.tileSize*world.worldWidth;
-        maxHeight = Gdx.graphics.getHeight()-100; // Right now we can't go to top of map with character. Maybe resize map?
-        // Maybe fix with camera coordinates somehow??
     }
 
     @Override
@@ -56,6 +52,7 @@ public class MapInput implements InputProcessor {
             tileSelected = true;
             world.hoveredX = tileX;
             world.hoveredY = tileY;
+
         } else if(button == Input.Buttons.LEFT) {
             tileSelected = false;
 
@@ -91,6 +88,7 @@ public class MapInput implements InputProcessor {
 
             world.hoveredX = (int) (position.x) / world.tileSize;
             world.hoveredY = (int) (position.y) / world.tileSize;
+            //System.out.println("Hovered tile: " + world.hoveredX + "," + world.hoveredY);
         }
         return true;
     }
@@ -114,12 +112,12 @@ public class MapInput implements InputProcessor {
                 yVelocity = 100;
         }
 
-        if(keyPressed[Input.Keys.DOWN]|| keyPressed[Input.Keys.S]) {
+        if(keyPressed[Input.Keys.DOWN] || keyPressed[Input.Keys.S]) {
             if (200 < world.worldCamera.position.y)
                 yVelocity = -100;
         }
 
-        if(keyPressed[Input.Keys.LEFT]|| keyPressed[Input.Keys.A]) {
+        if(keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.A]) {
             if(200 < world.worldCamera.position.x)
                 xVelocity = -100;
         }

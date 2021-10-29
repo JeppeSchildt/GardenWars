@@ -28,7 +28,7 @@ public class GardenGame extends Game {
 
 	public Screen titleScreen;
 	public GameScreen gameScreen;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

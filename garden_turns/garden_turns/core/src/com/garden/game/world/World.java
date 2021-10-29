@@ -12,13 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.tools.Constants;
 
 public class World extends Stage {
     private final GardenGame app;
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    TiledMapTileLayer tileLayer1, tileLayer2, improvementLayer;
+    public TiledMapTileLayer tileLayer1, tileLayer2, improvementLayer;
     private int[] mapLayerIndices;
     private int[] improvementLayerIndex;
     TiledMapTileLayer.Cell cellGrass;
@@ -74,10 +75,10 @@ public class World extends Stage {
         //Gdx.input.setInputProcessor(mapInput);
     }
 
-    public void update(float delta) {
 
+
+    public void update(float delta) {
         mapInput.update(delta);
-        tileLayer1.setCell(0,0, cellGrass);
     }
 
     public void render() {
@@ -91,20 +92,15 @@ public class World extends Stage {
         tiledMapRenderer.render(mapLayerIndices);
 
 
-        // Fix sprites when moving camera.
+        // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
-        /*
-        app.batch.begin();
-
-        // The tileSize division and then multiplication seems... odd, but do this
-        // to position sprite/highlight same place whenever there is a click/hover
-        // within some tile.
-        app.batch.draw(spritePlayer, user.unit.position.x*tileSize, user.unit.position.y*tileSize);
-        // Consider positioning character in middle of tile.
-        app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
-        app.batch.end();*/
 
         app.batch.begin();
+        for ( Plant plant : user.getPlants() ) {
+            if( plant.getSprite() != null ) {
+                plant.getSprite().draw(app.batch);
+            }
+        }
         app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
         act(Gdx.graphics.getDeltaTime());
         draw();

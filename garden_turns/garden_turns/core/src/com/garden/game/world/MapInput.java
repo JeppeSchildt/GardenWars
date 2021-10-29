@@ -107,22 +107,22 @@ public class MapInput implements InputProcessor {
         int xVelocity = 0;
         int yVelocity = 0;
 
-        if(keyPressed[Input.Keys.UP]) {
+        if(keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.W]) {
             if(world.worldCamera.position.y < Gdx.graphics.getHeight()*1.2)
                 yVelocity = 100;
         }
 
-        if(keyPressed[Input.Keys.DOWN]) {
+        if(keyPressed[Input.Keys.DOWN] || keyPressed[Input.Keys.S]) {
             if (200 < world.worldCamera.position.y)
                 yVelocity = -100;
         }
 
-        if(keyPressed[Input.Keys.LEFT]) {
+        if(keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.A]) {
             if(200 < world.worldCamera.position.x)
                 xVelocity = -100;
         }
 
-        if(keyPressed[Input.Keys.RIGHT]) {
+        if(keyPressed[Input.Keys.RIGHT] || keyPressed[Input.Keys.D]) {
             if(world.worldCamera.position.x < 1500)
                 xVelocity = 100;
         }

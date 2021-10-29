@@ -29,8 +29,6 @@ public class World extends Stage {
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
-    public Stage worldStage;
-
 
     public World(GardenGame app) {
         this.app = app;
@@ -41,12 +39,10 @@ public class World extends Stage {
         setViewport(new ScreenViewport(worldCamera));
         mapInput = new MapInput(app, this);
         user = new Player(app);
-        //init();
     }
 
     // Den skal lave så det virker.... ctor/world skal ikke også init
     public void init() {
-        //tiledMap = new TmxMapLoader().load("map3.tmx");
         tiledMap = app.assets.get("map6.tmx", TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         tileLayer1 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
@@ -69,10 +65,7 @@ public class World extends Stage {
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
         spriteGrass = app.assets.textureAtlas.createSprite("grass");
         cellGrass = tileLayer2.getCell(0, 0);
-        //cellGrass = app.assets.tileSet.getTile(0);
-        //cellGrass = app.assets.textureAtlas.createSprite("grass");
-        //mapInput = new MapInput(app, this);
-        //Gdx.input.setInputProcessor(mapInput);
+
     }
 
 

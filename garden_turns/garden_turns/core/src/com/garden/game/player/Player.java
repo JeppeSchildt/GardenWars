@@ -37,5 +37,7 @@ public class Player {
         plants.add(plant);
     }
 
+    public void plant(int )
+
 
 }

@@ -18,14 +18,7 @@ import com.garden.game.tools.Assets;
 
 public class GardenGame extends Game {
 	public SpriteBatch batch;
-	Texture img;
-	public TextureAtlas textureAtlas;
-	public Sprite spritePlayer;
-	public Sprite spriteHighlight;
-	//OrthographicCamera camera;
-	//public AssetManager assets;
 	public Assets assets;
-
 	public Screen titleScreen;
 	public GameScreen gameScreen;
 

@@ -35,7 +35,6 @@ public class Assets extends AssetManager {
         textureAtlas = this.get("pack5.atlas");
         styleAtlas = this.get("uiskin.atlas");
         walkAnimations = initWalkAnimations();
-        //grassLayer = (TiledMapTileLayer) get("map6.tmx", TiledMap.class).getLayers().get("Tile Layer 2");
         grassCell = ((TiledMapTileLayer) get("map6.tmx", TiledMap.class).getLayers().get("Tile Layer 2")).getCell(0,0);
     }
 
@@ -81,8 +80,6 @@ public class Assets extends AssetManager {
 
         finishLoading();
 
-        //tileSet = this.get("wood_tileset.tsx", TiledMapTileSet.class);
-        //         tiledMap = app.assets.get("map5.tmx", TiledMap.class);
         tileSet = get("map6.tmx", TiledMap.class).getTileSets().getTileSet("wood_tileset.tmx");
         final Texture buttonSheet = this.get("NextTurn_3.png", Texture.class);
         final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 88, 100);

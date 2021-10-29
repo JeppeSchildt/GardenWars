@@ -44,11 +44,12 @@ public class GameScreen extends AbstractScreen {
     private Label txtSelectedTileCoordinates;
     PlantFactory actorFactory;
     private boolean improvementsShown;
+    final OrthographicCamera camera;
 
     public GameScreen(GardenGame app) {
         this.app = app;
         world = new World(app);
-        final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         hud = new Stage(new ScreenViewport(camera));
         hudColor = new Color(1, 1, 1, 0.5f);
@@ -276,10 +277,10 @@ public class GameScreen extends AbstractScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = world.worldCamera.unproject(clickCoordinates);
+        Vector3 position = camera.unproject(clickCoordinates);
 
         if(button == Input.Buttons.RIGHT) {
-            outerTable.setPosition(position.x, position.y-200);
+            outerTable.setPosition(position.x-50, position.y-200);
             //scrollPane.scrollTo(0, 0, scrollPane.getWidth(), scrollPane.getHeight());
             scrollPane.setScrollPercentY(0);
             hud.addActor(outerTable);

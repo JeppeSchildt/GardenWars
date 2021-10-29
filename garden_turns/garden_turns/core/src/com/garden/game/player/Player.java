@@ -37,7 +37,9 @@ public class Player {
         plants.add(plant);
     }
 
-    public void plant(int )
+    public void plant(int x, int y) {
+        
+    }
 
 
 }

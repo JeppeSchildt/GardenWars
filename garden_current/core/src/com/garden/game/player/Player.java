@@ -1,6 +1,7 @@
 package com.garden.game.player;
 
 import com.garden.game.GardenGame;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.Plant;
 import com.garden.game.world.Unit;
 import com.garden.game.world.World;
@@ -24,7 +25,6 @@ public class Player {
 
     public Player(GardenGame app) {
         this.app = app;
-        //world = this.app.gameScreen.world;
         unit = new Unit(this.app, "character000");
         plants = new ArrayList<>();
     }
@@ -37,10 +37,15 @@ public class Player {
         plants.add(plant);
     }
 
-
-    public void plant(int x, int y) {
-        
+    public boolean canBuy(String id) {
+        return Constants.idPriceMap.get(id) <= dkk;
     }
+
+    public void plant(Plant plant) {
+        dkk -= plant.getPrice();
+        addPlant(plant);
+    }
+
 
 
 }

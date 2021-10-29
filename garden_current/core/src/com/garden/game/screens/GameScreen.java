@@ -146,11 +146,13 @@ public class GameScreen extends AbstractScreen {
             textButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    //System.out.println("clicked " + textButton.getText());
-                    Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
-                    world.user.addPlant(plant);
-                    world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
-                    world.tileLayer1.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                    if(world.user.canBuy(Constants.GRASS)) {
+                        Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
+                        world.user.plant(plant);
+                        world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
+                        world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                    }
+
                     outerTable.remove();
 
                 }
@@ -163,8 +165,6 @@ public class GameScreen extends AbstractScreen {
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
-        //outerTable.setPosition(774, 400);
-        //hud.addActor(outerTable);
 
     }
 

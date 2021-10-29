@@ -19,12 +19,10 @@ public class World extends Stage {
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    public TiledMapTileLayer tileLayer1, tileLayer2, improvementLayer;
+    public TiledMapTileLayer soilLayer, improvementLayer;
     private int[] mapLayerIndices;
-    private int[] improvementLayerIndex;
-    TiledMapTileLayer.Cell cellGrass;
     public Player user;
-    Sprite spritePlayer, spriteHighlight, spriteGrass;
+    Sprite spritePlayer, spriteHighlight;
     public MapInput mapInput;
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
@@ -45,26 +43,20 @@ public class World extends Stage {
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        tileLayer1 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
-        tileLayer2 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 2");
+        soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Soil Layer");
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
         MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("Tile Layer 1")};
-        improvementLayerIndex = new int[] { 1 };
-
-        improvementLayer = new TiledMapTileLayer(32,32,32,32);
-        //highlightedTile = (TiledMapTile) app.textureAtlas.createSprite("highlight_tile");
+        mapLayerIndices = new int[] {mapLayers.getIndex("Soil Layer"), mapLayers.getIndex("Improvement Layer")};
 
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
-        //user = new Player(app);
         addActor(user.unit);
 
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
-        spriteGrass = app.assets.textureAtlas.createSprite("grass");
-        cellGrass = tileLayer2.getCell(0, 0);
+
 
     }
 

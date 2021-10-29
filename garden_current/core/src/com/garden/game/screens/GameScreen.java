@@ -42,6 +42,7 @@ public class GameScreen extends AbstractScreen {
     boolean ignore;
     private final Color hudColor;
     private Label txtSelectedTileCoordinates;
+    ArrayList<TextButton> buttonList;
     PlantFactory actorFactory;
     private boolean improvementsShown;
     final OrthographicCamera camera;
@@ -66,7 +67,7 @@ public class GameScreen extends AbstractScreen {
 
     private void initHUD() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-
+        buttonList = new ArrayList<TextButton>();	
         setUpIcon();
         setUpButtons();
         setupTileImprovementBox();
@@ -126,28 +127,17 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtWater);
 
     }
-
+    void setButton (String text, Skin skin) {
+    	buttonList.add(new TextButton(text,skin));
+    }
     // Consider: Individual setup button methods and update scrollpane methods.
     // Can also be used when new skills are learned.
     void setupTileImprovementBox() {
 
-        final TextButton button1 = new TextButton("Water tile",skin);
-        final TextButton button2 = new TextButton("Plant something",skin);
-        final TextButton button3 = new TextButton("Plant something3",skin);
-        final TextButton button4 = new TextButton("Plant something4",skin);
-        final TextButton button5 = new TextButton("Plant something5",skin);
-        ArrayList<TextButton> buttonList = new ArrayList<>();
-        buttonList.add(new TextButton("Water tile",skin));
-        buttonList.add(new TextButton("Plant Grass",skin));
-        buttonList.add(new TextButton("Plant something3",skin));
-        buttonList.add(new TextButton("Plant something4",skin));
-        buttonList.add(new TextButton("Plant something5",skin));
-        buttonList.add(new TextButton("Plant something4",skin));
-        buttonList.add(new TextButton("Plant something5",skin));
-        buttonList.add(new TextButton("Plant something4",skin));
-        buttonList.add(new TextButton("Plant something5",skin));
-        buttonList.add(new TextButton("Plant something4",skin));
-        buttonList.add(new TextButton("Plant something5",skin));
+    	for (int i=0;i<8;i++) {
+    		String t = "Plant something" + i ;
+    		setButton(t,skin);
+    	}
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
 
@@ -165,22 +155,14 @@ public class GameScreen extends AbstractScreen {
 
                 }
             });
-            /*} else {
-                textButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        System.out.println("clicked " + textButton.getText());
-                    }
-                });
-            }*/
-            buttonTable.add(textButton);
-            buttonTable.row();
+            buttonTable.add(textButton).expandX().fillY().row();
         }
 
         buttonTable.setSize(200, 100);
-        outerTable.setSize(300, 200);
+        outerTable.setSize(600, 400);
         scrollPane = new ScrollPane(buttonTable, skin);
-        outerTable.add(scrollPane);
+        scrollPane.setScrollingDisabled(true, false);
+        outerTable.add(scrollPane).expandY();
         //outerTable.setPosition(774, 400);
         //hud.addActor(outerTable);
 

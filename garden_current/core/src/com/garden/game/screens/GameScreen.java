@@ -148,9 +148,9 @@ public class GameScreen extends AbstractScreen {
                 public void clicked(InputEvent event, float x, float y) {
                     if(world.user.canBuy(Constants.GRASS)) {
                         Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
-                        world.user.plant(plant);
-                        world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
-                        world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                        world.user.plant(world.hoveredX*32, world.hoveredY*32, plant);
+                        //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
+                        //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
                     }
 
                     outerTable.remove();

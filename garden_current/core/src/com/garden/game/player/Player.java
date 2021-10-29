@@ -41,9 +41,10 @@ public class Player {
         return Constants.idPriceMap.get(id) <= dkk;
     }
 
-    public void plant(Plant plant) {
+    public void plant(int x, int y, Plant plant) {
         dkk -= plant.getPrice();
         addPlant(plant);
+        unit.gotoAndPlant(x, y, plant);
     }
 
 

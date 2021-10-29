@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
@@ -16,7 +18,7 @@ import com.garden.game.GardenGame;
 public class TitleScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
-
+	Skin skin;
 	public TitleScreen(GardenGame app) {
 		this.app = app;
 
@@ -24,16 +26,31 @@ public class TitleScreen implements Screen {
 		stage = new Stage(new ScreenViewport(camera));
 
 		initStage();
+
+
 	}
 
 	private void initStage() {
+
 		final int midX = Gdx.graphics.getWidth() / 2;
+		final int butY = Gdx.graphics.getHeight() / 3;
 
-		Label title = new Label("GardenGame", app.assets.largeTextStyle);
-		title.setPosition(midX - (title.getPrefWidth() / 2), Gdx.graphics.getHeight() * 0.75f);
+		final int maxWidth = Gdx.graphics.getWidth() / 2;
+		final int maxHeight = Gdx.graphics.getHeight();
 
-		ImageButton playButton = new ImageButton(app.assets.goldIcon);
+		skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+		Label title = new Label("Garden", app.assets.largeTextStyle);
+		title.setPosition(midX - 325, maxHeight - 200);
+		title.setFontScale(8);
+
+		Label titleSub = new Label("Game", app.assets.largeTextStyle);
+		titleSub.setPosition(midX - 200, maxHeight - 200 - 150);
+		titleSub.setFontScale(6);
+
+		//ImageButton playButton = new ImageButton(app.assets.goldIcon);
+		TextButton playButton = new TextButton("Start Game",skin);
+		playButton.setPosition(midX - 200, butY);
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -42,9 +59,21 @@ public class TitleScreen implements Screen {
 			}
 		});
 
-		playButton.setPosition(midX - 200, Gdx.graphics.getHeight() * 0.55f);
+		TextButton settingsButton = new TextButton("Settings",skin);
+		settingsButton.setPosition(midX - 200, butY - 30);
+		settingsButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				app.setScreen(app.gameScreen);
+				app.gameScreen.world.init();
+			}
+		});
 
-		ImageButton quitButton = new ImageButton(app.assets.waterIcon);
+
+
+
+		TextButton quitButton = new TextButton("Exit Game",skin);
+		quitButton.setPosition(midX - 200, butY - 30 - 30);
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -52,10 +81,15 @@ public class TitleScreen implements Screen {
 			}
 		});
 
-		quitButton.setPosition(midX - 200, Gdx.graphics.getHeight() * 0.3f);
+
+
+
 
 		stage.addActor(title);
+		stage.addActor(titleSub);
+
 		stage.addActor(playButton);
+		stage.addActor(settingsButton);
 		stage.addActor(quitButton);
 	}
 
@@ -69,7 +103,7 @@ public class TitleScreen implements Screen {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
 
-		Gdx.gl.glClearColor(0.2f, 0.6f, 0.2f, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.act();

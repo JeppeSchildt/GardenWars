@@ -13,13 +13,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.garden.game.screens.GameScreen;
+import com.garden.game.screens.PauseScreen;
 import com.garden.game.screens.TitleScreen;
 import com.garden.game.tools.Assets;
 
 public class GardenGame extends Game {
 	public SpriteBatch batch;
 	public Assets assets;
-	public Screen titleScreen;
+	public Screen titleScreen, pauseScreen;
 	public GameScreen gameScreen;
 
 	@Override
@@ -29,6 +30,7 @@ public class GardenGame extends Game {
 
 		titleScreen = new TitleScreen(this);
 		gameScreen = new GameScreen(this);
+		pauseScreen = new PauseScreen(this);
 
 		setScreen(titleScreen);
 	}

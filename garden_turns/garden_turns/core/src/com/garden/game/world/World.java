@@ -42,8 +42,8 @@ public class World extends Stage {
     }
 
     // Den skal lave så det virker.... ctor/world skal ikke også init
-    public void init() {
-        tiledMap = app.assets.get("map6.tmx", TiledMap.class);
+    public void init(String map) {
+        tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         tileLayer1 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
         tileLayer2 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 2");

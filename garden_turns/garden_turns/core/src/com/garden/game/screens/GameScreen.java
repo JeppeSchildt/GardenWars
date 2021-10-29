@@ -215,6 +215,8 @@ public class GameScreen extends AbstractScreen {
         hud.act(delta);
         hud.draw();
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) app.setScreen(app.pauseScreen);
+
     }
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx

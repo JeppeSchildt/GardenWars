@@ -30,6 +30,7 @@ public class MapInput implements InputProcessor {
         return true;
     }
 
+
     @Override
     public boolean keyUp(int keycode) {
         keyPressed[keycode] = false;

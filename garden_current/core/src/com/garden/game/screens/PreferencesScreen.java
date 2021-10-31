@@ -50,6 +50,7 @@ public class PreferencesScreen implements Screen {
 
         table.setFillParent(true);
         table.setDebug(false);
+        table.columnDefaults(6);
         stage.addActor(table);
 
 
@@ -135,7 +136,7 @@ public class PreferencesScreen implements Screen {
         musicOnOffLabel = new Label( "Music", app.assets.largeTextStyle );
         soundOnOffLabel = new Label( "Sound Effect", app.assets.largeTextStyle );
 
-        table.add(titleLabel).colspan(2).center();
+        table.add(titleLabel).colspan(6).center();
         table.row();
         table.add(volumeMusicLabel).left();
         table.add(volumeMusicSlider);

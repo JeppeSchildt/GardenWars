@@ -63,6 +63,8 @@ public class GameScreen extends AbstractScreen {
         ignore = false;
         actorFactory = new PlantFactory(app.assets);
 
+
+
     }
 
     private void initHUD() {
@@ -71,6 +73,7 @@ public class GameScreen extends AbstractScreen {
         setUpIcon();
         setUpButtons();
         setupTileImprovementBox();
+
 
     }
 
@@ -197,7 +200,11 @@ public class GameScreen extends AbstractScreen {
         hud.act(delta);
         hud.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) app.setScreen(app.pauseScreen);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            app.preferencesBool = true;
+            app.setScreen(app.pauseScreen);
+        }
+
 
     }
 

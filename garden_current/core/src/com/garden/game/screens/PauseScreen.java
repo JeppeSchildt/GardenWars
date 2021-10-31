@@ -66,12 +66,12 @@ public class PauseScreen implements Screen {
 			}
 		});
 
-		TextButton settingsButton = new TextButton("Settings",skin);
+		TextButton settingsButton = new TextButton("Preferences",skin);
 		settingsButton.setPosition(midX - 200, butY - 30 - 30);
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.setScreen(app.gameScreen);
+				app.setScreen(app.preferencesScreen);
 
 			}
 		});

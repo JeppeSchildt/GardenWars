@@ -1,8 +1,10 @@
 package com.garden.game.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,12 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
 public class TitleScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
+
 	Skin skin;
 	public TitleScreen(GardenGame app) {
 		this.app = app;
@@ -28,17 +32,47 @@ public class TitleScreen implements Screen {
 		initStage();
 
 
+
 	}
 
 	private void initStage() {
+		skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 		final int midX = Gdx.graphics.getWidth() / 2;
 		final int butY = Gdx.graphics.getHeight() / 3;
 
-		final int maxWidth = Gdx.graphics.getWidth() / 2;
+		final int maxWidth = Gdx.graphics.getWidth();
 		final int maxHeight = Gdx.graphics.getHeight();
 
-		skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+		/* // Pause music after X time
+		Timer.schedule(new Timer.Task() {
+			@Override
+			public void run() {
+				music.pause();
+			}
+		},33);
+		*/
+
+
+		TextButton musicButton = new TextButton("Music",skin);
+		musicButton.setPosition(maxWidth - 75, 15);
+		musicButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if (app.music.isPlaying())
+					app.music.pause();
+				else
+					app.music.play();
+			}
+		});
+
+
+
+
+
+
+
 
 		Label title = new Label("Garden", app.assets.largeTextStyle);
 		title.setPosition(midX - 325, maxHeight - 200);
@@ -49,7 +83,7 @@ public class TitleScreen implements Screen {
 		titleSub.setFontScale(6);
 
 		//ImageButton playButton = new ImageButton(app.assets.goldIcon);
-		TextButton playButton = new TextButton("Start Game",skin);
+		TextButton playButton = new TextButton("New Game",skin);
 		playButton.setPosition(midX - 200, butY);
 		playButton.addListener(new ChangeListener() {
 			@Override
@@ -59,12 +93,12 @@ public class TitleScreen implements Screen {
 			}
 		});
 
-		TextButton settingsButton = new TextButton("Settings",skin);
+		TextButton settingsButton = new TextButton("Preferences",skin);
 		settingsButton.setPosition(midX - 200, butY - 30);
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.setScreen(app.pauseScreen);
+				app.setScreen(app.preferencesScreen);
 
 			}
 		});
@@ -72,7 +106,7 @@ public class TitleScreen implements Screen {
 
 
 
-		TextButton quitButton = new TextButton("Exit Game",skin);
+		TextButton quitButton = new TextButton("Exit",skin);
 		quitButton.setPosition(midX - 200, butY - 30 - 30);
 		quitButton.addListener(new ChangeListener() {
 			@Override
@@ -87,6 +121,8 @@ public class TitleScreen implements Screen {
 
 		stage.addActor(title);
 		stage.addActor(titleSub);
+
+		stage.addActor(musicButton);
 
 		stage.addActor(playButton);
 		stage.addActor(settingsButton);

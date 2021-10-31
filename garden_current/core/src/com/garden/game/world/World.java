@@ -39,7 +39,7 @@ public class World extends Stage {
         user = new Player(app);
     }
 
-    // Den skal lave så det virker.... ctor/world skal ikke også init
+
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
@@ -56,7 +56,6 @@ public class World extends Stage {
 
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
-
 
     }
 

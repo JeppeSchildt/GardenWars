@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -32,21 +33,20 @@ public class PauseScreen implements Screen {
 
 	private void initStage() {
 
-		final int midX = Gdx.graphics.getWidth() / 2;
-		final int butY = Gdx.graphics.getHeight() / 3;
+		// Create a table that fills the screen. Everything else will go inside this table.
+		Table table = new Table();
 
-		final int maxWidth = Gdx.graphics.getWidth() / 2;
-		final int maxHeight = Gdx.graphics.getHeight();
+		table.setFillParent(true);
+		table.setDebug(false);
+		stage.addActor(table);
 
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 		Label title = new Label("Game Paused", app.assets.largeTextStyle);
-		title.setPosition(midX - 400, maxHeight - 200);
 		title.setFontScale(5);
 
 		//ImageButton playButton = new ImageButton(app.assets.goldIcon);
 		TextButton playButton = new TextButton("Resume",skin);
-		playButton.setPosition(midX - 200, butY);
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -56,7 +56,6 @@ public class PauseScreen implements Screen {
 		});
 
 		TextButton resetButton = new TextButton("Restart",skin);
-		resetButton.setPosition(midX - 200, butY - 30);
 		resetButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -67,7 +66,6 @@ public class PauseScreen implements Screen {
 		});
 
 		TextButton settingsButton = new TextButton("Preferences",skin);
-		settingsButton.setPosition(midX - 200, butY - 30 - 30);
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -76,28 +74,33 @@ public class PauseScreen implements Screen {
 			}
 		});
 
-
-
-
-		TextButton quitButton = new TextButton("Exit Game",skin);
-		quitButton.setPosition(midX - 200, butY - 30 - 30 - 30);
+		TextButton quitButton = new TextButton("Back to menu",skin);
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit();
+				//Gdx.app.exit();
+				app.preferencesBool = false;
+				app.currentGameBool = true;
+				app.setScreen(app.titleScreen);
+
 			}
 		});
 
 
+		table.add(title).colspan(2).center();
+		table.row();
+
+		table.add(playButton).left();
+		table.row();
+		table.add(resetButton).left();
+		table.row();
+		table.add(settingsButton).left();
+		table.row();
+		table.add(quitButton).left();
+		table.row();
 
 
 
-		stage.addActor(title);
-
-		stage.addActor(playButton);
-		stage.addActor(resetButton);
-		stage.addActor(settingsButton);
-		stage.addActor(quitButton);
 	}
 
 	@Override

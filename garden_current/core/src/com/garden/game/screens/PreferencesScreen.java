@@ -12,10 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.world.World;
+
+import java.awt.*;
 
 
 public class PreferencesScreen implements Screen {
@@ -38,27 +41,24 @@ public class PreferencesScreen implements Screen {
 
         initStage();
 
-
-
     }
 
     private void initStage() {
 
         // Create a table that fills the screen. Everything else will go inside this table.
         Table table = new Table();
-        table.setFillParent(true);
-        table.setDebug(true);
-        stage.addActor(table);
 
+        table.setFillParent(true);
+        table.setDebug(false);
+        stage.addActor(table);
 
 
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 
-
         //volume Music
-        final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
+        final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
         volumeMusicSlider.setValue( app.music.getVolume() );
         volumeMusicSlider.addListener( new EventListener() {
             @Override
@@ -75,7 +75,11 @@ public class PreferencesScreen implements Screen {
             @Override
             public boolean handle(Event event) {
                 boolean enabled = musicCheckbox.isChecked();
-                app.music.play();
+                if (enabled)
+                    app.music.play();
+                else
+                    app.music.pause();
+
                 return false;
             }
         });
@@ -84,23 +88,27 @@ public class PreferencesScreen implements Screen {
 
         //volume Sound
         final Slider soundMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
-        soundMusicSlider.setValue( app.music.getVolume() );
+        soundMusicSlider.setValue( app.soundNextTurn.getVolume() );
         soundMusicSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
-                app.music.setVolume( soundMusicSlider.getValue() );
+                app.soundNextTurn.setVolume( soundMusicSlider.getValue() );
                 return false;
             }
         });
 
         //Sound
         final CheckBox soundEffectsCheckbox = new CheckBox(null, skin);
-        soundEffectsCheckbox.setChecked( app.music.isPlaying() );
+        soundEffectsCheckbox.setChecked( app.soundNextTurn.isPlaying() );
         soundEffectsCheckbox.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
                 boolean enabled = soundEffectsCheckbox.isChecked();
-                app.music.play();
+                if (enabled)
+                    app.soundNextTurn.play();
+                else
+                    app.soundNextTurn.pause();
+
                 return false;
             }
         });
@@ -120,27 +128,28 @@ public class PreferencesScreen implements Screen {
         });
 
 
-        titleLabel = new Label( "Preferences", skin );
-        volumeMusicLabel = new Label( null, skin );
-        volumeSoundLabel = new Label( null, skin );
-        musicOnOffLabel = new Label( null, skin );
-        soundOnOffLabel = new Label( null, skin );
+        titleLabel = new Label( "Preferences", app.assets.largeTextStyle);
+        titleLabel.setFontScale(6);
+        volumeMusicLabel = new Label( "Music Volume", app.assets.largeTextStyle );
+        volumeSoundLabel = new Label( "Sound Volume", app.assets.largeTextStyle );
+        musicOnOffLabel = new Label( "Music", app.assets.largeTextStyle );
+        soundOnOffLabel = new Label( "Sound Effect", app.assets.largeTextStyle );
 
-        table.add(titleLabel);
+        table.add(titleLabel).colspan(2).center();
         table.row();
-        table.add(volumeMusicLabel);
+        table.add(volumeMusicLabel).left();
         table.add(volumeMusicSlider);
         table.row();
-        table.add(musicOnOffLabel);
+        table.add(musicOnOffLabel).left();
         table.add(musicCheckbox);
         table.row();
-        table.add(volumeSoundLabel);
+        table.add(volumeSoundLabel).left();
         table.add(soundMusicSlider);
         table.row();
-        table.add(soundOnOffLabel);
+        table.add(soundOnOffLabel).left();
         table.add(soundEffectsCheckbox);
         table.row();
-        table.add(backButton);
+        table.add(backButton).colspan(2).center();
 
     }
 

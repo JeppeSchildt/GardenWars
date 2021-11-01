@@ -1,20 +1,21 @@
 package com.garden.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
-import com.garden.game.world.World;
 
 public class TitleScreen implements Screen {
 	private GardenGame app;
@@ -29,13 +30,9 @@ public class TitleScreen implements Screen {
 		stage = new Stage(new ScreenViewport(camera));
 
 		initStage();
-
-
-
 	}
 
 	private void initStage() {
-
 
 
 		// Create a table that fills the screen. Everything else will go inside this table.
@@ -55,10 +52,15 @@ public class TitleScreen implements Screen {
 		musicButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				if (app.menueMusic.isPlaying())
-					app.menueMusic.pause();
-				else
-					app.menueMusic.play();
+				app.soundButtonPress.play();
+				if (app.inGameMusic.isPlaying())
+					app.inGameMusic.pause();
+				else if (!app.inGameMusic.isPlaying())
+					app.inGameMusic.play();
+				else if (app.menuMusic.isPlaying())
+					app.menuMusic.pause();
+				else if (!app.menuMusic.isPlaying())
+					app.menuMusic.play();
 			}
 		});
 
@@ -72,26 +74,8 @@ public class TitleScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				// ---------- In game sound start ----------
-				if (app.menueMusic.isPlaying())
-				{
-					app.menueMusic.stop();
-					// Start playing music after X time
-					Timer.schedule(new Timer.Task() {
-						@Override
-						public void run() {
-							app.inGameMusic.play();
+				app.soundButtonPress.play();
 
-							Timer.schedule(new Timer.Task() {
-								@Override
-								public void run() {
-
-									app.soundNextTurn.play();
-								}
-							}, 2.0f);
-						}
-					}, 0.5f);
-				}
 
 
 				app.setScreen(app.gameScreen);
@@ -104,10 +88,9 @@ public class TitleScreen implements Screen {
 			continueButton.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
+					app.soundButtonPress.play();
 					app.setScreen(app.gameScreen);
 					app.gameScreen.world.init("map6.tmx");
-
-
 				}
 			});
 		}
@@ -116,20 +99,27 @@ public class TitleScreen implements Screen {
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				//stage.addAction(Actions.sequence(Actions.fadeOut(5f),Actions.hide ()));
+
+				app.soundButtonPress.play();
 				app.setScreen(app.preferencesScreen);
+
 
 			}
 		});
+
+
 
 		TextButton quitButton = new TextButton("Exit",skin);
 		quitButton.setPosition(midX - 200, butY - 30 - 30);
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit();
+				app.soundButtonPress.play();
+
+				app.setScreen(app.exitScreen);
 			}
 		});
-
 
 
 		table.add(title).colspan(2).center();
@@ -145,8 +135,6 @@ public class TitleScreen implements Screen {
 		table.row();
 		table.add(quitButton).left();
 		table.row();
-
-
 
 		stage.addActor(musicButton);
 	}

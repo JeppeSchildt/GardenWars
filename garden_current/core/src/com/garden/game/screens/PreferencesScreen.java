@@ -3,10 +3,9 @@ package com.garden.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -17,10 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
-import com.garden.game.world.World;
 
-import java.awt.*;
-import java.awt.Button;
+import java.sql.Time;
 
 
 public class PreferencesScreen implements Screen {
@@ -40,9 +37,17 @@ public class PreferencesScreen implements Screen {
     private Slider volumeMusicSlider;
     private CheckBox musicCheckbox;
 
+
+    // Once this reaches 1.0f the next scene is shown
+    private float alpha = 0;
+    // true if fade in, false if fade out
+    private boolean fadeDirection = true;
+
     Skin skin;
 
     public PreferencesScreen(GardenGame app) {
+
+
         this.app = app;
 
         final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -64,15 +69,31 @@ public class PreferencesScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        TextButton musicButton = new TextButton("Music",skin);
+        musicButton.setPosition(app.maxWidth - 75, 15);
+        musicButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                app.soundButtonPress.play();
+                if (app.inGameMusic.isPlaying())
+                    app.inGameMusic.pause();
+                else if (!app.inGameMusic.isPlaying())
+                    app.inGameMusic.play();
+                else if (app.menuMusic.isPlaying())
+                    app.menuMusic.pause();
+                else if (!app.menuMusic.isPlaying())
+                    app.menuMusic.play();
+            }
+        });
 
         if (!app.preferencesBool){
-            //volume Music
+            //Volume Music
             volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
-            volumeMusicSlider.setValue( app.menueMusic.getVolume() );
+            volumeMusicSlider.setValue( app.menuMusic.getVolume() );
             volumeMusicSlider.addListener( new EventListener() {
                 @Override
                 public boolean handle(Event event) {
-                    app.menueMusic.setVolume( volumeMusicSlider.getValue() );
+                    app.menuMusic.setVolume( volumeMusicSlider.getValue() );
                     // Need fix
                     app.inGameMusic.setVolume( volumeMusicSlider.getValue() );
 
@@ -82,23 +103,23 @@ public class PreferencesScreen implements Screen {
                 }
             });
 
-            //music
+            //Music
             musicCheckbox = new CheckBox(null, skin);
-            musicCheckbox.setChecked( app.menueMusic.isPlaying() );
+            musicCheckbox.setChecked( app.menuMusic.isPlaying() );
             musicCheckbox.addListener( new EventListener() {
                 @Override
                 public boolean handle(Event event) {
                     boolean enabled = musicCheckbox.isChecked();
                     if (enabled)
-                        app.menueMusic.play();
+                        app.menuMusic.play();
                     else
-                        app.menueMusic.pause();
+                        app.menuMusic.pause();
 
                     return false;
                 }
             });
         }else if (app.preferencesBool){
-            //volume Music
+            //Volume Music
             final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
             volumeMusicSlider.setValue( app.inGameMusic.getVolume() );
             volumeMusicSlider.addListener( new EventListener() {
@@ -127,26 +148,26 @@ public class PreferencesScreen implements Screen {
 
         //volume Sound
         final Slider soundMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
-        soundMusicSlider.setValue( app.soundNextTurn.getVolume() );
+        soundMusicSlider.setValue( app.soundEffectBird.getVolume() );
         soundMusicSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
-                app.soundNextTurn.setVolume( soundMusicSlider.getValue() );
+                app.soundEffectBird.setVolume( soundMusicSlider.getValue() );
                 return false;
             }
         });
 
         //Sound
         final CheckBox soundEffectsCheckbox = new CheckBox(null, skin);
-        soundEffectsCheckbox.setChecked( app.soundNextTurn.isPlaying() );
+        soundEffectsCheckbox.setChecked( app.soundEffectBird.isPlaying() );
         soundEffectsCheckbox.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
                 boolean enabled = soundEffectsCheckbox.isChecked();
                 if (enabled)
-                    app.soundNextTurn.play();
+                    app.soundEffectBird.play();
                 else
-                    app.soundNextTurn.pause();
+                    app.soundEffectBird.pause();
 
                 return false;
             }
@@ -158,12 +179,12 @@ public class PreferencesScreen implements Screen {
         soundEffectsTestButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (app.soundNextTurn.isPlaying())
-                    app.soundNextTurn.stop();
+                if (app.soundEffectBird.isPlaying())
+                    app.soundEffectBird.stop();
                 else{
-                    if (app.soundNextTurn.isLooping())
-                        app.soundNextTurn.setLooping(false);
-                        app.soundNextTurn.play();
+                    if (app.soundEffectBird.isLooping())
+                        app.soundEffectBird.setLooping(false);
+                        app.soundEffectBird.play();
                 }
 
             }
@@ -175,24 +196,25 @@ public class PreferencesScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                app.soundButtonPress.play();
                 if (app.preferencesBool)
                     app.setScreen(app.pauseScreen);
                 else{
                     if (app.inGameMusic.isPlaying()){
                         app.inGameMusic.stop();
-                        app.soundNextTurn.stop();
+                        app.soundEffectBird.stop();
 
                         // ---------- In game sound start ----------
-                        if (app.menueMusic.isPlaying())
+                        if (app.menuMusic.isPlaying())
                         {
-                            app.menueMusic.stop();
+                            app.menuMusic.stop();
                             // Start playing music after X time
                             Timer.schedule(new Timer.Task() {
                                 @Override
                                 public void run() {
-                                    app.menueMusic.play();
-                                    if (!app.menueMusic.isLooping())
-                                        app.menueMusic.setLooping(true);
+                                    app.menuMusic.play();
+                                    if (!app.menuMusic.isLooping())
+                                        app.menuMusic.setLooping(true);
                                 }
                             }, 0.5f);
                         }
@@ -229,6 +251,8 @@ public class PreferencesScreen implements Screen {
         //table.row();
         table.add(backButton).colspan(6).center();
 
+        stage.addActor(musicButton);
+
     }
 
     @Override
@@ -238,14 +262,15 @@ public class PreferencesScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
         stage.draw();
+
+
+
     }
 
     @Override
@@ -272,5 +297,6 @@ public class PreferencesScreen implements Screen {
     public void dispose() {
         stage.dispose();
     }
-    }
+}
+
 

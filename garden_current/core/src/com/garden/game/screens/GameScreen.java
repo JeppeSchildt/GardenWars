@@ -3,7 +3,6 @@ package com.garden.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.PlantFactory;
@@ -21,7 +21,6 @@ import com.garden.game.tools.Constants;
 import com.garden.game.world.Plant;
 import com.garden.game.world.World;
 
-import javax.swing.text.Style;
 import java.util.ArrayList;
 
 
@@ -195,6 +194,7 @@ public class GameScreen extends AbstractScreen {
         hud.act(delta);
         hud.draw();
 
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
 
@@ -202,11 +202,32 @@ public class GameScreen extends AbstractScreen {
                     app.inGameMusic.setVolume(0.2334f);
                     app.inGameMusic.setVolume(0.2334f);
 
-                    app.soundNextTurn.pause();
+                    app.soundEffectBird.pause();
             }
 
-
             app.setScreen(app.pauseScreen);
+        }
+
+
+        // ---------- In game sound start ----------
+        if (app.menuMusic.isPlaying())
+        {
+            app.menuMusic.stop();
+            // Start playing music after X time
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    app.inGameMusic.play();
+
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+
+                            app.soundEffectBird.play();
+                        }
+                    }, 2.0f);
+                }
+            }, 0.5f);
         }
 
 

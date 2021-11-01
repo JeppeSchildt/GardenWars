@@ -17,9 +17,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.world.World;
 
+import java.security.PublicKey;
+
 public class PauseScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
+	private Table table;
+
 	Skin skin;
 	public PauseScreen(GardenGame app) {
 		this.app = app;
@@ -35,7 +39,7 @@ public class PauseScreen implements Screen {
 	private void initStage() {
 
 		// Create a table that fills the screen. Everything else will go inside this table.
-		Table table = new Table();
+		table = new Table();
 
 		table.setFillParent(true);
 		table.setDebug(false);
@@ -51,6 +55,7 @@ public class PauseScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				app.soundButtonPress.play();
 				resumeMusic();
 				app.setScreen(app.gameScreen);
 			}
@@ -63,6 +68,7 @@ public class PauseScreen implements Screen {
 		resetButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				app.soundButtonPress.play();
 				resumeMusic();
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world = new World(app);
@@ -74,6 +80,7 @@ public class PauseScreen implements Screen {
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				app.soundButtonPress.play();
 				app.setScreen(app.preferencesScreen);
 
 			}
@@ -84,17 +91,18 @@ public class PauseScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//Gdx.app.exit();
+				app.soundButtonPress.play();
 				app.preferencesBool = false;
 				app.currentGameBool = true;
 
 				if(app.inGameMusic.isPlaying()){
 					app.inGameMusic.stop();
-					app.soundNextTurn.stop();
+					app.soundEffectBird.stop();
 
 					Timer.schedule(new Timer.Task() {
 						@Override
 						public void run() {
-							app.menueMusic.play();
+							app.menuMusic.play();
 						}
 					}, 0.5f);
 				}
@@ -123,22 +131,24 @@ public class PauseScreen implements Screen {
 	public void resumeMusic(){
 		if(app.inGameMusic.isPlaying()) {
 			app.inGameMusic.play();
-			app.menueMusic.stop();
+			app.menuMusic.stop();
 		}
 		if (app.inGameMusic.getVolume() != app.musicVolume ){
 			app.inGameMusic.setVolume(1.0f);
-			app.menueMusic.setVolume(1.0f);
+			app.menuMusic.setVolume(1.0f);
 
 			app.musicVolume = 1.0f;
 		}
-		if (!app.soundNextTurn.isPlaying())
-			app.soundNextTurn.play();
+		if (!app.soundEffectBird.isPlaying())
+			app.soundEffectBird.play();
 
 	}
 
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
+
+
 	}
 
 	@Override
@@ -177,4 +187,6 @@ public class PauseScreen implements Screen {
 	public void dispose() {
 		stage.dispose();
 	}
+
+
 }

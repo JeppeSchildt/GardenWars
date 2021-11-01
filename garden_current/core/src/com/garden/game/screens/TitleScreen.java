@@ -73,7 +73,26 @@ public class TitleScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// ---------- In game sound start ----------
-				app.menueMusic.stop();
+				if (app.menueMusic.isPlaying())
+				{
+					app.menueMusic.stop();
+					// Start playing music after X time
+					Timer.schedule(new Timer.Task() {
+						@Override
+						public void run() {
+							app.inGameMusic.play();
+
+							Timer.schedule(new Timer.Task() {
+								@Override
+								public void run() {
+
+									app.soundNextTurn.play();
+								}
+							}, 2.0f);
+						}
+					}, 0.5f);
+				}
+
 
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world.init("map6.tmx");

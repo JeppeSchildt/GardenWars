@@ -51,15 +51,19 @@ public class PauseScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				resumeMusic();
 				app.setScreen(app.gameScreen);
-
 			}
 		});
+
+
+
 
 		TextButton resetButton = new TextButton("Restart",skin);
 		resetButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				resumeMusic();
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world = new World(app);
 				app.gameScreen.world.init("map6.tmx");
@@ -83,18 +87,19 @@ public class PauseScreen implements Screen {
 				app.preferencesBool = false;
 				app.currentGameBool = true;
 
-				app.inGameMusic.stop();
-				app.soundNextTurn.stop();
+				if(app.inGameMusic.isPlaying()){
+					app.inGameMusic.stop();
+					app.soundNextTurn.stop();
 
-				Timer.schedule(new Timer.Task() {
-					@Override
-					public void run() {
-						app.menueMusic.play();
-					}
-				}, 0.5f);
+					Timer.schedule(new Timer.Task() {
+						@Override
+						public void run() {
+							app.menueMusic.play();
+						}
+					}, 0.5f);
+				}
 
 				app.setScreen(app.titleScreen);
-
 			}
 		});
 
@@ -112,6 +117,22 @@ public class PauseScreen implements Screen {
 		table.row();
 
 
+
+	}
+
+	public void resumeMusic(){
+		if(app.inGameMusic.isPlaying()) {
+			app.inGameMusic.play();
+			app.menueMusic.stop();
+		}
+		if (app.inGameMusic.getVolume() != app.musicVolume ){
+			app.inGameMusic.setVolume(1.0f);
+			app.menueMusic.setVolume(1.0f);
+
+			app.musicVolume = 1.0f;
+		}
+		if (!app.soundNextTurn.isPlaying())
+			app.soundNextTurn.play();
 
 	}
 

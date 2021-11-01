@@ -24,6 +24,7 @@ public class GardenGame extends Game {
 	public GameScreen gameScreen;
 
 	public Music menueMusic, inGameMusic, soundNextTurn;
+	public float musicVolume = 1.0f;
 
 	public Boolean preferencesBool = false;
 	public Boolean currentGameBool = false;
@@ -66,7 +67,8 @@ public class GardenGame extends Game {
 
 		/* --------- Sound Effect setup  ---------  */
 		soundNextTurn = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));
-		soundNextTurn.setVolume(0.5f); //1.of max
+		musicVolume = 0.5f;
+		soundNextTurn.setVolume(musicVolume); //1.0f max
 		soundNextTurn.setLooping(true);
 
 

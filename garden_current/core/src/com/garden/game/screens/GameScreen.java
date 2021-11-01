@@ -197,6 +197,15 @@ public class GameScreen extends AbstractScreen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
+
+            if (app.inGameMusic.isPlaying()){
+                    app.inGameMusic.setVolume(0.2334f);
+                    app.inGameMusic.setVolume(0.2334f);
+
+                    app.soundNextTurn.pause();
+            }
+
+
             app.setScreen(app.pauseScreen);
         }
 

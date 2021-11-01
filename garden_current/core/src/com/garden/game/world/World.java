@@ -29,6 +29,8 @@ public class World extends Stage {
     public int hoveredX, hoveredY;
     public int turnNumber;
 
+    private int maxGold = 9999;
+
     public World(GardenGame app) {
         this.app = app;
 
@@ -57,23 +59,6 @@ public class World extends Stage {
 
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
-
-
-        // Start playing music after X time
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                app.inGameMusic.play();
-
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-
-                        app.soundNextTurn.play();
-                    }
-                }, 2.0f);
-            }
-        }, 0.5f);
 
     }
 
@@ -113,6 +98,11 @@ public class World extends Stage {
     public void endTurn() {
         turnNumber++;
 
-        user.dkk += 20;
+
+        if (user.dkk <= maxGold){
+            user.dkk += 200;
+        }else
+            user.dkk = maxGold;
+
     }
 }

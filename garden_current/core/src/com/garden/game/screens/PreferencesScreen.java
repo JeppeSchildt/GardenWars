@@ -14,11 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.world.World;
 
 import java.awt.*;
+import java.awt.Button;
 
 
 public class PreferencesScreen implements Screen {
@@ -30,6 +32,10 @@ public class PreferencesScreen implements Screen {
     private Label volumeSoundLabel;
     private Label musicOnOffLabel;
     private Label soundOnOffLabel;
+
+    private Label soundEffectTestLabel;
+
+    private TextButton soundEffectsTestButton;
 
     private Slider volumeMusicSlider;
     private CheckBox musicCheckbox;
@@ -56,8 +62,6 @@ public class PreferencesScreen implements Screen {
         table.columnDefaults(6);
         stage.addActor(table);
 
-
-
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 
@@ -71,6 +75,9 @@ public class PreferencesScreen implements Screen {
                     app.menueMusic.setVolume( volumeMusicSlider.getValue() );
                     // Need fix
                     app.inGameMusic.setVolume( volumeMusicSlider.getValue() );
+
+                    // Global Value
+                    app.musicVolume = volumeMusicSlider.getValue();
                     return false;
                 }
             });
@@ -113,14 +120,10 @@ public class PreferencesScreen implements Screen {
                         app.inGameMusic.play();
                     else
                         app.inGameMusic.pause();
-
                     return false;
                 }
             });
-
         }
-
-
 
         //volume Sound
         final Slider soundMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
@@ -149,6 +152,22 @@ public class PreferencesScreen implements Screen {
             }
         });
 
+        //Sound Effect Test Button
+
+        soundEffectsTestButton = new TextButton("Test Sound Effect",skin);
+        soundEffectsTestButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (app.soundNextTurn.isPlaying())
+                    app.soundNextTurn.stop();
+                else{
+                    if (app.soundNextTurn.isLooping())
+                        app.soundNextTurn.setLooping(false);
+                        app.soundNextTurn.play();
+                }
+
+            }
+        });
 
 
         // return to main screen button
@@ -158,8 +177,30 @@ public class PreferencesScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (app.preferencesBool)
                     app.setScreen(app.pauseScreen);
-                else
+                else{
+                    if (app.inGameMusic.isPlaying()){
+                        app.inGameMusic.stop();
+                        app.soundNextTurn.stop();
+
+                        // ---------- In game sound start ----------
+                        if (app.menueMusic.isPlaying())
+                        {
+                            app.menueMusic.stop();
+                            // Start playing music after X time
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    app.menueMusic.play();
+                                    if (!app.menueMusic.isLooping())
+                                        app.menueMusic.setLooping(true);
+                                }
+                            }, 0.5f);
+                        }
+                    }
                     app.setScreen(app.titleScreen);
+
+                }
+
             }
         });
 
@@ -180,12 +221,13 @@ public class PreferencesScreen implements Screen {
         //table.add(musicCheckbox);
         //table.row();
         table.add(volumeSoundLabel).left();
-        table.add(soundMusicSlider);
+        table.add(soundMusicSlider).colspan(1);
+        table.add(soundEffectsTestButton);
         table.row();
-        table.add(soundOnOffLabel).left();
-        table.add(soundEffectsCheckbox);
-        table.row();
-        table.add(backButton).colspan(2).center();
+        //table.add(soundOnOffLabel).left();
+        //table.add(soundEffectsCheckbox);
+        //table.row();
+        table.add(backButton).colspan(6).center();
 
     }
 

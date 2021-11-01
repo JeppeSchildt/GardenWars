@@ -36,6 +36,8 @@ public class TitleScreen implements Screen {
 
 	private void initStage() {
 
+
+
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
 
@@ -53,10 +55,10 @@ public class TitleScreen implements Screen {
 		musicButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				if (app.music.isPlaying())
-					app.music.pause();
+				if (app.menueMusic.isPlaying())
+					app.menueMusic.pause();
 				else
-					app.music.play();
+					app.menueMusic.play();
 			}
 		});
 
@@ -70,6 +72,9 @@ public class TitleScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				// ---------- In game sound start ----------
+				app.menueMusic.stop();
+
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world.init("map6.tmx");
 			}
@@ -134,6 +139,7 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
 

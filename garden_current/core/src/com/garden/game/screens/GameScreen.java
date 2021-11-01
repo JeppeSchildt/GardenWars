@@ -78,13 +78,13 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void setUpButtons() {
-        // ----- NextTurn Setup----- //
+        // ----- NextTurn Icon Setup----- //
         ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 world.endTurn();
-                System.out.println("clicked");
+                System.out.println("Clicked - Next Turn");
             }
         });
 
@@ -105,11 +105,9 @@ public class GameScreen extends AbstractScreen {
         Image goldIcon = new Image(app.assets.goldIcon);
         goldIcon.setPosition(Gdx.graphics.getWidth() - 105,  Gdx.graphics.getHeight() - 80);
 
-        txtGold = new Label("" + world.user.dkk, skin);
-
-        txtGold.setPosition(Gdx.graphics.getWidth() - 45,  Gdx.graphics.getHeight() - 60);
-
-        hud.addActor(goldIcon);
+        txtGold = new Label("Gold: " + world.user.dkk, skin);
+        txtGold.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 60);
+        //hud.addActor(goldIcon);
         hud.addActor(txtGold);
 
         // ----- Water Icon Setup----- //
@@ -120,14 +118,11 @@ public class GameScreen extends AbstractScreen {
         txtWater.setPosition(Gdx.graphics.getWidth() - 165,  Gdx.graphics.getHeight() - 60);
 
         // Show coordinates of selected tile.
-        txtSelectedTileCoordinates = new Label("", skin);
-
+        txtSelectedTileCoordinates = new Label("Water: ", skin);
         txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth()- 55, Gdx.graphics.getHeight() - 150);
-
-
-        hud.addActor(txtSelectedTileCoordinates);
-        hud.addActor(waterIcon);
-        hud.addActor(txtWater);
+        //hud.addActor(txtSelectedTileCoordinates);
+        //hud.addActor(waterIcon);
+        //hud.addActor(txtWater);
 
     }
     void setButton (String text, Skin skin) {
@@ -174,7 +169,7 @@ public class GameScreen extends AbstractScreen {
 
     public void updateHUD() {
         txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
-        txtGold.setText("" + world.user.dkk);
+        txtGold.setText("Gold: " + world.user.dkk);
         txtTurnNumber.setText("" + world.turnNumber);
 
     }
@@ -223,10 +218,10 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
+
+
         updateHUD();
-
-
-
         // ----- Main Color ----- Is this borders?? Commented it out to focus on a simple case //
         /*ShapeRenderer shapeRenderer2 = new ShapeRenderer();
         int rect_x2 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;

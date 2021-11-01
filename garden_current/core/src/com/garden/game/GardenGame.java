@@ -23,7 +23,7 @@ public class GardenGame extends Game {
 	public Screen titleScreen, pauseScreen, preferencesScreen;
 	public GameScreen gameScreen;
 
-	public Music music, soundNextTurn;
+	public Music menueMusic, inGameMusic, soundNextTurn;
 
 	public Boolean preferencesBool = false;
 	public Boolean currentGameBool = false;
@@ -34,17 +34,18 @@ public class GardenGame extends Game {
 		batch = new SpriteBatch();
 		assets = new Assets();
 
-		/* --------- Music setup  ---------  */
-		music = Gdx.audio.newMusic(Gdx.files.internal("music/PetParkMusic.mp3"));
-		music.setLooping(true);
-		//music.setVolume(1.0f);  //1.0f max Volume
+		/* --------- InGameMusic setup  ---------  */
+		inGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/PetParkMusic.mp3"));
+		inGameMusic.setLooping(true);
 
-		//music.setVolume(0);
+		/* --------- InGameMusic setup  ---------  */
+		menueMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Cooking-mania-short.mp3"));
+		menueMusic.setLooping(true);
 
 		Timer.schedule(new Timer.Task() {
 			@Override
 			public void run() {
-				//music.play();
+				menueMusic.play();
 			}
 		}, 0.5f);
 
@@ -63,9 +64,11 @@ public class GardenGame extends Game {
 		}
 		 */
 
-
-		/* --------- Music setup  ---------  */
+		/* --------- Sound Effect setup  ---------  */
 		soundNextTurn = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));
+		soundNextTurn.setVolume(0.5f); //1.of max
+		soundNextTurn.setLooping(true);
+
 
 		maxWidth = Gdx.graphics.getWidth();
 		maxHeight = Gdx.graphics.getHeight();

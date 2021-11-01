@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.world.World;
@@ -81,6 +82,17 @@ public class PauseScreen implements Screen {
 				//Gdx.app.exit();
 				app.preferencesBool = false;
 				app.currentGameBool = true;
+
+				app.inGameMusic.stop();
+				app.soundNextTurn.stop();
+
+				Timer.schedule(new Timer.Task() {
+					@Override
+					public void run() {
+						app.menueMusic.play();
+					}
+				}, 0.5f);
+
 				app.setScreen(app.titleScreen);
 
 			}

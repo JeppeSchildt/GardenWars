@@ -31,6 +31,9 @@ public class PreferencesScreen implements Screen {
     private Label musicOnOffLabel;
     private Label soundOnOffLabel;
 
+    private Slider volumeMusicSlider;
+    private CheckBox musicCheckbox;
+
     Skin skin;
 
     public PreferencesScreen(GardenGame app) {
@@ -58,32 +61,64 @@ public class PreferencesScreen implements Screen {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 
-        //volume Music
-        final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
-        volumeMusicSlider.setValue( app.music.getVolume() );
-        volumeMusicSlider.addListener( new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                app.music.setVolume( volumeMusicSlider.getValue() );
-                return false;
-            }
-        });
+        if (!app.preferencesBool){
+            //volume Music
+            volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
+            volumeMusicSlider.setValue( app.menueMusic.getVolume() );
+            volumeMusicSlider.addListener( new EventListener() {
+                @Override
+                public boolean handle(Event event) {
+                    app.menueMusic.setVolume( volumeMusicSlider.getValue() );
+                    // Need fix
+                    app.inGameMusic.setVolume( volumeMusicSlider.getValue() );
+                    return false;
+                }
+            });
 
-        //music
-        final CheckBox musicCheckbox = new CheckBox(null, skin);
-        musicCheckbox.setChecked( app.music.isPlaying() );
-        musicCheckbox.addListener( new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                boolean enabled = musicCheckbox.isChecked();
-                if (enabled)
-                    app.music.play();
-                else
-                    app.music.pause();
+            //music
+            musicCheckbox = new CheckBox(null, skin);
+            musicCheckbox.setChecked( app.menueMusic.isPlaying() );
+            musicCheckbox.addListener( new EventListener() {
+                @Override
+                public boolean handle(Event event) {
+                    boolean enabled = musicCheckbox.isChecked();
+                    if (enabled)
+                        app.menueMusic.play();
+                    else
+                        app.menueMusic.pause();
 
-                return false;
-            }
-        });
+                    return false;
+                }
+            });
+        }else if (app.preferencesBool){
+            //volume Music
+            final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
+            volumeMusicSlider.setValue( app.inGameMusic.getVolume() );
+            volumeMusicSlider.addListener( new EventListener() {
+                @Override
+                public boolean handle(Event event) {
+                    app.inGameMusic.setVolume( volumeMusicSlider.getValue() );
+                    return false;
+                }
+            });
+
+            //music
+            final CheckBox musicCheckbox = new CheckBox(null, skin);
+            musicCheckbox.setChecked( app.inGameMusic.isPlaying() );
+            musicCheckbox.addListener( new EventListener() {
+                @Override
+                public boolean handle(Event event) {
+                    boolean enabled = musicCheckbox.isChecked();
+                    if (enabled)
+                        app.inGameMusic.play();
+                    else
+                        app.inGameMusic.pause();
+
+                    return false;
+                }
+            });
+
+        }
 
 
 
@@ -141,9 +176,9 @@ public class PreferencesScreen implements Screen {
         table.add(volumeMusicLabel).left();
         table.add(volumeMusicSlider);
         table.row();
-        table.add(musicOnOffLabel).left();
-        table.add(musicCheckbox);
-        table.row();
+        //table.add(musicOnOffLabel).left();
+        //table.add(musicCheckbox);
+        //table.row();
         table.add(volumeSoundLabel).left();
         table.add(soundMusicSlider);
         table.row();
@@ -195,4 +230,5 @@ public class PreferencesScreen implements Screen {
     public void dispose() {
         stage.dispose();
     }
-}
+    }
+

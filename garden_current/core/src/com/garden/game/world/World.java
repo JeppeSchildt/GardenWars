@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
@@ -56,6 +57,23 @@ public class World extends Stage {
 
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+
+
+        // Start playing music after X time
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                app.inGameMusic.play();
+
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+
+                        app.soundNextTurn.play();
+                    }
+                }, 2.0f);
+            }
+        }, 0.5f);
 
     }
 

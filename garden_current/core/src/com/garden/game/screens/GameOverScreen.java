@@ -60,9 +60,10 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
-        app.soundGameOver.play();
         app.inGameMusic.stop();
         app.soundEffectBird.stop();
+
+        app.soundGameOver.play();
 
         Gdx.input.setInputProcessor(stage);
 

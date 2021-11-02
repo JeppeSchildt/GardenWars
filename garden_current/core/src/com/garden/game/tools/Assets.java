@@ -2,6 +2,8 @@ package com.garden.game.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -27,13 +29,44 @@ public class Assets extends AssetManager {
     public TiledMapTileLayer.Cell grassCell;
     public Drawable pixel;
     public ArrayList<Animation<TextureRegion>> walkAnimations;
+
+    public Music menuMusic, inGameMusic, ambientSound_Bird;
+    public Sound soundButtonPress, soundEnd, soundGameOver;
+    public float musicVolume = 1.0f;
     
     public Assets() {
         loadFiles();
         generateFonts();
+        loadSound();
         textureAtlas = this.get("pack5.atlas");
         styleAtlas = this.get("uiskin.atlas");
         walkAnimations = initWalkAnimations();
+    }
+
+
+
+    public void loadSound(){
+
+        /* --------- InGameMusic setup  ---------  */
+        inGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/PetParkMusic.mp3"));
+        inGameMusic.setLooping(true);
+        inGameMusic.setVolume(musicVolume);
+
+        /* --------- InGameMusic setup  ---------  */
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Cooking-mania-short.mp3"));
+        menuMusic.setLooping(true);
+        menuMusic.setVolume(musicVolume);
+
+
+        /* --------- Sound Effect setup  ---------  */
+        ambientSound_Bird = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));
+        ambientSound_Bird.setVolume(0.5f); //1.0f max
+        ambientSound_Bird.setLooping(true);
+
+        //soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-flute-alert-2307.mp3"));
+        soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
+        soundEnd = Gdx.audio.newSound(Gdx.files.internal("soundEffect/EndSound_mixkit-medieval-show-fanfare.mp3"));
+        soundGameOver = Gdx.audio.newSound(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
     }
 
     // Setup walking animations. Load spritesheet. Split into individual images.

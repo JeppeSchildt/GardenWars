@@ -103,8 +103,7 @@ public class ExitScreen implements Screen {
 
     @Override
     public void show() {
-        app.soundEnd.play();
-        app.menuMusic.stop();
+        app.sound.EndGame_Sound();
 
         Gdx.input.setInputProcessor(stage);
 

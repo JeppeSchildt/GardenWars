@@ -5,15 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
@@ -52,15 +47,8 @@ public class TitleScreen implements Screen {
 		musicButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.soundButtonPress.play();
-				if (app.inGameMusic.isPlaying())
-					app.inGameMusic.pause();
-				else if (!app.inGameMusic.isPlaying())
-					app.inGameMusic.play();
-				else if (app.menuMusic.isPlaying())
-					app.menuMusic.pause();
-				else if (!app.menuMusic.isPlaying())
-					app.menuMusic.play();
+				app.sound.buttonMenueSound();
+				app.sound.Play_Pause_Music();
 			}
 		});
 
@@ -74,10 +62,10 @@ public class TitleScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.soundButtonPress.play();
+				app.currentGameBool = false;
 
-
-
+				app.sound.Chance_Music();
+				app.sound.buttonMenueSound();
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world.init("map6.tmx");
 			}
@@ -88,7 +76,7 @@ public class TitleScreen implements Screen {
 			continueButton.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					app.soundButtonPress.play();
+					app.assets.soundButtonPress.play();
 					app.setScreen(app.gameScreen);
 					app.gameScreen.world.init("map6.tmx");
 				}
@@ -100,14 +88,10 @@ public class TitleScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//stage.addAction(Actions.sequence(Actions.fadeOut(5f),Actions.hide ()));
-
-				app.soundButtonPress.play();
+				app.sound.buttonMenueSound();
 				app.setScreen(app.preferencesScreen);
-
-
 			}
 		});
-
 
 
 		TextButton quitButton = new TextButton("Exit",skin);
@@ -115,8 +99,7 @@ public class TitleScreen implements Screen {
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.soundButtonPress.play();
-
+				app.sound.buttonMenueSound();
 				app.setScreen(app.exitScreen);
 			}
 		});
@@ -141,6 +124,7 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void show() {
+		app.sound.Play_Music();
 		Gdx.input.setInputProcessor(stage);
 	}
 

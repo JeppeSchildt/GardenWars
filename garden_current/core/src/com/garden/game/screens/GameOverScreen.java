@@ -52,18 +52,13 @@ public class GameOverScreen implements Screen {
         table.add(title).center();
 
 
-
-
     }
-
-
 
     @Override
     public void show() {
-        app.inGameMusic.stop();
-        app.soundEffectBird.stop();
 
-        app.soundGameOver.play();
+        app.sound.GameOver_Sound();
+        app.preferencesBool = false;
 
         Gdx.input.setInputProcessor(stage);
 

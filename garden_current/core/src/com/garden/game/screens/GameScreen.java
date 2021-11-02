@@ -82,6 +82,7 @@ public class GameScreen extends AbstractScreen {
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                app.sound.buttonMenueSound();
                 world.endTurn();
                 System.out.println("Clicked - Next Turn");
             }
@@ -198,38 +199,17 @@ public class GameScreen extends AbstractScreen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
 
-            if (app.inGameMusic.isPlaying()){
-                    app.inGameMusic.setVolume(0.2334f);
-                    app.inGameMusic.setVolume(0.2334f);
+            /*
+            if (app.assets.inGameMusic.isPlaying()){
+                    app.assets.inGameMusic.setVolume(0.2334f);
+                    app.assets.inGameMusic.setVolume(0.2334f);
 
-                    app.soundEffectBird.pause();
+                    app.assets.ambientSound_Bird.pause();
             }
+             */
 
             app.setScreen(app.pauseScreen);
         }
-
-
-        // ---------- In game sound start ----------
-        if (app.menuMusic.isPlaying())
-        {
-            app.menuMusic.stop();
-            // Start playing music after X time
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    app.inGameMusic.play();
-
-                    Timer.schedule(new Timer.Task() {
-                        @Override
-                        public void run() {
-
-                            app.soundEffectBird.play();
-                        }
-                    }, 2.0f);
-                }
-            }, 0.5f);
-        }
-
 
     }
 

@@ -1,11 +1,9 @@
 package com.garden.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -16,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
-
-import java.sql.Time;
 
 
 public class PreferencesScreen implements Screen {
@@ -65,6 +61,8 @@ public class PreferencesScreen implements Screen {
         table.setFillParent(true);
         table.setDebug(false);
         table.columnDefaults(6);
+        //table.setPosition();
+
         stage.addActor(table);
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -74,28 +72,21 @@ public class PreferencesScreen implements Screen {
         musicButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                app.soundButtonPress.play();
-                if (app.inGameMusic.isPlaying())
-                    app.inGameMusic.pause();
-                else if (!app.inGameMusic.isPlaying())
-                    app.inGameMusic.play();
-                else if (app.menuMusic.isPlaying())
-                    app.menuMusic.pause();
-                else if (!app.menuMusic.isPlaying())
-                    app.menuMusic.play();
+                app.sound.buttonMenueSound();
+                app.sound.Play_Pause_Music();
             }
         });
 
         if (!app.preferencesBool){
             //Volume Music
             volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
-            volumeMusicSlider.setValue( app.menuMusic.getVolume() );
+            volumeMusicSlider.setValue( app.assets.menuMusic.getVolume() );
             volumeMusicSlider.addListener( new EventListener() {
                 @Override
                 public boolean handle(Event event) {
-                    app.menuMusic.setVolume( volumeMusicSlider.getValue() );
+                    app.assets.menuMusic.setVolume( volumeMusicSlider.getValue() );
                     // Need fix
-                    app.inGameMusic.setVolume( volumeMusicSlider.getValue() );
+                    app.assets.inGameMusic.setVolume( volumeMusicSlider.getValue() );
 
                     // Global Value
                     app.musicVolume = volumeMusicSlider.getValue();
@@ -105,15 +96,15 @@ public class PreferencesScreen implements Screen {
 
             //Music
             musicCheckbox = new CheckBox(null, skin);
-            musicCheckbox.setChecked( app.menuMusic.isPlaying() );
+            musicCheckbox.setChecked( app.assets.menuMusic.isPlaying() );
             musicCheckbox.addListener( new EventListener() {
                 @Override
                 public boolean handle(Event event) {
                     boolean enabled = musicCheckbox.isChecked();
                     if (enabled)
-                        app.menuMusic.play();
+                        app.assets.menuMusic.play();
                     else
-                        app.menuMusic.pause();
+                        app.assets.menuMusic.pause();
 
                     return false;
                 }
@@ -121,26 +112,26 @@ public class PreferencesScreen implements Screen {
         }else if (app.preferencesBool){
             //Volume Music
             final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
-            volumeMusicSlider.setValue( app.inGameMusic.getVolume() );
+            volumeMusicSlider.setValue( app.assets.inGameMusic.getVolume() );
             volumeMusicSlider.addListener( new EventListener() {
                 @Override
                 public boolean handle(Event event) {
-                    app.inGameMusic.setVolume( volumeMusicSlider.getValue() );
+                    app.assets.inGameMusic.setVolume( volumeMusicSlider.getValue() );
                     return false;
                 }
             });
 
             //music
             final CheckBox musicCheckbox = new CheckBox(null, skin);
-            musicCheckbox.setChecked( app.inGameMusic.isPlaying() );
+            musicCheckbox.setChecked( app.assets.inGameMusic.isPlaying() );
             musicCheckbox.addListener( new EventListener() {
                 @Override
                 public boolean handle(Event event) {
                     boolean enabled = musicCheckbox.isChecked();
                     if (enabled)
-                        app.inGameMusic.play();
+                        app.assets.inGameMusic.play();
                     else
-                        app.inGameMusic.pause();
+                        app.assets.inGameMusic.pause();
                     return false;
                 }
             });
@@ -148,26 +139,26 @@ public class PreferencesScreen implements Screen {
 
         //volume Sound
         final Slider soundMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
-        soundMusicSlider.setValue( app.soundEffectBird.getVolume() );
+        soundMusicSlider.setValue( app.assets.ambientSound_Bird.getVolume() );
         soundMusicSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
-                app.soundEffectBird.setVolume( soundMusicSlider.getValue() );
+                app.assets.ambientSound_Bird.setVolume( soundMusicSlider.getValue() );
                 return false;
             }
         });
 
         //Sound
         final CheckBox soundEffectsCheckbox = new CheckBox(null, skin);
-        soundEffectsCheckbox.setChecked( app.soundEffectBird.isPlaying() );
+        soundEffectsCheckbox.setChecked( app.assets.ambientSound_Bird.isPlaying() );
         soundEffectsCheckbox.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
                 boolean enabled = soundEffectsCheckbox.isChecked();
                 if (enabled)
-                    app.soundEffectBird.play();
+                    app.assets.ambientSound_Bird.play();
                 else
-                    app.soundEffectBird.pause();
+                    app.assets.ambientSound_Bird.pause();
 
                 return false;
             }
@@ -179,14 +170,8 @@ public class PreferencesScreen implements Screen {
         soundEffectsTestButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (app.soundEffectBird.isPlaying())
-                    app.soundEffectBird.stop();
-                else{
-                    if (app.soundEffectBird.isLooping())
-                        app.soundEffectBird.setLooping(false);
-                        app.soundEffectBird.play();
-                }
-
+                app.sound.buttonMenueSound();
+                app.sound.Play_Pause_Ambient_Sound();
             }
         });
 
@@ -196,31 +181,13 @@ public class PreferencesScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                app.soundButtonPress.play();
+
+                app.sound.buttonMenueSound();
+
                 if (app.preferencesBool)
                     app.setScreen(app.pauseScreen);
                 else{
-                    if (app.inGameMusic.isPlaying()){
-                        app.inGameMusic.stop();
-                        app.soundEffectBird.stop();
-
-                        // ---------- In game sound start ----------
-                        if (app.menuMusic.isPlaying())
-                        {
-                            app.menuMusic.stop();
-                            // Start playing music after X time
-                            Timer.schedule(new Timer.Task() {
-                                @Override
-                                public void run() {
-                                    app.menuMusic.play();
-                                    if (!app.menuMusic.isLooping())
-                                        app.menuMusic.setLooping(true);
-                                }
-                            }, 0.5f);
-                        }
-                    }
-                    app.setScreen(app.titleScreen);
-
+                     app.setScreen(app.titleScreen);
                 }
 
             }

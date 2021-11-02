@@ -17,8 +17,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.world.World;
 
-import java.security.PublicKey;
-
 public class PauseScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
@@ -55,12 +53,10 @@ public class PauseScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.soundButtonPress.play();
-				resumeMusic();
+				app.sound.buttonMenueSound();
 				app.setScreen(app.gameScreen);
 			}
 		});
-
 
 
 
@@ -68,8 +64,7 @@ public class PauseScreen implements Screen {
 		resetButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.soundButtonPress.play();
-				resumeMusic();
+				app.sound.buttonMenueSound();
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world = new World(app);
 				app.gameScreen.world.init("map6.tmx");
@@ -80,7 +75,7 @@ public class PauseScreen implements Screen {
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.soundButtonPress.play();
+				app.sound.buttonMenueSound();
 				app.setScreen(app.preferencesScreen);
 
 			}
@@ -91,21 +86,12 @@ public class PauseScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//Gdx.app.exit();
-				app.soundButtonPress.play();
+				app.sound.buttonMenueSound();
 				app.preferencesBool = false;
 				app.currentGameBool = true;
 
-				if(app.inGameMusic.isPlaying()){
-					app.inGameMusic.stop();
-					app.soundEffectBird.stop();
+				app.sound.Play_Pause_Music();
 
-					Timer.schedule(new Timer.Task() {
-						@Override
-						public void run() {
-							app.menuMusic.play();
-						}
-					}, 0.5f);
-				}
 
 				app.setScreen(app.titleScreen);
 			}
@@ -125,22 +111,6 @@ public class PauseScreen implements Screen {
 		table.row();
 
 
-
-	}
-
-	public void resumeMusic(){
-		if(app.inGameMusic.isPlaying()) {
-			app.inGameMusic.play();
-			app.menuMusic.stop();
-		}
-		if (app.inGameMusic.getVolume() != app.musicVolume ){
-			app.inGameMusic.setVolume(1.0f);
-			app.menuMusic.setVolume(1.0f);
-
-			app.musicVolume = 1.0f;
-		}
-		if (!app.soundEffectBird.isPlaying())
-			app.soundEffectBird.play();
 
 	}
 

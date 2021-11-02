@@ -104,8 +104,11 @@ public class World extends Stage {
         else
             user.dkk = maxGold;
 
+        app.score = user.dkk;
+
         if (turnNumber == 5)
             app.setScreen(app.gameOverScreen);
+
     }
 
 }

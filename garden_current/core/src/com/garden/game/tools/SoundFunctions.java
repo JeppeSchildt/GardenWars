@@ -5,12 +5,12 @@ import com.garden.game.GardenGame;
 
 import java.sql.Time;
 
-public class SoundEffectFunction {
+public class SoundFunctions {
 
 
     private GardenGame app;
 
-    public SoundEffectFunction(GardenGame app) {
+    public SoundFunctions(GardenGame app) {
         this.app = app;
 
     }

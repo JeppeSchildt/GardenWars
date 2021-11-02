@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.garden.game.screens.*;
 import com.garden.game.tools.Assets;
-import com.garden.game.tools.SoundEffectFunction;
+import com.garden.game.tools.SoundFunctions;
 
 public class GardenGame extends Game {
 	public SpriteBatch batch;
@@ -17,11 +17,11 @@ public class GardenGame extends Game {
 	public float musicVolume = 1.0f;
 
 
-	public SoundEffectFunction sound;
+	public SoundFunctions sound;
 
 	public Boolean preferencesBool = false, currentGameBool = false;
 
-	public int maxWidth, maxHeight;
+	public int maxWidth, maxHeight, score;
 
 
 	@Override
@@ -29,7 +29,7 @@ public class GardenGame extends Game {
 		batch = new SpriteBatch();
 		assets = new Assets();
 
-		sound = new SoundEffectFunction(this);
+		sound = new SoundFunctions(this);
 
 		maxWidth = Gdx.graphics.getWidth();
 		maxHeight = Gdx.graphics.getHeight();
@@ -75,7 +75,7 @@ public class GardenGame extends Game {
 
 		pauseScreen = new PauseScreen(this);
 		preferencesScreen = new PreferencesScreen(this);
-		gameOverScreen = new GameOverScreen(this);
+		gameOverScreen = new GameOverScreen(this, score);
 		exitScreen = new ExitScreen(this);
 
 		setScreen(titleScreen);

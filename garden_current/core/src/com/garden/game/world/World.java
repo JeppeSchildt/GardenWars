@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
@@ -19,16 +20,16 @@ public class World extends Stage {
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    public TiledMapTileLayer tileLayer1, tileLayer2, improvementLayer;
+    public TiledMapTileLayer soilLayer, improvementLayer;
     private int[] mapLayerIndices;
-    private int[] improvementLayerIndex;
-    TiledMapTileLayer.Cell cellGrass;
     public Player user;
-    Sprite spritePlayer, spriteHighlight, spriteGrass;
+    Sprite spritePlayer, spriteHighlight;
     public MapInput mapInput;
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
+
+    private int maxGold = 9999;
 
     public World(GardenGame app) {
         this.app = app;
@@ -41,30 +42,23 @@ public class World extends Stage {
         user = new Player(app);
     }
 
-    // Den skal lave så det virker.... ctor/world skal ikke også init
+
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        tileLayer1 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 1");
-        tileLayer2 = (TiledMapTileLayer) tiledMap.getLayers().get("Tile Layer 2");
+        soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Soil Layer");
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
         MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("Tile Layer 1")};
-        improvementLayerIndex = new int[] { 1 };
-
-        improvementLayer = new TiledMapTileLayer(32,32,32,32);
-        //highlightedTile = (TiledMapTile) app.textureAtlas.createSprite("highlight_tile");
+        mapLayerIndices = new int[] {mapLayers.getIndex("Soil Layer"), mapLayers.getIndex("Improvement Layer")};
 
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
-        //user = new Player(app);
         addActor(user.unit);
 
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
-        spriteGrass = app.assets.textureAtlas.createSprite("grass");
-        cellGrass = tileLayer2.getCell(0, 0);
 
     }
 
@@ -76,7 +70,7 @@ public class World extends Stage {
 
     public void render() {
         // Draw red around the edge of world
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -104,6 +98,14 @@ public class World extends Stage {
     public void endTurn() {
         turnNumber++;
 
-        user.dkk += 20;
+
+        if (user.dkk <= maxGold)
+            user.dkk += 200;
+        else
+            user.dkk = maxGold;
+
+        if (turnNumber == 5)
+            app.setScreen(app.gameOverScreen);
     }
+
 }

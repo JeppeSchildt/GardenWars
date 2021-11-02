@@ -3,7 +3,6 @@ package com.garden.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.PlantFactory;
@@ -21,7 +21,6 @@ import com.garden.game.tools.Constants;
 import com.garden.game.world.Plant;
 import com.garden.game.world.World;
 
-import javax.swing.text.Style;
 import java.util.ArrayList;
 
 
@@ -63,6 +62,8 @@ public class GameScreen extends AbstractScreen {
         ignore = false;
         actorFactory = new PlantFactory(app.assets);
 
+
+
     }
 
     private void initHUD() {
@@ -72,16 +73,17 @@ public class GameScreen extends AbstractScreen {
         setUpButtons();
         setupTileImprovementBox();
 
+
     }
 
     private void setUpButtons() {
-        // ----- NextTurn Setup----- //
+        // ----- NextTurn Icon Setup----- //
         ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 world.endTurn();
-                System.out.println("clicked");
+                System.out.println("Clicked - Next Turn");
             }
         });
 
@@ -102,11 +104,9 @@ public class GameScreen extends AbstractScreen {
         Image goldIcon = new Image(app.assets.goldIcon);
         goldIcon.setPosition(Gdx.graphics.getWidth() - 105,  Gdx.graphics.getHeight() - 80);
 
-        txtGold = new Label("" + world.user.dkk, skin);
-
-        txtGold.setPosition(Gdx.graphics.getWidth() - 45,  Gdx.graphics.getHeight() - 60);
-
-        hud.addActor(goldIcon);
+        txtGold = new Label("Gold: " + world.user.dkk, skin);
+        txtGold.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 60);
+        //hud.addActor(goldIcon);
         hud.addActor(txtGold);
 
         // ----- Water Icon Setup----- //
@@ -117,14 +117,11 @@ public class GameScreen extends AbstractScreen {
         txtWater.setPosition(Gdx.graphics.getWidth() - 165,  Gdx.graphics.getHeight() - 60);
 
         // Show coordinates of selected tile.
-        txtSelectedTileCoordinates = new Label("", skin);
-
+        txtSelectedTileCoordinates = new Label("Water: ", skin);
         txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth()- 55, Gdx.graphics.getHeight() - 150);
-
-
-        hud.addActor(txtSelectedTileCoordinates);
-        hud.addActor(waterIcon);
-        hud.addActor(txtWater);
+        //hud.addActor(txtSelectedTileCoordinates);
+        //hud.addActor(waterIcon);
+        //hud.addActor(txtWater);
 
     }
     void setButton (String text, Skin skin) {
@@ -146,11 +143,13 @@ public class GameScreen extends AbstractScreen {
             textButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    //System.out.println("clicked " + textButton.getText());
-                    Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
-                    world.user.addPlant(plant);
-                    world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
-                    world.tileLayer1.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                    if(world.user.canBuy(Constants.GRASS)) {
+                        Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
+                        world.user.plant(world.hoveredX*32, world.hoveredY*32, plant);
+                        //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
+                        //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                    }
+
                     outerTable.remove();
 
                 }
@@ -163,15 +162,13 @@ public class GameScreen extends AbstractScreen {
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
-        //outerTable.setPosition(774, 400);
-        //hud.addActor(outerTable);
 
     }
 
 
     public void updateHUD() {
         txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
-        txtGold.setText("" + world.user.dkk);
+        txtGold.setText("Gold: " + world.user.dkk);
         txtTurnNumber.setText("" + world.turnNumber);
 
     }
@@ -195,7 +192,42 @@ public class GameScreen extends AbstractScreen {
         hud.act(delta);
         hud.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) app.setScreen(app.pauseScreen);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            app.preferencesBool = true;
+
+            if (app.inGameMusic.isPlaying()){
+                    app.inGameMusic.setVolume(0.2334f);
+                    app.inGameMusic.setVolume(0.2334f);
+
+                    app.soundEffectBird.pause();
+            }
+
+            app.setScreen(app.pauseScreen);
+        }
+
+
+        // ---------- In game sound start ----------
+        if (app.menuMusic.isPlaying())
+        {
+            app.menuMusic.stop();
+            // Start playing music after X time
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    app.inGameMusic.play();
+
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+
+                            app.soundEffectBird.play();
+                        }
+                    }, 2.0f);
+                }
+            }, 0.5f);
+        }
+
 
     }
 
@@ -214,10 +246,10 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
+
+
         updateHUD();
-
-
-
         // ----- Main Color ----- Is this borders?? Commented it out to focus on a simple case //
         /*ShapeRenderer shapeRenderer2 = new ShapeRenderer();
         int rect_x2 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;

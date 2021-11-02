@@ -5,19 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
 public class TitleScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
+	private TextButton continueButton;
+
 	Skin skin;
 	public TitleScreen(GardenGame app) {
 		this.app = app;
@@ -26,71 +30,113 @@ public class TitleScreen implements Screen {
 		stage = new Stage(new ScreenViewport(camera));
 
 		initStage();
-
-
 	}
 
 	private void initStage() {
 
-		final int midX = Gdx.graphics.getWidth() / 2;
-		final int butY = Gdx.graphics.getHeight() / 3;
 
-		final int maxWidth = Gdx.graphics.getWidth() / 2;
-		final int maxHeight = Gdx.graphics.getHeight();
+		// Create a table that fills the screen. Everything else will go inside this table.
+		Table table = new Table();
+
+		table.setFillParent(true);
+		table.setDebug(false);
+		stage.addActor(table);
 
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+		final int midX = Gdx.graphics.getWidth() / 2;
+		final int butY = Gdx.graphics.getHeight() / 3;
+
+		TextButton musicButton = new TextButton("Music",skin);
+		musicButton.setPosition(app.maxWidth - 75, 15);
+		musicButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				app.soundButtonPress.play();
+				if (app.inGameMusic.isPlaying())
+					app.inGameMusic.pause();
+				else if (!app.inGameMusic.isPlaying())
+					app.inGameMusic.play();
+				else if (app.menuMusic.isPlaying())
+					app.menuMusic.pause();
+				else if (!app.menuMusic.isPlaying())
+					app.menuMusic.play();
+			}
+		});
+
 		Label title = new Label("Garden", app.assets.largeTextStyle);
-		title.setPosition(midX - 325, maxHeight - 200);
 		title.setFontScale(8);
 
 		Label titleSub = new Label("Game", app.assets.largeTextStyle);
-		titleSub.setPosition(midX - 200, maxHeight - 200 - 150);
 		titleSub.setFontScale(6);
 
-		//ImageButton playButton = new ImageButton(app.assets.goldIcon);
-		TextButton playButton = new TextButton("Start Game",skin);
-		playButton.setPosition(midX - 200, butY);
+		TextButton playButton = new TextButton("New Game",skin);
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				app.soundButtonPress.play();
+
+
+
 				app.setScreen(app.gameScreen);
 				app.gameScreen.world.init("map6.tmx");
 			}
 		});
 
-		TextButton settingsButton = new TextButton("Settings",skin);
-		settingsButton.setPosition(midX - 200, butY - 30);
+		if (app.currentGameBool) {
+			continueButton = new TextButton("Continue the game",skin);
+			continueButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					app.soundButtonPress.play();
+					app.setScreen(app.gameScreen);
+					app.gameScreen.world.init("map6.tmx");
+				}
+			});
+		}
+
+		TextButton settingsButton = new TextButton("Preferences",skin);
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.setScreen(app.pauseScreen);
+				//stage.addAction(Actions.sequence(Actions.fadeOut(5f),Actions.hide ()));
+
+				app.soundButtonPress.play();
+				app.setScreen(app.preferencesScreen);
+
 
 			}
 		});
 
 
 
-
-		TextButton quitButton = new TextButton("Exit Game",skin);
+		TextButton quitButton = new TextButton("Exit",skin);
 		quitButton.setPosition(midX - 200, butY - 30 - 30);
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit();
+				app.soundButtonPress.play();
+
+				app.setScreen(app.exitScreen);
 			}
 		});
 
 
+		table.add(title).colspan(2).center();
+		table.row();
+		table.add(titleSub).colspan(2).center();
+		table.row();
 
+		table.add(playButton).left();
+		table.row();
+		table.add(continueButton);
+		table.row();
+		table.add(settingsButton).left();
+		table.row();
+		table.add(quitButton).left();
+		table.row();
 
-
-		stage.addActor(title);
-		stage.addActor(titleSub);
-
-		stage.addActor(playButton);
-		stage.addActor(settingsButton);
-		stage.addActor(quitButton);
+		stage.addActor(musicButton);
 	}
 
 	@Override
@@ -100,6 +146,7 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
 

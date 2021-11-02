@@ -55,4 +55,8 @@ public class Plant extends Actor {
     public Sprite getSprite() {
         return sprite;
     }
+
+    public int getPrice() {
+        return price;
+    }
 }

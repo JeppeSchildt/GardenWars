@@ -24,7 +24,6 @@ public class Assets extends AssetManager {
     public Label.LabelStyle largeTextStyle;
     public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon;
     public TiledMapTileSet tileSet;
-    //TiledMapTileLayer grassLayer;
     public TiledMapTileLayer.Cell grassCell;
     public Drawable pixel;
     public ArrayList<Animation<TextureRegion>> walkAnimations;
@@ -35,7 +34,6 @@ public class Assets extends AssetManager {
         textureAtlas = this.get("pack5.atlas");
         styleAtlas = this.get("uiskin.atlas");
         walkAnimations = initWalkAnimations();
-        grassCell = ((TiledMapTileLayer) get("map6.tmx", TiledMap.class).getLayers().get("Tile Layer 2")).getCell(0,0);
     }
 
     // Setup walking animations. Load spritesheet. Split into individual images.
@@ -71,7 +69,6 @@ public class Assets extends AssetManager {
         this.load("dirt_icon.png", Texture.class);
         this.load("uiskin.atlas", TextureAtlas.class);
         this.load("M_01.png", Texture.class);
-        //this.load("wood_tileset.tsx", TextureAtlas.class);
 
         this.load("pixel.png", Texture.class);
         setLoader(TiledMap.class, new TmxMapLoader());
@@ -80,7 +77,10 @@ public class Assets extends AssetManager {
 
         finishLoading();
 
-        tileSet = get("map6.tmx", TiledMap.class).getTileSets().getTileSet("wood_tileset.tmx");
+        tileSet = get("map6.tmx", TiledMap.class).getTileSets().getTileSet("wood_tileset");
+        grassCell = new TiledMapTileLayer.Cell();
+        grassCell.setTile(this.tileSet.getTile(0x1));
+
         final Texture buttonSheet = this.get("NextTurn_3.png", Texture.class);
         final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 88, 100);
         nextturnIcon = new TextureRegionDrawable(button_);

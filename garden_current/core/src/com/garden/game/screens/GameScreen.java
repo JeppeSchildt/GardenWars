@@ -189,8 +189,6 @@ public class GameScreen extends AbstractScreen {
     public void render(float delta) {
         world.update(delta);
         world.render();
-
-
         drawMenu();
         hud.act(delta);
         hud.draw();
@@ -274,10 +272,20 @@ public class GameScreen extends AbstractScreen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
         Vector3 position = camera.unproject(clickCoordinates);
-
+        //(int) (position.x) / world.tileSize;
         if(button == Input.Buttons.RIGHT) {
-            outerTable.setPosition(position.x-50, position.y-200);
-            //scrollPane.scrollTo(0, 0, scrollPane.getWidth(), scrollPane.getHeight());
+        	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
+        	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
+        	double cat = world.tileSize/2;
+        	double dist = Math.sqrt(Math.pow(cat, 2)*2); 
+        	float goX = (float)(posX * world.tileSize + dist);
+        	float goY = (float)(posY * world.tileSize + dist);
+            outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
+            /*
+            System.out.println("Position: " + position.x + " & " + position.y);
+            System.out.println("Clicked on: "+posX +" & " + posY);
+            System.out.println("Placing box: " + goX + " & " + goY);
+            */
             scrollPane.setScrollPercentY(0);
             hud.addActor(outerTable);
             improvementsShown = true;

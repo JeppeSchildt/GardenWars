@@ -66,6 +66,7 @@ public class GameOverScreen implements Screen {
             @Override
             public void run() {
                 app.setScreen(app.titleScreen);
+                app.sound.Play_Music();
             }
         },4.2f);
 

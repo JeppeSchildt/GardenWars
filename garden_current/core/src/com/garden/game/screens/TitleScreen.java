@@ -28,7 +28,7 @@ public class TitleScreen implements Screen {
 	}
 
 	private void initStage() {
-
+		app.sound.Play_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
@@ -124,7 +124,7 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void show() {
-		app.sound.Play_Music();
+
 		Gdx.input.setInputProcessor(stage);
 	}
 

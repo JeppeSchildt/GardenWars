@@ -20,7 +20,9 @@ public class SoundEffectFunction {
     public void Chance_Music(){
 
         if(app.assets.inGameMusic.isPlaying()) {
-            app.assets.inGameMusic.pause();
+            app.assets.inGameMusic.stop();
+            Pause_Ambient_Sound();
+
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -31,7 +33,8 @@ public class SoundEffectFunction {
 
         }
         else if(app.assets.menuMusic.isPlaying()) {
-            app.assets.menuMusic.pause();
+            app.assets.menuMusic.stop();
+
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -118,7 +121,7 @@ public class SoundEffectFunction {
 
     public void Pause_Ambient_Sound(){
         if (app.assets.ambientSound_Bird.isPlaying()){
-            app.assets.ambientSound_Bird.pause();
+            app.assets.ambientSound_Bird.stop();
         }
 
     }

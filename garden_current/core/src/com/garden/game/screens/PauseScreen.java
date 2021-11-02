@@ -90,7 +90,7 @@ public class PauseScreen implements Screen {
 				app.preferencesBool = false;
 				app.currentGameBool = true;
 
-				app.sound.Play_Pause_Music();
+				app.sound.Chance_Music();
 
 
 				app.setScreen(app.titleScreen);

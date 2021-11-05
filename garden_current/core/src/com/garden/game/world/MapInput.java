@@ -133,15 +133,22 @@ public class MapInput implements InputProcessor {
                 xVelocity = 100;
         }
 
-            if(keyPressed[Input.Keys.SPACE]) {
+        /*
 
+        if(keyPressed[Input.Keys.SPACE]) {
             if (world.worldCamera.position.x != world.user.unit.getX() && world.worldCamera.position.y != world.user.unit.getY()){
                 world.worldCamera.position.x = world.user.unit.getX();
                 world.worldCamera.position.y = world.user.unit.getY();
             }
-
         }
+         */
 
+        if (toggleKey[Input.Keys.SPACE] == 1){
+
+            System.out.println("Input.Keys.Y");
+            world.worldCamera.position.x = world.user.unit.getX();
+            world.worldCamera.position.y = world.user.unit.getY();
+        }
 
         // Multiply by zoom to make scrolling through map faster when zoomed out. Within some bounds...
         world.worldCamera.position.x += xVelocity*delta*world.worldCamera.zoom;

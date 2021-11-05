@@ -29,6 +29,7 @@ public class World extends Stage {
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
+    public int dayCount, weekCount, monthCount;
 
     private int maxGold = 9999;
 
@@ -125,7 +126,34 @@ public class World extends Stage {
             }
         }
         System.out.println("No error all plants done");
+
+
+
+        if (dayCount == 7){
+            //app.setScreen(app.weekDayScreen);
+            if (user.dkk <= maxGold)
+                user.dkk += 100;
+        }
+
         app.score = user.dkk;
         user.dkk += profit;
+
+        weekCount();
+    }
+
+
+
+    private void weekCount(){
+
+        dayCount++;
+        if (dayCount == 8){
+            dayCount = 1;
+            weekCount++;
+        }
+        if (weekCount == 4){
+            weekCount = 0;
+            monthCount++;
+        }
+
     }
 }

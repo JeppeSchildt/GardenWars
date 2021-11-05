@@ -30,7 +30,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater,  txtTurnNumber, txtTitle;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
@@ -42,6 +42,8 @@ public class GameScreen extends AbstractScreen {
     PlantFactory actorFactory;
     private boolean improvementsShown;
     final OrthographicCamera camera;
+
+    private Table tableResources, table;
 
     public GameScreen(GardenGame app) {
         this.app = app;
@@ -58,22 +60,56 @@ public class GameScreen extends AbstractScreen {
         maxHeight = Gdx.graphics.getHeight()-100;
         actorFactory = new PlantFactory(app.assets);
 
-
-
+        world.user.dkk = 200;
+        world.dayCount = 1;
     }
 
     private void initHUD() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         buttonList = new ArrayList<TextButton>();	
         setUpIcon();
-        setUpButtons();
 
         setupTileImprovementBox();
-
-
     }
 
-    private void setUpButtons() {
+
+    /* Size of entire window has been fixed, so we can setup UI using constant values */
+    private void setUpIcon() {
+        // Create a table that fills the screen. Everything else will go inside this table.
+        tableResources = new Table();
+        tableResources.setFillParent(true);
+        tableResources.setDebug(false);
+        tableResources.setPosition(-420, -365);
+
+        hud.addActor(tableResources);
+
+        table = new Table();
+        table.setFillParent(true);
+        table.setDebug(false);
+        table.setPosition(400, -355);
+
+        hud.addActor(table);
+
+        tableSetup();
+
+
+        txtTitle = new Label("GardenGame", skin);
+        txtTitle.setPosition(10,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtTitle);
+
+        /*
+        txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
+        txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtTurnNumber);
+         */
+
+        // Show coordinates of selected tile.
+        txtSelectedTileCoordinates = new Label("", skin);
+        txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtSelectedTileCoordinates);
+    }
+
+    private void tableSetup(){
 
         // ----- NextTurn Icon Setup----- //
         TextButton btnEndTurn = new TextButton("Next Day", skin);
@@ -83,47 +119,30 @@ public class GameScreen extends AbstractScreen {
                 nextTurn();
             }
         });
-        btnEndTurn.setPosition(app.maxWidth - 150, 10);
 
-        hud.addActor(btnEndTurn);
+        txtMonthWeekDay = new Label("", skin);
 
+        table.add(btnEndTurn).center();
+        table.row();
+        table.add(txtMonthWeekDay);
+
+
+        txtResources = new Label("", skin);
+        tableResources.add(txtResources);
     }
 
 
-    /* Size of entire window has been fixed, so we can setup UI using constant values */
-    private void setUpIcon() {
-        // ----- Gold Icon Setup----- //
-        Image goldIcon = new Image(app.assets.goldIcon);
-        goldIcon.setPosition(Gdx.graphics.getWidth() - 105,  Gdx.graphics.getHeight() - 80);
+    public void updateHUD() {
+        txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
+        //txtTurnNumber.setText("Days: " + world.turnNumber);
 
-        txtGold = new Label("Gold: " + world.user.dkk, skin);
-        txtGold.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 60);
-        //hud.addActor(goldIcon);
-        hud.addActor(txtGold);
+        String longSpace = "          ";
+        txtResources.setText("Water: 0" + longSpace + "Gold: " + world.user.dkk);
 
-        txtTitle = new Label("GardenGame", skin);
-        txtTitle.setPosition(10,  Gdx.graphics.getHeight() - 40);
-        hud.addActor(txtTitle);
-
-        txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
-        txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
-        hud.addActor(txtTurnNumber);
-
-        // ----- Water Icon Setup----- //
-        // 220 pixels left of water icon...
-        Image waterIcon = new Image(app.assets.waterIcon);
-        waterIcon.setPosition(Gdx.graphics.getWidth() - 225,  Gdx.graphics.getHeight() - 80);
-        txtWater = new Label("" + world.user.dkk, skin);
-        txtWater.setPosition(Gdx.graphics.getWidth() - 165,  Gdx.graphics.getHeight() - 60);
-
-        // Show coordinates of selected tile.
-        txtSelectedTileCoordinates = new Label("Water: ", skin);
-        txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth()- 55, Gdx.graphics.getHeight() - 150);
-        //hud.addActor(txtSelectedTileCoordinates);
-        //hud.addActor(waterIcon);
-        //hud.addActor(txtWater);
-
+        String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
+        txtMonthWeekDay.setText(totalDays);
     }
+
     void setButton (String text, Skin skin) {
     	buttonList.add(new TextButton(text,skin));
     }
@@ -199,16 +218,6 @@ public class GameScreen extends AbstractScreen {
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
-
-    }
-
-
-    public void updateHUD() {
-        txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
-        txtGold.setText("Gold: " + world.user.dkk);
-        txtTurnNumber.setText("Days: " + world.turnNumber);
-
-
 
     }
 
@@ -298,7 +307,7 @@ public class GameScreen extends AbstractScreen {
         mux.addProcessor(world.mapInput);
         Gdx.input.setInputProcessor(mux);
 
-        world.user.dkk = 200;
+
     }
 
     // Render player things like character and plants in this method.
@@ -328,6 +337,10 @@ public class GameScreen extends AbstractScreen {
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
+
+
+
+
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.garden.game.tools.SoundFunctions;
 public class GardenGame extends Game {
 	public SpriteBatch batch;
 	public Assets assets;
-	public Screen titleScreen, pauseScreen, preferencesScreen, exitScreen, gameOverScreen;
+	public Screen titleScreen, pauseScreen, preferencesScreen, exitScreen, gameOverScreen, weekDayScreen;
 	public GameScreen gameScreen;
 
 	public float musicVolume = 1.0f;
@@ -33,6 +33,7 @@ public class GardenGame extends Game {
 
 		maxWidth = Gdx.graphics.getWidth();
 		maxHeight = Gdx.graphics.getHeight();
+
 
 
 		/*
@@ -77,6 +78,9 @@ public class GardenGame extends Game {
 		preferencesScreen = new PreferencesScreen(this);
 		gameOverScreen = new GameOverScreen(this, score);
 		exitScreen = new ExitScreen(this);
+
+		weekDayScreen = new WeekDayScreen(this);
+
 
 		setScreen(titleScreen);
 

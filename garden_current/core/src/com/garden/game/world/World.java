@@ -96,6 +96,23 @@ public class World extends Stage {
     public void endTurn() {
         turnNumber++;
 
+        for ( Plant plant : user.getPlants() ) {
+            plant.nextTurn();
+            if (plant.getState() == Plant.PlantState.DEAD) {
+                float x  = plant.getX();
+                float y = plant.getY();
+                System.out.println(plant.getCell());
+                app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, null);
+                //app.gameScreen.world.improvementLayer.
+                //user.removePlant(plant);
+                plant = null;
+            } else {
+
+                System.out.println(plant.getState());
+                System.out.println(plant.getWater());
+            }
+        }
+
         if (user.dkk <= maxGold)
             user.dkk += 200;
 

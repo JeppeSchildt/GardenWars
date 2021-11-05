@@ -36,6 +36,7 @@ public class Player {
     public void addPlant(Plant plant) {
         plants.add(plant);
     }
+    public void removePlant(Plant plant) { plants.remove(plant); }
 
     public boolean canBuy(String id) {
         return Constants.idPriceMap.get(id) <= dkk;

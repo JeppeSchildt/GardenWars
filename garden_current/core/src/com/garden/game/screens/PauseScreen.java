@@ -63,10 +63,7 @@ public class PauseScreen implements Screen {
 		resetButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.sound.buttonMenueSound();
-				app.setScreen(app.gameScreen);
-				app.gameScreen.world = new World(app);
-				app.gameScreen.world.init("map6.tmx");
+				restart();
 			}
 		});
 
@@ -74,8 +71,7 @@ public class PauseScreen implements Screen {
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.sound.buttonMenueSound();
-				app.setScreen(app.preferencesScreen);
+				preferences();
 
 			}
 		});
@@ -103,22 +99,31 @@ public class PauseScreen implements Screen {
 	}
 
 
-	public void resumeGame(){
+	private void resumeGame(){
 		app.sound.buttonMenueSound();
 		app.setScreen(app.gameScreen);
 	}
-	public void backToMenue(){
+	private void backToMenue(){
 		//Gdx.app.exit();
 		app.sound.buttonMenueSound();
 		app.preferencesBool = false;
 		app.currentGameBool = true;
 
 		app.sound.Chance_Music();
-
-
 		app.setScreen(app.titleScreen);
 	}
 
+	private void restart(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.gameScreen);
+		app.gameScreen.world = new World(app);
+		app.gameScreen.world.init("map6.tmx");
+	}
+
+	private void preferences(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.preferencesScreen);
+	}
 
 	@Override
 	public void show() {

@@ -182,9 +182,7 @@ public class PreferencesScreen implements Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
                 BackButton();
-
             }
         });
 
@@ -217,6 +215,17 @@ public class PreferencesScreen implements Screen {
 
     }
 
+    public void BackButton(){
+        app.sound.buttonMenueSound();
+
+        if (app.preferencesBool)
+            app.setScreen(app.pauseScreen);
+        else{
+            app.setScreen(app.titleScreen);
+        }
+    }
+
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -236,16 +245,6 @@ public class PreferencesScreen implements Screen {
         stage.draw();
     }
 
-
-    public void BackButton(){
-        app.sound.buttonMenueSound();
-
-        if (app.preferencesBool)
-            app.setScreen(app.pauseScreen);
-        else{
-            app.setScreen(app.titleScreen);
-        }
-    }
 
     @Override
     public void resize(int width, int height) {

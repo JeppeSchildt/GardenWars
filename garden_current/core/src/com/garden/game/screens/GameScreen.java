@@ -284,7 +284,7 @@ public class GameScreen extends AbstractScreen {
                     app.assets.ambientSound_Bird.pause();
             }
              */
-
+            app.sound.buttonMenueSound();
             app.setScreen(app.pauseScreen);
         }
 

@@ -119,6 +119,8 @@ public class GameOverScreen implements Screen {
     }
 
     private void newGame(){
+        app.sound.buttonMenueSound();
+
         app.currentGameBool = false;
         app.preferencesBool = true;
 
@@ -128,6 +130,8 @@ public class GameOverScreen implements Screen {
         app.gameScreen.world.init("map6.tmx");
     }
     private void backToMenue(){
+
+        app.sound.buttonMenueSound();
 
         app.currentGameBool = false;
         app.preferencesBool = false;

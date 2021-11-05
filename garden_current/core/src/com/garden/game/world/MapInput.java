@@ -146,17 +146,21 @@ public class MapInput implements InputProcessor {
         }
 
 
-        /*
+
         if(keyPressed[Input.Keys.SPACE]) {
             if (world.worldCamera.position.x != world.user.unit.getX() && world.worldCamera.position.y != world.user.unit.getY()){
                 world.worldCamera.position.x = world.user.unit.getX();
                 world.worldCamera.position.y = world.user.unit.getY();
             }
         }
-         */
 
         //System.out.println("Adjust just before if " + toggleKey[Input.Keys.SPACE]);
-        //if (toggleKey[Input.Keys.SPACE] == 1){
+        /*
+        if (toggleKey[Input.Keys.SPACE] == 1){
+            world.worldCamera.position.x = world.user.unit.getX();
+            world.worldCamera.position.y = world.user.unit.getY();
+        }
+         */
         // Min weird computer REMOVE BEFORE COMMIT!!!
 
 

@@ -62,7 +62,6 @@ public class PreferencesScreen implements Screen {
         table.setFillParent(true);
         table.setDebug(false);
         table.columnDefaults(6);
-        //table.setPosition();
 
         stage.addActor(table);
 

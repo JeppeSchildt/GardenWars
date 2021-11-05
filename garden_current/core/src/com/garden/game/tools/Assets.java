@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class Assets extends AssetManager {
     public TextureAtlas textureAtlas, styleAtlas, textureCrops;
     public Label.LabelStyle largeTextStyle;
-    public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon;
+    public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
     public TiledMapTileSet tileSet;
     public TiledMapTileLayer.Cell grassCell;
     public Drawable pixel;
@@ -122,6 +122,7 @@ public class Assets extends AssetManager {
         this.load("uiskin.atlas", TextureAtlas.class);
         this.load("M_01.png", Texture.class);
 
+        this.load("NewDesign/InGameButtons.png", Texture.class);
 
         this.load("crop_spritesheet-1.png-2.png", Texture.class);
 
@@ -157,6 +158,12 @@ public class Assets extends AssetManager {
         final Texture dirtSheet = this.get("dirt_icon.png", Texture.class);
         final TextureRegion dirtIcon_ = new TextureRegion(dirtSheet, 0, 0, 100, 70);
         dirtIcon = new TextureRegionDrawable(dirtIcon_);
+
+
+        final Texture inGameBorderSheet = this.get("NewDesign/InGameButtons.png", Texture.class);
+        final TextureRegion inGameBorder_ = new TextureRegion(inGameBorderSheet, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        inGameBorder = new TextureRegionDrawable(inGameBorder_);
+
     }
 
 

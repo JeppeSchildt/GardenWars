@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -43,6 +45,7 @@ public class GameScreen extends AbstractScreen {
     private boolean improvementsShown;
     final OrthographicCamera camera;
 
+    private Texture inGameBorder;
     private Table tableResources, table;
 
     public GameScreen(GardenGame app) {
@@ -79,23 +82,18 @@ public class GameScreen extends AbstractScreen {
         tableResources = new Table();
         tableResources.setFillParent(true);
         tableResources.setDebug(false);
-        tableResources.setPosition(-420, -365);
+        tableResources.setPosition(-420, -366);
 
         hud.addActor(tableResources);
 
         table = new Table();
         table.setFillParent(true);
         table.setDebug(false);
-        table.setPosition(400, -355);
+        table.setPosition(400, -366);
 
         hud.addActor(table);
 
         tableSetup();
-
-
-        txtTitle = new Label("GardenGame", skin);
-        txtTitle.setPosition(10,  Gdx.graphics.getHeight() - 40);
-        hud.addActor(txtTitle);
 
         /*
         txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
@@ -103,27 +101,32 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtTurnNumber);
          */
 
+
         // Show coordinates of selected tile.
         txtSelectedTileCoordinates = new Label("", skin);
-        txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 40);
-        hud.addActor(txtSelectedTileCoordinates);
+        txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 20);
+        //hud.addActor(txtSelectedTileCoordinates);
     }
 
     private void tableSetup(){
 
         // ----- NextTurn Icon Setup----- //
-        TextButton btnEndTurn = new TextButton("Next Day", skin);
+        //TextButton btnEndTurn = new TextButton("Next Day", skin);
+        Texture buttonTexture  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
+        Image btnEndTurn = new Image(buttonTexture);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 nextTurn();
             }
         });
+        btnEndTurn.setPosition(Gdx.graphics.getWidth()-115, 40);
+        hud.addActor(btnEndTurn);
 
         txtMonthWeekDay = new Label("", skin);
 
-        table.add(btnEndTurn).center();
-        table.row();
+        //table.add(btnEndTurn).center();
+        //table.row();
         table.add(txtMonthWeekDay);
 
 
@@ -231,19 +234,40 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
+        /*
         // ----- Color line ----- //
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         int rect_x = Gdx.graphics.getWidth();
-        int rect_y = Gdx.graphics.getHeight() - 75;
+        int rect_y = Gdx.graphics.getHeight() - 35;
+        int rect_x_Min = Gdx.graphics.getHeight() - Gdx.graphics.getHeight() + 35;
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(hudColor);
+        // ------- Top Box ------- //
         shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+
+        // ------- Side Box ------- //
         //shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
+
+        // ------- Button Box ------- //
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), rect_x_Min);
+
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+         */
 
+
+        // -------- InGame Borders -------- //
+        inGameBorder = new Texture(Gdx.files.internal("NewDesign/InGameButtons.png"));
+
+        SpriteBatch batch = new SpriteBatch();
+        batch.begin();
+        batch.draw(inGameBorder, 0, 0);
+        batch.end();
+
+        //X: 1024 - Y: 768
 
 
         updateHUD();
@@ -308,6 +332,7 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(mux);
 
 
+
     }
 
     // Render player things like character and plants in this method.
@@ -316,21 +341,15 @@ public class GameScreen extends AbstractScreen {
     public void render(float delta) {
         world.update(delta);
         world.render();
+
         drawMenu();
+
         hud.act(delta);
         hud.draw();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
 
-            /*
-            if (app.assets.inGameMusic.isPlaying()){
-                    app.assets.inGameMusic.setVolume(0.2334f);
-                    app.assets.inGameMusic.setVolume(0.2334f);
-
-                    app.assets.ambientSound_Bird.pause();
-            }
-             */
             app.sound.buttonMenueSound();
             app.setScreen(app.pauseScreen);
         }

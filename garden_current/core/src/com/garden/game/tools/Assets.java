@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 
 public class Assets extends AssetManager {
-    public TextureAtlas textureAtlas, styleAtlas;
+    public TextureAtlas textureAtlas, styleAtlas, textureCrops;
     public Label.LabelStyle largeTextStyle;
     public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon;
     public TiledMapTileSet tileSet;
@@ -39,6 +39,7 @@ public class Assets extends AssetManager {
         generateFonts();
         loadSound();
         textureAtlas = this.get("pack5.atlas");
+        //textureCrops = this.get("crop_spritesheet-1.png-2.png");
         styleAtlas = this.get("uiskin.atlas");
         walkAnimations = initWalkAnimations();
     }
@@ -102,6 +103,9 @@ public class Assets extends AssetManager {
         this.load("dirt_icon.png", Texture.class);
         this.load("uiskin.atlas", TextureAtlas.class);
         this.load("M_01.png", Texture.class);
+
+
+        this.load("crop_spritesheet-1.png-2.png", Texture.class);
 
         this.load("pixel.png", Texture.class);
         setLoader(TiledMap.class, new TmxMapLoader());

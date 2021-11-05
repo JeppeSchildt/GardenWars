@@ -134,7 +134,6 @@ public class MapInput implements InputProcessor {
         }
 
         /*
-
         if(keyPressed[Input.Keys.SPACE]) {
             if (world.worldCamera.position.x != world.user.unit.getX() && world.worldCamera.position.y != world.user.unit.getY()){
                 world.worldCamera.position.x = world.user.unit.getX();

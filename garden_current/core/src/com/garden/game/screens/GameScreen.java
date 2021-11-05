@@ -83,14 +83,12 @@ public class GameScreen extends AbstractScreen {
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                app.sound.buttonMenueSound();
-                world.endTurn();
-                System.out.println("Clicked - Next Turn");
+                nextTurn();
             }
         });
 
 
-        btnEndTurn.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, 0);
+        btnEndTurn.setPosition(app.maxWidth - 100, 10);
         txtTurnNumber = new Label("Turn" + world.turnNumber, skin);
         txtTurnNumber.setAlignment(Align.bottomLeft);
         txtTurnNumber.setPosition(44, Gdx.graphics.getHeight() - 50);
@@ -175,6 +173,86 @@ public class GameScreen extends AbstractScreen {
 
     }
 
+    private void nextTurn(){
+        app.sound.buttonMenueSound();
+        world.endTurn();
+        System.out.println("Clicked - Next Turn");
+    }
+
+
+
+    // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
+    public void drawMenu(){
+
+        // ----- Color line ----- //
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        int rect_x = Gdx.graphics.getWidth();
+        int rect_y = Gdx.graphics.getHeight() - 100;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(hudColor);
+        shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+        //shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+
+
+        updateHUD();
+        // ----- Main Color ----- Is this borders?? Commented it out to focus on a simple case //
+        /*ShapeRenderer shapeRenderer2 = new ShapeRenderer();
+        int rect_x2 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;
+        int rect_y2 = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/12;
+        shapeRenderer2.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer2.setColor(255,184,10, 0);
+        shapeRenderer2.rect(0, rect_y2, Gdx.graphics.getWidth(), rect_x2);
+        shapeRenderer2.end();
+        updateHUD();*/
+    }
+
+
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
+        Vector3 position = camera.unproject(clickCoordinates);
+        //(int) (position.x) / world.tileSize;
+        if(button == Input.Buttons.RIGHT) {
+        	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
+        	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
+        	double cat = world.tileSize/2;
+        	double dist = Math.sqrt(Math.pow(cat, 2)*2); 
+        	float goX = (float)(posX * world.tileSize + dist);
+        	float goY = (float)(posY * world.tileSize + dist);
+            outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
+            /*
+            System.out.println("Position: " + position.x + " & " + position.y);
+            System.out.println("Clicked on: "+posX +" & " + posY);
+            System.out.println("Placing box: " + goX + " & " + goY);
+            */
+            scrollPane.setScrollPercentY(0);
+            hud.addActor(outerTable);
+            improvementsShown = true;
+        } else {
+            outerTable.remove();
+            improvementsShown = false;
+        }
+        return false;
+    }
+
+
+
+    // Scroll improvements menu when shown.
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        if(improvementsShown) {
+            scrollPane.setScrollPercentY(amountY);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void show() {
         mux.addProcessor(hud);
@@ -210,39 +288,8 @@ public class GameScreen extends AbstractScreen {
             app.setScreen(app.pauseScreen);
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
     }
-
-    // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
-    public void drawMenu(){
-
-        // ----- Color line ----- //
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        int rect_x = Gdx.graphics.getWidth();
-        int rect_y = Gdx.graphics.getHeight() - 100;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(hudColor);
-        shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
-        //shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
-        shapeRenderer.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-
-
-
-        updateHUD();
-        // ----- Main Color ----- Is this borders?? Commented it out to focus on a simple case //
-        /*ShapeRenderer shapeRenderer2 = new ShapeRenderer();
-        int rect_x2 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;
-        int rect_y2 = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/12;
-        shapeRenderer2.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer2.setColor(255,184,10, 0);
-        shapeRenderer2.rect(0, rect_y2, Gdx.graphics.getWidth(), rect_x2);
-        shapeRenderer2.end();
-        updateHUD();*/
-    }
-
-
 
     @Override
     public void resize(int width, int height) {
@@ -268,42 +315,6 @@ public class GameScreen extends AbstractScreen {
     public void dispose() {
 
     }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = camera.unproject(clickCoordinates);
-        //(int) (position.x) / world.tileSize;
-        if(button == Input.Buttons.RIGHT) {
-        	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
-        	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
-        	double cat = world.tileSize/2;
-        	double dist = Math.sqrt(Math.pow(cat, 2)*2); 
-        	float goX = (float)(posX * world.tileSize + dist);
-        	float goY = (float)(posY * world.tileSize + dist);
-            outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
-            /*
-            System.out.println("Position: " + position.x + " & " + position.y);
-            System.out.println("Clicked on: "+posX +" & " + posY);
-            System.out.println("Placing box: " + goX + " & " + goY);
-            */
-            scrollPane.setScrollPercentY(0);
-            hud.addActor(outerTable);
-            improvementsShown = true;
-        } else {
-            outerTable.remove();
-            improvementsShown = false;
-        }
-        return false;
-    }
-
-    // Scroll improvements menu when shown.
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        if(improvementsShown) {
-            scrollPane.setScrollPercentY(amountY);
-            return true;
-        }
-        return false;
-    }
 }
+
+

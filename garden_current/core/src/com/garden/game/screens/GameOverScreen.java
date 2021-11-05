@@ -72,13 +72,7 @@ public class GameOverScreen implements Screen {
         newgameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                app.currentGameBool = false;
-                app.preferencesBool = true;
-
-                app.sound.Play_Music();
-                app.sound.buttonMenueSound();
-                app.setScreen(app.gameScreen);
-                app.gameScreen.world.init("map6.tmx");
+                newGame();
             }
         });
 
@@ -86,14 +80,7 @@ public class GameOverScreen implements Screen {
         mainMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                app.currentGameBool = false;
-                app.preferencesBool = false;
-
-                stage.dispose();
-                app.sound.Play_Music();
-                app.sound.buttonMenueSound();
-                app.setScreen(app.titleScreen);
-
+                backToMenue();
             }
         });
 
@@ -108,7 +95,6 @@ public class GameOverScreen implements Screen {
         table.add(newgameButton).center();
         table.row();
         table.add(mainMenuButton).center();
-
 
     }
 
@@ -130,6 +116,26 @@ public class GameOverScreen implements Screen {
         },4.2f);
          */
 
+    }
+
+    private void newGame(){
+        app.currentGameBool = false;
+        app.preferencesBool = true;
+
+        app.sound.Play_Music();
+        app.sound.buttonMenueSound();
+        app.setScreen(app.gameScreen);
+        app.gameScreen.world.init("map6.tmx");
+    }
+    private void backToMenue(){
+
+        app.currentGameBool = false;
+        app.preferencesBool = false;
+
+        stage.dispose();
+        app.sound.Play_Music();
+        app.sound.buttonMenueSound();
+        app.setScreen(app.titleScreen);
     }
 
     @Override

@@ -94,8 +94,7 @@ public class TitleScreen implements Screen {
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.sound.buttonMenueSound();
-				app.setScreen(app.exitScreen);
+				exit();
 			}
 		});
 
@@ -126,6 +125,11 @@ public class TitleScreen implements Screen {
 		app.gameScreen.world.init("map6.tmx");
 	}
 
+	private void exit(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.exitScreen);
+	}
+
 	@Override
 	public void show() {
 
@@ -135,7 +139,7 @@ public class TitleScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) exit();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) NewGame();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);

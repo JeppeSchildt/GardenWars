@@ -32,7 +32,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater,  txtTurnNumber, txtSelectedTileX, txtSelectedTileY;
+    public Label txtGold, txtWater,  txtTurnNumber, txtTitle, txtSelectedTileX, txtSelectedTileY;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
@@ -71,30 +71,26 @@ public class GameScreen extends AbstractScreen {
         buttonList = new ArrayList<TextButton>();	
         setUpIcon();
         setUpButtons();
+
         setupTileImprovementBox();
 
 
     }
 
     private void setUpButtons() {
+
         // ----- NextTurn Icon Setup----- //
-        //ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
-        TextButton btnEndTurn = new TextButton("Next Turn",skin);
+        TextButton btnEndTurn = new TextButton("Next Day", skin);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 nextTurn();
             }
         });
-
-
-        btnEndTurn.setPosition(app.maxWidth - 100, 10);
-        txtTurnNumber = new Label("Turn" + world.turnNumber, skin);
-        txtTurnNumber.setAlignment(Align.bottomLeft);
-        txtTurnNumber.setPosition(44, Gdx.graphics.getHeight() - 50);
+        btnEndTurn.setPosition(app.maxWidth - 150, 10);
 
         hud.addActor(btnEndTurn);
-        hud.addActor(txtTurnNumber);
+
     }
 
 
@@ -108,6 +104,14 @@ public class GameScreen extends AbstractScreen {
         txtGold.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 60);
         //hud.addActor(goldIcon);
         hud.addActor(txtGold);
+
+        txtTitle = new Label("GardenGame", skin);
+        txtTitle.setPosition(10,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtTitle);
+
+        txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
+        txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtTurnNumber);
 
         // ----- Water Icon Setup----- //
         // 220 pixels left of water icon...
@@ -169,7 +173,9 @@ public class GameScreen extends AbstractScreen {
     public void updateHUD() {
         txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         txtGold.setText("Gold: " + world.user.dkk);
-        txtTurnNumber.setText("" + world.turnNumber);
+        txtTurnNumber.setText("Days: " + world.turnNumber);
+
+
 
     }
 
@@ -180,7 +186,6 @@ public class GameScreen extends AbstractScreen {
     }
 
 
-
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
@@ -189,7 +194,7 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         int rect_x = Gdx.graphics.getWidth();
-        int rect_y = Gdx.graphics.getHeight() - 100;
+        int rect_y = Gdx.graphics.getHeight() - 75;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(hudColor);
         shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
@@ -208,7 +213,7 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer2.setColor(255,184,10, 0);
         shapeRenderer2.rect(0, rect_y2, Gdx.graphics.getWidth(), rect_x2);
         shapeRenderer2.end();
-        updateHUD();*/
+        */
     }
 
 
@@ -272,7 +277,6 @@ public class GameScreen extends AbstractScreen {
         hud.act(delta);
         hud.draw();
 
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
 
@@ -287,6 +291,7 @@ public class GameScreen extends AbstractScreen {
             app.sound.buttonMenueSound();
             app.setScreen(app.pauseScreen);
         }
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
     }

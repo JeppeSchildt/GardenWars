@@ -53,8 +53,7 @@ public class PauseScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.sound.buttonMenueSound();
-				app.setScreen(app.gameScreen);
+				resumeGame();
 			}
 		});
 
@@ -85,15 +84,7 @@ public class PauseScreen implements Screen {
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				//Gdx.app.exit();
-				app.sound.buttonMenueSound();
-				app.preferencesBool = false;
-				app.currentGameBool = true;
-
-				app.sound.Chance_Music();
-
-
-				app.setScreen(app.titleScreen);
+				backToMenue();
 			}
 		});
 
@@ -109,10 +100,25 @@ public class PauseScreen implements Screen {
 		table.row();
 		table.add(quitButton).left();
 		table.row();
-
-
-
 	}
+
+
+	public void resumeGame(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.gameScreen);
+	}
+	public void backToMenue(){
+		//Gdx.app.exit();
+		app.sound.buttonMenueSound();
+		app.preferencesBool = false;
+		app.currentGameBool = true;
+
+		app.sound.Chance_Music();
+
+
+		app.setScreen(app.titleScreen);
+	}
+
 
 	@Override
 	public void show() {
@@ -123,8 +129,8 @@ public class PauseScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) backToMenue();
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) resumeGame();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -96,7 +96,7 @@ public class Assets extends AssetManager {
     // Load map and textures
     public void loadFiles(){
         this.load("pack5.atlas", TextureAtlas.class);
-        this.load("NextTurn_3.png", Texture.class);
+        this.load("NextTurn.png", Texture.class);
         this.load("gold_icon.png", Texture.class);
         this.load("water_icon.png", Texture.class);
         this.load("dirt_icon.png", Texture.class);
@@ -114,7 +114,7 @@ public class Assets extends AssetManager {
         grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(this.tileSet.getTile(0x1));
 
-        final Texture buttonSheet = this.get("NextTurn_3.png", Texture.class);
+        final Texture buttonSheet = this.get("NextTurn.png", Texture.class);
         final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 88, 100);
         nextturnIcon = new TextureRegionDrawable(button_);
 

@@ -78,7 +78,8 @@ public class GameScreen extends AbstractScreen {
 
     private void setUpButtons() {
         // ----- NextTurn Icon Setup----- //
-        ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
+        //ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
+        TextButton btnEndTurn = new TextButton("Next Turn",skin);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -89,7 +90,7 @@ public class GameScreen extends AbstractScreen {
         });
 
 
-        btnEndTurn.setPosition(5, Gdx.graphics.getHeight() - 100);
+        btnEndTurn.setPosition(Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/6, 0);
         txtTurnNumber = new Label("Turn" + world.turnNumber, skin);
         txtTurnNumber.setAlignment(Align.bottomLeft);
         txtTurnNumber.setPosition(44, Gdx.graphics.getHeight() - 50);
@@ -223,7 +224,7 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(hudColor);
         shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
-        shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
+        //shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 

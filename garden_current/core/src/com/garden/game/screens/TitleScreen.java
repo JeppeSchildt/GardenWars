@@ -62,12 +62,7 @@ public class TitleScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.currentGameBool = false;
-
-				app.sound.Chance_Music();
-				app.sound.buttonMenueSound();
-				app.setScreen(app.gameScreen);
-				app.gameScreen.world.init("map6.tmx");
+				NewGame();
 			}
 		});
 
@@ -122,6 +117,15 @@ public class TitleScreen implements Screen {
 		stage.addActor(musicButton);
 	}
 
+	public void NewGame(){
+		app.currentGameBool = false;
+
+		app.sound.Chance_Music();
+		app.sound.buttonMenueSound();
+		app.setScreen(app.gameScreen);
+		app.gameScreen.world.init("map6.tmx");
+	}
+
 	@Override
 	public void show() {
 
@@ -132,7 +136,7 @@ public class TitleScreen implements Screen {
 	public void render(float delta) {
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) NewGame();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

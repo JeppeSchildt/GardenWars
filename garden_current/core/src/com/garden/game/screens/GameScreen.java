@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.PlantFactory;
@@ -32,13 +30,12 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater,  txtTurnNumber, txtTitle, txtSelectedTileX, txtSelectedTileY;
+    public Label txtGold, txtWater,  txtTurnNumber, txtTitle;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
     private final InputMultiplexer mux;
     int maxWidth, maxHeight;
-    boolean ignore;
     private final Color hudColor;
     private Label txtSelectedTileCoordinates;
     ArrayList<TextButton> buttonList;
@@ -59,7 +56,6 @@ public class GameScreen extends AbstractScreen {
 
         maxWidth = world.tileSize*world.worldWidth;
         maxHeight = Gdx.graphics.getHeight()-100;
-        ignore = false;
         actorFactory = new PlantFactory(app.assets);
 
 
@@ -135,14 +131,19 @@ public class GameScreen extends AbstractScreen {
     // Can also be used when new skills are learned.
     void setupTileImprovementBox() {
 
-    	for (int i=0;i<8;i++) {
-    		String t = "Plant something" + i ;
+    	for (int i=0;i<2;i++) {
+            String t = "";
+    		if(i == 0) {
+                t = "Water tile";
+            } else {
+                t = "Plant something" + i;
+            }
     		setButton(t,skin);
     	}
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
 
-        for(final TextButton textButton : buttonList){
+        /*for(final TextButton textButton : buttonList){
             System.out.println(textButton.getText());
             textButton.addListener(new ClickListener() {
                 @Override
@@ -159,6 +160,38 @@ public class GameScreen extends AbstractScreen {
                 }
             });
             buttonTable.add(textButton).expandX().fillY().row();
+        }*/
+        for(int i = 0; i < 2; i++) {
+            TextButton textButton = buttonList.get(i);
+            if(i == 0) {
+                textButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        if(world.user.canWater(world.hoveredX * 32, world.hoveredY * 32)) {
+                            world.user.water(world.hoveredX * 32, world.hoveredY * 32, 2);
+                            outerTable.remove();
+                        }
+
+                    }
+                });
+            } else {
+                textButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
+                            Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
+                            world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
+                            //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
+                            //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                        }
+
+                        outerTable.remove();
+
+                    }
+                });
+            }
+            buttonTable.add(textButton).expandX().fillY().row();
+
         }
 
         buttonTable.setSize(200, 100);
@@ -181,7 +214,7 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurn(){
         app.sound.buttonMenueSound();
-        world.endTurn();
+        world.nextTurn();
         System.out.println("Clicked - Next Turn");
     }
 

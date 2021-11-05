@@ -6,10 +6,8 @@ import com.garden.game.tools.Constants;
 
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Grass extends Plant {
-    TiledMapTileLayer.Cell cell;
 
     public Grass(int x, int y, TiledMapTileLayer.Cell cell) {
         super(x, y);
@@ -17,6 +15,7 @@ public class Grass extends Plant {
         typeID = Constants.GRASS;
         price = Constants.GRASS_PRICE;
         water = 2;
+        profit = 2;
 
         initWaterStateMap();
 
@@ -27,8 +26,8 @@ public class Grass extends Plant {
         waterStateMap = new HashMap<>();
         waterStateMap.put(PlantState.SEED, new Vector2(0,2));
         waterStateMap.put(PlantState.SMALL, new Vector2(2,4));
-        waterStateMap.put(PlantState.THRIVING, new Vector2(5,20));
-        waterStateMap.put(PlantState.THRIVING, new Vector2(2,5));
+        waterStateMap.put(PlantState.THRIVING, new Vector2(4,2000));
+        waterStateMap.put(PlantState.WITHERING, new Vector2(0,4));
         waterStateMap.put(PlantState.DEAD, new Vector2(0,0));
     }
 
@@ -36,13 +35,22 @@ public class Grass extends Plant {
         return cell;
     }
 
+    // if, if, if, if, if.....
     @Override
     public void changeState() {
-        super.changeState();
-        if(water < waterStateMap.get(state).x) {
+        System.out.println("Water: " + water);
+        System.out.println("State: " + state);
+        if(water <= waterStateMap.get(state).x) {
             state = state.prevState();
+            profit -= 2;
         } else if (water > waterStateMap.get(state).y) {
             state = state.nextState();
+            profit += 2;
+        }
+
+        if(state == PlantState.DEAD) {
+            sprite = null;
+            cell = null;
         }
 
     }

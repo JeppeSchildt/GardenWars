@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
-import com.garden.game.tools.Constants;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class World extends Stage {
     private final GardenGame app;
@@ -82,7 +83,9 @@ public class World extends Stage {
         app.batch.setProjectionMatrix(worldCamera.combined);
 
         app.batch.begin();
-        for ( Plant plant : user.getPlants() ) {
+        //for ( Plant plant : user.getPlants() ) {
+        for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
+            Plant plant = entry.getValue();
             if( plant.getSprite() != null ) {
                 plant.getSprite().draw(app.batch);
             }
@@ -93,33 +96,36 @@ public class World extends Stage {
         app.batch.end();
     }
 
-    public void endTurn() {
+    public void nextTurn() {
         turnNumber++;
+        int profit = 0;
+        //for ( Plant plant : user.getPlants() ) {
+        //for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
+        if(user.getPlants_().size() > 0) {
+            Iterator<Map.Entry<Vector2, Plant>> entryIt = user.getPlants_().entrySet().iterator();
+            while (entryIt.hasNext()) {
+                Map.Entry<Vector2, Plant> entry = entryIt.next();
+                Plant plant = entry.getValue();
+                plant.nextTurn();
 
-        for ( Plant plant : user.getPlants() ) {
-            plant.nextTurn();
-            if (plant.getState() == Plant.PlantState.DEAD) {
-                float x  = plant.getX();
-                float y = plant.getY();
-                System.out.println(plant.getCell());
-                app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, null);
-                //app.gameScreen.world.improvementLayer.
-                //user.removePlant(plant);
-                plant = null;
-            } else {
+                //System.out.println(plant.getWater());
+                if (plant.getState() == Plant.PlantState.DEAD) {
+                    // Remove grass from improvement layer.
+                    app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
 
-                System.out.println(plant.getState());
-                System.out.println(plant.getWater());
+                    // Remove from data structure holding players plants.
+                    //user.removePlant(plant);
+                    entryIt.remove();
+                    //plant = null;
+                } else {
+                    profit += plant.profit;
+                    //System.out.println(plant.getState());
+                    //System.out.println(plant.getWater());
+                }
             }
         }
-
-        if (user.dkk <= maxGold)
-            user.dkk += 200;
-
+        System.out.println("No error all plants done");
         app.score = user.dkk;
-
-        if (turnNumber == 5)
-            app.setScreen(app.gameOverScreen);
-
+        user.dkk += profit;
     }
 }

@@ -22,8 +22,8 @@ public class Unit extends Actor {
     GardenGame app;
     String assetName;
     Sprite sprite;
-    public int maxX, minX, maxY, minY;
-    public ArrayList<Animation<TextureRegion>> walkAnimations;
+    public int maxX, minX, maxY, minY, direc;
+    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
     public Animation<TextureRegion> activeAnimation;
     public float elapsedTime;
     TextureRegion drawThis;
@@ -35,11 +35,12 @@ public class Unit extends Actor {
         this.assetName = assetName;
         this.sprite = app.assets.textureAtlas.createSprite("character000");
         this.walkAnimations = app.assets.walkAnimations;
+        this.stopAnimations = app.assets.stopAnimations;
         maxX = 32; // Hardcoded...
         maxY = 32;
         minX = 0;
         minY = 0;
-        activeAnimation = walkAnimations.get(0);
+        activeAnimation = stopAnimations.get(0);
         setX(16*32);
         setY(16*32);
 
@@ -77,12 +78,16 @@ public class Unit extends Actor {
         float angle = route.angleDeg();
         if(angle <= 45 || angle > 315) {
             activeAnimation = walkAnimations.get(RIGHT);
+            direc = RIGHT;
         } else if (45 < angle && angle <= 135) {
             activeAnimation = walkAnimations.get(UP);
+            direc = UP;
         } else if (135 < angle && angle < 225) {
             activeAnimation = walkAnimations.get(LEFT);
+            direc = LEFT;
         } else {
             activeAnimation = walkAnimations.get(DOWN);
+            direc = DOWN;
         }
     }
 
@@ -96,8 +101,21 @@ public class Unit extends Actor {
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
-        addAction(moveToAction);
+
         System.out.println(getActions());
+        RunnableAction stop = new RunnableAction();
+        stop.setRunnable(new Runnable() {
+
+            @Override
+            public void run() {
+                activeAnimation=stopAnimations.get(direc);
+
+            }
+        });
+        SequenceAction sequence = new SequenceAction(moveToAction, stop);
+
+        addAction(sequence);
+
     }
 
     public void gotoAndPlant(final float x, final float y, final Plant plant) {
@@ -114,7 +132,17 @@ public class Unit extends Actor {
                 app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, plant.getCell());
             }
         });
-        SequenceAction sequence = new SequenceAction(moveToAction, run);
+
+        RunnableAction stop = new RunnableAction();
+        stop.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                activeAnimation=stopAnimations.get(direc);
+            }
+        });
+
+        SequenceAction sequence = new SequenceAction(moveToAction, run, stop);
+
         addAction(sequence);
     }
 

@@ -28,7 +28,7 @@ public class Assets extends AssetManager {
     public TiledMapTileSet tileSet;
     public TiledMapTileLayer.Cell grassCell;
     public Drawable pixel;
-    public ArrayList<Animation<TextureRegion>> walkAnimations;
+    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird;
     public Sound soundButtonPress, soundEnd, soundGameOver;
@@ -40,7 +40,8 @@ public class Assets extends AssetManager {
         loadSound();
         textureAtlas = this.get("pack5.atlas");
         styleAtlas = this.get("uiskin.atlas");
-        walkAnimations = initWalkAnimations();
+        initWalkAnimations();
+        initStopAnimations();
     }
 
 
@@ -71,8 +72,8 @@ public class Assets extends AssetManager {
 
     // Setup walking animations. Load spritesheet. Split into individual images.
     // Create animations corresponding to walking down, right, up and left.
-    private ArrayList<Animation<TextureRegion>> initWalkAnimations() {
-        walkAnimations = new ArrayList<>();
+    private void initWalkAnimations() {
+        this.walkAnimations = new ArrayList<>();
         Texture img = this.get("M_01.png");
         TextureRegion[][] tmpFrames = TextureRegion.split(img, 16, 17);
         Animation<TextureRegion> animation;
@@ -85,12 +86,29 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
-            walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
 
         // First argument frame duration, how long does a frame last.
 
-        return walkAnimations;
+    }
+
+    private void initStopAnimations() {
+        this.stopAnimations = new ArrayList<>();
+        Texture img = this.get("M_01.png");
+        TextureRegion[][] tmpFrames = TextureRegion.split(img, 16, 17);
+        Animation<TextureRegion> animation;
+
+        int index = 0;
+        for (int i = 0; i < 4; i++) {  // 0 = down, 1 = right, 2 = up, 3 = left
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 0; j < 3; j++) {  // 0 = stop, 1 and 2 = walk
+                animationFrames[index++] = tmpFrames[0][i];
+            }
+            index = 0;
+            this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+        }
+
     }
 
     // Load map and textures

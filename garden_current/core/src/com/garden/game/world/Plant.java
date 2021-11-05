@@ -14,8 +14,11 @@ public class Plant extends Actor {
     TiledMapTileLayer.Cell cell;
     Sprite sprite;
     int price;
+    int profit;
 
-    // Move to constants?
+    // Reconsider this... what happens if water increases a lot one round watering many times fx ??
+    // Make simpler maybe, state machine by doing switch(water) somewhere ....
+    // Right it would go through all states, which is perfectly fine maybe.
     enum PlantState {
         SEED {
             @Override
@@ -41,9 +44,7 @@ public class Plant extends Actor {
         },
         THRIVING {
             @Override
-            public PlantState prevState() {
-                return WITHERING;
-            }
+            public PlantState prevState() { return WITHERING; }
 
             @Override
             public PlantState nextState() {
@@ -73,18 +74,18 @@ public class Plant extends Actor {
             }
         };
 
+        // Not exactly previous and next, but instead next bad and next good state.
         public abstract PlantState prevState();
         public abstract PlantState nextState();
     }
     PlantState state;
 
      public Map<PlantState, Vector2> waterStateMap;
-     //public Pair<Integer, Integer> p;
+
     // Two different constructors. For convenience. Maybe it's not necessary.
     public Plant(int x, int y) {
         setPosition(x, y);
         state = PlantState.SEED;
-        //p = new Pair<>(1,1);
     }
 
     Plant(int x, int y, String assetName) {
@@ -98,11 +99,7 @@ public class Plant extends Actor {
     }
 
     public void changeState() {
-        if(state == PlantState.DEAD) {
-             sprite = null;
-             cell = null;
 
-        }
     }
 
     public PlantState getState() {
@@ -128,6 +125,10 @@ public class Plant extends Actor {
     }
 
     public int getWater() { return water; }
+
+    public void water(int amount) {
+        water += amount;
+    };
 
 
 }

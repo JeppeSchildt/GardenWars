@@ -30,6 +30,7 @@ public class MapInput implements InputProcessor {
     public boolean keyDown(int keycode) {
         keyPressed[keycode] = true;
         toggleKey[keycode] = (toggleKey[keycode] + 1) % 2;
+
         return true;
     }
 
@@ -113,25 +114,37 @@ public class MapInput implements InputProcessor {
         int xVelocity = 0;
         int yVelocity = 0;
 
-        if(keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.W]) {
-            if(world.worldCamera.position.y < Gdx.graphics.getHeight()*1.2)
-                yVelocity = 100;
+        //switch(toggleKey[Input.Keys.SPACE]) {
+        switch (toggleKey[0]) {
+            case 0:
+                if (keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.W]) {
+                    if (world.worldCamera.position.y < Gdx.graphics.getHeight() * 1.2)
+                        yVelocity = 100;
+                }
+
+                if (keyPressed[Input.Keys.DOWN] || keyPressed[Input.Keys.S]) {
+                    if (200 < world.worldCamera.position.y)
+                        yVelocity = -100;
+                }
+
+                if (keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.A]) {
+                    if (200 < world.worldCamera.position.x)
+                        xVelocity = -100;
+                }
+
+                if (keyPressed[Input.Keys.RIGHT] || keyPressed[Input.Keys.D]) {
+                    if (world.worldCamera.position.x < 1500)
+                        xVelocity = 100;
+
+                }
+                break;
+            case 1:
+                world.worldCamera.position.x = world.user.unit.getX();
+                world.worldCamera.position.y = world.user.unit.getY();
+                break;
+
         }
 
-        if(keyPressed[Input.Keys.DOWN] || keyPressed[Input.Keys.S]) {
-            if (200 < world.worldCamera.position.y)
-                yVelocity = -100;
-        }
-
-        if(keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.A]) {
-            if(200 < world.worldCamera.position.x)
-                xVelocity = -100;
-        }
-
-        if(keyPressed[Input.Keys.RIGHT] || keyPressed[Input.Keys.D]) {
-            if(world.worldCamera.position.x < 1500)
-                xVelocity = 100;
-        }
 
         /*
 
@@ -143,12 +156,10 @@ public class MapInput implements InputProcessor {
         }
          */
 
-        if (toggleKey[Input.Keys.SPACE] == 1){
+        //System.out.println("Adjust just before if " + toggleKey[Input.Keys.SPACE]);
+        //if (toggleKey[Input.Keys.SPACE] == 1){
+        // Min weird computer REMOVE BEFORE COMMIT!!!
 
-            System.out.println("Input.Keys.Y");
-            world.worldCamera.position.x = world.user.unit.getX();
-            world.worldCamera.position.y = world.user.unit.getY();
-        }
 
         // Multiply by zoom to make scrolling through map faster when zoomed out. Within some bounds...
         world.worldCamera.position.x += xVelocity*delta*world.worldCamera.zoom;

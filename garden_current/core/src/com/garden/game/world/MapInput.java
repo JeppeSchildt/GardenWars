@@ -13,6 +13,7 @@ public class MapInput implements InputProcessor {
     private final GardenGame app;
     private final World world;
     private final boolean[] keyPressed;
+    private int[] toggleKey;
     Logger debugLog;
     boolean tileSelected;
     private final float maxZoom = 1.75f;
@@ -21,12 +22,14 @@ public class MapInput implements InputProcessor {
         this.app = app;
         this.world = world;
         keyPressed = new boolean[256];
+        toggleKey = new int[256];
         debugLog = new Logger("MapInput:");
     }
 
     @Override
     public boolean keyDown(int keycode) {
         keyPressed[keycode] = true;
+        toggleKey[keycode] = (toggleKey[keycode] + 1) % 2;
         return true;
     }
 
@@ -63,6 +66,7 @@ public class MapInput implements InputProcessor {
 
                 world.user.unit.move(tileX, tileY);
                 world.user.unit.setPosition(position.x, position.y);
+                //world.worldCamera.position.set(position);
 
                 return true;
             }
@@ -142,6 +146,7 @@ public class MapInput implements InputProcessor {
         // Multiply by zoom to make scrolling through map faster when zoomed out. Within some bounds...
         world.worldCamera.position.x += xVelocity*delta*world.worldCamera.zoom;
         world.worldCamera.position.y += yVelocity*delta*world.worldCamera.zoom;
+
 
     }
 

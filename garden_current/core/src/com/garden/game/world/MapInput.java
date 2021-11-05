@@ -35,6 +35,7 @@ public class MapInput implements InputProcessor {
     public boolean keyUp(int keycode) {
         keyPressed[keycode] = false;
         return true;
+
     }
 
     @Override
@@ -126,6 +127,15 @@ public class MapInput implements InputProcessor {
         if(keyPressed[Input.Keys.RIGHT] || keyPressed[Input.Keys.D]) {
             if(world.worldCamera.position.x < 1500)
                 xVelocity = 100;
+        }
+
+            if(keyPressed[Input.Keys.SPACE]) {
+
+            if (world.worldCamera.position.x != world.user.unit.getX() && world.worldCamera.position.y != world.user.unit.getY()){
+                world.worldCamera.position.x = world.user.unit.getX();
+                world.worldCamera.position.y = world.user.unit.getY();
+            }
+
         }
 
 

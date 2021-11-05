@@ -57,11 +57,10 @@ public class World extends Stage {
 
         addActor(user.unit);
 
+
         spritePlayer = app.assets.textureAtlas.createSprite("character000");
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
-
     }
-
 
 
     public void update(float delta) {
@@ -92,17 +91,13 @@ public class World extends Stage {
         act(Gdx.graphics.getDeltaTime());
         draw();
         app.batch.end();
-
     }
 
     public void endTurn() {
         turnNumber++;
 
-
         if (user.dkk <= maxGold)
             user.dkk += 200;
-        else
-            user.dkk = maxGold;
 
         app.score = user.dkk;
 
@@ -110,5 +105,4 @@ public class World extends Stage {
             app.setScreen(app.gameOverScreen);
 
     }
-
 }

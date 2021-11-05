@@ -265,6 +265,7 @@ public class GameScreen extends AbstractScreen {
         mux.addProcessor(world.mapInput);
         Gdx.input.setInputProcessor(mux);
 
+        world.user.dkk = 200;
     }
 
     // Render player things like character and plants in this method.

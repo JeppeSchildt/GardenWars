@@ -62,12 +62,7 @@ public class TitleScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.currentGameBool = false;
-
-				app.sound.Chance_Music();
-				app.sound.buttonMenueSound();
-				app.setScreen(app.gameScreen);
-				app.gameScreen.world.init("map6.tmx");
+				newGame();
 			}
 		});
 
@@ -76,9 +71,7 @@ public class TitleScreen implements Screen {
 			continueButton.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					app.assets.soundButtonPress.play();
-					app.setScreen(app.gameScreen);
-					app.gameScreen.world.init("map6.tmx");
+					continueGame();
 				}
 			});
 		}
@@ -88,8 +81,7 @@ public class TitleScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//stage.addAction(Actions.sequence(Actions.fadeOut(5f),Actions.hide ()));
-				app.sound.buttonMenueSound();
-				app.setScreen(app.preferencesScreen);
+				preferences();
 			}
 		});
 
@@ -99,8 +91,7 @@ public class TitleScreen implements Screen {
 		quitButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.sound.buttonMenueSound();
-				app.setScreen(app.exitScreen);
+				exit();
 			}
 		});
 
@@ -122,6 +113,31 @@ public class TitleScreen implements Screen {
 		stage.addActor(musicButton);
 	}
 
+	private void newGame(){
+		app.currentGameBool = false;
+		app.sound.Chance_Music();
+
+		app.sound.buttonMenueSound();
+		app.setScreen(app.gameScreen);
+		app.gameScreen.world.init("map6.tmx");
+	}
+
+	private void preferences(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.preferencesScreen);
+	}
+
+	private void continueGame(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.gameScreen);
+		app.gameScreen.world.init("map6.tmx");
+	}
+
+	private void exit(){
+		app.sound.buttonMenueSound();
+		app.setScreen(app.exitScreen);
+	}
+
 	@Override
 	public void show() {
 
@@ -131,8 +147,8 @@ public class TitleScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) app.setScreen(app.gameScreen);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) exit();
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) newGame();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

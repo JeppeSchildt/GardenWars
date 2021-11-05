@@ -32,7 +32,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater,  txtTurnNumber, txtSelectedTileX, txtSelectedTileY;
+    public Label txtGold, txtWater,  txtTurnNumber, txtTitle, txtSelectedTileX, txtSelectedTileY;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
@@ -71,31 +71,26 @@ public class GameScreen extends AbstractScreen {
         buttonList = new ArrayList<TextButton>();	
         setUpIcon();
         setUpButtons();
+
         setupTileImprovementBox();
 
 
     }
 
     private void setUpButtons() {
+
         // ----- NextTurn Icon Setup----- //
-        ImageButton btnEndTurn = new ImageButton(app.assets.nextturnIcon);
+        TextButton btnEndTurn = new TextButton("Next Day", skin);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                app.sound.buttonMenueSound();
-                world.endTurn();
-                System.out.println("Clicked - Next Turn");
+                nextTurn();
             }
         });
-
-
-        btnEndTurn.setPosition(5, Gdx.graphics.getHeight() - 100);
-        txtTurnNumber = new Label("Turn" + world.turnNumber, skin);
-        txtTurnNumber.setAlignment(Align.bottomLeft);
-        txtTurnNumber.setPosition(44, Gdx.graphics.getHeight() - 50);
+        btnEndTurn.setPosition(app.maxWidth - 150, 10);
 
         hud.addActor(btnEndTurn);
-        hud.addActor(txtTurnNumber);
+
     }
 
 
@@ -109,6 +104,14 @@ public class GameScreen extends AbstractScreen {
         txtGold.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 60);
         //hud.addActor(goldIcon);
         hud.addActor(txtGold);
+
+        txtTitle = new Label("GardenGame", skin);
+        txtTitle.setPosition(10,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtTitle);
+
+        txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
+        txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
+        hud.addActor(txtTurnNumber);
 
         // ----- Water Icon Setup----- //
         // 220 pixels left of water icon...
@@ -170,46 +173,18 @@ public class GameScreen extends AbstractScreen {
     public void updateHUD() {
         txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         txtGold.setText("Gold: " + world.user.dkk);
-        txtTurnNumber.setText("" + world.turnNumber);
+        txtTurnNumber.setText("Days: " + world.turnNumber);
+
+
 
     }
 
-    @Override
-    public void show() {
-        mux.addProcessor(hud);
-        mux.addProcessor(this);
-        mux.addProcessor(world.mapInput);
-        Gdx.input.setInputProcessor(mux);
-
+    private void nextTurn(){
+        app.sound.buttonMenueSound();
+        world.endTurn();
+        System.out.println("Clicked - Next Turn");
     }
 
-    // Render player things like character and plants in this method.
-    // Using camera here maybe.
-    @Override
-    public void render(float delta) {
-        world.update(delta);
-        world.render();
-        drawMenu();
-        hud.act(delta);
-        hud.draw();
-
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            app.preferencesBool = true;
-
-            /*
-            if (app.assets.inGameMusic.isPlaying()){
-                    app.assets.inGameMusic.setVolume(0.2334f);
-                    app.assets.inGameMusic.setVolume(0.2334f);
-
-                    app.assets.ambientSound_Bird.pause();
-            }
-             */
-
-            app.setScreen(app.pauseScreen);
-        }
-
-    }
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
@@ -219,11 +194,11 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         int rect_x = Gdx.graphics.getWidth();
-        int rect_y = Gdx.graphics.getHeight() - 100;
+        int rect_y = Gdx.graphics.getHeight() - 75;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(hudColor);
         shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
-        shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
+        //shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
@@ -238,35 +213,10 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer2.setColor(255,184,10, 0);
         shapeRenderer2.rect(0, rect_y2, Gdx.graphics.getWidth(), rect_x2);
         shapeRenderer2.end();
-        updateHUD();*/
+        */
     }
 
 
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -296,6 +246,8 @@ public class GameScreen extends AbstractScreen {
         return false;
     }
 
+
+
     // Scroll improvements menu when shown.
     @Override
     public boolean scrolled(float amountX, float amountY) {
@@ -305,4 +257,69 @@ public class GameScreen extends AbstractScreen {
         }
         return false;
     }
+
+    @Override
+    public void show() {
+        mux.addProcessor(hud);
+        mux.addProcessor(this);
+        mux.addProcessor(world.mapInput);
+        Gdx.input.setInputProcessor(mux);
+
+    }
+
+    // Render player things like character and plants in this method.
+    // Using camera here maybe.
+    @Override
+    public void render(float delta) {
+        world.update(delta);
+        world.render();
+        drawMenu();
+        hud.act(delta);
+        hud.draw();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            app.preferencesBool = true;
+
+            /*
+            if (app.assets.inGameMusic.isPlaying()){
+                    app.assets.inGameMusic.setVolume(0.2334f);
+                    app.assets.inGameMusic.setVolume(0.2334f);
+
+                    app.assets.ambientSound_Bird.pause();
+            }
+             */
+            app.sound.buttonMenueSound();
+            app.setScreen(app.pauseScreen);
+        }
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }
+
+

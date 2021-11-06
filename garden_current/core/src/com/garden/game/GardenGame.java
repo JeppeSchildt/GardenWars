@@ -26,7 +26,7 @@ public class GardenGame extends Game {
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+		batch = new SpriteBatch(); // Only use this one SpriteBatch
 		assets = new Assets();
 
 		sound = new SoundFunctions(this);
@@ -36,50 +36,8 @@ public class GardenGame extends Game {
 
 
 
-		/*
-		// --------- InGameMusic setup  ---------
-		inGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/PetParkMusic.mp3"));
-		inGameMusic.setLooping(true);
-		inGameMusic.setVolume(musicVolume);
-
-		// --------- InGameMusic setup  ---------
-		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Cooking-mania-short.mp3"));
-		menuMusic.setLooping(true);
-		menuMusic.setVolume(musicVolume);
-
-		Timer.schedule(new Timer.Task() {
-			@Override
-			public void run() {
-				menuMusic.play();
-			}
-		}, 0.5f);
-		 */
-
-
-		/*
-		// --------- Sound Effect setup  ---------
-		soundEffectBird = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));
-		soundEffectBird.setVolume(0.5f); //1.0f max
-		soundEffectBird.setLooping(true);
-
-		//soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-flute-alert-2307.mp3"));
-		soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
-		soundEnd = Gdx.audio.newSound(Gdx.files.internal("soundEffect/EndSound_mixkit-medieval-show-fanfare.mp3"));
-		soundGameOver = Gdx.audio.newSound(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
-		 */
-
-
-
-		/* --------- Screen setup  ---------  */
+		/* --------- Screen setup  ---------  Lazy loading, loading them we need them might be better. */
 		titleScreen = new TitleScreen(this);
-		gameScreen = new GameScreen(this);
-
-		pauseScreen = new PauseScreen(this);
-		preferencesScreen = new PreferencesScreen(this);
-		gameOverScreen = new GameOverScreen(this, score);
-		exitScreen = new ExitScreen(this);
-
-		weekDayScreen = new WeekDayScreen(this);
 
 
 		setScreen(titleScreen);
@@ -90,6 +48,8 @@ public class GardenGame extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		assets.unloadAll();
 		assets.dispose();
+
 	}
 }

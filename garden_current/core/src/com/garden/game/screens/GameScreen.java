@@ -73,6 +73,9 @@ public class GameScreen extends AbstractScreen {
         setUpIcon();
 
         setupTileImprovementBox();
+        // -------- InGame Borders -------- //
+        inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
+
     }
 
 
@@ -227,62 +230,18 @@ public class GameScreen extends AbstractScreen {
     private void nextTurn(){
         app.sound.buttonMenueSound();
         world.nextTurn();
-        System.out.println("Clicked - Next Turn");
+        //System.out.println("Clicked - Next Turn");
     }
 
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        /*
-        // ----- Color line ----- //
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        int rect_x = Gdx.graphics.getWidth();
-        int rect_y = Gdx.graphics.getHeight() - 35;
-        int rect_x_Min = Gdx.graphics.getHeight() - Gdx.graphics.getHeight() + 35;
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(hudColor);
-        // ------- Top Box ------- //
-        shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
-
-        // ------- Side Box ------- //
-        //shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
-
-        // ------- Button Box ------- //
-        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), rect_x_Min);
-
-        shapeRenderer.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-         */
-
-
-        // -------- InGame Borders -------- //
-        inGameBorder = new Texture(Gdx.files.internal("NewDesign/InGameButtons.png"));
-
-        SpriteBatch batch = new SpriteBatch();
-        batch.begin();
-        batch.draw(inGameBorder, 0, 0);
-        batch.end();
-
-        //X: 1024 - Y: 768
-
+        app.batch.draw(inGameBorder,0,0);
 
         updateHUD();
-        // ----- Main Color ----- Is this borders?? Commented it out to focus on a simple case //
-        /*ShapeRenderer shapeRenderer2 = new ShapeRenderer();
-        int rect_x2 = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/7;
-        int rect_y2 = Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/12;
-        shapeRenderer2.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer2.setColor(255,184,10, 0);
-        shapeRenderer2.rect(0, rect_y2, Gdx.graphics.getWidth(), rect_x2);
-        shapeRenderer2.end();
-        */
+
     }
-
-
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -297,11 +256,6 @@ public class GameScreen extends AbstractScreen {
         	float goX = (float)(posX * world.tileSize + dist);
         	float goY = (float)(posY * world.tileSize + dist);
             outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
-            /*
-            System.out.println("Position: " + position.x + " & " + position.y);
-            System.out.println("Clicked on: "+posX +" & " + posY);
-            System.out.println("Placing box: " + goX + " & " + goY);
-            */
             scrollPane.setScrollPercentY(0);
             hud.addActor(outerTable);
             improvementsShown = true;
@@ -339,6 +293,7 @@ public class GameScreen extends AbstractScreen {
     // Using camera here maybe.
     @Override
     public void render(float delta) {
+        checkInput(); // Does not seem ideal to check input in render method. But convenient for now...
         world.update(delta);
         world.render();
 
@@ -346,20 +301,23 @@ public class GameScreen extends AbstractScreen {
 
         hud.act(delta);
         hud.draw();
+        app.batch.end(); // End batch here, finishing rendering.
 
+    }
+
+    private void checkInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
 
             app.sound.buttonMenueSound();
+            if (app.pauseScreen == null) {
+                app.pauseScreen = new PauseScreen(app);
+            }
             app.setScreen(app.pauseScreen);
         }
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
-
-
-
-
     }
 
     @Override

@@ -27,7 +27,6 @@ public class Assets extends AssetManager {
     public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
     public TiledMapTileSet tileSet;
     public TiledMapTileLayer.Cell grassCell;
-    public Drawable pixel;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird;
@@ -38,15 +37,19 @@ public class Assets extends AssetManager {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("pack5.atlas");
-        //textureCrops = this.get("crop_spritesheet-1.png-2.png");
+        textureAtlas = this.get("pack_character_crops.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
+
     }
 
-
-
+    // Close files
+    public void unloadAll() {
+        this.unload("pack_character_crops.atlas");
+        this.unload("uiskin.atlas");
+        this.unload("NewDesign/InGameButtons.png");
+    }
     public void loadSound(){
 
         /* --------- InGameMusic setup  ---------  */
@@ -71,14 +74,12 @@ public class Assets extends AssetManager {
         soundGameOver = Gdx.audio.newSound(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
     }
 
-    // Setup walking animations. Load spritesheet. Split into individual images.
+    // Setup walking animations. Get region of spritesheet. Split into individual images.
     // Create animations corresponding to walking down, right, up and left.
     private void initWalkAnimations() {
         this.walkAnimations = new ArrayList<>();
-        Texture img = this.get("M_01.png");
-        TextureRegion[][] tmpFrames = TextureRegion.split(img, 16, 17);
-        Animation<TextureRegion> animation;
-
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("M");
+        TextureRegion[][] tmpFrames = atlasRegion.split(16,17);
 
         int index = 0;
         for (int i = 0; i < 4; i++) {
@@ -87,18 +88,18 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
+            // First argument frame duration, how long does a frame last.
             this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
 
-        // First argument frame duration, how long does a frame last.
+
 
     }
 
     private void initStopAnimations() {
         this.stopAnimations = new ArrayList<>();
-        Texture img = this.get("M_01.png");
-        TextureRegion[][] tmpFrames = TextureRegion.split(img, 16, 17);
-        Animation<TextureRegion> animation;
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("M");
+        TextureRegion[][] tmpFrames = atlasRegion.split(16,17);
 
         int index = 0;
         for (int i = 0; i < 4; i++) {  // 0 = down, 1 = right, 2 = up, 3 = left
@@ -112,21 +113,12 @@ public class Assets extends AssetManager {
 
     }
 
-    // Load map and textures
+    // Load map, textures, sprites
     public void loadFiles(){
-        this.load("pack5.atlas", TextureAtlas.class);
-        this.load("NextTurn.png", Texture.class);
-        this.load("gold_icon.png", Texture.class);
-        this.load("water_icon.png", Texture.class);
-        this.load("dirt_icon.png", Texture.class);
+        this.load("pack_character_crops.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
-        this.load("M_01.png", Texture.class);
-
         this.load("NewDesign/InGameButtons.png", Texture.class);
 
-        this.load("crop_spritesheet-1.png-2.png", Texture.class);
-
-        this.load("pixel.png", Texture.class);
         setLoader(TiledMap.class, new TmxMapLoader());
         load("map6.tmx", TiledMap.class);
 
@@ -137,34 +129,9 @@ public class Assets extends AssetManager {
         grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(this.tileSet.getTile(0x1));
 
-        final Texture buttonSheet = this.get("NextTurn.png", Texture.class);
-        final TextureRegion button_ = new TextureRegion(buttonSheet, 0, 0, 88, 100);
-        nextturnIcon = new TextureRegionDrawable(button_);
-
-        loadIcon();
-
-
     }
 
-    private void loadIcon(){
-        final Texture goldSheet = this.get("gold_icon.png", Texture.class);
-        final TextureRegion goldIcon_ = new TextureRegion(goldSheet, 0, 0, 100, 70);
-        goldIcon = new TextureRegionDrawable(goldIcon_);
 
-        final Texture waterSheet = this.get("water_icon.png", Texture.class);
-        final TextureRegion waterIcon_ = new TextureRegion(waterSheet, 0, 0, 100, 70);
-        waterIcon = new TextureRegionDrawable(waterIcon_);
-
-        final Texture dirtSheet = this.get("dirt_icon.png", Texture.class);
-        final TextureRegion dirtIcon_ = new TextureRegion(dirtSheet, 0, 0, 100, 70);
-        dirtIcon = new TextureRegionDrawable(dirtIcon_);
-
-
-        final Texture inGameBorderSheet = this.get("NewDesign/InGameButtons.png", Texture.class);
-        final TextureRegion inGameBorder_ = new TextureRegion(inGameBorderSheet, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        inGameBorder = new TextureRegionDrawable(inGameBorder_);
-
-    }
 
 
     private void generateFonts() {

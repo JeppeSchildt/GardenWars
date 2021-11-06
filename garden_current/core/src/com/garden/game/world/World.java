@@ -24,7 +24,7 @@ public class World extends Stage {
     public TiledMapTileLayer soilLayer, improvementLayer;
     private int[] mapLayerIndices;
     public Player user;
-    Sprite spritePlayer, spriteHighlight;
+    Sprite spriteHighlight;
     public MapInput mapInput;
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
@@ -59,9 +59,7 @@ public class World extends Stage {
 
         addActor(user.unit);
 
-
-        spritePlayer = app.assets.textureAtlas.createSprite("character000");
-        spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+        spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
 
 
@@ -83,7 +81,8 @@ public class World extends Stage {
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
 
-        app.batch.begin();
+        app.batch.begin();  // Batch ended in GameScreens render
+
         //for ( Plant plant : user.getPlants() ) {
         for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
@@ -92,9 +91,9 @@ public class World extends Stage {
             }
         }
         app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
+
         act(Gdx.graphics.getDeltaTime());
         draw();
-        app.batch.end();
     }
 
     public void nextTurn() {
@@ -102,30 +101,21 @@ public class World extends Stage {
         int profit = 0;
         //for ( Plant plant : user.getPlants() ) {
         //for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
-        if(user.getPlants_().size() > 0) {
-            Iterator<Map.Entry<Vector2, Plant>> entryIt = user.getPlants_().entrySet().iterator();
-            while (entryIt.hasNext()) {
-                Map.Entry<Vector2, Plant> entry = entryIt.next();
-                Plant plant = entry.getValue();
-                plant.nextTurn();
+        Iterator<Map.Entry<Vector2, Plant>> entryIt = user.getPlants_().entrySet().iterator();
+        while (entryIt.hasNext()) {
+            Map.Entry<Vector2, Plant> entry = entryIt.next();
+            Plant plant = entry.getValue();
+            plant.nextTurn();
 
-                //System.out.println(plant.getWater());
-                if (plant.getState() == Plant.PlantState.DEAD) {
-                    // Remove grass from improvement layer.
-                    app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
-
-                    // Remove from data structure holding players plants.
-                    //user.removePlant(plant);
-                    entryIt.remove();
-                    //plant = null;
-                } else {
-                    profit += plant.profit;
-                    //System.out.println(plant.getState());
-                    //System.out.println(plant.getWater());
-                }
+            if (plant.getState() == Plant.PlantState.DEAD) {
+                // Remove grass from improvement layer.
+                app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+                entryIt.remove();
+            } else {
+                profit += plant.profit;
             }
         }
-        System.out.println("No error all plants done");
+
 
 
 
@@ -139,6 +129,7 @@ public class World extends Stage {
         user.dkk += profit;
 
         weekCount();
+        System.gc();
     }
 
 

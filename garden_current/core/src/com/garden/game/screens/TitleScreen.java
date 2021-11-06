@@ -118,8 +118,10 @@ public class TitleScreen implements Screen {
 		app.sound.Chance_Music();
 
 		app.sound.buttonMenueSound();
+		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
 		app.gameScreen.world.init("map6.tmx");
+
 	}
 
 	private void preferences(){
@@ -130,11 +132,15 @@ public class TitleScreen implements Screen {
 	private void continueGame(){
 		app.sound.buttonMenueSound();
 		app.setScreen(app.gameScreen);
-		app.gameScreen.world.init("map6.tmx");
+		//app.gameScreen.world.init("map6.tmx");
 	}
 
+	// Lazy load screens
 	private void exit(){
 		app.sound.buttonMenueSound();
+		if(app.exitScreen == null) {
+			app.exitScreen = new ExitScreen(app);
+		}
 		app.setScreen(app.exitScreen);
 	}
 

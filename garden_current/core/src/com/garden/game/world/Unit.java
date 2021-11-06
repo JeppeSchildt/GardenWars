@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Unit extends Actor {
     GardenGame app;
     String assetName;
-    Sprite sprite;
+    //Sprite sprite;
     public int maxX, minX, maxY, minY, direc;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
     public Animation<TextureRegion> activeAnimation;
@@ -33,7 +33,7 @@ public class Unit extends Actor {
     public Unit(GardenGame app, String assetName) {
         this.app = app;
         this.assetName = assetName;
-        this.sprite = app.assets.textureAtlas.createSprite("character000");
+        //this.sprite = app.assets.textureAtlas.createSprite("character000");
         this.walkAnimations = app.assets.walkAnimations;
         this.stopAnimations = app.assets.stopAnimations;
         maxX = 32; // Hardcoded...
@@ -72,9 +72,7 @@ public class Unit extends Actor {
 
         // Find a cleaner mapping to right animation. Consider also rotating sprite...
         Vector2 route = new Vector2(x-getX(), y-getY());
-        float distance = route.len();
-        System.out.println("length: " + distance);
-        System.out.println("angle: " + route.angleDeg());
+
         float angle = route.angleDeg();
         if(angle <= 45 || angle > 315) {
             activeAnimation = walkAnimations.get(RIGHT);
@@ -102,7 +100,6 @@ public class Unit extends Actor {
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
 
-        System.out.println(getActions());
         RunnableAction stop = new RunnableAction();
         stop.setRunnable(new Runnable() {
 

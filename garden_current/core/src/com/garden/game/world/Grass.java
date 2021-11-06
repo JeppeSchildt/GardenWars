@@ -38,8 +38,6 @@ public class Grass extends Plant {
     // if, if, if, if, if.....
     @Override
     public void changeState() {
-        System.out.println("Water: " + water);
-        System.out.println("State: " + state);
         if(water <= waterStateMap.get(state).x) {
             state = state.prevState();
             profit -= 2;

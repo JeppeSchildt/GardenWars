@@ -69,13 +69,14 @@ public class GameScreen extends AbstractScreen {
 
     private void initHUD() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
-        buttonList = new ArrayList<TextButton>();	
+        buttonList = new ArrayList<TextButton>();
+
+        // -------- InGame Borders -------- //
+        //inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
+
         setUpIcon();
 
         setupTileImprovementBox();
-        // -------- InGame Borders -------- //
-        inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
-
     }
 
 
@@ -96,6 +97,7 @@ public class GameScreen extends AbstractScreen {
 
         hud.addActor(table);
 
+
         tableSetup();
 
         /*
@@ -108,15 +110,15 @@ public class GameScreen extends AbstractScreen {
         // Show coordinates of selected tile.
         txtSelectedTileCoordinates = new Label("", skin);
         txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 20);
-        //hud.addActor(txtSelectedTileCoordinates);
+        hud.addActor(txtSelectedTileCoordinates);
     }
 
     private void tableSetup(){
 
         // ----- NextTurn Icon Setup----- //
-        //TextButton btnEndTurn = new TextButton("Next Day", skin);
-        Texture buttonTexture  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
-        Image btnEndTurn = new Image(buttonTexture);
+        TextButton btnEndTurn = new TextButton("Next Day", skin);
+        //Texture buttonTexture  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
+        //Image btnEndTurn = new Image(buttonTexture);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -237,7 +239,7 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        app.batch.draw(inGameBorder,0,0);
+        //app.batch.draw(inGameBorder,0,0);
 
         updateHUD();
 

@@ -41,7 +41,6 @@ public class GardenGame extends Game {
 
 
 		setScreen(titleScreen);
-
 	}
 
 

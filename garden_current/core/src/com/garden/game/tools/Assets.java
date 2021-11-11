@@ -50,7 +50,7 @@ public class Assets extends AssetManager {
     public void unloadAll() {
         this.unload("pack_character_crops.atlas");
         this.unload("uiskin.atlas");
-        this.unload("NewDesign/InGameButtons.png");
+        this.unload("NewDesign/.png");
     }
     public void loadSound(){
 

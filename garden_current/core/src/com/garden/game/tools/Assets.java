@@ -32,6 +32,7 @@ public class Assets extends AssetManager {
     public Music menuMusic, inGameMusic, ambientSound_Bird;
     public Sound soundButtonPress, soundEnd, soundGameOver;
     public float musicVolume = 1.0f;
+    public TextureRegion[][] plantTextures;
     
     public Assets() {
         loadFiles();
@@ -41,6 +42,7 @@ public class Assets extends AssetManager {
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
+        initPlantSprites();
 
     }
 
@@ -113,6 +115,27 @@ public class Assets extends AssetManager {
 
     }
 
+    // Initialize textures used for plants.
+    private void initPlantSprites() {
+        // Change to this size!!
+        plantTextures = new TextureRegion[20][6];
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("Crop_Spritesheet_32");
+        TextureRegion[][] tmp = atlasRegion.split(32,32);
+        //plantTextures = atlasRegion.split(32,32);
+        int row = 0;
+        int column = 0;
+        for(int i = 0; i < 10; i++) {
+            for (int j = 0; j < 12; j++) {
+                plantTextures[row][column] = tmp[i][j];
+                column = (column + 1) % 6;
+                if(column == 0) {
+                    row++;
+                }
+            }
+        }
+
+    }
+
     // Load map, textures, sprites
     public void loadFiles(){
         this.load("pack_character_crops.atlas", TextureAtlas.class);
@@ -130,8 +153,6 @@ public class Assets extends AssetManager {
         grassCell.setTile(this.tileSet.getTile(0x1));
 
     }
-
-
 
 
     private void generateFonts() {

@@ -1,32 +1,32 @@
-package com.garden.game.world;
+package com.garden.game.world.plants;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.garden.game.tools.Constants;
 
-
 import java.util.HashMap;
 
-public class Grass extends Plant {
+public class Turnip extends Plant{
 
-    public Grass(int x, int y, TiledMapTileLayer.Cell cell) {
-        super(x, y);
+    public Turnip(int x, int y, TextureRegion[] textureRegions, TiledMapTileLayer.Cell cell) {
+        super(x, y, textureRegions);
         this.cell = cell;
-        typeID = Constants.GRASS;
+        typeID = Constants.TURNIP;
         price = Constants.GRASS_PRICE;
         water = 2;
         profit = 2;
+        //activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
 
         initWaterStateMap();
-
-
     }
 
     public void initWaterStateMap() {
         waterStateMap = new HashMap<>();
         waterStateMap.put(PlantState.SEED, new Vector2(0,2));
         waterStateMap.put(PlantState.SMALL, new Vector2(2,4));
-        waterStateMap.put(PlantState.THRIVING, new Vector2(4,2000));
+        waterStateMap.put(PlantState.HEALTHY, new Vector2(4,2000));
         waterStateMap.put(PlantState.WITHERING, new Vector2(0,4));
         waterStateMap.put(PlantState.DEAD, new Vector2(0,0));
     }
@@ -38,6 +38,7 @@ public class Grass extends Plant {
     // if, if, if, if, if.....
     @Override
     public void changeState() {
+        activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);  // Consider making sprites when creating plant instead?? And not new sprite when we change state. But ok because of GC?
         if(water <= waterStateMap.get(state).x) {
             state = state.prevState();
             profit -= 2;
@@ -47,7 +48,7 @@ public class Grass extends Plant {
         }
 
         if(state == PlantState.DEAD) {
-            sprite = null;
+            activeSprite = null;
             cell = null;
         }
 

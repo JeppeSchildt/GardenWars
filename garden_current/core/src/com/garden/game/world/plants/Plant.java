@@ -1,25 +1,27 @@
-package com.garden.game.world;
+package com.garden.game.world.plants;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import jdk.internal.vm.compiler.collections.Pair;
+import com.garden.game.tools.Constants;
 
 import java.util.Map;
 
 public class Plant extends Actor {
     int water;
-    String typeID;
+    Integer typeID;
     TiledMapTileLayer.Cell cell;
-    Sprite sprite;
+    Sprite activeSprite;
+    TextureRegion[] textureRegions;
     int price;
-    int profit;
+    public int profit;
 
     // Reconsider this... what happens if water increases a lot one round watering many times fx ??
     // Make simpler maybe, state machine by doing switch(water) somewhere ....
     // Right it would go through all states, which is perfectly fine maybe.
-    enum PlantState {
+    public enum PlantState {
         SEED {
             @Override
             public PlantState prevState() {
@@ -30,6 +32,11 @@ public class Plant extends Actor {
             public PlantState nextState() {
                 return SMALL;
             }
+
+            @Override
+            public int getStateSpriteInt() {
+                return Constants.SPRITE_SEED;
+            }
         },
         SMALL {
             @Override
@@ -39,16 +46,26 @@ public class Plant extends Actor {
 
             @Override
             public PlantState nextState() {
-                return THRIVING;
+                return HEALTHY;
+            }
+
+            @Override
+            public int getStateSpriteInt() {
+                return Constants.SPRITE_SMALL;
             }
         },
-        THRIVING {
+        HEALTHY {
             @Override
             public PlantState prevState() { return WITHERING; }
 
             @Override
             public PlantState nextState() {
-                return THRIVING;
+                return HEALTHY;
+            }
+
+            @Override
+            public int getStateSpriteInt() {
+                return Constants.SPRITE_HEALTHY;
             }
         },
         WITHERING {
@@ -59,7 +76,12 @@ public class Plant extends Actor {
 
             @Override
             public PlantState nextState() {
-                return THRIVING;
+                return HEALTHY;
+            }
+
+            @Override
+            public int getStateSpriteInt() {
+                return Constants.SPRITE_WITHERING;
             }
         },
         DEAD {
@@ -72,11 +94,17 @@ public class Plant extends Actor {
             public PlantState nextState() {
                 return DEAD;
             }
+
+            @Override
+            public int getStateSpriteInt() {
+                return Constants.SPRITE_DEAD;
+            }
         };
 
         // Not exactly previous and next, but instead next bad and next good state.
         public abstract PlantState prevState();
         public abstract PlantState nextState();
+        public abstract int getStateSpriteInt();
     }
     PlantState state;
 
@@ -88,9 +116,10 @@ public class Plant extends Actor {
         state = PlantState.SEED;
     }
 
-    Plant(int x, int y, String assetName) {
+    Plant(int x, int y, TextureRegion[] textureRegions) {
         setPosition(x, y);
         state = PlantState.SEED;
+        this.textureRegions = textureRegions;
     }
 
     @Override
@@ -108,7 +137,7 @@ public class Plant extends Actor {
 
     public void nextTurn() {}
 
-    public String getTypeID() {
+    public int getTypeID() {
         return typeID;
     }
 
@@ -116,8 +145,8 @@ public class Plant extends Actor {
         return cell;
     }
 
-    public Sprite getSprite() {
-        return sprite;
+    public Sprite getActiveSprite() {
+        return activeSprite;
     }
 
     public int getPrice() {
@@ -130,5 +159,15 @@ public class Plant extends Actor {
         water += amount;
     };
 
-
+    public void setActiveAnimation() {
+        if(textureRegions != null) {
+            activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
+        }
+    }
 }
+/*
+    // Consider making sprites when creating plant instead?? And not new sprite when we change state. But ok because of GC?
+    public void changeState() {
+        activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
+    }
+ */

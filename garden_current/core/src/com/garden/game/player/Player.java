@@ -3,9 +3,8 @@ package com.garden.game.player;
 import com.badlogic.gdx.math.Vector2;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.Plant;
+import com.garden.game.world.plants.Plant;
 import com.garden.game.world.Unit;
-import com.garden.game.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,10 +45,10 @@ public class Player {
         plants_.remove(new Vector2(plant.getX(), plant.getY()));
     }
 
-    public boolean canBuy(String id) {
+    public boolean canBuy(int id) {
         return Constants.idPriceMap.get(id) <= dkk;
     }
-    public boolean canPlant(String id, int x, int y) {
+    public boolean canPlant(int id, int x, int y) {
         return (Constants.idPriceMap.get(id) <= dkk) && (plants_.get(new Vector2(x, y)) == null);
     }
     public void plant(int x, int y, Plant plant) {

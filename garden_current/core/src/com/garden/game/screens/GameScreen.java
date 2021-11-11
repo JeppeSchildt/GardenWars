@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.Plant;
+import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;
@@ -65,6 +63,8 @@ public class GameScreen extends AbstractScreen {
 
         world.user.dkk = 200;
         world.dayCount = 1;
+
+        //spriteTest = new Sprite(app.assets.plantTextures[0][5]);
     }
 
     private void initHUD() {
@@ -135,6 +135,8 @@ public class GameScreen extends AbstractScreen {
 
         txtResources = new Label("", skin);
         tableResources.add(txtResources);
+        //hud.addActor(table);
+        hud.addActor(tableResources);
     }
 
 
@@ -203,8 +205,8 @@ public class GameScreen extends AbstractScreen {
                 textButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
-                            Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
+                        if (world.user.canPlant(Constants.TURNIP, world.hoveredX * 32, world.hoveredY * 32)) {
+                            Plant plant = actorFactory.createPlant(Constants.TURNIP, world.hoveredX, world.hoveredY);
                             world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
                             //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                             //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
@@ -237,8 +239,8 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        app.batch.draw(inGameBorder,0,0);
 
+        app.batch.draw(inGameBorder,0,0);
         updateHUD();
 
     }
@@ -298,7 +300,6 @@ public class GameScreen extends AbstractScreen {
         world.render();
 
         drawMenu();
-
         hud.act(delta);
         hud.draw();
         app.batch.end(); // End batch here, finishing rendering.

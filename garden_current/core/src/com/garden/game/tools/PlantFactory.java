@@ -1,8 +1,8 @@
 package com.garden.game.tools;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.garden.game.world.Grass;
-import com.garden.game.world.Plant;
+import com.garden.game.world.plants.Grass;
+import com.garden.game.world.plants.Plant;
+import com.garden.game.world.plants.Turnip;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,17 +13,17 @@ interface IFCreatePlant {
 
 public class PlantFactory {
     private final Assets assets;
-    Map<String, IFCreatePlant> createActorMap;
+    Map<Integer, IFCreatePlant> createActorMap;
 
     public PlantFactory(final Assets assets) {
         this.assets = assets;
-        createActorMap = new HashMap<String, IFCreatePlant>();
+        createActorMap = new HashMap<Integer, IFCreatePlant>();
         initMap();
     }
 
     private void initMap() {
         if(createActorMap == null) {
-            createActorMap = new HashMap<String, IFCreatePlant>();
+            createActorMap = new HashMap<Integer, IFCreatePlant>();
         }
         createActorMap.put(Constants.GRASS, new IFCreatePlant() {
             @Override
@@ -31,9 +31,16 @@ public class PlantFactory {
                 return new Grass(x, y, assets.grassCell);
             }
         });
+
+        createActorMap.put(Constants.TURNIP, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+                return new Turnip(x, y, assets.plantTextures[Constants.TURNIP], assets.grassCell);
+            }
+        });
     }
 
-    public Plant createPlant(String plantID, int x, int y) {
-        return createActorMap.get(Constants.GRASS).create(x, y);
+    public Plant createPlant(int plantID, int x, int y) {
+        return createActorMap.get(plantID).create(x, y);
     }
 }

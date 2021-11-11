@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.world.plants.Plant;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -30,6 +31,8 @@ public class World extends Stage {
     public int hoveredX, hoveredY;
     public int turnNumber;
     public int dayCount, weekCount, monthCount;
+    private Sprite spriteTest;
+
 
     private int maxGold = 9999;
 
@@ -42,6 +45,8 @@ public class World extends Stage {
         setViewport(new ScreenViewport(worldCamera));
         mapInput = new MapInput(app, this);
         user = new Player(app);
+
+        spriteTest = new Sprite(app.assets.plantTextures[0][0]);
     }
 
 
@@ -59,7 +64,7 @@ public class World extends Stage {
 
         addActor(user.unit);
 
-        spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
+        spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
     }
 
 
@@ -76,7 +81,7 @@ public class World extends Stage {
         worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
         tiledMapRenderer.render(mapLayerIndices);
-
+        //tiledMapRenderer.render();
 
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
@@ -86,10 +91,12 @@ public class World extends Stage {
         //for ( Plant plant : user.getPlants() ) {
         for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
-            if( plant.getSprite() != null ) {
-                plant.getSprite().draw(app.batch);
+            if( plant.getActiveSprite() != null ) {
+                //plant.getActiveSprite().draw(app.batch);
+                app.batch.draw(plant.getActiveSprite(), plant.getX(), plant.getY());
             }
         }
+        //System.out.println("From world" + hoveredX*tileSize + " " + hoveredY*tileSize);
         app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
 
         act(Gdx.graphics.getDeltaTime());
@@ -129,7 +136,6 @@ public class World extends Stage {
         user.dkk += profit;
 
         weekCount();
-        System.gc();
     }
 
 

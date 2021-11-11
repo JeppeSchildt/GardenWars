@@ -52,6 +52,7 @@ public class MapInput implements InputProcessor {
         int tileX = (int) position.x / world.tileSize;
         int tileY = (int) position.y / world.tileSize;
 
+
         if(button == Input.Buttons.RIGHT) {
             tileSelected = true;
             world.hoveredX = tileX;
@@ -94,6 +95,8 @@ public class MapInput implements InputProcessor {
             world.hoveredX = (int) (position.x) / world.tileSize;
             world.hoveredY = (int) (position.y) / world.tileSize;
             //System.out.println("Hovered tile: " + world.hoveredX + "," + world.hoveredY);
+            //System.out.println("From mapinput: " + world.hoveredX*32 + "," + world.hoveredY*32);
+
         }
         return true;
     }

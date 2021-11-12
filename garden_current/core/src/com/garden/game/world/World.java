@@ -61,7 +61,7 @@ public class World extends Stage {
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
-        well = new Well(32*32, 32*32, app.assets.textureAtlas.createSprite("well"));
+        well = new Well(16, 16, app.assets.textureAtlas.createSprite("well"));
         addActor(well);
 
         addActor(user.unit);

@@ -10,6 +10,7 @@ public class Well extends Actor {
     public Well(float x, float y, Sprite sprite) {
         super.setPosition(x, y);
         this.sprite = sprite;
+        sprite.setPosition(x*32, y*32);
 
     }
 }

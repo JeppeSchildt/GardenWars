@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class Assets extends AssetManager {
     public TextureAtlas textureAtlas, styleAtlas, textureCrops;
     public Label.LabelStyle largeTextStyle;
-    public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
+    public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
     public TiledMapTileSet tileSet, tileSetNew;
     public TiledMapTileLayer.Cell grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
@@ -110,6 +110,25 @@ public class Assets extends AssetManager {
             index = 0;
             this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
+
+    }
+
+    private void initBorder() {
+        TextureAtlas.AtlasRegion gameBorder = textureAtlas.findRegion("GameBorder");
+        inGameBorder = new TextureRegionDrawable(gameBorder);
+
+        TextureAtlas.AtlasRegion btnBorder = textureAtlas.findRegion("ButtonBorder");
+        buttonBorder = new TextureRegionDrawable(gameBorder);
+
+
+
+        TextureAtlas.AtlasRegion buttonNextTurnAtlas = textureAtlas.findRegion("ButtonNextTurn");
+        TextureAtlas.AtlasRegion buttonSettingsAtlas = textureAtlas.findRegion("ButtonSettings");
+        TextureAtlas.AtlasRegion buttonTalentAtlas = textureAtlas.findRegion("ButtonTalent");
+        btnNextTurn = new TextureRegionDrawable(buttonNextTurnAtlas);
+        btnSetting = new TextureRegionDrawable(buttonSettingsAtlas);
+        btnTalent = new TextureRegionDrawable(buttonTalentAtlas);
+
 
     }
 

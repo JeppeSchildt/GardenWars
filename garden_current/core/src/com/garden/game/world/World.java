@@ -78,7 +78,7 @@ public class World extends Stage {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        worldCamera.update();
+        //worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
         tiledMapRenderer.render(mapLayerIndices);
         //tiledMapRenderer.render();
@@ -87,7 +87,8 @@ public class World extends Stage {
         app.batch.setProjectionMatrix(worldCamera.combined);
 
         app.batch.begin();  // Batch ended in GameScreens render
-
+        //app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
+        spriteHighlight.draw(app.batch);
         //for ( Plant plant : user.getPlants() ) {
         for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
@@ -97,8 +98,7 @@ public class World extends Stage {
             }
         }
         //System.out.println("From world" + hoveredX*tileSize + " " + hoveredY*tileSize);
-        app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
-
+        worldCamera.update();
         act(Gdx.graphics.getDeltaTime());
         draw();
     }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -45,6 +46,8 @@ public class GameScreen extends AbstractScreen {
     private boolean improvementsShown;
     final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
+    Sprite spriteHighlight;
+
 
     private Texture inGameBorder;
     private Table tableResources, table;
@@ -53,8 +56,10 @@ public class GameScreen extends AbstractScreen {
         this.app = app;
         world = new World(app);
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
         hud = new Stage(new ScreenViewport(camera));
+        //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+
+        //hud = new Stage(new ScreenViewport(world.worldCamera));
         hudColor = new Color(1, 1, 1, 0.5f);
         mux = new InputMultiplexer();
 
@@ -67,6 +72,8 @@ public class GameScreen extends AbstractScreen {
 
         world.user.dkk = 200;
         world.dayCount = 1;
+
+        spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
     }
 
     private void initHUD() {
@@ -241,7 +248,7 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        app.batch.draw(inGameBorder,0,0);
+        //app.batch.draw(inGameBorder,0,0);
         /*Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         int rect_x = Gdx.graphics.getWidth();
@@ -259,7 +266,7 @@ public class GameScreen extends AbstractScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = camera.unproject(clickCoordinates);
+        Vector3 position = world.worldCamera.unproject(clickCoordinates);
         //(int) (position.x) / world.tileSize;
         if(button == Input.Buttons.RIGHT) {
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
@@ -311,9 +318,10 @@ public class GameScreen extends AbstractScreen {
         world.render();
 
         drawMenu();
-
+        app.batch.setProjectionMatrix(camera.combined);
         hud.act(delta);
         hud.draw();
+        camera.update();
         app.batch.end(); // End batch here, finishing rendering.
 
     }

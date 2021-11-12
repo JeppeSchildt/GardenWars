@@ -25,8 +25,8 @@ public class Assets extends AssetManager {
     public TextureAtlas textureAtlas, styleAtlas, textureCrops;
     public Label.LabelStyle largeTextStyle;
     public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
-    public TiledMapTileSet tileSet;
-    public TiledMapTileLayer.Cell grassCell;
+    public TiledMapTileSet tileSet, tileSetNew;
+    public TiledMapTileLayer.Cell grassCell, wellCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird;
@@ -93,8 +93,6 @@ public class Assets extends AssetManager {
             // First argument frame duration, how long does a frame last.
             this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
-
-
 
     }
 

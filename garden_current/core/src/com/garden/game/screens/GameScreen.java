@@ -34,6 +34,7 @@ public class GameScreen extends AbstractScreen {
     GardenGame app;
     Stage hud;
     public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources;
+    private Texture TextureNextTurn, TextureSettings;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
@@ -124,10 +125,22 @@ public class GameScreen extends AbstractScreen {
 
     private void tableSetup(){
 
+        drawButtons();
+        txtMonthWeekDay = new Label("", skin);
+
+        //table.add(btnEndTurn).center();
+        //table.row();
+        table.add(txtMonthWeekDay);
+
+        txtResources = new Label("", skin);
+        tableResources.add(txtResources);
+    }
+
+    private void drawButtons(){
         // ----- NextTurn Icon Setup----- //
-        TextButton btnEndTurn = new TextButton("Next Day", skin);
-        //Texture buttonTexture  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
-        //Image btnEndTurn = new Image(buttonTexture);
+        //TextButton btnEndTurn = new TextButton("Next Day", skin);
+        TextureNextTurn  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
+        Image btnEndTurn = new Image(TextureNextTurn);
         btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -137,17 +150,20 @@ public class GameScreen extends AbstractScreen {
         btnEndTurn.setPosition(Gdx.graphics.getWidth()-115, 40);
         hud.addActor(btnEndTurn);
 
-        txtMonthWeekDay = new Label("", skin);
+        // ----- Settings Icon Setup----- //
+        TextureSettings  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
+        Image btnSettings = new Image(TextureSettings);
+        btnSettings.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                nextTurn();
+            }
+        });
+        btnSettings.setPosition(Gdx.graphics.getWidth()-115, 40);
+        hud.addActor(btnSettings);
 
-        //table.add(btnEndTurn).center();
-        //table.row();
-        table.add(txtMonthWeekDay);
 
-
-        txtResources = new Label("", skin);
-        tableResources.add(txtResources);
     }
-
 
     public void updateHUD() {
         txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
@@ -248,7 +264,7 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        //app.batch.draw(inGameBorder,0,0);
+        app.batch.draw(inGameBorder,0,0);
         /*Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         int rect_x = Gdx.graphics.getWidth();

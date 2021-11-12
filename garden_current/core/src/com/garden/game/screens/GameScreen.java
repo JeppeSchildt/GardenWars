@@ -323,6 +323,10 @@ public class GameScreen extends AbstractScreen {
         hud.draw();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        camera.update();
+>>>>>>> parent of 246ef80 (Merge branch 'main' of https://github.com/jepp5220/GardenWars into main)
 =======
         camera.update();
 >>>>>>> parent of 246ef80 (Merge branch 'main' of https://github.com/jepp5220/GardenWars into main)

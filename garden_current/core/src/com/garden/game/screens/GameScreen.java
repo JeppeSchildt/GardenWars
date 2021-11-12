@@ -34,7 +34,7 @@ public class GameScreen extends AbstractScreen {
     GardenGame app;
     Stage hud;
     public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources;
-    private Texture TextureNextTurn, TextureSettings;
+    private Texture TextureNextTurn, TextureSettings, TextureTalent;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
@@ -107,7 +107,6 @@ public class GameScreen extends AbstractScreen {
 
         hud.addActor(table);
 
-
         tableSetup();
 
         /*
@@ -115,7 +114,6 @@ public class GameScreen extends AbstractScreen {
         txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
         hud.addActor(txtTurnNumber);
          */
-
 
         // Show coordinates of selected tile.
         txtSelectedTileCoordinates = new Label("", skin);
@@ -156,13 +154,23 @@ public class GameScreen extends AbstractScreen {
         btnSettings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                nextTurn();
+                pauseScreen();
             }
         });
         btnSettings.setPosition(Gdx.graphics.getWidth()-115, 40);
         hud.addActor(btnSettings);
 
-
+        // ----- Talent Icon Setup----- //
+        TextureTalent  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
+        Image btnTalent = new Image(TextureSettings);
+        btnTalent.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //TelentScreen();
+            }
+        });
+        btnTalent.setPosition(Gdx.graphics.getWidth()-115, 40);
+        hud.addActor(btnTalent);
     }
 
     public void updateHUD() {
@@ -236,14 +244,11 @@ public class GameScreen extends AbstractScreen {
                             //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                             //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
                         }
-
                         outerTable.remove();
-
                     }
                 });
             }
             buttonTable.add(textButton).expandX().fillY().row();
-
         }
 
         buttonTable.setSize(200, 100);
@@ -276,7 +281,6 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);*/
         updateHUD();
-
     }
 
     @Override
@@ -303,7 +307,6 @@ public class GameScreen extends AbstractScreen {
     }
 
 
-
     // Scroll improvements menu when shown.
     @Override
     public boolean scrolled(float amountX, float amountY) {
@@ -320,9 +323,6 @@ public class GameScreen extends AbstractScreen {
         mux.addProcessor(this);
         mux.addProcessor(world.mapInput);
         Gdx.input.setInputProcessor(mux);
-
-
-
     }
 
     // Render player things like character and plants in this method.
@@ -344,7 +344,11 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void checkInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
+    }
+
+    private void pauseScreen(){
             app.preferencesBool = true;
 
             app.sound.buttonMenueSound();
@@ -352,10 +356,6 @@ public class GameScreen extends AbstractScreen {
                 app.pauseScreen = new PauseScreen(app);
             }
             app.setScreen(app.pauseScreen);
-        }
-
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
     }
 
     @Override

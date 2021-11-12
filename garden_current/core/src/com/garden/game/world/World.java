@@ -3,11 +3,13 @@ package com.garden.game.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
@@ -31,8 +33,7 @@ public class World extends Stage {
     public int hoveredX, hoveredY;
     public int turnNumber;
     public int dayCount, weekCount, monthCount;
-    private Sprite spriteTest;
-
+    private Well well;
 
     private int maxGold = 9999;
 
@@ -45,8 +46,9 @@ public class World extends Stage {
         setViewport(new ScreenViewport(worldCamera));
         mapInput = new MapInput(app, this);
         user = new Player(app);
+        //Texture t = app.assets.textureAtlas.createSprite("well");
 
-        spriteTest = new Sprite(app.assets.plantTextures[0][0]);
+
     }
 
 
@@ -61,6 +63,9 @@ public class World extends Stage {
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
+
+        well = new Well(32*32, 32*32, app.assets.textureAtlas.createSprite("well"));
+        addActor(well);
 
         addActor(user.unit);
 
@@ -88,6 +93,8 @@ public class World extends Stage {
         app.batch.setProjectionMatrix(worldCamera.combined);
 
         app.batch.begin();  // Batch ended in GameScreens render
+        act(Gdx.graphics.getDeltaTime());
+        draw();
 
         //for ( Plant plant : user.getPlants() ) {
         for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
@@ -99,8 +106,9 @@ public class World extends Stage {
         }
 
         spriteHighlight.draw(app.batch);
-        act(Gdx.graphics.getDeltaTime());
-        draw();
+
+        well.sprite.draw(app.batch);
+
     }
 
     public void nextTurn() {

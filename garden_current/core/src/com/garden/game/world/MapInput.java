@@ -94,6 +94,7 @@ public class MapInput implements InputProcessor {
 
             world.hoveredX = (int) (position.x) / world.tileSize;
             world.hoveredY = (int) (position.y) / world.tileSize;
+            world.spriteHighlight.setPosition(world.hoveredX*32, world.hoveredY*32);
             //System.out.println("Hovered tile: " + world.hoveredX + "," + world.hoveredY);
             //System.out.println("From mapinput: " + world.hoveredX*32 + "," + world.hoveredY*32);
 

@@ -99,7 +99,6 @@ public class GameScreen extends AbstractScreen {
 
         hud.addActor(table);
 
-
         tableSetup();
 
         /*
@@ -107,7 +106,6 @@ public class GameScreen extends AbstractScreen {
         txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
         hud.addActor(txtTurnNumber);
          */
-
 
         // Show coordinates of selected tile.
         txtSelectedTileCoordinates = new Label("", skin);
@@ -135,7 +133,6 @@ public class GameScreen extends AbstractScreen {
         //table.add(btnEndTurn).center();
         //table.row();
         table.add(txtMonthWeekDay);
-
 
         txtResources = new Label("", skin);
         tableResources.add(txtResources);

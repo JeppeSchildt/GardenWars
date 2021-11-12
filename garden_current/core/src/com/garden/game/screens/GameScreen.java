@@ -166,7 +166,7 @@ public class GameScreen extends AbstractScreen {
         btnTalent.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TelentScreen();
+                nextTurn();
             }
         });
         btnTalent.setPosition(Gdx.graphics.getWidth()-115, 40);

@@ -294,6 +294,9 @@ public class GameScreen extends AbstractScreen {
         mux.addProcessor(this);
         mux.addProcessor(world.mapInput);
         Gdx.input.setInputProcessor(mux);
+
+
+
     }
 
     // Render player things like character and plants in this method.
@@ -309,6 +312,7 @@ public class GameScreen extends AbstractScreen {
         hud.act(delta);
         hud.draw();
         app.batch.end(); // End batch here, finishing rendering.
+
     }
 
     private void checkInput() {

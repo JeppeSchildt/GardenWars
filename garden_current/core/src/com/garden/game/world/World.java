@@ -65,8 +65,6 @@ public class World extends Stage {
         addActor(user.unit);
 
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
-
-        app.assets.
     }
 
 
@@ -125,6 +123,9 @@ public class World extends Stage {
             }
         }
 
+
+
+
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);
             if (user.dkk <= maxGold)
@@ -136,6 +137,7 @@ public class World extends Stage {
 
         weekCount();
     }
+
 
 
     private void weekCount(){

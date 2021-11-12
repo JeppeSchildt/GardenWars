@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class Assets extends AssetManager {
     public TextureAtlas textureAtlas, styleAtlas, textureCrops;
     public Label.LabelStyle largeTextStyle;
+    public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
     public TiledMapTileSet tileSet;
     public TiledMapTileLayer.Cell grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
@@ -140,10 +141,10 @@ public class Assets extends AssetManager {
         this.load("pack_character_crops.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
         this.load("NewDesign/InGameButtons.png", Texture.class);
-        this.load("well_00.png", Texture.class);
 
         setLoader(TiledMap.class, new TmxMapLoader());
         load("map6.tmx", TiledMap.class);
+
 
         finishLoading();
 
@@ -159,8 +160,10 @@ public class Assets extends AssetManager {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.incremental = true;
 
+
         parameter.size = 23;
         largeTextStyle = new Label.LabelStyle(generator.generateFont(parameter), Color.BROWN);
+
 
         generator.dispose();
     }

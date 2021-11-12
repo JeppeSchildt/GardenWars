@@ -129,6 +129,9 @@ public class TitleScreen implements Screen {
 
 	private void preferences(){
 		app.sound.buttonMenueSound();
+		if(app.preferencesScreen == null) {
+			app.preferencesScreen = new PreferencesScreen(app);
+		}
 		app.setScreen(app.preferencesScreen);
 	}
 

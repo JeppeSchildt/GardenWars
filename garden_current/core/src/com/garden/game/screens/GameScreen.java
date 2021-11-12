@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,7 +32,8 @@ public class GameScreen extends AbstractScreen {
     GardenGame app;
     Stage hud;
     public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources;
-    private Texture TextureNextTurn, TextureSettings, TextureTalent;
+    private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
+    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent;
     Table buttonTable,outerTable;
     ScrollPane scrollPane;
     Skin skin;
@@ -49,9 +48,7 @@ public class GameScreen extends AbstractScreen {
     private ShapeRenderer shapeRenderer;
     Sprite spriteHighlight;
 
-
-    private Texture inGameBorder;
-    private Table tableResources, table;
+    private Table tableResources, tableDay, tableButtons;
 
     public GameScreen(GardenGame app) {
         this.app = app;
@@ -81,100 +78,108 @@ public class GameScreen extends AbstractScreen {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         buttonList = new ArrayList<TextButton>();
 
-        // -------- InGame Borders -------- //
-        inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
 
-        setUpIcon();
+        textureGameBorder = new Texture(Gdx.files.internal("inGameDesign/GameBorder.png"));
+        imgGameBorder = new Image(textureGameBorder);
+        imgGameBorder.setPosition(0, 0);
+        hud.addActor(imgGameBorder);
+
+        textureBtnBorder = new Texture(Gdx.files.internal("inGameDesign/ButtonBorder.png"));
+        imgBtnBorder = new Image(textureBtnBorder);
+        imgBtnBorder.setPosition(app.maxWidth - (144 + 10), 35);
+        hud.addActor(imgBtnBorder);
+
+        tabelSetup();
+        drawTextIcons();
+        drawButtons();
 
         setupTileImprovementBox();
     }
 
-
-    /* Size of entire window has been fixed, so we can setup UI using constant values */
-    private void setUpIcon() {
+    private void tabelSetup(){
         // Create a table that fills the screen. Everything else will go inside this table.
         tableResources = new Table();
         tableResources.setFillParent(true);
         tableResources.setDebug(false);
         tableResources.setPosition(-420, -366);
 
+        tableDay = new Table();
+        tableDay.setFillParent(true);
+        tableDay.setDebug(false);
+        tableDay.setPosition(400, -366);
+
+        tableButtons = new Table();
+        tableButtons.setFillParent(true);
+        tableButtons.setDebug(false);
+        tableButtons.setPosition(430, -254);
+    }
+
+    /* Size of entire window has been fixed, so we can setup UI using constant values */
+    private void drawTextIcons() {
+
         hud.addActor(tableResources);
+        txtResources = new Label("", skin);
+        tableResources.add(txtResources);
 
-        table = new Table();
-        table.setFillParent(true);
-        table.setDebug(false);
-        table.setPosition(400, -366);
-
-        hud.addActor(table);
-
-        tableSetup();
+        hud.addActor(tableDay);
+        txtMonthWeekDay = new Label("", skin);
+        tableDay.add(txtMonthWeekDay);
 
         /*
-        txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
-        txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
-        hud.addActor(txtTurnNumber);
-         */
-
         // Show coordinates of selected tile.
         txtSelectedTileCoordinates = new Label("", skin);
         txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 20);
         hud.addActor(txtSelectedTileCoordinates);
-    }
-
-    private void tableSetup(){
-
-        drawButtons();
-        txtMonthWeekDay = new Label("", skin);
-
-        //table.add(btnEndTurn).center();
-        //table.row();
-        table.add(txtMonthWeekDay);
-
-        txtResources = new Label("", skin);
-        tableResources.add(txtResources);
+         */
     }
 
     private void drawButtons(){
+
         // ----- NextTurn Icon Setup----- //
         //TextButton btnEndTurn = new TextButton("Next Day", skin);
-        TextureNextTurn  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
-        Image btnEndTurn = new Image(TextureNextTurn);
-        btnEndTurn.addListener(new ClickListener() {
+        textureNextTurn = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
+        imgNextTurn = new Image(textureNextTurn);
+        imgNextTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 nextTurn();
             }
         });
-        btnEndTurn.setPosition(Gdx.graphics.getWidth()-115, 40);
-        hud.addActor(btnEndTurn);
+        imgNextTurn.setPosition(app.maxWidth-140, 45);
+        hud.addActor(imgNextTurn);
+
+
 
         // ----- Settings Icon Setup----- //
-        TextureSettings  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
-        Image btnSettings = new Image(TextureSettings);
-        btnSettings.addListener(new ClickListener() {
+        textureSettings = new Texture(Gdx.files.internal("inGameDesign/ButtonSettings.png"));
+        imgSettings = new Image(textureSettings);
+        imgSettings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 pauseScreen();
             }
         });
-        btnSettings.setPosition(Gdx.graphics.getWidth()-115, 40);
-        hud.addActor(btnSettings);
+
 
         // ----- Talent Icon Setup----- //
-        TextureTalent  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
-        Image btnTalent = new Image(TextureSettings);
-        btnTalent.addListener(new ClickListener() {
+        textureTalent  = new Texture(Gdx.files.internal("inGameDesign/ButtonTalent.png"));
+        imgTalent = new Image(textureTalent);
+        imgTalent.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                nextTurn();
+                //talentScheen();
             }
         });
-        btnTalent.setPosition(Gdx.graphics.getWidth()-115, 40);
-        hud.addActor(btnTalent);
+
+        hud.addActor(tableButtons);
+
+        tableButtons.add(imgTalent);
+        tableButtons.add(imgSettings);
+
     }
 
     public void updateHUD() {
-        txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
+        //txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         //txtTurnNumber.setText("Days: " + world.turnNumber);
 
         String longSpace = "          ";
@@ -269,7 +274,7 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        app.batch.draw(inGameBorder,0,0);
+        //app.batch.draw(inGameBorder,0,0);
         /*Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         int rect_x = Gdx.graphics.getWidth();

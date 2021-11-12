@@ -113,25 +113,6 @@ public class Assets extends AssetManager {
 
     }
 
-    private void initBorder() {
-        TextureAtlas.AtlasRegion gameBorder = textureAtlas.findRegion("GameBorder");
-        inGameBorder = new TextureRegionDrawable(gameBorder);
-
-        TextureAtlas.AtlasRegion btnBorder = textureAtlas.findRegion("ButtonBorder");
-        buttonBorder = new TextureRegionDrawable(gameBorder);
-
-
-
-        TextureAtlas.AtlasRegion buttonNextTurnAtlas = textureAtlas.findRegion("ButtonNextTurn");
-        TextureAtlas.AtlasRegion buttonSettingsAtlas = textureAtlas.findRegion("ButtonSettings");
-        TextureAtlas.AtlasRegion buttonTalentAtlas = textureAtlas.findRegion("ButtonTalent");
-        btnNextTurn = new TextureRegionDrawable(buttonNextTurnAtlas);
-        btnSetting = new TextureRegionDrawable(buttonSettingsAtlas);
-        btnTalent = new TextureRegionDrawable(buttonTalentAtlas);
-
-
-    }
-
     // Initialize textures used for plants.
     private void initPlantSprites() {
         // Change to this size!!
@@ -157,11 +138,18 @@ public class Assets extends AssetManager {
     public void loadFiles(){
         this.load("pack.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
-        this.load("NewDesign/InGameButtons.png", Texture.class);
+
+        this.load("inGameDesign/GameBorder.png", Texture.class);
+        this.load("inGameDesign/ButtonBorder.png", Texture.class);
+
+        this.load("inGameDesign/ButtonNextTurn.png", Texture.class);
+        this.load("inGameDesign/ButtonSettings.png", Texture.class);
+        this.load("inGameDesign/ButtonTalent.png", Texture.class);
+
+
 
         setLoader(TiledMap.class, new TmxMapLoader());
         load("map6.tmx", TiledMap.class);
-
 
         finishLoading();
 

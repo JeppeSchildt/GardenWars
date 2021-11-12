@@ -162,6 +162,7 @@ public class Plant extends Actor {
     public void setActiveAnimation() {
         if(textureRegions != null) {
             activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
+            activeSprite.setPosition(getX(), getY());
         }
     }
 }

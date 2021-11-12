@@ -38,7 +38,7 @@ public class Assets extends AssetManager {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("pack_character_crops.atlas");
+        textureAtlas = this.get("pack.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
@@ -48,7 +48,7 @@ public class Assets extends AssetManager {
 
     // Close files
     public void unloadAll() {
-        this.unload("pack_character_crops.atlas");
+        this.unload("pack.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -138,7 +138,7 @@ public class Assets extends AssetManager {
 
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("pack_character_crops.atlas", TextureAtlas.class);
+        this.load("pack.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
         this.load("NewDesign/InGameButtons.png", Texture.class);
 

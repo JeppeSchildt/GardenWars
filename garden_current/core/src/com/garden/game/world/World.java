@@ -69,7 +69,9 @@ public class World extends Stage {
 
 
     public void update(float delta) {
+
         mapInput.update(delta);
+        spriteHighlight.setPosition(hoveredX*32, hoveredY*32);
     }
 
     public void render() {
@@ -81,7 +83,6 @@ public class World extends Stage {
         worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
         tiledMapRenderer.render(mapLayerIndices);
-        //tiledMapRenderer.render();
 
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
@@ -92,13 +93,12 @@ public class World extends Stage {
         for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
             if( plant.getActiveSprite() != null ) {
-                //plant.getActiveSprite().draw(app.batch);
+                //plant.getActiveSprite().draw(app.batch); // Consider doing it this way.
                 app.batch.draw(plant.getActiveSprite(), plant.getX(), plant.getY());
             }
         }
-        //System.out.println("From world" + hoveredX*tileSize + " " + hoveredY*tileSize);
-        app.batch.draw(spriteHighlight, hoveredX*tileSize, hoveredY*tileSize);
 
+        spriteHighlight.draw(app.batch);
         act(Gdx.graphics.getDeltaTime());
         draw();
     }

@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.Plant;
+import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;
@@ -44,6 +44,7 @@ public class GameScreen extends AbstractScreen {
     PlantFactory actorFactory;
     private boolean improvementsShown;
     final OrthographicCamera camera;
+    private ShapeRenderer shapeRenderer;
 
     private Texture inGameBorder;
     private Table tableResources, table;
@@ -62,6 +63,7 @@ public class GameScreen extends AbstractScreen {
         maxWidth = world.tileSize*world.worldWidth;
         maxHeight = Gdx.graphics.getHeight()-100;
         actorFactory = new PlantFactory(app.assets);
+        shapeRenderer = new ShapeRenderer();
 
         world.user.dkk = 200;
         world.dayCount = 1;
@@ -72,7 +74,7 @@ public class GameScreen extends AbstractScreen {
         buttonList = new ArrayList<TextButton>();
 
         // -------- InGame Borders -------- //
-        //inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
+        inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
 
         setUpIcon();
 
@@ -239,8 +241,17 @@ public class GameScreen extends AbstractScreen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
 
-        //app.batch.draw(inGameBorder,0,0);
-
+        app.batch.draw(inGameBorder,0,0);
+        /*Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        int rect_x = Gdx.graphics.getWidth();
+        int rect_y = Gdx.graphics.getHeight() - 100;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(hudColor);
+        //shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+        shapeRenderer.rect(0,0, Gdx.graphics.getWidth(), 100);
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);*/
         updateHUD();
 
     }

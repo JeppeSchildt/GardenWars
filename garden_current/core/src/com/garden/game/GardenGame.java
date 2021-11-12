@@ -15,12 +15,8 @@ public class GardenGame extends Game {
 	public GameScreen gameScreen;
 
 	public float musicVolume = 1.0f;
-
-
 	public SoundFunctions sound;
-
 	public Boolean preferencesBool = false, currentGameBool = false;
-
 	public int maxWidth, maxHeight, score;
 
 
@@ -34,11 +30,8 @@ public class GardenGame extends Game {
 		maxWidth = Gdx.graphics.getWidth();
 		maxHeight = Gdx.graphics.getHeight();
 
-
-
 		/* --------- Screen setup  ---------  Lazy loading, loading them we need them might be better. */
 		titleScreen = new TitleScreen(this);
-
 
 		setScreen(titleScreen);
 	}
@@ -49,6 +42,5 @@ public class GardenGame extends Game {
 		batch.dispose();
 		assets.unloadAll();
 		assets.dispose();
-
 	}
 }

@@ -28,7 +28,12 @@ public class TitleScreen implements Screen {
 	}
 
 	private void initStage() {
+
+
 		app.sound.Play_Music();
+
+		// SKal slette igen
+		app.sound.Play_Pause_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();

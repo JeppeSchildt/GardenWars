@@ -21,7 +21,7 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public Unit unit;
-    public int dkk;
+    public int dkk, water;
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.

@@ -26,7 +26,7 @@ public class Assets extends AssetManager {
     public Label.LabelStyle largeTextStyle;
     public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
     public TiledMapTileSet tileSet, tileSetNew;
-    public TiledMapTileLayer.Cell grassCell, wellCell;
+    public TiledMapTileLayer.Cell grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird;

@@ -47,10 +47,7 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         user = new Player(app);
         //Texture t = app.assets.textureAtlas.createSprite("well");
-
-
     }
-
 
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
@@ -74,7 +71,6 @@ public class World extends Stage {
 
 
     public void update(float delta) {
-
         mapInput.update(delta);
         spriteHighlight.setPosition(hoveredX*32, hoveredY*32);
     }
@@ -131,25 +127,20 @@ public class World extends Stage {
             }
         }
 
-
-
-
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);
             if (user.dkk <= maxGold)
                 user.dkk += 100;
         }
 
-        app.score = user.dkk;
         user.dkk += profit;
+        app.score = user.dkk;
 
         weekCount();
     }
 
 
-
     private void weekCount(){
-
         dayCount++;
         if (dayCount == 8){
             dayCount = 1;
@@ -159,6 +150,5 @@ public class World extends Stage {
             weekCount = 0;
             monthCount++;
         }
-
     }
 }

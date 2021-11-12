@@ -1,40 +1,61 @@
 
 pack.png
-size: 512, 512
+size: 2048, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+ButtonAll
+  rotate: false
+  xy: 1028, 522
+  size: 115, 116
+  orig: 115, 116
+  offset: 0, 0
+  index: -1
+ButtonBorder
+  rotate: false
+  xy: 2, 52
+  size: 144, 138
+  orig: 144, 138
+  offset: 0, 0
+  index: -1
 Crop_Spritesheet_32
   rotate: false
-  xy: 2, 89
+  xy: 1028, 640
   size: 384, 320
   orig: 384, 320
   offset: 0, 0
   index: 32
+GameBorder
+  rotate: false
+  xy: 2, 192
+  size: 1024, 768
+  orig: 1024, 768
+  offset: 0, 0
+  index: -1
 M
   rotate: false
-  xy: 2, 36
+  xy: 1414, 909
   size: 64, 51
   orig: 64, 51
   offset: 0, 0
   index: 1
 border_tile
   rotate: false
-  xy: 68, 55
+  xy: 1028, 488
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 highlight_test
   rotate: false
-  xy: 2, 2
+  xy: 148, 158
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 well
   rotate: false
-  xy: 388, 361
+  xy: 2, 2
   size: 48, 48
   orig: 48, 48
   offset: 0, 0

@@ -111,6 +111,7 @@ public class GameScreen extends AbstractScreen {
         tableButtons.setFillParent(true);
         tableButtons.setDebug(false);
         tableButtons.setPosition(430, -254);
+        hud.addActor(tableButtons);
     }
 
     /* Size of entire window has been fixed, so we can setup UI using constant values */
@@ -170,6 +171,7 @@ public class GameScreen extends AbstractScreen {
 
         tableButtons.add(imgTalent);
         tableButtons.add(imgSettings);
+
     }
 
     public void updateHUD() {
@@ -359,7 +361,10 @@ public class GameScreen extends AbstractScreen {
 
     private void skillTreeScreen(){
 
-        app.setScreen(app.pauseScreen);
+        if (app.SkillTreeScreen == null) {
+            app.SkillTreeScreen = new SkillTreeScreen(app);
+        }
+        app.setScreen(app.SkillTreeScreen);
     }
 
     @Override

@@ -95,15 +95,12 @@ public class World extends Stage {
         //for ( Plant plant : user.getPlants() ) {
         for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
-            if( plant.getActiveSprite() != null ) {
-                //plant.getActiveSprite().draw(app.batch); // Consider doing it this way.
-                app.batch.draw(plant.getActiveSprite(), plant.getX(), plant.getY());
-            }
+            plant.draw(app.batch, 1);
         }
 
         spriteHighlight.draw(app.batch);
 
-        well.sprite.draw(app.batch);
+        //well.sprite.draw(app.batch);
 
     }
 

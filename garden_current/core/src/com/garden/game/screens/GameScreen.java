@@ -244,7 +244,7 @@ public class GameScreen extends AbstractScreen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
-                            Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
+                            Plant plant = actorFactory.createPlant(Constants.TURNIP, world.hoveredX, world.hoveredY);
                             world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
                             //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                             //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());

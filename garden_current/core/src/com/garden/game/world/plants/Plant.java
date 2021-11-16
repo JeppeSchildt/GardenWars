@@ -1,5 +1,6 @@
 package com.garden.game.world.plants;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.garden.game.tools.Constants;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Plant extends Actor {
@@ -17,6 +19,10 @@ public class Plant extends Actor {
     TextureRegion[] textureRegions;
     int price;
     public int profit;
+    public Map<PlantState, Vector2> waterStateMap;
+    private ArrayList<Sprite> sprites;
+
+
 
     // Reconsider this... what happens if water increases a lot one round watering many times fx ??
     // Make simpler maybe, state machine by doing switch(water) somewhere ....
@@ -108,8 +114,6 @@ public class Plant extends Actor {
     }
     PlantState state;
 
-     public Map<PlantState, Vector2> waterStateMap;
-
     // Two different constructors. For convenience. Maybe it's not necessary.
     public Plant(int x, int y) {
         setPosition(x, y);
@@ -120,6 +124,17 @@ public class Plant extends Actor {
         setPosition(x, y);
         state = PlantState.SEED;
         this.textureRegions = textureRegions;
+        initSprites();
+
+    }
+
+
+    // Initialize ArrayList of sprites. Only call when we have a TextureRegion.
+    private void initSprites() {
+        sprites = new ArrayList<>(6);
+        for(int i = 0; i < 6; i++) {
+            sprites.add(i, new Sprite(textureRegions[state.getStateSpriteInt()]));
+        }
     }
 
     @Override
@@ -160,15 +175,14 @@ public class Plant extends Actor {
     };
 
     public void setActiveAnimation() {
-        if(textureRegions != null) {
-            activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
+        activeSprite = sprites.get(state.getStateSpriteInt());
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if(activeSprite != null) {
             activeSprite.setPosition(getX(), getY());
+            activeSprite.draw(batch);
         }
     }
 }
-/*
-    // Consider making sprites when creating plant instead?? And not new sprite when we change state. But ok because of GC?
-    public void changeState() {
-        activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
-    }
- */

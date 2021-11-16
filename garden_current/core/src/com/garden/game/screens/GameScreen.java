@@ -167,7 +167,7 @@ public class GameScreen extends AbstractScreen {
         imgTalent.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //talentScheen();
+                skillTreeScreen();
             }
         });
 
@@ -361,6 +361,11 @@ public class GameScreen extends AbstractScreen {
                 app.pauseScreen = new PauseScreen(app);
             }
             app.setScreen(app.pauseScreen);
+    }
+
+    private void skillTreeScreen(){
+
+        app.setScreen(app.pauseScreen);
     }
 
     @Override

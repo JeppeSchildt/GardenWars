@@ -11,7 +11,7 @@ import com.garden.game.tools.SoundFunctions;
 public class GardenGame extends Game {
 	public SpriteBatch batch;
 	public Assets assets;
-	public Screen titleScreen, pauseScreen, preferencesScreen, exitScreen, gameOverScreen, weekDayScreen;
+	public Screen titleScreen, pauseScreen, preferencesScreen, exitScreen, gameOverScreen, weekDayScreen, SkillTreeScreen;
 	public GameScreen gameScreen;
 
 	public float musicVolume = 1.0f;

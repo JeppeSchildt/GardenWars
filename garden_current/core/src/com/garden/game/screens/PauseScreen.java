@@ -104,7 +104,6 @@ public class PauseScreen implements Screen {
 		app.setScreen(app.gameScreen);
 	}
 	private void backToMenue(){
-		//Gdx.app.exit();
 		app.sound.buttonMenueSound();
 		app.preferencesBool = false;
 		app.currentGameBool = true;
@@ -115,9 +114,17 @@ public class PauseScreen implements Screen {
 
 	private void restart(){
 		app.sound.buttonMenueSound();
+
+		app.gameScreen.dispose();
+		app.gameScreen.world.dispose();
+
+		if (app.gameScreen == null){
+			app.gameScreen = new GameScreen(app);
+			app.setScreen(app.gameScreen);
+			app.gameScreen.world.init("map6.tmx");
+		}
 		app.setScreen(app.gameScreen);
-		app.gameScreen.world = new World(app);
-		app.gameScreen.world.init("map6.tmx");
+
 	}
 
 	private void preferences(){

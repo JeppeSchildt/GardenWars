@@ -100,7 +100,7 @@ public class GameScreen extends AbstractScreen {
         tableResources = new Table();
         tableResources.setFillParent(true);
         tableResources.setDebug(false);
-        tableResources.setPosition(-420, -366);
+        tableResources.setPosition(-320, -366);
 
         tableDay = new Table();
         tableDay.setFillParent(true);
@@ -179,7 +179,11 @@ public class GameScreen extends AbstractScreen {
         //txtTurnNumber.setText("Days: " + world.turnNumber);
 
         String longSpace = "          ";
-        txtResources.setText("Water: 0" + longSpace + "Gold: " + world.user.dkk);
+        String txtWater = "Water: " + world.user.water + "/" + world.user.maxWater + longSpace;
+        String txtGold = "Gold: " + world.user.dkk + longSpace;
+        String txtPoint= "Point: " + world.user.point + "/" + world.user.maxPoint;
+
+        txtResources.setText(txtWater + txtGold  + txtPoint);
 
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);

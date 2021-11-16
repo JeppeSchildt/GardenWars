@@ -133,7 +133,7 @@ public class GameOverScreen implements Screen {
 
         app.sound.buttonMenueSound();
 
-        app.currentGameBool = false;
+        app.currentGameBool = true;
         app.preferencesBool = false;
 
         stage.dispose();

@@ -78,7 +78,6 @@ public class GameScreen extends AbstractScreen {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         buttonList = new ArrayList<TextButton>();
 
-
         textureGameBorder = new Texture(Gdx.files.internal("inGameDesign/GameBorder.png"));
         imgGameBorder = new Image(textureGameBorder);
         imgGameBorder.setPosition(0, 0);
@@ -134,7 +133,6 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void drawButtons(){
-
         // ----- NextTurn Icon Setup----- //
         //TextButton btnEndTurn = new TextButton("Next Day", skin);
         textureNextTurn = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
@@ -148,8 +146,6 @@ public class GameScreen extends AbstractScreen {
         imgNextTurn.setPosition(app.maxWidth-140, 45);
         hud.addActor(imgNextTurn);
 
-
-
         // ----- Settings Icon Setup----- //
         textureSettings = new Texture(Gdx.files.internal("inGameDesign/ButtonSettings.png"));
         imgSettings = new Image(textureSettings);
@@ -159,7 +155,6 @@ public class GameScreen extends AbstractScreen {
                 pauseScreen();
             }
         });
-
 
         // ----- Talent Icon Setup----- //
         textureTalent  = new Texture(Gdx.files.internal("inGameDesign/ButtonTalent.png"));
@@ -175,7 +170,6 @@ public class GameScreen extends AbstractScreen {
 
         tableButtons.add(imgTalent);
         tableButtons.add(imgSettings);
-
     }
 
     public void updateHUD() {

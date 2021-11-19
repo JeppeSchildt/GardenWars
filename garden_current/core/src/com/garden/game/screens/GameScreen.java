@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -64,6 +65,7 @@ public class GameScreen extends AbstractScreen {
         world = new World(app);
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hud = new Stage(new ScreenViewport(camera));
+
         //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
         //hud = new Stage(new ScreenViewport(world.worldCamera));
@@ -399,7 +401,9 @@ public class GameScreen extends AbstractScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        Vector3 position = world.worldCamera.unproject(clickCoordinates);
+        //Vector3 position = world.worldCamera.project(clickCoordinates);
+        Vector3 position = camera.project(clickCoordinates);
+        Vector2 test = hud.stageToScreenCoordinates(new Vector2(position.x, position.y));
         //(int) (position.x) / world.tileSize;
         if(button == Input.Buttons.RIGHT) {
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
@@ -408,7 +412,8 @@ public class GameScreen extends AbstractScreen {
         	double dist = Math.sqrt(Math.pow(cat, 2)*2); 
         	float goX = (float)(posX * world.tileSize + dist);
         	float goY = (float)(posY * world.tileSize + dist);
-            outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
+            //outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
+            outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
             hud.addActor(outerTable);
             improvementsShown = true;

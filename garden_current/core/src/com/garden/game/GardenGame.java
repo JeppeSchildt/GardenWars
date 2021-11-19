@@ -19,8 +19,7 @@ public class GardenGame extends Game {
 
 	public SoundFunctions sound;
 
-	public Boolean preferencesBool = false, currentGameBool = false;
-
+	public Boolean preferencesBool, currentGameBool, drySeason;
 	public int maxWidth, maxHeight, score;
 
 
@@ -33,8 +32,11 @@ public class GardenGame extends Game {
 
 		maxWidth = Gdx.graphics.getWidth();
 		maxHeight = Gdx.graphics.getHeight();
+		preferencesBool = false;
+		currentGameBool = false;
 
-
+		//-- Event --
+		drySeason = false;
 
 		/* --------- Screen setup  ---------  Lazy loading, loading them we need them might be better. */
 		titleScreen = new TitleScreen(this);

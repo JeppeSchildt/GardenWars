@@ -3,6 +3,7 @@ package com.garden.game.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Logger;
 import com.garden.game.GardenGame;
@@ -62,6 +63,12 @@ public class MapInput implements InputProcessor {
             tileSelected = false;
 
             //System.out.println(tileX + " " + tileY);
+            TiledMapTileLayer.Cell waterCell = world.waterLayer.getCell(tileX, tileY);
+            if(waterCell != null) {
+
+                return false;
+            }
+
             if (world.user.unit.canMove(tileX, tileY)) {
 
                 world.user.unit.move(tileX, tileY);
@@ -88,6 +95,7 @@ public class MapInput implements InputProcessor {
     // Adjust 'highlighted' tile
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+
         if(!tileSelected) {
             Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
             Vector3 position = world.worldCamera.unproject(mouseCoordinates);

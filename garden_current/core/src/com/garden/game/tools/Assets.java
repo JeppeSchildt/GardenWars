@@ -152,11 +152,11 @@ public class Assets extends AssetManager {
 
 
         setLoader(TiledMap.class, new TmxMapLoader());
-        load("map6.tmx", TiledMap.class);
+        load("World1.tmx", TiledMap.class);
 
         finishLoading();
 
-        tileSet = get("map6.tmx", TiledMap.class).getTileSets().getTileSet("wood_tileset");
+        tileSet = get("World1.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
         grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(this.tileSet.getTile(0x1));
 

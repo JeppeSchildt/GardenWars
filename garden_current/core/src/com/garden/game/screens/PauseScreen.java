@@ -106,13 +106,13 @@ public class PauseScreen implements Screen {
 	private void backToMenue(){
 		app.sound.buttonMenueSound();
 		app.preferencesBool = false;
-		app.currentGameBool = true;
 
 		app.sound.Chance_Music();
 		app.setScreen(app.titleScreen);
 	}
 
 	private void restart(){
+		app.currentGameBool = false;
 		app.sound.buttonMenueSound();
 
 		app.gameScreen.dispose();
@@ -121,7 +121,7 @@ public class PauseScreen implements Screen {
 		if (app.gameScreen == null){
 			app.gameScreen = new GameScreen(app);
 			app.setScreen(app.gameScreen);
-			app.gameScreen.world.init("map6.tmx");
+			app.gameScreen.world.init("World1.tmx");
 		}
 		app.setScreen(app.gameScreen);
 

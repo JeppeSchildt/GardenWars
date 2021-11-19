@@ -1,19 +1,20 @@
 package com.garden.game.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.screens.GameScreen;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Iterator;
@@ -24,14 +25,17 @@ public class World extends Stage {
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    public TiledMapTileLayer soilLayer, improvementLayer;
-    private int[] mapLayerIndices;
+    public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer;
+    private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
     public Player user;
     Sprite spriteHighlight;
+
     public MapInput mapInput;
+
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
+
     public int dayCount, weekCount, monthCount;
     private Well well;
 
@@ -52,11 +56,20 @@ public class World extends Stage {
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Soil Layer");
+        //soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
-        MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("Soil Layer"), mapLayers.getIndex("Improvement Layer")};
 
+        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterLayer");
+        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWaterLayer");
+
+        grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
+
+        MapLayers mapLayers = tiledMap.getLayers();
+        mapLayerIndices = new int[] {mapLayers.getIndex("GrassLayer"),mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("WaterLayer")};
+
+        mapLayerIndicesDry = new int[] {mapLayers.getIndex("GrassLayer"),mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("NoWaterLayer")};
+
+        activeIndices = mapLayerIndicesDry;
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
@@ -83,13 +96,19 @@ public class World extends Stage {
 
         worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
-        tiledMapRenderer.render(mapLayerIndices);
+
+
+        if (app.drySeason)
+            tiledMapRenderer.render(mapLayerIndicesDry);
+        else tiledMapRenderer.render(mapLayerIndices);
+
 
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
 
         app.batch.begin();  // Batch ended in GameScreens render
         act(Gdx.graphics.getDeltaTime());
+        //renderBubble("TEST");
         draw();
 
         //for ( Plant plant : user.getPlants() ) {
@@ -106,6 +125,7 @@ public class World extends Stage {
 
     public void nextTurn() {
         turnNumber++;
+        //startEvent("magazine"); //remove
         int profit = 0;
         //for ( Plant plant : user.getPlants() ) {
         //for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
@@ -118,6 +138,7 @@ public class World extends Stage {
             if (plant.getState() == Plant.PlantState.DEAD) {
                 // Remove grass from improvement layer.
                 app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+
                 entryIt.remove();
             } else {
                 profit += plant.profit;
@@ -136,16 +157,19 @@ public class World extends Stage {
         weekCount();
     }
 
-
     private void weekCount(){
         dayCount++;
         if (dayCount == 8){
             dayCount = 1;
             weekCount++;
         }
+        //Month end
         if (weekCount == 4){
             weekCount = 0;
             monthCount++;
+            //startEvent("magazine");
         }
+
     }
+
 }

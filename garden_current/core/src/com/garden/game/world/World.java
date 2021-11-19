@@ -24,8 +24,8 @@ public class World extends Stage {
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    public TiledMapTileLayer soilLayer, improvementLayer;
-    private int[] mapLayerIndices;
+    public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer;
+    private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
     public Player user;
     Sprite spriteHighlight;
     public MapInput mapInput;
@@ -52,11 +52,20 @@ public class World extends Stage {
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Soil Layer");
+        //soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
-        MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("Soil Layer"), mapLayers.getIndex("Improvement Layer")};
 
+        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterLayer");
+        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWaterLayer");
+
+        grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
+
+        MapLayers mapLayers = tiledMap.getLayers();
+        mapLayerIndices = new int[] {mapLayers.getIndex("GrassLayer"),mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("WaterLayer")};
+
+        mapLayerIndicesDry = new int[] {mapLayers.getIndex("GrassLayer"),mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("NoWaterLayer")};
+
+        activeIndices = mapLayerIndicesDry;
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
@@ -83,7 +92,12 @@ public class World extends Stage {
 
         worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
-        tiledMapRenderer.render(mapLayerIndices);
+
+
+        if (app.drySeason)
+            tiledMapRenderer.render(mapLayerIndicesDry);
+        else tiledMapRenderer.render(mapLayerIndices);
+
 
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
@@ -118,6 +132,7 @@ public class World extends Stage {
             if (plant.getState() == Plant.PlantState.DEAD) {
                 // Remove grass from improvement layer.
                 app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+
                 entryIt.remove();
             } else {
                 profit += plant.profit;
@@ -147,5 +162,7 @@ public class World extends Stage {
             weekCount = 0;
             monthCount++;
         }
+        
     }
+
 }

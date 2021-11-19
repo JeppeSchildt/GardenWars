@@ -48,8 +48,8 @@
             "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 781.8181818181818,
-                "y": 930.3030303030303
+                "x": 781.8181818181819,
+                "y": 931.818181818182
             }
         },
         "C:/Software_IKT/ComputerSpil/NicePng_tile-png_2654552.tsx": {
@@ -94,6 +94,17 @@
         "D:/IHA/GardenWars/garden_current/core/assets/wood_tileset.tsx": {
             "scaleInDock": 1
         },
+        "D:/IHA/GardenWars/refGame/gdx-strategy-master/gdx-strategy-master/core/assets/testlevel.tmx": {
+            "scale": 0.48860677083333326,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 767.4883411059295,
+                "y": 510.63557628247844
+            }
+        },
+        "D:/IHA/GardenWars/refGame/gdx-strategy-master/gdx-strategy-master/core/assets/testlevel.tmx#tiles": {
+            "scaleInDock": 1
+        },
         "Farmhouse_388x324.tsx": {
             "scaleInDock": 1
         },
@@ -110,7 +121,7 @@
             "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 3142.424242424242,
+                "x": 1415.1515151515152,
                 "y": 2204.5454545454545
             }
         },
@@ -118,8 +129,8 @@
             "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 432,
-                "y": 615.9999999999999
+                "x": 582.6666666666665,
+                "y": 614
             }
         },
         "trees-dead.tsx": {
@@ -127,6 +138,14 @@
         },
         "trees-green.tsx": {
             "scaleInDock": 1
+        },
+        "untitled.tmx": {
+            "scale": 0.6967285156249999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 496.6066297568155,
+                "y": 513.1123414394841
+            }
         }
     },
     "last.imagePath": "C:/Users/caspe/Downloads",
@@ -144,8 +163,10 @@
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "C:/Software_IKT/ComputerSpil/LPC_Terrain/untitled.tmx",
+        "D:/IHA/GardenWars/refGame/gdx-strategy-master/gdx-strategy-master/core/assets/testlevel.tmx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/Berry Garden.tsx",
+        "C:/Software_IKT/ComputerSpil/LPC_Terrain/untitled.tmx",
+        "untitled.tmx",
         "World.tmx",
         "World1.tmx",
         "Crop_Spritesheet.tsx",
@@ -153,9 +174,7 @@
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/dwarven home.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/house001.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/rem_0004.tsx",
-        "C:/Software_IKT/ComputerSpil/LPC_Terrain/terrain2.tsx",
-        "C:/Software_IKT/ComputerSpil/LPC_Terrain/Terrain.tsx",
-        "C:/Users/caspe/Downloads/gdx-strategy-master/gdx-strategy-master/desktop/build/resources/main/tiles.tmx"
+        "C:/Software_IKT/ComputerSpil/LPC_Terrain/terrain2.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 0,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
- <tileset firstgid="1" source="LPC_Terrain/Terrain.tsx"/>
+ <tileset firstgid="1" source="Terrain.tsx"/>
  <tileset firstgid="1025" source="C:/Software_IKT/ComputerSpil/LPC_Terrain/Berry Garden.tsx"/>
  <layer id="2" name="GrassLayer" width="32" height="32">
   <data encoding="base64" compression="zlib">

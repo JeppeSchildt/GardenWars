@@ -52,6 +52,7 @@ public class GameScreen extends AbstractScreen {
 
     public GameScreen(GardenGame app) {
         this.app = app;
+        app.currentGameBool = true;
         world = new World(app);
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hud = new Stage(new ScreenViewport(camera));

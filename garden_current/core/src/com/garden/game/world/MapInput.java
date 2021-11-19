@@ -56,7 +56,8 @@ public class MapInput implements InputProcessor {
         return false;
     }
 
-    @Override // Fix this function. We never want to move to a tile covered by HUD. Click should 'go' to HUD.
+    // Handle some clicks.
+    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
         Vector3 position = world.worldCamera.unproject(clickCoordinates);
@@ -72,18 +73,11 @@ public class MapInput implements InputProcessor {
         } else if(button == Input.Buttons.LEFT) {
             tileSelected = false;
 
-            //System.out.println(tileX + " " + tileY);
-            TiledMapTileLayer.Cell waterCell = world.waterLayer.getCell(tileX, tileY);
-            if(waterCell != null) {
-
-                return false;
-            }
-
+            // Check for bounds of map and water cells.
             if (world.user.unit.canMove(tileX, tileY)) {
 
                 world.user.unit.move(tileX, tileY);
                 world.user.unit.setPosition(position.x, position.y);
-                //world.worldCamera.position.set(position);
 
                 return true;
             }

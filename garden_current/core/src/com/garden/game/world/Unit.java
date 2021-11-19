@@ -52,7 +52,14 @@ public class Unit extends Actor {
     }
     public boolean canMove(int x, int y) {
 
-        return (x < maxX && y < maxY && x >= minX && y >= minY);
+        // Check for bounds of map.
+        boolean canMove = x < maxX && y < maxY && x >= minX && y >= minY;
+
+        // Check for water.
+
+        canMove = canMove && (app.gameScreen.world.waterLayer.getCell(x, y) == null);
+
+        return canMove;
     }
 
     @Override
@@ -78,8 +85,8 @@ public class Unit extends Actor {
                 x -= velocity * Gdx.graphics.getDeltaTime();
             }
 
-
-            setPosition(x, y);
+            if(canMove((int) x/32, (int) y/32))
+                setPosition(x, y);
         }
         batch.draw(drawThis, getX(), getY());
 
@@ -88,9 +95,10 @@ public class Unit extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        /*if(app.gameScreen.world.mapInput.walking) {
+        if(!canMove((int) getX()/32, (int) getY()/32)) {
+            clearActions();
             activeAnimation = stopAnimations.get(direc);
-        }*/
+        }
         drawThis = activeAnimation.getKeyFrame(elapsedTime, true);
     }
 

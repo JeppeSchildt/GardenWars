@@ -48,6 +48,7 @@ public class World extends Stage {
         // Do this to print map properly.
         worldCamera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         setViewport(new ScreenViewport(worldCamera));
+        worldCamera.zoom = 0.6302493f;
         mapInput = new MapInput(app, this);
         user = new Player(app);
         //Texture t = app.assets.textureAtlas.createSprite("well");

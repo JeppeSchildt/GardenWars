@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" source="LPC_Terrain/Terrain.tsx"/>
+ <layer id="2" name="GrassLayer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMA6C9yvqHXI+jYC+pqqqq+voAZa+MAQ==
+  </data>
+ </layer>
+ <layer id="1" name="NoWaterLayer" width="32" height="32">
+  <properties>
+   <property name="canWalk" type="bool" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztlFEKgCAQBT1UnqQ6SXafjprBEn7IQ2JNihmY7+GpGAIAAAAAfI05u5jrgP6WTeb+cvvaHgf2bfvxt375ppSxU7/Y1Sr9B/2Ge+3aTz7e/amyRf2J3v2a6kyc+lLVPwExuGzg
+  </data>
+ </layer>
+ <layer id="3" name="WaterLayer" width="32" height="32">
+  <properties>
+   <property name="canWalk" type="bool" value="false"/>
+   <property name="hasWater" type="bool" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztlFEKgCAQBb2YnSQ9SXX2DPxYRBYNczFmYL6Hp6JzAAAAALAaezJko0H/SJ7Za3L72b4Z9uX2P/Xlm9KUZz+yX+5qlX4frff6Vf9NQ9NXtmh/4uh+75lY928PLVSm
+  </data>
+ </layer>
+</map>

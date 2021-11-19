@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "World.tmx",
+    "activeFile": "World1.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -98,7 +98,7 @@
             "scaleInDock": 1
         },
         "LPC_Terrain/Terrain.tsx": {
-            "scaleInDock": 0.5
+            "scaleInDock": 0.75
         },
         "Tree.tsx": {
             "scaleInDock": 1
@@ -110,8 +110,16 @@
             "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 3145.454545454545,
-                "y": 2209.090909090909
+                "x": 3142.424242424242,
+                "y": 2204.5454545454545
+            }
+        },
+        "World1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 432,
+                "y": 615.9999999999999
             }
         },
         "trees-dead.tsx": {
@@ -122,31 +130,32 @@
         }
     },
     "last.imagePath": "C:/Users/caspe/Downloads",
-    "map.height": 50,
+    "map.height": 32,
     "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
     "map.orientation": null,
-    "map.width": 50,
+    "map.width": 32,
     "openFiles": [
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/untitled.tmx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/Berry Garden.tsx",
         "World.tmx",
-        "Crop_Spritesheet.tsx"
+        "World1.tmx"
     ],
     "project": "untitled.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/untitled.tmx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/Berry Garden.tsx",
-        "Crop_Spritesheet.tsx",
         "World.tmx",
+        "World1.tmx",
+        "Crop_Spritesheet.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/ShabbyChic_Home.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/dwarven home.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/house001.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/rem_0004.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/terrain2.tsx",
         "C:/Software_IKT/ComputerSpil/LPC_Terrain/Terrain.tsx",
-        "C:/Users/caspe/Downloads/gdx-strategy-master/gdx-strategy-master/desktop/build/resources/main/tiles.tmx",
-        "C:/Software_IKT/ComputerSpil/map.tsx"
+        "C:/Users/caspe/Downloads/gdx-strategy-master/gdx-strategy-master/desktop/build/resources/main/tiles.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 0,

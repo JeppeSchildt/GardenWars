@@ -1,19 +1,20 @@
 package com.garden.game.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.screens.GameScreen;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Iterator;
@@ -28,10 +29,13 @@ public class World extends Stage {
     private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
     public Player user;
     Sprite spriteHighlight;
+
     public MapInput mapInput;
+
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
+
     public int dayCount, weekCount, monthCount;
     private Well well;
 
@@ -104,6 +108,7 @@ public class World extends Stage {
 
         app.batch.begin();  // Batch ended in GameScreens render
         act(Gdx.graphics.getDeltaTime());
+        //renderBubble("TEST");
         draw();
 
         //for ( Plant plant : user.getPlants() ) {
@@ -120,6 +125,7 @@ public class World extends Stage {
 
     public void nextTurn() {
         turnNumber++;
+        //startEvent("magazine"); //remove
         int profit = 0;
         //for ( Plant plant : user.getPlants() ) {
         //for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
@@ -151,16 +157,17 @@ public class World extends Stage {
         weekCount();
     }
 
-
     private void weekCount(){
         dayCount++;
         if (dayCount == 8){
             dayCount = 1;
             weekCount++;
         }
+        //Month end
         if (weekCount == 4){
             weekCount = 0;
             monthCount++;
+            //startEvent("magazine");
         }
 
     }

@@ -1,6 +1,7 @@
 package com.garden.game.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,7 +27,7 @@ public class Unit extends Actor {
     public float elapsedTime;
     TextureRegion drawThis;
     private final int DOWN = 0, RIGHT = 1, UP = 2, LEFT = 3;
-
+    float velocity = 100;
 
     public Unit(GardenGame app, String assetName) {
         this.app = app;
@@ -44,8 +45,10 @@ public class Unit extends Actor {
 
     }
 
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         //position.setLocation(x, y);
+        selectAnimation(x, y);
+
     }
     public boolean canMove(int x, int y) {
 
@@ -56,7 +59,28 @@ public class Unit extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         //super.draw(batch, parentAlpha);
         elapsedTime += Gdx.graphics.getDeltaTime();
+        if(app.gameScreen.world.mapInput.walking) {
+            float x = getX();
+            float y = getY();
 
+            // app.gameScreen.world.mapInput.... lol
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.UP] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.W]) {
+                y += velocity * Gdx.graphics.getDeltaTime();
+            }
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.DOWN] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.S]) {
+                y -= velocity * Gdx.graphics.getDeltaTime();
+            }
+
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.RIGHT] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.D]) {
+                x += velocity * Gdx.graphics.getDeltaTime();
+            }
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.LEFT] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.A]) {
+                x -= velocity * Gdx.graphics.getDeltaTime();
+            }
+
+
+            setPosition(x, y);
+        }
         batch.draw(drawThis, getX(), getY());
 
     }
@@ -64,6 +88,9 @@ public class Unit extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        /*if(app.gameScreen.world.mapInput.walking) {
+            activeAnimation = stopAnimations.get(direc);
+        }*/
         drawThis = activeAnimation.getKeyFrame(elapsedTime, true);
     }
 

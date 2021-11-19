@@ -11,6 +11,22 @@ public class Constants {
     public static final int CUCUMBER = 2;
     public static final int TULIP = 3;
     public static final int TOMATO = 4;
+    public static final int MELON = 5;
+    public static final int EGGPLANT = 6;
+    public static final int LEMON = 7;
+    public static final int PINEAPPLE = 8;
+    public static final int RICE = 9;
+    public static final int WHEAT = 10;
+    public static final int GRAPES = 11;
+    public static final int STRAWBERRY = 12;
+    public static final int CASSAVA = 13;
+    public static final int POTATO = 14;
+    public static final int COFFEE = 15;
+    public static final int ORANGE = 16;
+    public static final int AVOCADO = 17;
+    public static final int CORN = 18;
+    public static final int SUNFLOWER = 19;
+
 
     // Indices of sprites associated with state of plant.
     public static final int SPRITE_HEALTHY = 0;
@@ -33,8 +49,8 @@ public class Constants {
     public static final Map<Integer, Integer> idPriceMap;
     static {
          idPriceMap = new HashMap<Integer, Integer>();
-         idPriceMap.put(GRASS, GRASS_PRICE);
-        idPriceMap.put(TURNIP, TURNIP_PRICE);
+         idPriceMap.put(GRASS, 10);
+        idPriceMap.put(TURNIP, 10);
     }
 }
  /*

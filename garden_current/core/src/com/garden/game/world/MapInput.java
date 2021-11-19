@@ -31,7 +31,10 @@ public class MapInput implements InputProcessor {
     public boolean keyDown(int keycode) {
         keyPressed[keycode] = true;
         toggleKey[keycode] = (toggleKey[keycode] + 1) % 2;
-        walking = true;
+        walking = keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.RIGHT] ||
+                keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.DOWN] ||
+                keyPressed[Input.Keys.A] || keyPressed[Input.Keys.D] ||
+                keyPressed[Input.Keys.W] || keyPressed[Input.Keys.S];
 
         return true;
     }

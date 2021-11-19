@@ -196,6 +196,7 @@ public class Plant extends Actor {
             cell = null;
             sprites = null;
             return;
+            // Something is wrong here.... null pointer exception :O !!!
         }
         setActiveSprite();
 

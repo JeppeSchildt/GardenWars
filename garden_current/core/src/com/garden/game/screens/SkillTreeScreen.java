@@ -1,25 +1,32 @@
 package com.garden.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
+import sun.java2d.SunGraphics2D;
 
 public class SkillTreeScreen implements Screen {
 
     private GardenGame app;
     private Stage stage;
     private Table table;
+    private Texture textureRightArrow, textureLeftArrow, textureDownArrow, textureEmptyArrow;
+    private Image imgRightArrow, imgLeftArrow, imgDownArrow, imgEmptyArrow;
+    private TextButton basicPlants, fertilizer, fertilizerPlus, general, moreFruits, moreFlowers,
+            construction, communication, water, waterPlus, irrigation, autoHarvest,
+            settingsButton, quitButton, playButton, resetButton;
+
+
 
     Skin skin;
     public SkillTreeScreen(GardenGame app) {
@@ -48,7 +55,7 @@ public class SkillTreeScreen implements Screen {
         title.setFontScale(5);
 
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);
-        TextButton playButton = new TextButton("Resume",skin);
+        playButton = new TextButton("Resume",skin);
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -58,7 +65,116 @@ public class SkillTreeScreen implements Screen {
 
 
 
-        TextButton resetButton = new TextButton("Restart",skin);
+        textureRightArrow = new Texture(Gdx.files.internal("arrows/RightArrow.png"));
+        imgRightArrow = new Image(textureRightArrow);
+
+        textureLeftArrow = new Texture(Gdx.files.internal("arrows/LeftArrow.png"));
+        imgLeftArrow = new Image(textureLeftArrow);
+
+        textureDownArrow = new Texture(Gdx.files.internal("arrows/DownArrow.png"));
+        imgDownArrow = new Image(textureDownArrow);
+
+        textureEmptyArrow = new Texture(Gdx.files.internal("arrows/EmptyArrow.png"));
+        imgEmptyArrow = new Image(textureEmptyArrow);
+
+        basicPlants = new TextButton("Basic Plants",skin);
+        basicPlants.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        fertilizer = new TextButton("Fertilizer",skin);
+        fertilizer.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        general = new TextButton("General",skin);
+        general.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        moreFlowers = new TextButton("More Flowers",skin);
+        moreFlowers.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        moreFruits = new TextButton("More Fruits",skin);
+        moreFruits.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        construction = new TextButton("Construction",skin);
+        construction.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        communication = new TextButton("Communication",skin);
+        communication.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        water = new TextButton("Water",skin);
+        water.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        fertilizerPlus = new TextButton("Fertilizer++",skin);
+        fertilizerPlus.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        waterPlus = new TextButton("Water++",skin);
+        waterPlus.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        autoHarvest = new TextButton("Auto harvest",skin);
+        autoHarvest.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        irrigation = new TextButton("Irrigation",skin);
+        irrigation.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+
+        resetButton = new TextButton("Restart",skin);
         resetButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -66,7 +182,10 @@ public class SkillTreeScreen implements Screen {
             }
         });
 
-        TextButton settingsButton = new TextButton("Preferences",skin);
+
+
+
+        settingsButton = new TextButton("Preferences",skin);
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -75,7 +194,7 @@ public class SkillTreeScreen implements Screen {
             }
         });
 
-        TextButton quitButton = new TextButton("Back to menu",skin);
+        quitButton = new TextButton("Back to menu",skin);
         quitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -84,17 +203,56 @@ public class SkillTreeScreen implements Screen {
         });
 
 
-        table.add(title).colspan(2).center();
+       // table.add(title).center();
+        // table.row();
+        table.add(imgEmptyArrow).right();
+        table.add(basicPlants).left();
         table.row();
+        table.add(imgEmptyArrow).right();
+       // table.add(imgDownArrow).center();
+        table.row();
+        table.add(fertilizer).colspan(3).center();
+        table.add(general).colspan(3).center();
+        table.row();
+        //table.add(imgLeftArrow).right();
+        //table.add(imgDownArrow).center();
+        //table.add(imgRightArrow).left();
+        table.add(imgEmptyArrow).right();
+        table.row();
+        table.add(moreFruits).center();
+        table.add(moreFlowers).center();
+        table.add(imgEmptyArrow).right();
+        table.add(construction).center();
+        table.add(communication).center();
+        table.add(water).center();
+        table.row();
+        table.add(imgEmptyArrow).center();
+        table.row();
+        table.add(fertilizerPlus).colspan(2).center();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(waterPlus).right();
+        table.row();
+        table.add(imgEmptyArrow).center();
+        table.row();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(irrigation).center();
+        table.row();
+        table.add(imgEmptyArrow).center();
+        table.row();
+        table.add(imgEmptyArrow).center();
+        table.add(imgEmptyArrow).center();
+        table.add(autoHarvest).center();
 
-        table.add(playButton).left();
-        table.row();
-        table.add(resetButton).left();
-        table.row();
-        table.add(settingsButton).left();
-        table.row();
-        table.add(quitButton).left();
-        table.row();
+
+
+
+
     }
 
 

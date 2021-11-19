@@ -146,6 +146,9 @@ public class Assets extends AssetManager {
         this.load("inGameDesign/ButtonSettings.png", Texture.class);
         this.load("inGameDesign/ButtonTalent.png", Texture.class);
 
+        this.load("arrows/DownArrow.png", Texture.class);
+        this.load("arrows/RightArrow.png", Texture.class);
+        this.load("arrows/LeftArrow.png", Texture.class);
 
 
         setLoader(TiledMap.class, new TmxMapLoader());

@@ -8,6 +8,7 @@ import com.garden.game.world.Unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /*
@@ -61,6 +62,11 @@ public class Player {
     public boolean canPlant(int id, int x, int y) {
         return (Constants.idPriceMap.get(id) <= dkk) && (plants_.get(new Vector2(x, y)) == null);
     }
+
+    public Plant getPlantAtPosition(int x, int y) {
+        return plants_.get(new Vector2(x, y));
+    }
+
     public void plant(int x, int y, Plant plant) {
         dkk -= plant.getPrice();
         addPlant(plant);
@@ -86,6 +92,26 @@ public class Player {
 
     public void getWater(){
         water += waterSize;
+    }
+
+    public void nextTurn() {
+        Iterator<Map.Entry<Vector2, Plant>> entryIt = getPlants_().entrySet().iterator();
+
+        while (entryIt.hasNext()) {
+            Map.Entry<Vector2, Plant> entry = entryIt.next();
+            Plant plant = entry.getValue();
+            plant.nextTurn();
+
+            if (plant.getState() == Plant.PlantState.DEAD) {
+                // Remove grass from improvement layer.
+                app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+
+                entryIt.remove();
+            } else {
+                dkk += plant.profit;
+            }
+        }
+
     }
 
 

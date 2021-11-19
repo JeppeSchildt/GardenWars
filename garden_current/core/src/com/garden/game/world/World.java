@@ -127,23 +127,9 @@ public class World extends Stage {
         turnNumber++;
         //startEvent("magazine"); //remove
         int profit = 0;
-        //for ( Plant plant : user.getPlants() ) {
-        //for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
-        Iterator<Map.Entry<Vector2, Plant>> entryIt = user.getPlants_().entrySet().iterator();
-        while (entryIt.hasNext()) {
-            Map.Entry<Vector2, Plant> entry = entryIt.next();
-            Plant plant = entry.getValue();
-            plant.nextTurn();
 
-            if (plant.getState() == Plant.PlantState.DEAD) {
-                // Remove grass from improvement layer.
-                app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+        user.nextTurn();
 
-                entryIt.remove();
-            } else {
-                profit += plant.profit;
-            }
-        }
 
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);

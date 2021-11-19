@@ -19,6 +19,13 @@ public class Constants {
     public static final int SPRITE_SEED = 5;
     public static final int SPRITE_DEAD = -1;
 
+    // Names of states.
+    public static final String HEALTHY_STATE = "Healthy";
+    public static final String SMALL_STATE = "Small";
+    public static final String WITHERING_STATE = "Withering";
+    public static final String SEED_STATE = "Seed";
+    public static final String DEAD_STATE = "";
+
 
 
     public static final Integer GRASS_PRICE = 10;

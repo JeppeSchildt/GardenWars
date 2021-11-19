@@ -34,7 +34,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo;
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent;
     Table buttonTable,outerTable;
@@ -56,7 +56,7 @@ public class GameScreen extends AbstractScreen {
     private ShapeRenderer shapeRenderer;
     Sprite spriteHighlight;
 
-    private Table tableResources, tableDay, tableButtons;
+    private Table tableResources, tableDay, tableButtons, tableTileInfo;
 
     public GameScreen(GardenGame app) {
         this.app = app;
@@ -98,7 +98,7 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(imgBtnBorder);
 
         tabelSetup();
-        drawTextIcons();
+        setupTextIcons();
         drawButtons();
 
         setupTileImprovementBox();
@@ -106,40 +106,52 @@ public class GameScreen extends AbstractScreen {
 
     private void tabelSetup(){
         // Create a table that fills the screen. Everything else will go inside this table.
-        tableResources = new Table();
+        /*tableResources = new Table();
         tableResources.setFillParent(true);
         tableResources.setDebug(false);
-        tableResources.setPosition(-320, -366);
+        tableResources.setPosition(-320, -366);*/
 
-        tableDay = new Table();
+        /*tableDay = new Table();
         tableDay.setFillParent(true);
         tableDay.setDebug(false);
-        tableDay.setPosition(400, -366);
+        tableDay.setPosition(400, -366);*/
 
         tableButtons = new Table();
         tableButtons.setFillParent(true);
         tableButtons.setDebug(false);
         tableButtons.setPosition(430, -254);
         hud.addActor(tableButtons);
+
+        /*tableTileInfo = new Table();
+        tableTileInfo.setFillParent(true);
+        tableTileInfo.setDebug(false);
+        tableTileInfo.setPosition(200, -366);*/
+
+
     }
 
     /* Size of entire window has been fixed, so we can setup UI using constant values */
-    private void drawTextIcons() {
+    private void setupTextIcons() {
 
-        hud.addActor(tableResources);
+
+        //hud.addActor(tableResources);
         txtResources = new Label("", skin);
-        tableResources.add(txtResources);
+        txtResources.setPosition(30,16);
+        hud.addActor(txtResources);
+        //tableResources.add(txtResources);
 
-        hud.addActor(tableDay);
+        //hud.addActor(tableDay);
         txtMonthWeekDay = new Label("", skin);
-        tableDay.add(txtMonthWeekDay);
+        txtMonthWeekDay.setPosition(824,16);
+        hud.addActor(txtMonthWeekDay);
+        //tableDay.add(txtMonthWeekDay);
 
-        /*
-        // Show coordinates of selected tile.
-        txtSelectedTileCoordinates = new Label("", skin);
-        txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 20);
-        hud.addActor(txtSelectedTileCoordinates);
-         */
+        //hud.addActor(tableTileInfo);
+        txtTileInfo = new Label("", skin);
+        txtTileInfo.setPosition(30, 700);
+        hud.addActor(txtTileInfo);
+        //tableTileInfo.add(txtTileInfo);
+
     }
 
     private void drawButtons(){
@@ -183,6 +195,16 @@ public class GameScreen extends AbstractScreen {
 
     }
 
+    // Utility method, get info about hovered tile.
+    public String getTileInfo(int x, int y) {
+        String coordinates = "[" + x + "," + y + "]\n";
+        Plant plant = world.user.getPlantAtPosition(x*32, y*32);
+
+        String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
+        return coordinates + improvement;
+    }
+
+
     public void updateHUD() {
         //txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         //txtTurnNumber.setText("Days: " + world.turnNumber);
@@ -193,7 +215,7 @@ public class GameScreen extends AbstractScreen {
         String txtPoint= "Point: " + world.user.point + "/" + world.user.maxPoint;
 
         txtResources.setText(txtWater + txtGold  + txtPoint);
-
+        txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);
     }
@@ -253,7 +275,7 @@ public class GameScreen extends AbstractScreen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
-                            Plant plant = actorFactory.createPlant(Constants.TURNIP, world.hoveredX, world.hoveredY);
+                            Plant plant = actorFactory.createPlant(Constants.ROSE, world.hoveredX, world.hoveredY);
                             world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
                             //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                             //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());

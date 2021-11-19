@@ -125,7 +125,7 @@ public class Unit extends Actor {
         run.setRunnable(new Runnable() {
             @Override
             public void run() {
-                app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, plant.getCell());
+                //app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, plant.getCell());
                 plant.setActiveAnimation();
             }
         });

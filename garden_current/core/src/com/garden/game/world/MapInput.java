@@ -99,9 +99,7 @@ public class MapInput implements InputProcessor {
         if(!tileSelected) {
             Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
             Vector3 position = world.worldCamera.unproject(mouseCoordinates);
-            /*if (world.waterLayer == position){
 
-            }*/
             world.hoveredX = (int) (position.x) / world.tileSize;
             world.hoveredY = (int) (position.y) / world.tileSize;
 

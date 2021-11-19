@@ -49,7 +49,6 @@ public class Unit extends Actor {
     }
     public boolean canMove(int x, int y) {
 
-
         return (x < maxX && y < maxY && x >= minX && y >= minY);
     }
 

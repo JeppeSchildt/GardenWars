@@ -12,12 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
-import javax.swing.text.TabableView;
-
 public class TitleScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
-	private TextButton playButton, settingsButton, continueButton,quitButton, musicButton;
+	private TextButton playButton, settingsButton, continueButton,quitButton, debugModeButton;
 	private Table table;
 	private Label title, titleSub;
 
@@ -49,15 +47,9 @@ public class TitleScreen implements Screen {
 		final int midX = Gdx.graphics.getWidth() / 2;
 		final int butY = Gdx.graphics.getHeight() / 3;
 
-		musicButton = new TextButton("Music",skin);
-		musicButton.setPosition(app.maxWidth - 75, 15);
-		musicButton.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				app.sound.buttonMenueSound();
-				app.sound.Play_Pause_Music();
-			}
-		});
+
+
+
 
 		title = new Label("Garden", app.assets.largeTextStyle);
 		title.setFontScale(8);
@@ -69,6 +61,7 @@ public class TitleScreen implements Screen {
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				app.debugMode = false;
 				newGame();
 			}
 		});
@@ -105,6 +98,20 @@ public class TitleScreen implements Screen {
 		table.add(quitButton).left();
 		table.row();
 
+
+		debugModeButton = new TextButton("Debug Mode",skin);
+		debugModeButton.setPosition(app.maxWidth - 75, 15);
+		debugModeButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				app.debugMode = true;
+				newGame();
+			}
+		});
+
+		debugModeButton.setPosition(app.maxWidth - 125, 15);
+		stage.addActor(debugModeButton);
+
 	}
 
 	private void newGame(){
@@ -113,7 +120,7 @@ public class TitleScreen implements Screen {
 		app.sound.buttonMenueSound();
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
-		app.gameScreen.world.init("World1.tmx");
+		app.gameScreen.world.init("World.tmx");
 
 	}
 
@@ -128,7 +135,7 @@ public class TitleScreen implements Screen {
 	private void continueGame(){
 		app.sound.buttonMenueSound();
 		app.setScreen(app.gameScreen);
-		//app.gameScreen.world.init("World1.tmx");
+		//app.gameScreen.world.init("World.tmx");
 	}
 
 	// Lazy load screens

@@ -11,10 +11,12 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -44,7 +46,6 @@ public class GameScreen extends AbstractScreen {
     ScrollPane scrollPane;
     Skin skin;
     private final InputMultiplexer mux;
-    int maxWidth, maxHeight;
     private final Color hudColor;
     public Group grp;
     public NinePatch np;
@@ -74,8 +75,8 @@ public class GameScreen extends AbstractScreen {
 
         initHUD();
 
-        maxWidth = world.tileSize*world.worldWidth;
-        maxHeight = Gdx.graphics.getHeight()-100;
+        app.maxWidth = world.tileSize*world.worldWidth;
+        app.maxHeight = Gdx.graphics.getHeight()-100;
         actorFactory = new PlantFactory(app.assets);
         shapeRenderer = new ShapeRenderer();
 
@@ -104,6 +105,11 @@ public class GameScreen extends AbstractScreen {
         drawButtons();
 
         setupTileImprovementBox();
+
+        if (app.debugMode){
+            debugButtons();
+        }
+
     }
 
     private void tabelSetup(){
@@ -300,10 +306,7 @@ public class GameScreen extends AbstractScreen {
     private void nextTurn(){
         grp.remove();
         app.sound.buttonMenueSound();
-        //app.batch.begin();
-        startEvent("magazine");
-        //font.draw(app.batch,"TEST",100,100);
-        //app.batch.end();
+
         world.nextTurn();
         //System.out.println("Clicked - Next Turn");
 
@@ -465,6 +468,7 @@ public class GameScreen extends AbstractScreen {
     private void checkInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
+
     }
 
     private void pauseScreen(){
@@ -484,6 +488,7 @@ public class GameScreen extends AbstractScreen {
         }
         app.setScreen(app.SkillTreeScreen);
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -509,6 +514,44 @@ public class GameScreen extends AbstractScreen {
     public void dispose() {
 
     }
+
+    private void debugButtons(){
+
+        Table DebugTable = new Table();
+
+        DebugTable.setFillParent(true);
+        DebugTable.setDebug(false);
+        DebugTable.setPosition(-450, 100);
+
+        hud.addActor(DebugTable);
+
+        TextButton debugSeasonButton = new TextButton("Test Season",skin);
+        debugSeasonButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (!app.drySeason)
+                    app.drySeason = true;
+                else app.drySeason = false;
+            }
+        });
+
+        TextButton debugEvenButton = new TextButton("Test Event",skin);
+        debugEvenButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //app.batch.begin();
+                startEvent("magazine");
+                //font.draw(app.batch,"TEST",100,100);
+                //app.batch.end();
+            }
+        });
+
+        DebugTable.add(debugSeasonButton).left();
+        DebugTable.row();
+        DebugTable.add(debugEvenButton).left();
+    }
+
+
 }
 
 

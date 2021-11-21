@@ -58,17 +58,25 @@ public class World extends Stage {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         //soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("TreesDead Layer");
+
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
+
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterPlants Layer");
+        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
+        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
+
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Road Layer");
+
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
-
-        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterLayer");
-        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWaterLayer");
-
-        grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
+        grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
 
         MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("GrassLayer"),mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("WaterLayer")};
+        mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
 
-        mapLayerIndicesDry = new int[] {mapLayers.getIndex("GrassLayer"),mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("NoWaterLayer")};
+        mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
+
 
         activeIndices = mapLayerIndicesDry;
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);

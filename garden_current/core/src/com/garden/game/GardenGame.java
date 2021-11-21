@@ -19,7 +19,7 @@ public class GardenGame extends Game {
 
 	public SoundFunctions sound;
 
-	public Boolean preferencesBool, currentGameBool, drySeason;
+	public Boolean preferencesBool, currentGameBool, drySeason, debugMode;
 	public int maxWidth, maxHeight, score;
 
 
@@ -34,6 +34,8 @@ public class GardenGame extends Game {
 		maxHeight = Gdx.graphics.getHeight();
 		preferencesBool = false;
 		currentGameBool = false;
+
+		debugMode = false;
 
 		//-- Event --
 		drySeason = false;

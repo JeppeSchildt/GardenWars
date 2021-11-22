@@ -24,8 +24,8 @@ import java.util.ArrayList;
 public class Assets extends AssetManager {
     public TextureAtlas textureAtlas, styleAtlas, textureCrops;
     public Label.LabelStyle largeTextStyle;
-    public TextureRegionDrawable nextturnIcon, goldIcon, waterIcon , dirtIcon, inGameBorder, ButtonBorder;
-    public TiledMapTileSet tileSet;
+    public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
+    public TiledMapTileSet tileSet, tileSetNew;
     public TiledMapTileLayer.Cell grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
 
@@ -38,7 +38,7 @@ public class Assets extends AssetManager {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("pack_character_crops.atlas");
+        textureAtlas = this.get("pack.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
@@ -48,7 +48,7 @@ public class Assets extends AssetManager {
 
     // Close files
     public void unloadAll() {
-        this.unload("pack_character_crops.atlas");
+        this.unload("pack.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -94,8 +94,6 @@ public class Assets extends AssetManager {
             this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
 
-
-
     }
 
     private void initStopAnimations() {
@@ -138,17 +136,27 @@ public class Assets extends AssetManager {
 
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("pack_character_crops.atlas", TextureAtlas.class);
+        this.load("pack.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
-        this.load("NewDesign/InGameButtons.png", Texture.class);
+
+        this.load("inGameDesign/GameBorder.png", Texture.class);
+        this.load("inGameDesign/ButtonBorder.png", Texture.class);
+
+        this.load("inGameDesign/ButtonNextTurn.png", Texture.class);
+        this.load("inGameDesign/ButtonSettings.png", Texture.class);
+        this.load("inGameDesign/ButtonTalent.png", Texture.class);
+
+        this.load("arrows/DownArrow.png", Texture.class);
+        this.load("arrows/RightArrow.png", Texture.class);
+        this.load("arrows/LeftArrow.png", Texture.class);
+
 
         setLoader(TiledMap.class, new TmxMapLoader());
-        load("map6.tmx", TiledMap.class);
-
+        load("World.tmx", TiledMap.class);
 
         finishLoading();
 
-        tileSet = get("map6.tmx", TiledMap.class).getTileSets().getTileSet("wood_tileset");
+        tileSet = get("World.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
         grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(this.tileSet.getTile(0x1));
 

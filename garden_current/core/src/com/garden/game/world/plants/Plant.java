@@ -1,5 +1,6 @@
 package com.garden.game.world.plants;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.garden.game.tools.Constants;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Plant extends Actor {
@@ -17,6 +19,11 @@ public class Plant extends Actor {
     TextureRegion[] textureRegions;
     int price;
     public int profit;
+    public Map<PlantState, Vector2> waterStateMap;
+    private ArrayList<Sprite> sprites;
+    private int waterLoss;
+
+
 
     // Reconsider this... what happens if water increases a lot one round watering many times fx ??
     // Make simpler maybe, state machine by doing switch(water) somewhere ....
@@ -37,6 +44,11 @@ public class Plant extends Actor {
             public int getStateSpriteInt() {
                 return Constants.SPRITE_SEED;
             }
+
+            @Override
+            public String getStateName() {
+                return Constants.SEED_STATE;
+            }
         },
         SMALL {
             @Override
@@ -53,6 +65,11 @@ public class Plant extends Actor {
             public int getStateSpriteInt() {
                 return Constants.SPRITE_SMALL;
             }
+
+            @Override
+            public String getStateName() {
+                return Constants.SMALL_STATE;
+            }
         },
         HEALTHY {
             @Override
@@ -66,6 +83,11 @@ public class Plant extends Actor {
             @Override
             public int getStateSpriteInt() {
                 return Constants.SPRITE_HEALTHY;
+            }
+
+            @Override
+            public String getStateName() {
+                return Constants.HEALTHY_STATE;
             }
         },
         WITHERING {
@@ -83,6 +105,11 @@ public class Plant extends Actor {
             public int getStateSpriteInt() {
                 return Constants.SPRITE_WITHERING;
             }
+
+            @Override
+            public String getStateName() {
+                return Constants.WITHERING_STATE;
+            }
         },
         DEAD {
             @Override
@@ -99,16 +126,21 @@ public class Plant extends Actor {
             public int getStateSpriteInt() {
                 return Constants.SPRITE_DEAD;
             }
+
+            @Override
+            public String getStateName() {
+                return Constants.DEAD_STATE;
+            }
+
         };
 
         // Not exactly previous and next, but instead next bad and next good state.
         public abstract PlantState prevState();
         public abstract PlantState nextState();
         public abstract int getStateSpriteInt();
+        public abstract String getStateName();
     }
     PlantState state;
-
-     public Map<PlantState, Vector2> waterStateMap;
 
     // Two different constructors. For convenience. Maybe it's not necessary.
     public Plant(int x, int y) {
@@ -116,10 +148,33 @@ public class Plant extends Actor {
         state = PlantState.SEED;
     }
 
-    Plant(int x, int y, TextureRegion[] textureRegions) {
+   public Plant(int x, int y, TextureRegion[] textureRegions) {
         setPosition(x, y);
         state = PlantState.SEED;
         this.textureRegions = textureRegions;
+        initSprites();
+    }
+
+    // Is simpler constructor with setters better?
+    public Plant(int x, int y, String name, int waterLoss, int profit, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap) {
+        this.waterLoss = waterLoss;
+        this.profit = profit;
+        this.waterStateMap = waterStateMap;
+        this.textureRegions = textureRegions;
+        state = PlantState.SEED;
+        setPosition(x, y);
+        setName(name);
+        initSprites();
+
+    }
+
+
+    // Initialize ArrayList of sprites. Only call when we have a TextureRegion.
+    private void initSprites() {
+        sprites = new ArrayList<>(6);
+        for(int i = 0; i < 6; i++) {
+            sprites.add(i, new Sprite(textureRegions[i]));
+        }
     }
 
     @Override
@@ -128,14 +183,37 @@ public class Plant extends Actor {
     }
 
     public void changeState() {
+        if(water <= waterStateMap.get(state).x) {
+            state = state.prevState();
+            profit -= 2;
+        } else if (water > waterStateMap.get(state).y) {
+            state = state.nextState();
+            profit += 2;
+        }
 
+        if(state == PlantState.DEAD) {
+            activeSprite = null;
+            cell = null;
+            sprites = null;
+            return;
+            // Something is wrong here.... null pointer exception :O !!!
+        }
+        setActiveSprite();
+
+    }
+
+    private void setActiveSprite() {
+        activeSprite = sprites.get(state.getStateSpriteInt());
     }
 
     public PlantState getState() {
         return state;
     }
 
-    public void nextTurn() {}
+    public void nextTurn() {
+        water = water-waterLoss;
+        changeState();
+    }
 
     public int getTypeID() {
         return typeID;
@@ -159,15 +237,53 @@ public class Plant extends Actor {
         water += amount;
     };
 
+
+    public TextureRegion[] getTextureRegions() {
+        return textureRegions;
+    }
+
+    public void setTextureRegions(TextureRegion[] textureRegions) {
+        this.textureRegions = textureRegions;
+    }
+
+
+    public int getProfit() {
+        return profit;
+    }
+
+    public void setProfit(int profit) {
+        this.profit = profit;
+    }
+
+    public Map<PlantState, Vector2> getWaterStateMap() {
+        return waterStateMap;
+    }
+
+    public void setWaterStateMap(Map<PlantState, Vector2> waterStateMap) {
+        this.waterStateMap = waterStateMap;
+    }
+
+    public ArrayList<Sprite> getSprites() {
+        return sprites;
+    }
+
+    public int getWaterLoss() {
+        return waterLoss;
+    }
+
+    public void setWaterLoss(int waterLoss) {
+        this.waterLoss = waterLoss;
+    }
+
     public void setActiveAnimation() {
-        if(textureRegions != null) {
-            activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
+        activeSprite = sprites.get(state.getStateSpriteInt());
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if(activeSprite != null) {
+            activeSprite.setPosition(getX(), getY());
+            activeSprite.draw(batch);
         }
     }
 }
-/*
-    // Consider making sprites when creating plant instead?? And not new sprite when we change state. But ok because of GC?
-    public void changeState() {
-        activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);
-    }
- */

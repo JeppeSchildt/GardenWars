@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="1">
+ <tileset firstgid="1" source="Terrain.tsx"/>
+ <tileset firstgid="1037" source="Farmhouse_388x324.tsx"/>
+ <tileset firstgid="1157" source="Trees-green.tsx"/>
+ <tileset firstgid="2181" source="Trees-dead.tsx"/>
+ <layer id="2" name="Grass Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMA6C9yvqHXI+jYC+pqqqq+voAZa+MAQ==
+  </data>
+ </layer>
+ <layer id="4" name="Improvement Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+  </data>
+ </layer>
+ <layer id="5" name="Road Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztlMENwCAMA6OOQidpN4Fu0m4SFq3zQOTZF5Yqn+T34UAwE0KI/3EgheivSCOdIbrviCMXyd2RDXkW+2PuTnIPf9z76rlnf5ef6mfsXfaz3t9pc/cZ/ujtxut/pzD+HiGE+MoLX9oS6g==
+  </data>
+ </layer>
+ <layer id="1" name="NoWater Layer" width="32" height="32">
+  <properties>
+   <property name="canWalk" type="bool" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztlFEKgCAQBT1UnqQ6SXafjprBEn7IQ2JNihmY7+GpGAIAAAAAfI05u5jrgP6WTeb+cvvaHgf2bfvxt375ppSxU7/Y1Sr9B/2Ge+3aTz7e/amyRf2J3v2a6kyc+lLVPwExuGzg
+  </data>
+ </layer>
+ <layer id="3" name="Water Layer" width="32" height="32">
+  <properties>
+   <property name="canWalk" type="bool" value="false"/>
+   <property name="hasWater" type="bool" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztlFEKgCAQBb2YnSQ9SXX2DPxYRBYNczFmYL6Hp6JzAAAAALAaezJko0H/SJ7Za3L72b4Z9uX2P/Xlm9KUZz+yX+5qlX4frff6Vf9NQ9NXtmh/4uh+75lY928PLVSm
+  </data>
+ </layer>
+ <layer id="9" name="WaterPlants Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt0MENgCAQRNGNdKIkRENVamVAoc7RmD0iXP5L5vwXzAAAAAAAX/sy+wJfmnzXMaC/BrNNi+H/ludU99LuVz8P/PeibtVa5/c/jOoERQ==
+  </data>
+ </layer>
+ <layer id="8" name="Buildings Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztzdc712EAxuHvwe80RIqMhOy9ki2Siuy9RzTMbFEqf3j3P/FeVwfvc1336fNJkjB7kEqSNNLJ4CGZZPGIbB6nAsXtie8ccnlKHvkUUMgzigL2n/supoRSXlBGORVUUhWwX+27hlrqqKeBRppopiVgv9V3Gy9p5xUddNJFNz0B+72+++jnNQMM8oYh3jIcsP/O93s+MMIoHxljnAkmA/anfE8zwyxzzLPAIkssB+yv+F5ljXU22GSLbT6xE7C/6/szX/jKN/bY54BDjgL2j31/54RTzjjngkuuuA7Y/+H7hlt+8os7fvOHv9wH7MfFxcXFxcXFxf2f+wdz4CPd
+  </data>
+ </layer>
+ <layer id="6" name="TreesDead Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztzbcyRWEAhdEjVHLspVaml1rcy7291Mr0UivzGDKPIfMYMr3Vqpgx/6nOnlnt/qLof+svjKIBBkmRZohhMmQL/xn4ZZP+p5hmhlnmmGeBxcD9df8bbLLFNjvsssd+4P6B/0OOOOaEU8445yJw/9L/FdfccMsd9zzwGLj/5P+ZF155450PPvkK3C8uiqISSimjnAoqqaK6KGy/0X8TzbTQShvtdNAZuN/vf4BBUqQZYpgM2cD9Sf9TTDPDLHPMs8Bi4H6yZMn+sIIoyiGXPPIL4s3X6NVSRz0NMfe79LrpoZe+mPsjeqOMMc5EzP0lvWVWWGUt5n6yZMmSJfu5bygONok=
+  </data>
+ </layer>
+ <layer id="7" name="Trees Layer" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztzbcyRWEAhdEjDBqZXmpleqnFvdzbS61ML7UyjyHzGDKPIdNbrYoZ85/q7JnV7i+K/rf+wigaYJAUaYYYJkO28J+BXzbpf4ppZphljnkWWAzcX/e/wSZbbLPDLnvsB+4f+D/kiGNOOOWMcy4C9y/9X3HNDbfccc8Dj4H7T/6feeGVN9754JOvwP3ioigqoZQyyqmgkiqqi8L2G/030UwLrbTRTgedgfv9/gcYJEWaIYbJkA3cn/Q/xTQzzDLHPAssBu4nS5bsDyuIohxyySO/IN58jV4tddTTEHO/S6+bHnrpi7k/ojfKGONMxNxf0ltmhVXWYu4nS5YsWbKf+way0DS9
+  </data>
+ </layer>
+</map>

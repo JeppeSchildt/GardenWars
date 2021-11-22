@@ -8,12 +8,14 @@ import com.garden.game.tools.Constants;
 
 import java.util.HashMap;
 
+// Decided to use one plant class
 public class Turnip extends Plant{
 
     public Turnip(int x, int y, TextureRegion[] textureRegions, TiledMapTileLayer.Cell cell) {
         super(x, y, textureRegions);
         this.cell = cell;
         typeID = Constants.TURNIP;
+        setName("Turnip");
         price = Constants.GRASS_PRICE;
         water = 2;
         profit = 2;
@@ -38,7 +40,7 @@ public class Turnip extends Plant{
     // if, if, if, if, if.....
     @Override
     public void changeState() {
-        activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);  // Consider making sprites when creating plant instead?? And not new sprite when we change state. But ok because of GC?
+        //activeSprite = new Sprite(textureRegions[state.getStateSpriteInt()]);  // Consider making sprites when creating plant instead?? And not new sprite when we change state. But ok because of GC?
         if(water <= waterStateMap.get(state).x) {
             state = state.prevState();
             profit -= 2;

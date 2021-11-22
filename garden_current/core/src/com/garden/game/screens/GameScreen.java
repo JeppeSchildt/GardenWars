@@ -10,11 +10,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.PlantFactory;
@@ -33,8 +37,8 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources;
-    Table buttonTable,outerTable;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources,txtSelectedTileY,txtSelectedTileX;
+    Table buttonTable,outerTable,dropOutTable;
     ScrollPane scrollPane;
     Skin skin;
     private final InputMultiplexer mux;
@@ -108,14 +112,6 @@ public class GameScreen extends AbstractScreen {
 
 
         tableSetup();
-
-        /*
-        txtTurnNumber = new Label("Day: " + world.turnNumber, skin);
-        txtTurnNumber.setPosition(Gdx.graphics.getWidth() - 85,  Gdx.graphics.getHeight() - 40);
-        hud.addActor(txtTurnNumber);
-         */
-
-
         // Show coordinates of selected tile.
         txtSelectedTileCoordinates = new Label("", skin);
         txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 20);
@@ -138,14 +134,17 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(btnEndTurn);
 
         txtMonthWeekDay = new Label("", skin);
-
-        //table.add(btnEndTurn).center();
-        //table.row();
         table.add(txtMonthWeekDay);
 
 
         txtResources = new Label("", skin);
         tableResources.add(txtResources);
+        btnEndTurn.setPosition(5,Gdx.graphics.getHeight()-5);
+        txtTurnNumber = new Label("Turn" + world.turnNumber, skin);
+        txtTurnNumber.setAlignment(Align.bottomLeft);
+        txtTurnNumber.setPosition(44, Gdx.graphics.getHeight() - 50);
+        hud.addActor(btnEndTurn);
+        hud.addActor(txtTurnNumber);
     }
 
 
@@ -178,25 +177,49 @@ public class GameScreen extends AbstractScreen {
     	}
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
-
-        /*for(final TextButton textButton : buttonList){
-            System.out.println(textButton.getText());
-            textButton.addListener(new ClickListener() {
+        for (final TextButton txtButton : buttonList) {
+            System.out.println(txtButton.getText());
+            txtButton.addListener(new ClickListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if(world.user.canBuy(Constants.GRASS)) {
-                        Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
-                        world.user.plant(world.hoveredX*32, world.hoveredY*32, plant);
-                        //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
-                        //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    System.out.println("Text: " + txtButton.getText());
+                    //textButton.setText("HI");
+                    //Button.ButtonStyle style = textButton.getStyle();
+                    //textButton.setStyle(skin.get("toggle.down", TextButton.TextButtonStyle.class));
+                    //Crate new menu next to it
+                    ArrayList<TextButton> buttonListDropOut = new ArrayList<TextButton>();
+                    dropOutTable = new Table(skin);
+                    TextButton button1 = new TextButton("Water", skin);
+                    button1.setColor(Color.BLUE);
+                    TextButton button2 = new TextButton("Kill", skin);
+                    button2.setColor(Color.RED);
+                    dropOutTable.add(button1).expandX().fillY().row();
+                    dropOutTable.add(button2).expandX().fillY().row();
+                    buttonListDropOut.add(button1);
+                    buttonListDropOut.add(button2);
+                    dropOutTable.setSize(200, 100);
+                    float highest = 0.0f;
+                    for (Button b : buttonListDropOut) {
+                        if (b.getWidth() > highest) {
+                            highest = b.getWidth();
+                        }
                     }
-
-                    outerTable.remove();
-
+                    for (Button b : buttonListDropOut) {
+                        b.padLeft((highest-b.getWidth())/2);
+                        b.padRight((highest-b.getWidth())/2);
+                    }
+                    System.out.println("x:" + txtButton.getX() + "y:" + txtButton.getY());
+                    dropOutTable.setPosition(txtButton.localToStageCoordinates(new Vector2(0, 0)).x + 50, txtButton.localToStageCoordinates(new Vector2(0, 0)).y - 50);
+                    hud.addActor(dropOutTable);
                 }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    dropOutTable.remove();
+                }
+
             });
-            buttonTable.add(textButton).expandX().fillY().row();
-        }*/
+        }
         for(int i = 0; i < 2; i++) {
             TextButton textButton = buttonList.get(i);
             if(i == 0) {
@@ -205,6 +228,7 @@ public class GameScreen extends AbstractScreen {
                     public void clicked(InputEvent event, float x, float y) {
                         if(world.user.canWater(world.hoveredX * 32, world.hoveredY * 32)) {
                             world.user.water(world.hoveredX * 32, world.hoveredY * 32, 2);
+                            dropOutTable.remove();
                             outerTable.remove();
                         }
 
@@ -220,22 +244,40 @@ public class GameScreen extends AbstractScreen {
                             //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                             //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
                         }
-
+                        dropOutTable.remove();
                         outerTable.remove();
-
                     }
                 });
             }
-            buttonTable.add(textButton).expandX().fillY().row();
-
+            float highest = 0.0f;
+            for (Button b : buttonList) {
+                if (b.getWidth() > highest) {
+                    highest = b.getWidth();
+                }
+            }
+            for (Button b : buttonList) {
+                b.padLeft((highest-b.getWidth())/2);
+                b.padRight((highest-b.getWidth())/2);
+            }
+                //buttonTable.add(textButton).expandX().fillY().row();
+                // textButton.setSize(600.0f,600.0f);
+            outerTable.setSize(600, 400);
+            //textButton.padLeft(200);
+            //buttonTable.add(textButton).padLeft(outerTable.getWidth()-textButton.getWidth());
+            buttonTable.add(textButton);
+            buttonTable.row();
+            buttonTable.setSize(textButton.getWidth(), textButton.getHeight());
+            scrollPane = new ScrollPane(buttonTable, skin);
+            scrollPane.setScrollingDisabled(true, false);
+            outerTable.add(scrollPane).expandY();
         }
-
+/*
         buttonTable.setSize(200, 100);
         outerTable.setSize(600, 400);
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
-
+*/
     }
 
     private void nextTurn(){
@@ -247,9 +289,23 @@ public class GameScreen extends AbstractScreen {
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
-
+    /*
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        int rect_x = Gdx.graphics.getWidth();
+        int rect_y = Gdx.graphics.getHeight() - 100;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(hudColor);
+        shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+        shapeRenderer.rect(824,0, 200, Gdx.graphics.getHeight()-100);
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+       */
+       updateHUD();
         //app.batch.draw(inGameBorder,0,0);
-        /*Gdx.gl.glEnable(GL20.GL_BLEND);
+        /*
+        Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         int rect_x = Gdx.graphics.getWidth();
         int rect_y = Gdx.graphics.getHeight() - 100;
@@ -259,7 +315,6 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.rect(0,0, Gdx.graphics.getWidth(), 100);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);*/
-        updateHUD();
 
     }
 
@@ -277,9 +332,11 @@ public class GameScreen extends AbstractScreen {
         	float goY = (float)(posY * world.tileSize + dist);
             outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
+            outerTable.setTouchable(Touchable.enabled);
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {
+            dropOutTable.remove();
             outerTable.remove();
             improvementsShown = false;
         }

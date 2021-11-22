@@ -7,17 +7,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -38,19 +37,13 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo,txtSelectedTileY,txtSelectedTileX;;
-    private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
-    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources,txtSelectedTileY,txtSelectedTileX;
     Table buttonTable,outerTable,dropOutTable;
-    SpriteBatch batchTest;
-    private GlyphLayout dialogGlyphLayout = new GlyphLayout();
     ScrollPane scrollPane;
     Skin skin;
     private final InputMultiplexer mux;
+    int maxWidth, maxHeight;
     private final Color hudColor;
-    public Group grp;
-    public NinePatch np;
-    public BitmapFont font = new BitmapFont();
     private Label txtSelectedTileCoordinates;
     ArrayList<TextButton> buttonList;
     PlantFactory actorFactory;
@@ -59,15 +52,15 @@ public class GameScreen extends AbstractScreen {
     private ShapeRenderer shapeRenderer;
     Sprite spriteHighlight;
 
-    private Table tableResources, tableDay, tableButtons, tableTileInfo;
+
+    private Texture inGameBorder;
+    private Table tableResources, table;
 
     public GameScreen(GardenGame app) {
         this.app = app;
-        app.currentGameBool = true;
         world = new World(app);
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hud = new Stage(new ScreenViewport(camera));
-
         //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
         //hud = new Stage(new ScreenViewport(world.worldCamera));
@@ -76,8 +69,8 @@ public class GameScreen extends AbstractScreen {
 
         initHUD();
 
-        app.maxWidth = world.tileSize*world.worldWidth;
-        app.maxHeight = Gdx.graphics.getHeight()-100;
+        maxWidth = world.tileSize*world.worldWidth;
+        maxHeight = Gdx.graphics.getHeight()-100;
         actorFactory = new PlantFactory(app.assets);
         shapeRenderer = new ShapeRenderer();
 
@@ -90,51 +83,32 @@ public class GameScreen extends AbstractScreen {
     private void initHUD() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         buttonList = new ArrayList<TextButton>();
-        grp = new Group();
-        textureGameBorder = new Texture(Gdx.files.internal("inGameDesign/GameBorder.png"));
-        imgGameBorder = new Image(textureGameBorder);
-        imgGameBorder.setPosition(0, 0);
-        hud.addActor(imgGameBorder);
 
-        textureBtnBorder = new Texture(Gdx.files.internal("inGameDesign/ButtonBorder.png"));
-        imgBtnBorder = new Image(textureBtnBorder);
-        imgBtnBorder.setPosition(app.maxWidth - (144 + 10), 35);
-        hud.addActor(imgBtnBorder);
+        // -------- InGame Borders -------- //
+        inGameBorder = app.assets.get("NewDesign/InGameButtons.png", Texture.class);
 
-        tabelSetup();
-        setupTextIcons();
-        drawButtons();
+        setUpIcon();
 
         setupTileImprovementBox();
-
-        if (app.debugMode){
-            debugButtons();
-        }
-
     }
 
-    private void tabelSetup(){
+
+    /* Size of entire window has been fixed, so we can setup UI using constant values */
+    private void setUpIcon() {
         // Create a table that fills the screen. Everything else will go inside this table.
-        /*tableResources = new Table();
+        tableResources = new Table();
         tableResources.setFillParent(true);
         tableResources.setDebug(false);
-        tableResources.setPosition(-320, -366);*/
+        tableResources.setPosition(-420, -366);
 
-        /*tableDay = new Table();
-        tableDay.setFillParent(true);
-        tableDay.setDebug(false);
-        tableDay.setPosition(400, -366);*/
+        hud.addActor(tableResources);
 
-        tableButtons = new Table();
-        tableButtons.setFillParent(true);
-        tableButtons.setDebug(false);
-        tableButtons.setPosition(430, -254);
-        hud.addActor(tableButtons);
+        table = new Table();
+        table.setFillParent(true);
+        table.setDebug(false);
+        table.setPosition(400, -366);
 
-        /*tableTileInfo = new Table();
-        tableTileInfo.setFillParent(true);
-        tableTileInfo.setDebug(false);
-        tableTileInfo.setPosition(200, -366);*/
+        hud.addActor(table);
 
 
         tableSetup();
@@ -143,72 +117,25 @@ public class GameScreen extends AbstractScreen {
         txtSelectedTileCoordinates.setPosition(Gdx.graphics.getWidth() - 55,  Gdx.graphics.getHeight() - 20);
         hud.addActor(txtSelectedTileCoordinates);
     }
-    }
 
-    /* Size of entire window has been fixed, so we can setup UI using constant values */
-    private void setupTextIcons() {
+    private void tableSetup(){
 
-
-        //hud.addActor(tableResources);
-        txtResources = new Label("", skin);
-        txtResources.setPosition(30,16);
-        hud.addActor(txtResources);
-        //tableResources.add(txtResources);
-
-        //hud.addActor(tableDay);
-        txtMonthWeekDay = new Label("", skin);
-        txtMonthWeekDay.setPosition(824,16);
-        hud.addActor(txtMonthWeekDay);
-        //tableDay.add(txtMonthWeekDay);
-
-        //hud.addActor(tableTileInfo);
-        txtTileInfo = new Label("", skin);
-        txtTileInfo.setPosition(30, 700);
-        hud.addActor(txtTileInfo);
-        //tableTileInfo.add(txtTileInfo);
-
-    }
-
-    private void drawButtons(){
         // ----- NextTurn Icon Setup----- //
-        //TextButton btnEndTurn = new TextButton("Next Day", skin);
-        textureNextTurn = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
-        imgNextTurn = new Image(textureNextTurn);
-        imgNextTurn.addListener(new ClickListener() {
+        TextButton btnEndTurn = new TextButton("Next Day", skin);
+        //Texture buttonTexture  = new Texture(Gdx.files.internal("NewDesign/buttonImg.png"));
+        //Image btnEndTurn = new Image(buttonTexture);
+        btnEndTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 nextTurn();
             }
         });
-        imgNextTurn.setPosition(app.maxWidth-140, 45);
-        hud.addActor(imgNextTurn);
+        btnEndTurn.setPosition(Gdx.graphics.getWidth()-115, 40);
+        hud.addActor(btnEndTurn);
 
         txtMonthWeekDay = new Label("", skin);
         table.add(txtMonthWeekDay);
-        // ----- Settings Icon Setup----- //
-        textureSettings = new Texture(Gdx.files.internal("inGameDesign/ButtonSettings.png"));
-        imgSettings = new Image(textureSettings);
-        imgSettings.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                pauseScreen();
-            }
-        });
 
-        // ----- Talent Icon Setup----- //
-        textureTalent  = new Texture(Gdx.files.internal("inGameDesign/ButtonTalent.png"));
-        imgTalent = new Image(textureTalent);
-        imgTalent.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                skillTreeScreen();
-            }
-        });
-
-        hud.addActor(tableButtons);
-
-        tableButtons.add(imgTalent);
-        tableButtons.add(imgSettings);
 
         txtResources = new Label("", skin);
         tableResources.add(txtResources);
@@ -220,27 +147,14 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtTurnNumber);
     }
 
-    // Utility method, get info about hovered tile.
-    public String getTileInfo(int x, int y) {
-        String coordinates = "[" + x + "," + y + "]\n";
-        Plant plant = world.user.getPlantAtPosition(x*32, y*32);
-
-        String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
-        return coordinates + improvement;
-    }
-
 
     public void updateHUD() {
-        //txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
+        txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         //txtTurnNumber.setText("Days: " + world.turnNumber);
 
         String longSpace = "          ";
-        String txtWater = "Water: " + world.user.water + "/" + world.user.maxWater + longSpace;
-        String txtGold = "Gold: " + world.user.dkk + longSpace;
-        String txtPoint= "Point: " + world.user.point + "/" + world.user.maxPoint;
+        txtResources.setText("Water: 0" + longSpace + "Gold: " + world.user.dkk);
 
-        txtResources.setText(txtWater + txtGold  + txtPoint);
-        txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);
     }
@@ -325,7 +239,7 @@ public class GameScreen extends AbstractScreen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
-                            Plant plant = actorFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
+                            Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
                             world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
                             //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
                             //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
@@ -366,88 +280,12 @@ public class GameScreen extends AbstractScreen {
 */
     }
 
-
     private void nextTurn(){
-        grp.remove();
         app.sound.buttonMenueSound();
-
         world.nextTurn();
         //System.out.println("Clicked - Next Turn");
-
-    }
-    private void renderBubble(String text) {
-        dialogGlyphLayout.setText(font, text, Color.WHITE, Gdx.graphics.getWidth() * 0.75f, Align.topLeft, true);
-        float tw = dialogGlyphLayout.width;
-        float th = dialogGlyphLayout.height;
-
-        // 0.05 for 5% margin, dw and dh are the width of the bubble
-        // bo the bubble is the size of the text, plus a 5% margin (of the window size)
-        float dw = tw + 0.05f * Gdx.graphics.getWidth();
-        float dh = th + 0.05f * Gdx.graphics.getHeight();
-
-        // bx, bh is the position of the buggle
-        float bx = world.user.unit.getX();//(Gdx.graphics.getWidth() - dw) / 2.0f;
-        float by = world.user.unit.getY();//Gdx.graphics.getHeight() - dh * 1.2f;
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        app.batch.enableBlending();
-        app.batch.begin();
-        app.batch.setProjectionMatrix(camera.combined);
-        np.draw(app.batch, 100, 100, 100, 100);
-        //font.draw(app.batch,  dialogGlyphLayout, bx + (dw-tw) / 2.0f, by + dh - (dh-th) / 2.0f);
-        System.out.println("In here yada");
-        Color c = app.batch.getColor();
-        app.batch.setColor(c.r,c.g,c.b,1f);
-        Image image = new Image(np);
-        image.setWidth(140);
-        Container<Image> container = new Container<Image>(image);
-        container.fill();
-        container.setSize(140,69);
-        container.setOrigin(bx,by);
-
-        Label lbl = new Label("Yahooo",skin);
-        lbl.setOrigin(container.getX()+100,container.getY());
-        lbl.setAlignment(Align.center);
-        lbl.setColor(Color.RED);
-        lbl.setSize(100,100);
-        grp.addActor(container);
-        grp.addActor(lbl);
-        grp.setPosition(bx,by);
-        hud.addActor(grp);
-        app.batch.end();
-    }
-    public void magazineEvent() {
-        /*
-        NinePatch np = new NinePatch(new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png")),10,10,10,10);
-        np.draw(app.batch,100,100,100,100);
-        spriteHighlight.draw(getBatch()); */
-
-        int textBoxBuffer = 5;
-        int textBoxWidth = 80;
-        //GlyphLayout layout = new GlyphLayout(font,"hej",200,200,textBoxWidth, Align.left,true)
-        //batchTest = new SpriteBatch();
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        font = skin.get("default-font", BitmapFont.class);
-        //Texture bubble = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
-        Texture bubble = new Texture(Gdx.files.internal("speech_bubble_v3.png"));
-        np = new NinePatch(new TextureRegion(bubble,0,0,bubble.getWidth(),bubble.getHeight()),5,5,5,5);
-        renderBubble("TEST");
-    }
-    public void droughtEvent() {
-
     }
 
-    public void startEvent(String event) {
-        switch(event) {
-            case "magazine":
-                magazineEvent();
-                System.out.println("Magazine visit");
-                break;
-            case "drought":
-                droughtEvent();
-                System.out.println("Drought event");
-                break;
-        }
-    }
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
@@ -477,14 +315,13 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.rect(0,0, Gdx.graphics.getWidth(), 100);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);*/
+
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        //Vector3 position = world.worldCamera.project(clickCoordinates);
-        Vector3 position = camera.project(clickCoordinates);
-        Vector2 test = hud.stageToScreenCoordinates(new Vector2(position.x, position.y));
+        Vector3 position = world.worldCamera.unproject(clickCoordinates);
         //(int) (position.x) / world.tileSize;
         if(button == Input.Buttons.RIGHT) {
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
@@ -493,8 +330,7 @@ public class GameScreen extends AbstractScreen {
         	double dist = Math.sqrt(Math.pow(cat, 2)*2); 
         	float goX = (float)(posX * world.tileSize + dist);
         	float goY = (float)(posY * world.tileSize + dist);
-            //outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
-            outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
+            outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
             outerTable.setTouchable(Touchable.enabled);
             hud.addActor(outerTable);
@@ -506,6 +342,7 @@ public class GameScreen extends AbstractScreen {
         }
         return false;
     }
+
 
 
     // Scroll improvements menu when shown.
@@ -524,6 +361,9 @@ public class GameScreen extends AbstractScreen {
         mux.addProcessor(this);
         mux.addProcessor(world.mapInput);
         Gdx.input.setInputProcessor(mux);
+
+
+
     }
 
     // Render player things like character and plants in this method.
@@ -533,25 +373,19 @@ public class GameScreen extends AbstractScreen {
         checkInput(); // Does not seem ideal to check input in render method. But convenient for now...
         world.update(delta);
         world.render();
-        //app.batch.begin(); //remove ?
+
         drawMenu();
         app.batch.setProjectionMatrix(camera.combined);
         hud.act(delta);
         hud.draw();
 
         camera.update();
-        //renderBubble("HEJ");
         app.batch.end(); // End batch here, finishing rendering.
 
     }
 
     private void checkInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
-
-    }
-
-    private void pauseScreen(){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.preferencesBool = true;
 
             app.sound.buttonMenueSound();
@@ -559,16 +393,11 @@ public class GameScreen extends AbstractScreen {
                 app.pauseScreen = new PauseScreen(app);
             }
             app.setScreen(app.pauseScreen);
-    }
-
-    private void skillTreeScreen(){
-
-        if (app.SkillTreeScreen == null) {
-            app.SkillTreeScreen = new SkillTreeScreen(app);
         }
-        app.setScreen(app.SkillTreeScreen);
-    }
 
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -594,44 +423,6 @@ public class GameScreen extends AbstractScreen {
     public void dispose() {
 
     }
-
-    private void debugButtons(){
-
-        Table DebugTable = new Table();
-
-        DebugTable.setFillParent(true);
-        DebugTable.setDebug(false);
-        DebugTable.setPosition(-450, 100);
-
-        hud.addActor(DebugTable);
-
-        TextButton debugSeasonButton = new TextButton("Test Season",skin);
-        debugSeasonButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (!app.drySeason)
-                    app.drySeason = true;
-                else app.drySeason = false;
-            }
-        });
-
-        TextButton debugEvenButton = new TextButton("Test Event",skin);
-        debugEvenButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                //app.batch.begin();
-                startEvent("magazine");
-                //font.draw(app.batch,"TEST",100,100);
-                //app.batch.end();
-            }
-        });
-
-        DebugTable.add(debugSeasonButton).left();
-        DebugTable.row();
-        DebugTable.add(debugEvenButton).left();
-    }
-
-
 }
 
 

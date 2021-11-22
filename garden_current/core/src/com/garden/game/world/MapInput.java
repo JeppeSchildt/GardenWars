@@ -3,7 +3,6 @@ package com.garden.game.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Logger;
 import com.garden.game.GardenGame;
@@ -11,12 +10,11 @@ import com.garden.game.GardenGame;
 public class MapInput implements InputProcessor {
     private final GardenGame app;
     private final World world;
-    public final boolean[] keyPressed;
+    private final boolean[] keyPressed;
     private int[] toggleKey;
     Logger debugLog;
     boolean tileSelected;
     private final float maxZoom = 1.75f;
-    public Boolean walking;
 
     public MapInput(GardenGame app, World world) {
         this.app = app;
@@ -24,17 +22,12 @@ public class MapInput implements InputProcessor {
         keyPressed = new boolean[256];
         toggleKey = new int[256];
         debugLog = new Logger("MapInput:");
-        walking = false;
     }
 
     @Override
     public boolean keyDown(int keycode) {
         keyPressed[keycode] = true;
         toggleKey[keycode] = (toggleKey[keycode] + 1) % 2;
-        walking = keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.RIGHT] ||
-                keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.DOWN] ||
-                keyPressed[Input.Keys.A] || keyPressed[Input.Keys.D] ||
-                keyPressed[Input.Keys.W] || keyPressed[Input.Keys.S];
 
         return true;
     }
@@ -43,10 +36,6 @@ public class MapInput implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         keyPressed[keycode] = false;
-        walking = keyPressed[Input.Keys.LEFT] || keyPressed[Input.Keys.RIGHT] ||
-                keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.DOWN] ||
-                keyPressed[Input.Keys.A] || keyPressed[Input.Keys.D] ||
-                keyPressed[Input.Keys.W] || keyPressed[Input.Keys.S];
         return true;
 
     }
@@ -56,8 +45,7 @@ public class MapInput implements InputProcessor {
         return false;
     }
 
-    // Handle some clicks.
-    @Override
+    @Override // Fix this function. We never want to move to a tile covered by HUD. Click should 'go' to HUD.
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
         Vector3 position = world.worldCamera.unproject(clickCoordinates);
@@ -73,11 +61,12 @@ public class MapInput implements InputProcessor {
         } else if(button == Input.Buttons.LEFT) {
             tileSelected = false;
 
-            // Check for bounds of map and water cells.
+            //System.out.println(tileX + " " + tileY);
             if (world.user.unit.canMove(tileX, tileY)) {
 
                 world.user.unit.move(tileX, tileY);
                 world.user.unit.setPosition(position.x, position.y);
+                //world.worldCamera.position.set(position);
 
                 return true;
             }
@@ -99,13 +88,14 @@ public class MapInput implements InputProcessor {
     // Adjust 'highlighted' tile
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-
         if(!tileSelected) {
             Vector3 mouseCoordinates = new Vector3(screenX, screenY, 0);
             Vector3 position = world.worldCamera.unproject(mouseCoordinates);
 
             world.hoveredX = (int) (position.x) / world.tileSize;
             world.hoveredY = (int) (position.y) / world.tileSize;
+            //System.out.println("Hovered tile: " + world.hoveredX + "," + world.hoveredY);
+            //System.out.println("From mapinput: " + world.hoveredX*32 + "," + world.hoveredY*32);
 
         }
         return true;
@@ -126,7 +116,7 @@ public class MapInput implements InputProcessor {
         int yVelocity = 0;
 
         //switch(toggleKey[Input.Keys.SPACE]) {
-        /*switch (toggleKey[0]) {
+        switch (toggleKey[0]) {
             case 0:
                 if (keyPressed[Input.Keys.UP] || keyPressed[Input.Keys.W]) {
                     if (world.worldCamera.position.y < Gdx.graphics.getHeight() * 1.2)
@@ -163,7 +153,7 @@ public class MapInput implements InputProcessor {
                 world.worldCamera.position.x = world.user.unit.getX();
                 world.worldCamera.position.y = world.user.unit.getY();
             }
-        }*/
+        }
 
         //System.out.println("Adjust just before if " + toggleKey[Input.Keys.SPACE]);
         /*
@@ -174,8 +164,6 @@ public class MapInput implements InputProcessor {
          */
         // Min weird computer REMOVE BEFORE COMMIT!!!
 
-        world.worldCamera.position.x = world.user.unit.getX();
-        world.worldCamera.position.y = world.user.unit.getY();
 
         // Multiply by zoom to make scrolling through map faster when zoomed out. Within some bounds...
         world.worldCamera.position.x += xVelocity*delta*world.worldCamera.zoom;

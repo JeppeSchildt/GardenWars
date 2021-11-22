@@ -15,9 +15,7 @@ import com.garden.game.GardenGame;
 public class TitleScreen implements Screen {
 	private GardenGame app;
 	private Stage stage;
-	private TextButton playButton, settingsButton, continueButton,quitButton, debugModeButton;
-	private Table table;
-	private Label title, titleSub;
+	private TextButton continueButton;
 
 	Skin skin;
 	public TitleScreen(GardenGame app) {
@@ -32,11 +30,11 @@ public class TitleScreen implements Screen {
 	private void initStage() {
 		app.sound.Play_Music();
 
-		//Delete when done debug/testing
- 		app.sound.Play_Pause_Music();
+		//Delet when done
+		app.sound.Play_Pause_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
-		table = new Table();
+		Table table = new Table();
 
 		table.setFillParent(true);
 		table.setDebug(false);
@@ -47,27 +45,41 @@ public class TitleScreen implements Screen {
 		final int midX = Gdx.graphics.getWidth() / 2;
 		final int butY = Gdx.graphics.getHeight() / 3;
 
+		TextButton musicButton = new TextButton("Music",skin);
+		musicButton.setPosition(app.maxWidth - 75, 15);
+		musicButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				app.sound.buttonMenueSound();
+				app.sound.Play_Pause_Music();
+			}
+		});
 
-
-
-
-		title = new Label("Garden", app.assets.largeTextStyle);
+		Label title = new Label("Garden", app.assets.largeTextStyle);
 		title.setFontScale(8);
 
-		titleSub = new Label("Game", app.assets.largeTextStyle);
+		Label titleSub = new Label("Game", app.assets.largeTextStyle);
 		titleSub.setFontScale(6);
 
-		playButton = new TextButton("New Game",skin);
+		TextButton playButton = new TextButton("New Game",skin);
 		playButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				app.debugMode = false;
 				newGame();
 			}
 		});
 
+		if (app.currentGameBool) {
+			continueButton = new TextButton("Continue the game",skin);
+			continueButton.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					continueGame();
+				}
+			});
+		}
 
-		settingsButton = new TextButton("Preferences",skin);
+		TextButton settingsButton = new TextButton("Preferences",skin);
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -77,7 +89,7 @@ public class TitleScreen implements Screen {
 		});
 
 
-		quitButton = new TextButton("Exit",skin);
+		TextButton quitButton = new TextButton("Exit",skin);
 		quitButton.setPosition(midX - 200, butY - 30 - 30);
 		quitButton.addListener(new ChangeListener() {
 			@Override
@@ -86,6 +98,7 @@ public class TitleScreen implements Screen {
 			}
 		});
 
+
 		table.add(title).colspan(2).center();
 		table.row();
 		table.add(titleSub).colspan(2).center();
@@ -93,49 +106,36 @@ public class TitleScreen implements Screen {
 
 		table.add(playButton).left();
 		table.row();
+		table.add(continueButton);
+		table.row();
 		table.add(settingsButton).left();
 		table.row();
 		table.add(quitButton).left();
 		table.row();
 
-
-		debugModeButton = new TextButton("Debug Mode",skin);
-		debugModeButton.setPosition(app.maxWidth - 75, 15);
-		debugModeButton.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				app.debugMode = true;
-				newGame();
-			}
-		});
-
-		debugModeButton.setPosition(app.maxWidth - 125, 15);
-		stage.addActor(debugModeButton);
-
+		stage.addActor(musicButton);
 	}
 
 	private void newGame(){
+		app.currentGameBool = false;
 		app.sound.Chance_Music();
 
 		app.sound.buttonMenueSound();
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
-		app.gameScreen.world.init("World.tmx");
+		app.gameScreen.world.init("map6.tmx");
 
 	}
 
 	private void preferences(){
 		app.sound.buttonMenueSound();
-		if(app.preferencesScreen == null) {
-			app.preferencesScreen = new PreferencesScreen(app);
-		}
 		app.setScreen(app.preferencesScreen);
 	}
 
 	private void continueGame(){
 		app.sound.buttonMenueSound();
 		app.setScreen(app.gameScreen);
-		//app.gameScreen.world.init("World.tmx");
+		//app.gameScreen.world.init("map6.tmx");
 	}
 
 	// Lazy load screens
@@ -149,32 +149,6 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void show() {
-		if (continueButton == null){
-			if (app.currentGameBool) {
-				table.removeActor(playButton);
-				table.removeActor(settingsButton);
-				table.removeActor(quitButton);
-				continueButton = new TextButton("Continue the game",skin);
-				continueButton.addListener(new ChangeListener() {
-					@Override
-					public void changed(ChangeEvent event, Actor actor) {
-						continueGame();
-					}
-				});
-
-
-				table.add(playButton).left();
-				table.row();
-				table.add(continueButton).left();
-				table.row();
-				table.add(settingsButton).left();
-				table.row();
-				table.add(quitButton).left();
-				table.row();
-
-
-			}
-		}
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -204,7 +178,6 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void resume() {
-
 
 	}
 

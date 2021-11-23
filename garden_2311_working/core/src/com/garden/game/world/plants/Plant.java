@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class Plant extends Actor {
     int water;
+    int price;
     Integer typeID;
     TiledMapTileLayer.Cell cell;
     Sprite activeSprite;
     TextureRegion[] textureRegions;
-    int price;
     public int profit;
     public Map<PlantState, Vector2> waterStateMap;
     private ArrayList<Sprite> sprites;
@@ -156,9 +156,10 @@ public class Plant extends Actor {
     }
 
     // Is simpler constructor with setters better?
-    public Plant(int x, int y, String name, int waterLoss, int profit, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap) {
+    public Plant(int x, int y, String name, int waterLoss, int profit, int price, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap) {
         this.waterLoss = waterLoss;
         this.profit = profit;
+        this.price = price;
         this.waterStateMap = waterStateMap;
         this.textureRegions = textureRegions;
         state = PlantState.SEED;
@@ -180,7 +181,7 @@ public class Plant extends Actor {
 
     @Override
     public void setPosition(float x, float y) {
-        super.setPosition(x*32, y*32); // 32 is length of a tile...
+        super.setPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT); // 32 is length of a tile...
     }
 
     public void changeState() {

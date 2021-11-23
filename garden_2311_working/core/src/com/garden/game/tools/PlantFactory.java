@@ -49,7 +49,7 @@ public class PlantFactory {
                 turnip.setProfit(2);
                 turnip.setWaterLoss(1);
                 return turnip;*/
-                return new Plant(x, y, "Turnip", 1, 2, assets.plantTextures[Constants.TURNIP], waterStateMap);
+                return new Plant(x, y, "Turnip", 1, 2, 10, assets.plantTextures[Constants.TURNIP], waterStateMap);
 
             }
         });
@@ -65,7 +65,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,5));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Rose", 2, 3, assets.plantTextures[Constants.ROSE], waterStateMap);
+                return new Plant(x, y, "Rose", 2, 3, 10, assets.plantTextures[Constants.ROSE], waterStateMap);
 
             }
         });
@@ -81,7 +81,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Cucumber", 1, 3, assets.plantTextures[Constants.CUCUMBER], waterStateMap);
+                return new Plant(x, y, "Cucumber", 1, 3,10,  assets.plantTextures[Constants.CUCUMBER], waterStateMap);
 
             }
         });
@@ -97,7 +97,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Tulip", 2, 3, assets.plantTextures[Constants.TULIP], waterStateMap);
+                return new Plant(x, y, "Tulip", 2, 3, 10, assets.plantTextures[Constants.TULIP], waterStateMap);
 
             }
         });
@@ -113,7 +113,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Tomato", 1, 4, assets.plantTextures[Constants.TOMATO], waterStateMap);
+                return new Plant(x, y, "Tomato", 1, 4, 10, assets.plantTextures[Constants.TOMATO], waterStateMap);
 
             }
         });
@@ -129,7 +129,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Melon", 1, 4, assets.plantTextures[Constants.MELON], waterStateMap);
+                return new Plant(x, y, "Melon", 1, 4, 10, assets.plantTextures[Constants.MELON], waterStateMap);
 
             }
         });
@@ -145,7 +145,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Eggplant", 1, 4, assets.plantTextures[Constants.EGGPLANT], waterStateMap);
+                return new Plant(x, y, "Eggplant", 1, 4, 10, assets.plantTextures[Constants.EGGPLANT], waterStateMap);
 
             }
         });
@@ -161,7 +161,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Lemon", 1, 4, assets.plantTextures[Constants.LEMON], waterStateMap);
+                return new Plant(x, y, "Lemon", 1, 4, 10, assets.plantTextures[Constants.LEMON], waterStateMap);
 
             }
         });
@@ -177,7 +177,7 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                return new Plant(x, y, "Pineapple", 1, 4, assets.plantTextures[Constants.PINEAPPLE], waterStateMap);
+                return new Plant(x, y, "Pineapple", 1, 4, 10, assets.plantTextures[Constants.PINEAPPLE], waterStateMap);
 
             }
         });

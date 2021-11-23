@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.garden.game.GardenGame;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 import java.util.ArrayList;
@@ -35,18 +37,19 @@ public class Unit extends Actor {
         //this.sprite = app.assets.textureAtlas.createSprite("character000");
         this.walkAnimations = app.assets.walkAnimations;
         this.stopAnimations = app.assets.stopAnimations;
-        maxX = 32; // Hardcoded...
-        maxY = 32;
+        maxX = Constants.MAP_WIDTH_TILES; // Hardcoded...
+        maxY = Constants.MAP_HEIGHT_TILES;
         minX = 0;
         minY = 0;
         activeAnimation = stopAnimations.get(0);
-        setX(16*32);
-        setY(16*32);
+
+        // Position character in middle of map.
+        setX(Constants.MAP_WIDTH_TILES/2 * Constants.TILE_WIDTH);
+        setY(Constants.MAP_HEIGHT_TILES/2 * Constants.TILE_HEIGHT);
 
     }
 
     public void move(float x, float y) {
-        //position.setLocation(x, y);
         selectAnimation(x, y);
 
     }
@@ -57,7 +60,7 @@ public class Unit extends Actor {
 
         // Check for water.
 
-        canMove = canMove && (app.gameScreen.world.waterLayer.getCell(x, y) == null);
+        canMove = canMove && !(app.gameScreen.world.isWaterTile(x,y));
 
         return canMove;
     }
@@ -85,7 +88,7 @@ public class Unit extends Actor {
                 x -= velocity * Gdx.graphics.getDeltaTime();
             }
 
-            if(canMove((int) x/32, (int) y/32))
+            if(canMove((int) x/Constants.TILE_WIDTH, (int) y/Constants.TILE_HEIGHT))
                 setPosition(x, y);
         }
         batch.draw(drawThis, getX(), getY());
@@ -95,7 +98,7 @@ public class Unit extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if(!canMove((int) getX()/32, (int) getY()/32)) {
+        if(!canMove((int) getX()/Constants.TILE_WIDTH, (int) getY()/Constants.TILE_HEIGHT)) {
             clearActions();
             activeAnimation = stopAnimations.get(direc);
         }
@@ -178,7 +181,36 @@ public class Unit extends Actor {
         addAction(sequence);
     }
 
+    // Go to plant and give it water.
+    public void gotoAndWater(final float x, final float y, final Plant plant) {
+    }
 
+    // Go to lake and get some water
+    public void gotoAndGetMoreWater(final float x, final float y, final int newAmount) {
+        clearActions();
+        selectAnimation(x, y);
+        MoveToAction moveToAction = new MoveToAction();
+        moveToAction.setPosition(x, y);
+        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
+        moveToAction.setDuration(duration);
+
+        final Sprite bucket = new Sprite(app.assets.buckets[1]);
+        bucket.setPosition(x, y);
+        // Add collecting water animation.
+        /*RunnableAction run = new RunnableAction();
+        run.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                bucket.draw(app.gameScreen.world.getBatch());
+                //app.gameScreen.world.getBatch().;
+            }
+        });*/
+        SequenceAction sequence = new SequenceAction(moveToAction);
+
+        addAction(sequence);
+
+
+    }
 
 }
 

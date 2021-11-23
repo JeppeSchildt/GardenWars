@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
 import com.garden.game.screens.GameScreen;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Iterator;
@@ -37,7 +38,6 @@ public class World extends Stage {
     public int turnNumber;
 
     public int dayCount, weekCount, monthCount;
-    private Well well;
 
     private int maxGold = 9999;
 
@@ -92,7 +92,7 @@ public class World extends Stage {
 
     public void update(float delta) {
         mapInput.update(delta);
-        spriteHighlight.setPosition(hoveredX*32, hoveredY*32);
+        spriteHighlight.setPosition(hoveredX * Constants.TILE_WIDTH, hoveredY * Constants.TILE_HEIGHT);
     }
 
     public void render() {
@@ -163,6 +163,10 @@ public class World extends Stage {
             //startEvent("magazine");
         }
 
+    }
+
+    public boolean isWaterTile(int x, int y) {
+        return waterLayer.getCell(x, y) != null;
     }
 
 }

@@ -38,7 +38,7 @@ public class Assets extends AssetManager {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("pack.atlas");
+        textureAtlas = this.get("main_atlas.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
@@ -48,7 +48,7 @@ public class Assets extends AssetManager {
 
     // Close files
     public void unloadAll() {
-        this.unload("pack.atlas");
+        this.unload("main_atlas.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -117,8 +117,8 @@ public class Assets extends AssetManager {
     private void initPlantSprites() {
         // Change to this size!!
         plantTextures = new TextureRegion[20][6];
-        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("Crop_Spritesheet_32");
-        TextureRegion[][] tmp = atlasRegion.split(32,32);
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("Crop_Spritesheet");
+        TextureRegion[][] tmp = atlasRegion.split(16,16);
         //plantTextures = atlasRegion.split(32,32);
         int row = 0;
         int column = 0;
@@ -136,7 +136,7 @@ public class Assets extends AssetManager {
 
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("pack.atlas", TextureAtlas.class);
+        this.load("main_atlas.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
 
         this.load("inGameDesign/GameBorder.png", Texture.class);

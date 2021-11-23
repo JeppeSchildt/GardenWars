@@ -51,7 +51,6 @@ public class World extends Stage {
         worldCamera.zoom = 0.6302493f;
         mapInput = new MapInput(app, this);
         user = new Player(app);
-        //Texture t = app.assets.textureAtlas.createSprite("well");
     }
 
     public void init(String map) {
@@ -83,12 +82,11 @@ public class World extends Stage {
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
-        well = new Well(16, 16, app.assets.textureAtlas.createSprite("well"));
-        addActor(well);
+
 
         addActor(user.unit);
 
-        spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+        spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
 
 

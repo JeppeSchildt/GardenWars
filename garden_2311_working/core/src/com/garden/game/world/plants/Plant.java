@@ -162,6 +162,7 @@ public class Plant extends Actor {
         this.waterStateMap = waterStateMap;
         this.textureRegions = textureRegions;
         state = PlantState.SEED;
+
         setPosition(x, y);
         setName(name);
         initSprites();

@@ -58,7 +58,7 @@ public class GameScreen extends AbstractScreen {
     private ShapeRenderer shapeRenderer;
     Sprite spriteHighlight;
 
-    private Table tableResources, tableDay, tableButtons, tableTileInfo;
+    private Table tableResources, tableDay, tableButtons, tableTileInfo,dropOutTable;
 
     public GameScreen(GardenGame app) {
         this.app = app;
@@ -246,25 +246,7 @@ public class GameScreen extends AbstractScreen {
     	}
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
-
-        /*for(final TextButton textButton : buttonList){
-            System.out.println(textButton.getText());
-            textButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if(world.user.canBuy(Constants.GRASS)) {
-                        Plant plant = actorFactory.createPlant(Constants.GRASS, world.hoveredX, world.hoveredY);
-                        world.user.plant(world.hoveredX*32, world.hoveredY*32, plant);
-                        //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
-                        //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
-                    }
-
-                    outerTable.remove();
-
-                }
-            });
-            buttonTable.add(textButton).expandX().fillY().row();
-        }*/
+        dropOutTable = new Table(skin);
         for(int i = 0; i < 2; i++) {
             TextButton textButton = buttonList.get(i);
             if(i == 0) {
@@ -273,8 +255,10 @@ public class GameScreen extends AbstractScreen {
                     public void clicked(InputEvent event, float x, float y) {
                         if(world.user.canWater(world.hoveredX * 32, world.hoveredY * 32)) {
                             world.user.water(world.hoveredX * 32, world.hoveredY * 32, 2);
-                            outerTable.remove();
                         }
+                        dropOutTable.clearChildren();
+                        dropOutTable.remove();;
+                        outerTable.remove();
 
                     }
                 });
@@ -285,14 +269,66 @@ public class GameScreen extends AbstractScreen {
                         if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
                             Plant plant = actorFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
                             world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
-                            //world.user.unit.setPosition(world.hoveredX*32, world.hoveredY*32);
-                            //world.improvementLayer.setCell(world.hoveredX, world.hoveredY, plant.getCell());
                         }
+                        dropOutTable.clearChildren();
+                        dropOutTable.remove();
                         outerTable.remove();
+
                     }
                 });
             }
+            float highest = 0.0f;
+            for (Button b : buttonList) {
+                if (b.getWidth() > highest) {
+                    highest = b.getWidth();
+                }
+            }
+            for (Button b : buttonList) {
+                b.padLeft((highest-b.getWidth())/2);
+                b.padRight((highest-b.getWidth())/2);
+            }
             buttonTable.add(textButton).expandX().fillY().row();
+        }
+        for (final TextButton txtButton : buttonList) {
+            System.out.println(txtButton.getText());
+            txtButton.addListener(new ClickListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    //Create new menu next to it
+                    ArrayList<TextButton> buttonListDropOut = new ArrayList<TextButton>();
+                    TextButton button1 = new TextButton("Water", skin);
+                    button1.setColor(Color.BLUE);
+                    TextButton button2 = new TextButton("Kill", skin);
+                    button2.setColor(Color.RED);
+                    if (!dropOutTable.hasChildren()) {
+                        dropOutTable.add(button1).expandX().fillY().row();
+                        dropOutTable.add(button2).expandX().fillY().row();
+                        buttonListDropOut.add(button1);
+                        buttonListDropOut.add(button2);
+                    }
+                    dropOutTable.setSize(200, 100);
+                    float highest = 0.0f;
+                    for (Button b : buttonListDropOut) {
+                        if (b.getWidth() > highest) {
+                            highest = b.getWidth();
+                        }
+                    }
+                    for (Button b : buttonListDropOut) {
+                        b.padLeft((highest - b.getWidth()) / 2);
+                        b.padRight((highest - b.getWidth()) / 2);
+                    }
+                    System.out.println("x:" + txtButton.getX() + "y:" + txtButton.getY());
+                    dropOutTable.setPosition(txtButton.localToStageCoordinates(new Vector2(0, 0)).x + 50, txtButton.localToStageCoordinates(new Vector2(0, 0)).y - 50);
+                    hud.addActor(dropOutTable);
+                }
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    dropOutTable.clearChildren();
+                    dropOutTable.remove();
+                }
+            });
+
+
         }
         buttonTable.setSize(200, 100);
         outerTable.setSize(600, 400);
@@ -308,7 +344,6 @@ public class GameScreen extends AbstractScreen {
         app.sound.buttonMenueSound();
 
         world.nextTurn();
-        //System.out.println("Clicked - Next Turn");
 
     }
     private void renderBubble(String text) {
@@ -403,6 +438,8 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        //dropOutTable.setVisible(false);
+        //dropOutTable.remove();
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
         //Vector3 position = world.worldCamera.project(clickCoordinates);
         Vector3 position = camera.project(clickCoordinates);
@@ -421,6 +458,8 @@ public class GameScreen extends AbstractScreen {
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {
+            dropOutTable.clearChildren();
+            dropOutTable.remove();
             outerTable.remove();
             improvementsShown = false;
         }
@@ -446,6 +485,9 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(mux);
     }
 
+    // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
+
+
     // Render player things like character and plants in this method.
     // Using camera here maybe.
     @Override
@@ -464,6 +506,8 @@ public class GameScreen extends AbstractScreen {
         app.batch.end(); // End batch here, finishing rendering.
 
     }
+
+
 
     private void checkInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }

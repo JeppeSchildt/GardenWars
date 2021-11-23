@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -57,7 +58,7 @@ public class Unit extends Actor {
 
         // Check for water.
 
-        canMove = canMove && (app.gameScreen.world.waterLayer.getCell(x, y) == null);
+        canMove = canMove && !(app.gameScreen.world.isWaterTile(x,y));
 
         return canMove;
     }
@@ -178,7 +179,36 @@ public class Unit extends Actor {
         addAction(sequence);
     }
 
+    // Go to plant and give it water.
+    public void gotoAndWater(final float x, final float y, final Plant plant) {
+    }
 
+    // Go to lake and get some water
+    public void gotoAndGetMoreWater(final float x, final float y, final int newAmount) {
+        clearActions();
+        selectAnimation(x, y);
+        MoveToAction moveToAction = new MoveToAction();
+        moveToAction.setPosition(x, y);
+        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
+        moveToAction.setDuration(duration);
+
+        final Sprite bucket = new Sprite(app.assets.buckets[1]);
+        bucket.setPosition(x, y);
+        // Add collecting water animation.
+        /*RunnableAction run = new RunnableAction();
+        run.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                bucket.draw(app.gameScreen.world.getBatch());
+                //app.gameScreen.world.getBatch().;
+            }
+        });*/
+        SequenceAction sequence = new SequenceAction(moveToAction);
+
+        addAction(sequence);
+
+
+    }
 
 }
 

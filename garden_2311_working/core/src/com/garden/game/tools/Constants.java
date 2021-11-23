@@ -51,6 +51,7 @@ public class Constants {
          idPriceMap = new HashMap<Integer, Integer>();
          idPriceMap.put(GRASS, 10);
         idPriceMap.put(TURNIP, 10);
+
     }
 }
  /*

@@ -90,8 +90,14 @@ public class Player {
         water -= waterSize;
     }
 
-    public void getWater(){
+    public void getMoreWater(int x, int y){
+
+        unit.gotoAndGetMoreWater(x, y, water);
         water += waterSize;
+    }
+
+    public int getWater() {
+        return water;
     }
 
     public void nextTurn() {

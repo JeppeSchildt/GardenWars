@@ -165,4 +165,8 @@ public class World extends Stage {
 
     }
 
+    public boolean isWaterTile(int x, int y) {
+        return waterLayer.getCell(x, y) != null;
+    }
+
 }

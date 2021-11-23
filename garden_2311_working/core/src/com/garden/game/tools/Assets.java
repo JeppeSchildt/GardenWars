@@ -33,22 +33,24 @@ public class Assets extends AssetManager {
     public Sound soundButtonPress, soundEnd, soundGameOver;
     public float musicVolume = 1.0f;
     public TextureRegion[][] plantTextures;
+    public TextureRegion[] buckets;
     
     public Assets() {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("main_atlas.atlas");
+        textureAtlas = this.get("main_pack.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
         initPlantSprites();
+        initBucketSprites();
 
     }
 
     // Close files
     public void unloadAll() {
-        this.unload("main_atlas.atlas");
+        this.unload("main_pack.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -134,9 +136,20 @@ public class Assets extends AssetManager {
 
     }
 
+    // Initialize textures used for plants.
+    private void initBucketSprites() {
+        // Change to this size!!
+        buckets = new TextureRegion[2];
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("buckets");
+        TextureRegion[][] tmp = atlasRegion.split(16,15);
+        buckets[0] = tmp[0][0];
+        buckets[1] = tmp[0][1];
+
+    }
+
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("main_atlas.atlas", TextureAtlas.class);
+        this.load("main_pack.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
 
         this.load("inGameDesign/GameBorder.png", Texture.class);

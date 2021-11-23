@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
 import com.garden.game.screens.GameScreen;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Iterator;
@@ -37,7 +38,6 @@ public class World extends Stage {
     public int turnNumber;
 
     public int dayCount, weekCount, monthCount;
-    private Well well;
 
     private int maxGold = 9999;
 
@@ -51,7 +51,6 @@ public class World extends Stage {
         worldCamera.zoom = 0.6302493f;
         mapInput = new MapInput(app, this);
         user = new Player(app);
-        //Texture t = app.assets.textureAtlas.createSprite("well");
     }
 
     public void init(String map) {
@@ -83,18 +82,17 @@ public class World extends Stage {
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
-        well = new Well(16, 16, app.assets.textureAtlas.createSprite("well"));
-        addActor(well);
+
 
         addActor(user.unit);
 
-        spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+        spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
 
 
     public void update(float delta) {
         mapInput.update(delta);
-        spriteHighlight.setPosition(hoveredX*32, hoveredY*32);
+        spriteHighlight.setPosition(hoveredX * Constants.TILE_WIDTH, hoveredY * Constants.TILE_HEIGHT);
     }
 
     public void render() {
@@ -165,6 +163,10 @@ public class World extends Stage {
             //startEvent("magazine");
         }
 
+    }
+
+    public boolean isWaterTile(int x, int y) {
+        return waterLayer.getCell(x, y) != null;
     }
 
 }

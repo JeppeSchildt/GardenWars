@@ -33,22 +33,24 @@ public class Assets extends AssetManager {
     public Sound soundButtonPress, soundEnd, soundGameOver;
     public float musicVolume = 1.0f;
     public TextureRegion[][] plantTextures;
+    public TextureRegion[] buckets;
     
     public Assets() {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("pack.atlas");
+        textureAtlas = this.get("main_pack.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
         initPlantSprites();
+        initBucketSprites();
 
     }
 
     // Close files
     public void unloadAll() {
-        this.unload("pack.atlas");
+        this.unload("main_pack.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -117,8 +119,8 @@ public class Assets extends AssetManager {
     private void initPlantSprites() {
         // Change to this size!!
         plantTextures = new TextureRegion[20][6];
-        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("Crop_Spritesheet_32");
-        TextureRegion[][] tmp = atlasRegion.split(32,32);
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("Crop_Spritesheet");
+        TextureRegion[][] tmp = atlasRegion.split(16,16);
         //plantTextures = atlasRegion.split(32,32);
         int row = 0;
         int column = 0;
@@ -134,9 +136,20 @@ public class Assets extends AssetManager {
 
     }
 
+    // Initialize textures used for plants.
+    private void initBucketSprites() {
+        // Change to this size!!
+        buckets = new TextureRegion[2];
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("buckets");
+        TextureRegion[][] tmp = atlasRegion.split(16,15);
+        buckets[0] = tmp[0][0];
+        buckets[1] = tmp[0][1];
+
+    }
+
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("pack.atlas", TextureAtlas.class);
+        this.load("main_pack.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
 
         this.load("inGameDesign/GameBorder.png", Texture.class);

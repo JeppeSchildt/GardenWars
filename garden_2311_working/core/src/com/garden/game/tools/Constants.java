@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
+
+    // Size of tiles
+    public static int TILE_WIDTH = 32;
+    public static int TILE_HEIGHT = 32;
+    public static int MAP_WIDTH_TILES = 32;
+    public static int MAP_HEIGHT_TILES = 32;
+
     // Plant ids. Some of them are completely random. Some them come from position in a spritesheet.
     public static final int GRASS = 500;
     public static final int TURNIP = 0;
@@ -51,6 +58,7 @@ public class Constants {
          idPriceMap = new HashMap<Integer, Integer>();
          idPriceMap.put(GRASS, 10);
         idPriceMap.put(TURNIP, 10);
+
     }
 }
  /*

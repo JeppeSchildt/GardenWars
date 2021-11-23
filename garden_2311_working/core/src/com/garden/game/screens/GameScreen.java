@@ -207,7 +207,7 @@ public class GameScreen extends AbstractScreen {
     // Utility method, get info about hovered tile.
     public String getTileInfo(int x, int y) {
         String coordinates = "[" + x + "," + y + "]\n";
-        Plant plant = world.user.getPlantAtPosition(x*32, y*32);
+        Plant plant = world.user.getPlantAtPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT);
 
         String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
         return coordinates + improvement;
@@ -254,8 +254,8 @@ public class GameScreen extends AbstractScreen {
                 textButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if(world.user.canWater(world.hoveredX * 32, world.hoveredY * 32)) {
-                            world.user.water(world.hoveredX * 32, world.hoveredY * 32, 2);
+                        if(world.user.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                            world.user.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
                         }
                         dropOutTable.clearChildren();
                         dropOutTable.remove();;
@@ -267,9 +267,9 @@ public class GameScreen extends AbstractScreen {
                 textButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (world.user.canPlant(Constants.GRASS, world.hoveredX * 32, world.hoveredY * 32)) {
+                        if (world.user.canPlant(Constants.GRASS, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
                             Plant plant = actorFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
-                            world.user.plant(world.hoveredX * 32, world.hoveredY * 32, plant);
+                            world.user.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
                         }
                         dropOutTable.clearChildren();
                         dropOutTable.remove();

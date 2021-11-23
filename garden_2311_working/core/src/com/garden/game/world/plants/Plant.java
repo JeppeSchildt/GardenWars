@@ -181,7 +181,7 @@ public class Plant extends Actor {
 
     @Override
     public void setPosition(float x, float y) {
-        super.setPosition(x*32, y*32); // 32 is length of a tile...
+        super.setPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT); // 32 is length of a tile...
     }
 
     public void changeState() {

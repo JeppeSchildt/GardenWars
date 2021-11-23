@@ -46,7 +46,7 @@ public class GameScreen extends AbstractScreen {
     ScrollPane scrollPane;
     Skin skin;
     private final InputMultiplexer mux;
-    private final Color hudColor;
+    //private final Color hudColor;
     public Group grp;
     public NinePatch np;
     public BitmapFont font = new BitmapFont();
@@ -55,7 +55,7 @@ public class GameScreen extends AbstractScreen {
     PlantFactory actorFactory;
     private boolean improvementsShown;
     final OrthographicCamera camera;
-    private ShapeRenderer shapeRenderer;
+    //private ShapeRenderer shapeRenderer;
     Sprite spriteHighlight;
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo,dropOutTable;
@@ -66,24 +66,25 @@ public class GameScreen extends AbstractScreen {
         world = new World(app);
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hud = new Stage(new ScreenViewport(camera));
+        mux = new InputMultiplexer();
 
         //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
         //hud = new Stage(new ScreenViewport(world.worldCamera));
-        hudColor = new Color(1, 1, 1, 0.5f);
-        mux = new InputMultiplexer();
+        //hudColor = new Color(1, 1, 1, 0.5f);
 
-        initHUD();
-
-        app.maxWidth = world.tileSize*world.worldWidth;
-        app.maxHeight = Gdx.graphics.getHeight()-100;
+        //app.maxWidth = world.tileSize*world.worldWidth;
+        //app.maxHeight = Gdx.graphics.getHeight()-100;
         actorFactory = new PlantFactory(app.assets);
-        shapeRenderer = new ShapeRenderer();
+
+        //shapeRenderer = new ShapeRenderer();
 
         world.user.dkk = 200;
         world.dayCount = 1;
 
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
+
+        initHUD();
     }
 
     private void initHUD() {
@@ -511,7 +512,34 @@ public class GameScreen extends AbstractScreen {
 
     private void checkInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) nextTurn();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        {
+            nextTurn();
+            System.out.println("Key ENTER press");
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
+        {
+            if (!app.debugMode){
+                app.debugMode = true;
+            }
+            else{
+                app.debugMode = false;
+                /*
+                app.gameScreen = new GameScreen(app);
+                app.setScreen(app.gameScreen);
+                app.gameScreen.world.init("World.tmx");
+                 */
+
+            }
+            System.out.println("Key BACKSPACE press");
+            debugButtons();
+
+        }
+
+
+
+
 
     }
 
@@ -590,9 +618,22 @@ public class GameScreen extends AbstractScreen {
             }
         });
 
-        DebugTable.add(debugSeasonButton).left();
-        DebugTable.row();
-        DebugTable.add(debugEvenButton).left();
+
+        if (app.debugMode){
+            System.out.println("DebugMode = " + app.debugMode + ": add");
+            DebugTable.add(debugSeasonButton).left();
+            DebugTable.row();
+            DebugTable.add(debugEvenButton).left();
+        }
+
+        if (!app.debugMode){
+            System.out.println("DebugMode = " + app.debugMode + ": removeActor");
+            DebugTable.removeActor(debugSeasonButton);
+            DebugTable.removeActor(debugEvenButton);
+
+
+        }
+
     }
 
 

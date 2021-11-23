@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -26,7 +30,12 @@ public class SkillTreeScreen implements Screen {
             construction, communication, water, waterPlus, irrigation, autoHarvest,
             settingsButton, quitButton, playButton, resetButton;
 
+    private ShapeRenderer shapeRenderer;
+    private final Color hudColor;
 
+
+    private int basicPlantsX = 300, basicPlantsY = 450;
+    private int fertilizerX = 250, fertilizerY = 350;
 
     Skin skin;
     public SkillTreeScreen(GardenGame app) {
@@ -37,7 +46,8 @@ public class SkillTreeScreen implements Screen {
 
         initStage();
 
-
+        hudColor = new Color(1, 0, 0, 0.5f);
+        shapeRenderer = new ShapeRenderer();
     }
 
     private void initStage() {
@@ -50,6 +60,7 @@ public class SkillTreeScreen implements Screen {
         stage.addActor(table);
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+
 
         Label title = new Label("Skill Tree", app.assets.largeTextStyle);
         title.setFontScale(5);
@@ -85,6 +96,9 @@ public class SkillTreeScreen implements Screen {
             }
         });
 
+        basicPlants.setPosition(basicPlantsX, basicPlantsY);
+        stage.addActor(basicPlants);
+
         fertilizer = new TextButton("Fertilizer",skin);
         fertilizer.addListener(new ChangeListener() {
             @Override
@@ -92,6 +106,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        fertilizer.setPosition(fertilizerX, fertilizerY);
+        stage.addActor(fertilizer);
 
         general = new TextButton("General",skin);
         general.addListener(new ChangeListener() {
@@ -202,12 +218,12 @@ public class SkillTreeScreen implements Screen {
             }
         });
 
-
+/*
        // table.add(title).center();
         // table.row();
-        table.add(imgEmptyArrow).right();
-        table.add(basicPlants).left();
-        table.row();
+        //table.add(imgEmptyArrow).right();
+        //table.add(basicPlants).left();
+        //table.row();
         table.add(imgEmptyArrow).right();
        // table.add(imgDownArrow).center();
         table.row();
@@ -249,7 +265,7 @@ public class SkillTreeScreen implements Screen {
         table.add(imgEmptyArrow).center();
         table.add(autoHarvest).center();
 
-
+*/
 
 
 
@@ -297,6 +313,23 @@ public class SkillTreeScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        drawMenu();
+    }
+
+    // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
+    public void drawMenu(){
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(basicPlantsX + 55, basicPlantsY, fertilizerX + 50, fertilizerY+24);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(basicPlantsX + 55, basicPlantsY, 400, 400);
+        shapeRenderer.end();
+
+
     }
 
     @Override

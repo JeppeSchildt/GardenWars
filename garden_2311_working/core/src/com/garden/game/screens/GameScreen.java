@@ -386,6 +386,7 @@ public class GameScreen extends AbstractScreen {
         grp.setPosition(bx,by);
         hud.addActor(grp);
         app.batch.end();
+
     }
     public void magazineEvent() {
         /*

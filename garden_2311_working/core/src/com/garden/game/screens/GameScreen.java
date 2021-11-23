@@ -446,6 +446,9 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(mux);
     }
 
+    // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
+
+
     // Render player things like character and plants in this method.
     // Using camera here maybe.
     @Override
@@ -464,6 +467,8 @@ public class GameScreen extends AbstractScreen {
         app.batch.end(); // End batch here, finishing rendering.
 
     }
+
+
 
     private void checkInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }

@@ -17,10 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
-import sun.java2d.SunGraphics2D;
+import com.garden.game.world.World;
+
 
 public class SkillTreeScreen implements Screen {
 
+    public World world;
     private GardenGame app;
     private Stage stage;
     private Table table;
@@ -33,9 +35,26 @@ public class SkillTreeScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private final Color hudColor;
 
+    private int offsetX = 20, offsetY = 80;
+    private int basicPlantsX = 250, basicPlantsY = 600;
+    private int fertilizerX = basicPlantsX + offsetX, fertilizerY = basicPlantsY - offsetY;
+    private int moreFruitsX = basicPlantsX + 55 , moreFruitsY = fertilizerY - offsetY;
+    private int moreFlowersX = fertilizerX + offsetX - 100, moreFlowersY = moreFruitsY;
+    private int fertilizerPlusX = basicPlantsX + 10,  fertilizerPlusY = moreFruitsY - offsetY;
+    //tree 2
+    private int generalX = fertilizerX + 400,  generalY = basicPlantsY;
+    private int constructionX = moreFlowersX + 350 , constructionY = generalY - offsetY;
+    private int communicationX = constructionX + 110 , communicationY = constructionY;
+    private  int waterX = communicationX + 135, waterY = constructionY;
+    private  int waterPlusX = waterX  , waterPlusY = constructionY - offsetY;
+    private  int irrigationX = waterX , irrigationY = waterPlusY - offsetY;
+    private  float autoHarvestX = (float) ((fertilizerPlusX + irrigationX) *0.5) -50, autoHarvestY = fertilizerPlusY - 2* offsetY;
 
-    private int basicPlantsX = 300, basicPlantsY = 450;
-    private int fertilizerX = 250, fertilizerY = 350;
+
+
+
+
+
 
     Skin skin;
     public SkillTreeScreen(GardenGame app) {
@@ -46,15 +65,17 @@ public class SkillTreeScreen implements Screen {
 
         initStage();
 
-        hudColor = new Color(1, 0, 0, 0.5f);
+        hudColor = Color.BLACK;
         shapeRenderer = new ShapeRenderer();
     }
 
     private void initStage() {
 
+
         // Create a table that fills the screen. Everything else will go inside this table.
         table = new Table();
 
+        world = new World(app);
         table.setFillParent(true);
         table.setDebug(false);
         stage.addActor(table);
@@ -116,6 +137,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        general.setPosition(generalX, generalY);
+        stage.addActor(general);
 
         moreFlowers = new TextButton("More Flowers",skin);
         moreFlowers.addListener(new ChangeListener() {
@@ -124,6 +147,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        moreFlowers.setPosition(moreFlowersX, moreFlowersY);
+        stage.addActor(moreFlowers);
 
         moreFruits = new TextButton("More Fruits",skin);
         moreFruits.addListener(new ChangeListener() {
@@ -132,6 +157,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        moreFruits.setPosition(moreFruitsX, moreFruitsY);
+        stage.addActor(moreFruits);
 
         construction = new TextButton("Construction",skin);
         construction.addListener(new ChangeListener() {
@@ -140,6 +167,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        construction.setPosition(constructionX, constructionY);
+        stage.addActor(construction);
 
         communication = new TextButton("Communication",skin);
         communication.addListener(new ChangeListener() {
@@ -148,14 +177,18 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        communication.setPosition(communicationX, communicationY);
+        stage.addActor(communication);
 
         water = new TextButton("Water",skin);
         water.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                world.user.maxWater += 100;
             }
         });
+        water.setPosition(waterX, waterY);
+        stage.addActor(water);
 
         fertilizerPlus = new TextButton("Fertilizer++",skin);
         fertilizerPlus.addListener(new ChangeListener() {
@@ -165,6 +198,9 @@ public class SkillTreeScreen implements Screen {
             }
         });
 
+        fertilizerPlus.setPosition(fertilizerPlusX, fertilizerPlusY);
+        stage.addActor(fertilizerPlus);
+
         waterPlus = new TextButton("Water++",skin);
         waterPlus.addListener(new ChangeListener() {
             @Override
@@ -172,6 +208,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        waterPlus.setPosition(waterPlusX, waterPlusY);
+        stage.addActor(waterPlus);
 
         autoHarvest = new TextButton("Auto harvest",skin);
         autoHarvest.addListener(new ChangeListener() {
@@ -180,6 +218,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        autoHarvest.setPosition(autoHarvestX, autoHarvestY);
+        stage.addActor(autoHarvest);
 
         irrigation = new TextButton("Irrigation",skin);
         irrigation.addListener(new ChangeListener() {
@@ -188,6 +228,8 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+        irrigation.setPosition(irrigationX, irrigationY);
+        stage.addActor(irrigation);
 
 
         resetButton = new TextButton("Restart",skin);
@@ -217,57 +259,6 @@ public class SkillTreeScreen implements Screen {
                 backToMenue();
             }
         });
-
-/*
-       // table.add(title).center();
-        // table.row();
-        //table.add(imgEmptyArrow).right();
-        //table.add(basicPlants).left();
-        //table.row();
-        table.add(imgEmptyArrow).right();
-       // table.add(imgDownArrow).center();
-        table.row();
-        table.add(fertilizer).colspan(3).center();
-        table.add(general).colspan(3).center();
-        table.row();
-        //table.add(imgLeftArrow).right();
-        //table.add(imgDownArrow).center();
-        //table.add(imgRightArrow).left();
-        table.add(imgEmptyArrow).right();
-        table.row();
-        table.add(moreFruits).center();
-        table.add(moreFlowers).center();
-        table.add(imgEmptyArrow).right();
-        table.add(construction).center();
-        table.add(communication).center();
-        table.add(water).center();
-        table.row();
-        table.add(imgEmptyArrow).center();
-        table.row();
-        table.add(fertilizerPlus).colspan(2).center();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(waterPlus).right();
-        table.row();
-        table.add(imgEmptyArrow).center();
-        table.row();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(irrigation).center();
-        table.row();
-        table.add(imgEmptyArrow).center();
-        table.row();
-        table.add(imgEmptyArrow).center();
-        table.add(imgEmptyArrow).center();
-        table.add(autoHarvest).center();
-
-*/
-
-
 
     }
 
@@ -320,14 +311,79 @@ public class SkillTreeScreen implements Screen {
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        Gdx.gl.glLineWidth (4);
         shapeRenderer.setColor(hudColor); // Red line
-        shapeRenderer.line(basicPlantsX + 55, basicPlantsY, fertilizerX + 50, fertilizerY+24);
+        shapeRenderer.line(basicPlantsX + 55, basicPlantsY, basicPlantsX + 55, fertilizerY+27);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(hudColor); // Red line
-        shapeRenderer.line(basicPlantsX + 55, basicPlantsY, 400, 400);
+        shapeRenderer.line(basicPlantsX + 55, fertilizerY, moreFruitsX + 55, moreFruitsY+27);
         shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(basicPlantsX + 55, fertilizerY, moreFlowersX + 55, moreFruitsY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(moreFruitsX + 55, moreFruitsY, basicPlantsX + 55, fertilizerPlusY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(moreFlowersX + 55, moreFruitsY, basicPlantsX + 55, fertilizerPlusY+27);
+        shapeRenderer.end();
+
+
+
+        // second tree
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(generalX + 35, generalY, constructionX + 55, constructionY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(generalX + 35, generalY, communicationX + 55, communicationY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(generalX + 35, generalY, waterX + 30, waterY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(waterX + 30, waterY, waterPlusX + 30, waterPlusY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(waterPlusX + 30, waterPlusY, irrigationX + 30, irrigationY+27);
+        shapeRenderer.end();
+
+
+        //autoHarvest
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(basicPlantsX + 55, fertilizerPlusY, autoHarvestX + 55, autoHarvestY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(irrigationX + 30, irrigationY, autoHarvestX + 55, autoHarvestY+27);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(hudColor); // Red line
+        shapeRenderer.line(constructionX + 55, constructionY, autoHarvestX + 55, autoHarvestY+27);
+        shapeRenderer.end();
+
+
 
 
     }

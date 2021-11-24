@@ -6,35 +6,35 @@ filter: Nearest, Nearest
 repeat: none
 Crop_Spritesheet
   rotate: false
-  xy: 2, 89
+  xy: 2, 90
   size: 192, 160
   orig: 192, 160
   offset: 0, 0
   index: -1
 M
   rotate: false
-  xy: 2, 36
+  xy: 68, 37
   size: 64, 51
   orig: 64, 51
   offset: 0, 0
   index: 1
-border_tile
+M_1_Water
   rotate: false
   xy: 2, 2
+  size: 64, 86
+  orig: 64, 86
+  offset: 0, 0
+  index: -1
+border_tile
+  rotate: false
+  xy: 68, 3
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-buckets
-  rotate: false
-  xy: 68, 72
-  size: 32, 15
-  orig: 32, 15
-  offset: 0, 0
-  index: -1
 highlight_test
   rotate: false
-  xy: 196, 217
+  xy: 196, 218
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

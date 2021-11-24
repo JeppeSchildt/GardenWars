@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
@@ -24,7 +25,7 @@ public class Unit extends Actor {
     String assetName;
     //Sprite sprite;
     public int maxX, minX, maxY, minY, direc;
-    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
+    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
     public Animation<TextureRegion> activeAnimation;
     public float elapsedTime;
     TextureRegion drawThis;
@@ -37,6 +38,9 @@ public class Unit extends Actor {
         //this.sprite = app.assets.textureAtlas.createSprite("character000");
         this.walkAnimations = app.assets.walkAnimations;
         this.stopAnimations = app.assets.stopAnimations;
+        this.bucketAnimations = app.assets.bucketAnimations;
+        this.wateringAnimations = app.assets.wateringAnimations;
+
         maxX = Constants.MAP_WIDTH_TILES; // Hardcoded...
         maxY = Constants.MAP_HEIGHT_TILES;
         minX = 0;
@@ -99,8 +103,9 @@ public class Unit extends Actor {
     public void act(float delta) {
         super.act(delta);
         if(!canMove((int) getX()/Constants.TILE_WIDTH, (int) getY()/Constants.TILE_HEIGHT)) {
-            clearActions();
-            activeAnimation = stopAnimations.get(direc);
+            //clearActions();
+
+            //activeAnimation = stopAnimations.get(direc);
         }
         drawThis = activeAnimation.getKeyFrame(elapsedTime, true);
     }
@@ -194,18 +199,27 @@ public class Unit extends Actor {
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
 
-        final Sprite bucket = new Sprite(app.assets.buckets[1]);
-        bucket.setPosition(x, y);
-        // Add collecting water animation.
-        /*RunnableAction run = new RunnableAction();
-        run.setRunnable(new Runnable() {
+        RunnableAction getMoreWater = new RunnableAction();
+        getMoreWater.setRunnable(new Runnable() {
+
             @Override
             public void run() {
-                bucket.draw(app.gameScreen.world.getBatch());
-                //app.gameScreen.world.getBatch().;
+                activeAnimation=bucketAnimations.get(direc);
+
+            }
+        });
+
+        /*RunnableAction stop = new RunnableAction();
+        stop.setRunnable(new Runnable() {
+
+            @Override
+            public void run() {
+                activeAnimation=stopAnimations.get(direc);
+
             }
         });*/
-        SequenceAction sequence = new SequenceAction(moveToAction);
+
+        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater);
 
         addAction(sequence);
 

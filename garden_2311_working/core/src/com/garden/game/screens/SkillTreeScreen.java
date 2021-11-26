@@ -10,10 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
+import com.garden.game.Skills.MoreFlowers;
+import com.garden.game.Skills.BasicPlants;
 import com.garden.game.world.World;
 
 
@@ -27,7 +30,9 @@ public class SkillTreeScreen implements Screen {
     private Image imgRightArrow, imgLeftArrow, imgDownArrow, imgEmptyArrow;
     private TextButton basicPlants, fertilizer, fertilizerPlus, general, moreFruits, moreFlowers,
             construction, communication, water, waterPlus, irrigation, autoHarvest,
-            settingsButton, quitButton, playButton, resetButton;
+            settingsButton, quitButton, playButton, backButton;
+
+
 
     private ShapeRenderer shapeRenderer;
     private final Color hudColor;
@@ -83,6 +88,7 @@ public class SkillTreeScreen implements Screen {
         Label title = new Label("Skill Tree", app.assets.largeTextStyle);
         title.setFontScale(5);
 
+        /*
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);
         playButton = new TextButton("Resume",skin);
         playButton.addListener(new ChangeListener() {
@@ -91,6 +97,8 @@ public class SkillTreeScreen implements Screen {
                 resumeGame();
             }
         });
+
+         */
 
 
 
@@ -106,11 +114,14 @@ public class SkillTreeScreen implements Screen {
         textureEmptyArrow = new Texture(Gdx.files.internal("arrows/EmptyArrow.png"));
         imgEmptyArrow = new Image(textureEmptyArrow);
 
+
         basicPlants = new TextButton("Basic Plants",skin);
         basicPlants.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
+                fertilizer.setTouchable(Touchable.enabled);
+                world.player.skillTree.skills.get(0).skillLearned();
             }
         });
 
@@ -122,6 +133,9 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
+                moreFlowers.setTouchable(Touchable.enabled);
+                moreFruits.setTouchable(Touchable.enabled);
+
             }
         });
         fertilizer.setPosition(fertilizerX, fertilizerY);
@@ -131,7 +145,9 @@ public class SkillTreeScreen implements Screen {
         general.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                communication.setTouchable(Touchable.enabled);
+                construction.setTouchable(Touchable.enabled);
+                water.setTouchable(Touchable.enabled);
             }
         });
         general.setPosition(generalX, generalY);
@@ -141,7 +157,7 @@ public class SkillTreeScreen implements Screen {
         moreFlowers.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                fertilizerPlus.setTouchable(Touchable.enabled);
             }
         });
         moreFlowers.setPosition(moreFlowersX, moreFlowersY);
@@ -151,7 +167,7 @@ public class SkillTreeScreen implements Screen {
         moreFruits.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                fertilizerPlus.setTouchable(Touchable.enabled);
             }
         });
         moreFruits.setPosition(moreFruitsX, moreFruitsY);
@@ -181,7 +197,7 @@ public class SkillTreeScreen implements Screen {
         water.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                world.player.maxWater += 100;
+                waterPlus.setTouchable(Touchable.enabled);
             }
         });
         water.setPosition(waterX, waterY);
@@ -202,7 +218,7 @@ public class SkillTreeScreen implements Screen {
         waterPlus.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                irrigation.setTouchable(Touchable.enabled);
             }
         });
         waterPlus.setPosition(waterPlusX, waterPlusY);
@@ -229,25 +245,35 @@ public class SkillTreeScreen implements Screen {
         stage.addActor(irrigation);
 
 
-        resetButton = new TextButton("Restart",skin);
-        resetButton.addListener(new ChangeListener() {
+
+        backButton = new TextButton("Back",skin);
+        backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                backToGame();
             }
         });
 
+        backButton.setPosition(autoHarvestX, autoHarvestY - 100);
+        stage.addActor(backButton);
+
+
+        fertilizer.setTouchable(Touchable.disabled);
+        moreFlowers.setTouchable(Touchable.disabled);
+        moreFruits.setTouchable(Touchable.disabled);
+        fertilizerPlus.setTouchable(Touchable.disabled);
+
+        construction.setTouchable(Touchable.disabled);
+        communication.setTouchable(Touchable.disabled);
+        water.setTouchable(Touchable.disabled);
+        waterPlus.setTouchable(Touchable.disabled);
+        irrigation.setTouchable(Touchable.disabled);
+        autoHarvest.setTouchable(Touchable.disabled);
 
 
 
-        settingsButton = new TextButton("Preferences",skin);
-        settingsButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                preferences();
 
-            }
-        });
+
 
         quitButton = new TextButton("Back to menu",skin);
         quitButton.addListener(new ChangeListener() {
@@ -259,11 +285,17 @@ public class SkillTreeScreen implements Screen {
 
     }
 
-
-    private void resumeGame(){
-        app.sound.buttonMenueSound();
+    private void backToGame() {
         app.setScreen(app.gameScreen);
     }
+
+    /*
+        private void resumeGame(){
+            app.sound.buttonMenueSound();
+            app.setScreen(app.gameScreen);
+        }
+
+     */
     private void backToMenue(){
         //Gdx.app.exit();
         app.sound.buttonMenueSound();
@@ -273,6 +305,8 @@ public class SkillTreeScreen implements Screen {
         app.sound.Chance_Music();
         app.setScreen(app.titleScreen);
     }
+
+
 
 
 
@@ -294,7 +328,7 @@ public class SkillTreeScreen implements Screen {
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) backToMenue();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) resumeGame();
+        //if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) resumeGame();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

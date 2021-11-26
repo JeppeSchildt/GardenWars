@@ -29,7 +29,7 @@ public class Player {
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
-    private SkillTree skillTree;
+    public SkillTree skillTree;
 
     public Player(GardenGame app) {
         this.app = app;
@@ -46,7 +46,6 @@ public class Player {
         maxWater = 50;
         waterPerTurn = 10;
         waterSize = 2;
-
         maxPoint = 1000;
     }
 

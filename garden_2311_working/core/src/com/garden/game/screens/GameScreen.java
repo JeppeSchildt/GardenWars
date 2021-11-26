@@ -253,9 +253,7 @@ public class GameScreen extends AbstractScreen {
                     world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
                 }
 
-
                 outerTable.remove();
-
             }
         });
 
@@ -484,6 +482,7 @@ public class GameScreen extends AbstractScreen {
         Vector2 test = hud.stageToScreenCoordinates(new Vector2(position.x, position.y));
         //(int) (position.x) / world.tileSize;
         if(button == Input.Buttons.RIGHT) {
+            setupTileImprovementBox();
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
         	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
         	double cat = world.tileSize/2;

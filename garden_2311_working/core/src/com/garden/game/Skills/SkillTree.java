@@ -21,7 +21,7 @@ public class SkillTree {
     static final int AUTO_HARVEST = 11;
 
     ArrayList<ArrayList<Integer> > adj;
-    ArrayList<Skill> skills;
+    public ArrayList<Skill> skills;
     Player player;
 
     public SkillTree(Player player) {

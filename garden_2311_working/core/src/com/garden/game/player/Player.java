@@ -24,7 +24,7 @@ public class Player {
     GardenGame app;
     public Unit unit;
     public int money, water, maxWater, point, maxPoint;
-    private int waterSize, waterPerTurn;
+    public int waterForPlant, waterPerTurn;
     private ArrayList<Integer> availablePlants;
 
     private ArrayList<Plant> plants;
@@ -45,8 +45,7 @@ public class Player {
         water = 10;
         maxWater = 50;
         waterPerTurn = 10;
-        waterSize = 2;
-
+        waterForPlant = 2;
         maxPoint = 1000;
     }
 
@@ -101,13 +100,16 @@ public class Player {
     public void water(int x, int y, int amount) {
         money -= 2;
         plants_.get(new Vector2(x,y)).water(amount);
-        water -= waterSize;
+        water -= waterForPlant;
     }
 
     public void getMoreWater(int x, int y){
 
         unit.gotoAndGetMoreWater(x, y, water);
-        water += waterSize;
+        water += waterPerTurn;
+        if(water > maxWater) {
+            water = maxWater;
+        }
     }
 
     public int getWater() {

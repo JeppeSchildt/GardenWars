@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Plant extends Actor {
-    float water;
+    public float water;
     int price;
     Integer typeID;
     TiledMapTileLayer.Cell cell;
@@ -205,6 +205,10 @@ public class Plant extends Actor {
         }
         setActiveSprite();
 
+    }
+
+    public void setState(PlantState newState) {
+        this.state = newState;
     }
 
     private void setActiveSprite() {

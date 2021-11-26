@@ -30,10 +30,8 @@ public class Irrigation extends Skill {
             Plant plant = entry.getValue();
 
             if(plant.getState() != Plant.PlantState.HEALTHY) {
-                plant.setState(Plant.PlantState.HEALTHY);
-                plant.water = plant.waterStateMap.get(Plant.PlantState.HEALTHY).x;
-            } else {
-                plant.water += 4f;
+                //plant.setState(Plant.PlantState.HEALTHY);
+                plant.water += plant.waterStateMap.get(Plant.PlantState.HEALTHY).x;
             }
 
 

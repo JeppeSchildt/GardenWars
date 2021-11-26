@@ -21,7 +21,8 @@ public class SkillTree {
         // Creating a graph with 12 vertices
         int V = 12;
         availableToLearn = new boolean[12];
-        availableToLearn[0] = true;
+        availableToLearn[Constants.BASIC_PLANTS] = true;
+        availableToLearn[Constants.GENERAL] = true;
         skills = new ArrayList<>();
 
         skills.add(Constants.BASIC_PLANTS, new BasicPlants(3, player));

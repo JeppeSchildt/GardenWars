@@ -130,17 +130,8 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-                fertilizer.setTouchable(Touchable.enabled);
-                world.player.skillTree.skills.get(0).skillLearned();
-                basicPlants.setTouchable(Touchable.disabled);
-
                 skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
-                //fertilizer.setTouchable(Touchable.enabled);
-                //world.player.skillTree.skills.get(8).skillLearned();
 
-                skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
-                //fertilizer.setTouchable(Touchable.enabled);
-                //world.player.skillTree.skills.get(8).skillLearned();
             }
         });
 
@@ -151,9 +142,9 @@ public class SkillTreeScreen implements Screen {
         fertilizer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
-                moreFlowers.setTouchable(Touchable.enabled);
-                moreFruits.setTouchable(Touchable.enabled);
+                skillTree.setCurrentlyLearning(Constants.FERTILIZER_1);
+                //moreFlowers.setTouchable(Touchable.enabled);
+                //moreFruits.setTouchable(Touchable.enabled);
 
             }
         });
@@ -164,9 +155,10 @@ public class SkillTreeScreen implements Screen {
         general.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                communication.setTouchable(Touchable.enabled);
-                construction.setTouchable(Touchable.enabled);
-                water.setTouchable(Touchable.enabled);
+                skillTree.setCurrentlyLearning(Constants.GENERAL);
+                //communication.setTouchable(Touchable.enabled);
+                //construction.setTouchable(Touchable.enabled);
+                //water.setTouchable(Touchable.enabled);
             }
         });
         general.setPosition(generalX, generalY);
@@ -176,7 +168,8 @@ public class SkillTreeScreen implements Screen {
         moreFlowers.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                fertilizerPlus.setTouchable(Touchable.enabled);
+                //fertilizerPlus.setTouchable(Touchable.enabled);
+                skillTree.setCurrentlyLearning(Constants.MORE_FLOWERS);
             }
         });
         moreFlowers.setPosition(moreFlowersX, moreFlowersY);
@@ -186,7 +179,8 @@ public class SkillTreeScreen implements Screen {
         moreFruits.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                fertilizerPlus.setTouchable(Touchable.enabled);
+                skillTree.setCurrentlyLearning(Constants.MORE_FRUITS);
+                //fertilizerPlus.setTouchable(Touchable.enabled);
             }
         });
         moreFruits.setPosition(moreFruitsX, moreFruitsY);
@@ -196,7 +190,7 @@ public class SkillTreeScreen implements Screen {
         construction.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                skillTree.setCurrentlyLearning(Constants.CONSTRUCTION);
             }
         });
         construction.setPosition(constructionX, constructionY);
@@ -206,7 +200,7 @@ public class SkillTreeScreen implements Screen {
         communication.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                skillTree.setCurrentlyLearning(Constants.COMMUNICATION);
             }
         });
         communication.setPosition(communicationX, communicationY);
@@ -216,9 +210,10 @@ public class SkillTreeScreen implements Screen {
         water.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                waterPlus.setTouchable(Touchable.enabled);
-                world.player.skillTree.skills.get(8).skillLearned();
-                water.setTouchable(Touchable.disabled);
+                skillTree.setCurrentlyLearning(Constants.WATER_1);
+                //waterPlus.setTouchable(Touchable.enabled);
+                //world.player.skillTree.skills.get(8).skillLearned();
+                //water.setTouchable(Touchable.disabled);
             }
         });
         water.setPosition(waterX, waterY);
@@ -228,6 +223,7 @@ public class SkillTreeScreen implements Screen {
         fertilizerPlus.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                skillTree.setCurrentlyLearning(Constants.FERTILIZER_2);
 
             }
         });
@@ -239,7 +235,8 @@ public class SkillTreeScreen implements Screen {
         waterPlus.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                irrigation.setTouchable(Touchable.enabled);
+                skillTree.setCurrentlyLearning(Constants.WATER_2);
+                //irrigation.setTouchable(Touchable.enabled);
             }
         });
         waterPlus.setPosition(waterPlusX, waterPlusY);
@@ -249,7 +246,7 @@ public class SkillTreeScreen implements Screen {
         autoHarvest.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                skillTree.setCurrentlyLearning(Constants.AUTO_HARVEST);
             }
         });
         autoHarvest.setPosition(autoHarvestX, autoHarvestY);
@@ -259,7 +256,7 @@ public class SkillTreeScreen implements Screen {
         irrigation.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                skillTree.setCurrentlyLearning(Constants.IRRIGATION);
             }
         });
         irrigation.setPosition(irrigationX, irrigationY);

@@ -2,6 +2,7 @@ package com.garden.game.player;
 
 import com.badlogic.gdx.math.Vector2;
 import com.garden.game.GardenGame;
+import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
@@ -146,6 +147,11 @@ public class Player {
     private void skillWork() {
         // For available skills
         // Let them do their turn work if any
+        for(Skill skill : skillTree.skills) {
+            if(skill.learned && skill.hasTurnWork) {
+                skill.turnWork();
+            }
+        }
     }
 
 

@@ -21,6 +21,7 @@ public class SkillTree {
         // Creating a graph with 12 vertices
         int V = 12;
         availableToLearn = new boolean[12];
+        availableToLearn[0] = true;
         skills = new ArrayList<>();
         skills.add(Constants.BASIC_PLANTS, new BasicPlants(3, player));
         skills.add(Constants.FERTILIZER_1, new Fertilizer(3, player));
@@ -51,11 +52,13 @@ public class SkillTree {
     }
 
     public void nextTurn() {
-        currentlyLearning.nextTurn();
-        if(currentlyLearning.learned) {
-            locked = false;
-            for (int i : currentlyLearning.adjacent) {
-                availableToLearn[i] = true;
+        if(currentlyLearning != null) {
+            currentlyLearning.nextTurn();
+            if (currentlyLearning.learned) {
+                locked = false;
+                for (int i : currentlyLearning.adjacent) {
+                    availableToLearn[i] = true;
+                }
             }
         }
     }

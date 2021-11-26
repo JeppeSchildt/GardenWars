@@ -257,8 +257,33 @@ public class GameScreen extends AbstractScreen {
             }
         });
 
-        for(int i : world.player.getAvailablePlants()) {
-            TextButton b = new TextButton(String.valueOf(i), skin);
+        TextButton getWater = new TextButton("Get Water From Lake", skin);
+        buttonTable.add(getWater);
+        buttonTable.row();
+
+        getWater.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                world.player.getMoreWater();
+
+                outerTable.remove();
+            }
+        });
+
+        for(final int i : world.player.getAvailablePlants()) {
+            TextButton b = new TextButton("Plant " + Constants.idNameMap.get(i), skin);
+           b.addListener(new ClickListener() {
+               @Override
+               public void clicked(InputEvent event, float x, float y) {
+                   if (world.player.canPlant(i, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                       Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
+                       world.player.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
+                   }
+
+
+                   outerTable.remove();
+               }
+           });
             buttonTable.add(b);
             buttonTable.row();
         }
@@ -269,107 +294,6 @@ public class GameScreen extends AbstractScreen {
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
 
-    	/*for (int i=0;i<2;i++) {
-            String t = "";
-    		if(i == 0) {
-                t = "Water tile";
-            } else {
-                t = "Plant something" + i;
-            }
-    		setButton(t,skin);
-    	}
-        buttonTable = new Table(skin);
-        outerTable = new Table(skin);
-        dropOutTable = new Table(skin);
-        for(int i = 0; i < 2; i++) {
-            TextButton textButton = buttonList.get(i);
-            if(i == 0) {
-                textButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        if(world.player.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
-                            world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
-                        }
-                        dropOutTable.clearChildren();
-                        dropOutTable.remove();;
-                        outerTable.remove();
-
-                    }
-                });
-            } else {
-                textButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        if (world.player.canPlant(Constants.GRASS, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
-                            Plant plant = plantFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
-                            world.player.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
-                            //world.player.getMoreWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
-                        }
-                        dropOutTable.clearChildren();
-                        dropOutTable.remove();
-                        outerTable.remove();
-
-                    }
-                });
-            }
-            float highest = 0.0f;
-            for (Button b : buttonList) {
-                if (b.getWidth() > highest) {
-                    highest = b.getWidth();
-                }
-            }
-            for (Button b : buttonList) {
-                b.padLeft((highest-b.getWidth())/2);
-                b.padRight((highest-b.getWidth())/2);
-            }
-            buttonTable.add(textButton).expandX().fillY().row();
-        }
-        for (final TextButton txtButton : buttonList) {
-            System.out.println(txtButton.getText());
-            txtButton.addListener(new ClickListener() {
-                @Override
-                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    //Create new menu next to it
-                    ArrayList<TextButton> buttonListDropOut = new ArrayList<TextButton>();
-                    TextButton button1 = new TextButton("Water", skin);
-                    button1.setColor(Color.BLUE);
-                    TextButton button2 = new TextButton("Kill", skin);
-                    button2.setColor(Color.RED);
-                    if (!dropOutTable.hasChildren()) {
-                        dropOutTable.add(button1).expandX().fillY().row();
-                        dropOutTable.add(button2).expandX().fillY().row();
-                        buttonListDropOut.add(button1);
-                        buttonListDropOut.add(button2);
-                    }
-                    dropOutTable.setSize(200, 100);
-                    float highest = 0.0f;
-                    for (Button b : buttonListDropOut) {
-                        if (b.getWidth() > highest) {
-                            highest = b.getWidth();
-                        }
-                    }
-                    for (Button b : buttonListDropOut) {
-                        b.padLeft((highest - b.getWidth()) / 2);
-                        b.padRight((highest - b.getWidth()) / 2);
-                    }
-                    System.out.println("x:" + txtButton.getX() + "y:" + txtButton.getY());
-                    dropOutTable.setPosition(txtButton.localToStageCoordinates(new Vector2(0, 0)).x + 50, txtButton.localToStageCoordinates(new Vector2(0, 0)).y - 50);
-                    hud.addActor(dropOutTable);
-                }
-                @Override
-                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                    dropOutTable.clearChildren();
-                    dropOutTable.remove();
-                }
-            });
-
-
-        }
-        buttonTable.setSize(200, 100);
-        outerTable.setSize(600, 400);
-        scrollPane = new ScrollPane(buttonTable, skin);
-        scrollPane.setScrollingDisabled(true, false);
-        outerTable.add(scrollPane).expandY();*/
 
     }
 
@@ -474,14 +398,14 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //dropOutTable.setVisible(false);
-        //dropOutTable.remove();
+
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-        //Vector3 position = world.worldCamera.project(clickCoordinates);
+
         Vector3 position = camera.project(clickCoordinates);
         Vector2 test = hud.stageToScreenCoordinates(new Vector2(position.x, position.y));
-        //(int) (position.x) / world.tileSize;
-        outerTable.remove();
+
+        outerTable.remove(); // Remove the right click table on new click.
+
         if(button == Input.Buttons.RIGHT) {
             setupTileImprovementBox();
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
@@ -594,10 +518,10 @@ public class GameScreen extends AbstractScreen {
 
     private void skillTreeScreen(){
 
-        if (app.SkillTreeScreen == null) {
-            app.SkillTreeScreen = new SkillTreeScreen(app);
+        if (app.skillTreeScreen == null) {
+            app.skillTreeScreen = new SkillTreeScreen(app, world.player.skillTree);
         }
-        app.setScreen(app.SkillTreeScreen);
+        app.setScreen(app.skillTreeScreen);
     }
 
 

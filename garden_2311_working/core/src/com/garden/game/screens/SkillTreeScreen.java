@@ -17,7 +17,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.Skills.MoreFlowers;
 import com.garden.game.Skills.BasicPlants;
+import com.garden.game.Skills.SkillTree;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.World;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SkillTreeScreen implements Screen {
@@ -32,7 +37,9 @@ public class SkillTreeScreen implements Screen {
             construction, communication, water, waterPlus, irrigation, autoHarvest,
             settingsButton, quitButton, playButton, backButton;
 
+    private HashMap<Integer, TextButton> lockedMap;
 
+    private SkillTree skillTree;
 
     private ShapeRenderer shapeRenderer;
     private final Color hudColor;
@@ -59,9 +66,9 @@ public class SkillTreeScreen implements Screen {
 
 
     Skin skin;
-    public SkillTreeScreen(GardenGame app) {
+    public SkillTreeScreen(GardenGame app, SkillTree skillTree) {
         this.app = app;
-
+        this.skillTree = app.gameScreen.world.player.skillTree;
         final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(new ScreenViewport(camera));
 
@@ -69,6 +76,9 @@ public class SkillTreeScreen implements Screen {
 
         hudColor = Color.BLACK;
         shapeRenderer = new ShapeRenderer();
+        //lockedMap = new HashMap<>();
+
+
     }
 
     private void initStage() {
@@ -119,9 +129,9 @@ public class SkillTreeScreen implements Screen {
         basicPlants.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
-                fertilizer.setTouchable(Touchable.enabled);
-                world.player.skillTree.skills.get(8).skillLearned();
+                skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
+                //fertilizer.setTouchable(Touchable.enabled);
+                //world.player.skillTree.skills.get(8).skillLearned();
             }
         });
 
@@ -257,8 +267,22 @@ public class SkillTreeScreen implements Screen {
         backButton.setPosition(autoHarvestX, autoHarvestY - 100);
         stage.addActor(backButton);
 
+        lockedMap = new HashMap<>();
+        lockedMap.put(Constants.BASIC_PLANTS, basicPlants);
+        lockedMap.put(Constants.FERTILIZER_1, fertilizer);
+        lockedMap.put(Constants.MORE_FLOWERS, moreFlowers);
+        lockedMap.put(Constants.MORE_FRUITS, moreFruits);
+        lockedMap.put(Constants.FERTILIZER_2, fertilizerPlus);
+        lockedMap.put(Constants.GENERAL, general);
+        lockedMap.put(Constants.CONSTRUCTION, construction);
+        lockedMap.put(Constants.COMMUNICATION, communication);
+        lockedMap.put(Constants.WATER_1, water);
+        lockedMap.put(Constants.WATER_2, waterPlus);
+        lockedMap.put(Constants.IRRIGATION, irrigation);
+        lockedMap.put(Constants.AUTO_HARVEST, autoHarvest);
 
-        fertilizer.setTouchable(Touchable.disabled);
+
+        /*fertilizer.setTouchable(Touchable.disabled);
         moreFlowers.setTouchable(Touchable.disabled);
         moreFruits.setTouchable(Touchable.disabled);
         fertilizerPlus.setTouchable(Touchable.disabled);
@@ -268,7 +292,7 @@ public class SkillTreeScreen implements Screen {
         water.setTouchable(Touchable.disabled);
         waterPlus.setTouchable(Touchable.disabled);
         irrigation.setTouchable(Touchable.disabled);
-        autoHarvest.setTouchable(Touchable.disabled);
+        autoHarvest.setTouchable(Touchable.disabled);*/
 
 
 
@@ -320,6 +344,7 @@ public class SkillTreeScreen implements Screen {
 
     @Override
     public void show() {
+        manageButtons();
         Gdx.input.setInputProcessor(stage);
 
 
@@ -415,6 +440,23 @@ public class SkillTreeScreen implements Screen {
         shapeRenderer.end();
 
 
+    }
+
+    public void manageButtons() {
+
+        if(     skillTree.skills.get(Constants.FERTILIZER_2).learned &&
+                skillTree.skills.get(Constants.CONSTRUCTION).learned &&
+                skillTree.skills.get(Constants.IRRIGATION).learned ) {
+            skillTree.availableToLearn[Constants.AUTO_HARVEST] = true;
+        }
+
+        for(int i=0; i < 12; i++) {
+            if (skillTree.availableToLearn[i]) {
+                lockedMap.get(i).setTouchable(Touchable.enabled);
+            } else {
+                lockedMap.get(i).setTouchable(Touchable.disabled);
+            }
+        }
 
 
     }

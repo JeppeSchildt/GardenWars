@@ -26,6 +26,7 @@ public class Player {
     public int money, water, maxWater, point, maxPoint, waterPerTurn;
     private int waterSize;
     private ArrayList<Integer> availablePlants;
+    private boolean gotWater;
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
@@ -103,10 +104,14 @@ public class Player {
         water -= waterSize;
     }
 
-    public void getMoreWater(int x, int y){
-
-        unit.gotoAndGetMoreWater(x, y, water);
-        water += waterSize;
+    public void getMoreWater(){
+        // Tile 17, 12
+        // You get water once per round
+        if(!gotWater) {
+            unit.gotoAndGetMoreWater();
+            water += waterPerTurn;
+            gotWater = true;
+        }
     }
 
     public int getWater() {
@@ -115,7 +120,9 @@ public class Player {
 
     public void nextTurn() {
 
+        gotWater = false;
         skillWork();
+        skillTree.nextTurn();
 
         Iterator<Map.Entry<Vector2, Plant>> entryIt = getPlants_().entrySet().iterator();
 

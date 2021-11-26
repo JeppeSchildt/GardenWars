@@ -23,8 +23,8 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public Unit unit;
-    public int money, water, maxWater, point, maxPoint;
-    private int waterSize, waterPerTurn;
+    public int money, water, maxWater, point, maxPoint, waterPerTurn;
+    private int waterSize;
     private ArrayList<Integer> availablePlants;
 
     private ArrayList<Plant> plants;

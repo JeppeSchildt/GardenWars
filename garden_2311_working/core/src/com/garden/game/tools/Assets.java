@@ -129,6 +129,8 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
+            //Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            //animation.setPlayMode();
             this.bucketAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
 

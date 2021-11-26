@@ -10,7 +10,7 @@ public class Skill {
     }
 
 
-    private void skillLerned(){
+    private void skillLearned(){
 
     }
 

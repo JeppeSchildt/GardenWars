@@ -23,8 +23,8 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public Unit unit;
-    public int money, water, maxWater, point, maxPoint;
-    public int waterForPlant, waterPerTurn;
+    public int money, water, maxWater, point, maxPoint, waterPerTurn;
+    private int waterSize;
     private ArrayList<Integer> availablePlants;
 
     private ArrayList<Plant> plants;
@@ -45,7 +45,8 @@ public class Player {
         water = 10;
         maxWater = 50;
         waterPerTurn = 10;
-        waterForPlant = 2;
+        waterSize = 2;
+
         maxPoint = 1000;
     }
 
@@ -100,16 +101,13 @@ public class Player {
     public void water(int x, int y, int amount) {
         money -= 2;
         plants_.get(new Vector2(x,y)).water(amount);
-        water -= waterForPlant;
+        water -= waterSize;
     }
 
     public void getMoreWater(int x, int y){
 
         unit.gotoAndGetMoreWater(x, y, water);
-        water += waterPerTurn;
-        if(water > maxWater) {
-            water = maxWater;
-        }
+        water += waterSize;
     }
 
     public int getWater() {

@@ -32,7 +32,6 @@ public class Fertilizer2 extends Skill {
             if(!plant.isFertilizer2) {
                 plant.isFertilizer2 = true;
                 plant.setWaterLoss(plant.getWaterLoss()-0.75f);
-
             }
         }
     }

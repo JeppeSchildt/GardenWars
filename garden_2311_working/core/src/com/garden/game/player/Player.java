@@ -24,6 +24,7 @@ public class Player {
     public Unit unit;
     public int dkk, water, maxWater, point, maxPoint;
     private int waterSize;
+    private ArrayList<Integer> availablePlants;
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
@@ -33,7 +34,9 @@ public class Player {
         unit = new Unit(this.app, "character000");
         plants = new ArrayList<>();
         plants_ = new HashMap<>();
-
+        availablePlants = new ArrayList<>();
+        availablePlants.add(Constants.RICE);
+        availablePlants.add(Constants.CUCUMBER);
 
         // Skal fejnes igen - ER her kun fo viso
         water = 10;
@@ -42,6 +45,14 @@ public class Player {
         waterSize = 2;
 
         maxPoint = 1000;
+    }
+
+    public void makePlantAvailable(int plantID) {
+        availablePlants.add(plantID);
+    }
+
+    public ArrayList<Integer> getAvailablePlants() {
+        return availablePlants;
     }
 
     public ArrayList<Plant> getPlants() {

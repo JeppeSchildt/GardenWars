@@ -12,6 +12,8 @@ import java.util.Map;
 public class Fertilizer2 extends Skill {
     public Fertilizer2(int turns, Player player) {
         super(turns, player);
+        incoming = 0;
+        adjacent.add(Constants.AUTO_HARVEST);
         hasTurnWork = true;
     }
 

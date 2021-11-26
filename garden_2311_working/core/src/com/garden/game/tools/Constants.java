@@ -62,6 +62,20 @@ public class Constants {
         idPriceMap.put(TURNIP, 10);
 
     }
+
+
+    public static final int BASIC_PLANTS = 0;
+    public static final int FERTILIZER_1 = 1;
+    public static final int MORE_FLOWERS = 2;
+    public static final int MORE_FRUITS = 3;
+    public static final int FERTILIZER_2 = 4;
+    public static final int GENERAL = 5;
+    public static final int CONSTRUCTION = 6;
+    public static final int COMMUNICATION = 7;
+    public static final int WATER_1 = 8;
+    public static final int WATER_2 = 9;
+    public static final int IRRIGATION = 10;
+    public static final int AUTO_HARVEST = 11;
 }
  /*
 - Rose

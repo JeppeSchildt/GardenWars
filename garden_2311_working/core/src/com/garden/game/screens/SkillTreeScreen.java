@@ -77,7 +77,7 @@ public class SkillTreeScreen implements Screen {
         // Create a table that fills the screen. Everything else will go inside this table.
         table = new Table();
 
-        world = new World(app);
+        world = app.gameScreen.world;
         table.setFillParent(true);
         table.setDebug(false);
         stage.addActor(table);
@@ -121,7 +121,7 @@ public class SkillTreeScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
 
                 fertilizer.setTouchable(Touchable.enabled);
-                world.player.skillTree.skills.get(0).skillLearned();
+                world.player.skillTree.skills.get(8).skillLearned();
             }
         });
 

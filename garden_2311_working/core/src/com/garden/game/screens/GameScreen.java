@@ -481,6 +481,7 @@ public class GameScreen extends AbstractScreen {
         Vector3 position = camera.project(clickCoordinates);
         Vector2 test = hud.stageToScreenCoordinates(new Vector2(position.x, position.y));
         //(int) (position.x) / world.tileSize;
+        outerTable.remove();
         if(button == Input.Buttons.RIGHT) {
             setupTileImprovementBox();
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
@@ -530,6 +531,7 @@ public class GameScreen extends AbstractScreen {
     // Using camera here maybe.
     @Override
     public void render(float delta) {
+        updateHUD();
         checkInput(); // Does not seem ideal to check input in render method. But convenient for now...
         world.update(delta);
         world.render();

@@ -51,7 +51,7 @@ public class GameScreen extends AbstractScreen {
     public BitmapFont font = new BitmapFont();
     private Label txtSelectedTileCoordinates;
     ArrayList<TextButton> buttonList;
-    PlantFactory actorFactory;
+    PlantFactory plantFactory;
     private boolean improvementsShown;
     final OrthographicCamera camera;
     //private ShapeRenderer shapeRenderer;
@@ -74,11 +74,11 @@ public class GameScreen extends AbstractScreen {
 
         //app.maxWidth = world.tileSize*world.worldWidth;
         //app.maxHeight = Gdx.graphics.getHeight()-100;
-        actorFactory = new PlantFactory(app.assets);
+        plantFactory = new PlantFactory(app.assets);
 
         //shapeRenderer = new ShapeRenderer();
 
-        world.player.dkk = 200;
+        world.player.money = 200;
         world.dayCount = 1;
 
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
@@ -219,7 +219,7 @@ public class GameScreen extends AbstractScreen {
 
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
-        String txtGold = "Gold: " + world.player.dkk + longSpace;
+        String txtGold = "Gold: " + world.player.money + longSpace;
         String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
 
         txtResources.setText(txtWater + txtGold  + txtPoint);
@@ -267,9 +267,9 @@ public class GameScreen extends AbstractScreen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         if (world.player.canPlant(Constants.GRASS, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
-                            //Plant plant = actorFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
-                            //world.user.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
-                            world.player.getMoreWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
+                            Plant plant = plantFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
+                            world.player.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
+                            //world.player.getMoreWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
                         }
                         dropOutTable.clearChildren();
                         dropOutTable.remove();

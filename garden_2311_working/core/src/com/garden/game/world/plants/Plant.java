@@ -22,7 +22,9 @@ public class Plant extends Actor {
     public Map<PlantState, Vector2> waterStateMap;
     private ArrayList<Sprite> sprites;
     private float waterLoss;
-    public boolean isFertilizer1, isFertilizer2;
+
+    // Stuff used for learned skills
+    public boolean isFertilizer1, isFertilizer2, isGeneral;
 
 
 

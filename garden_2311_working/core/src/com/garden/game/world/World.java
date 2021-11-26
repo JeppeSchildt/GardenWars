@@ -135,12 +135,12 @@ public class World extends Stage {
 
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);
-            if (player.dkk <= maxGold)
-                player.dkk += 100;
+            if (player.money <= maxGold)
+                player.money += 100;
         }
 
-        player.dkk += profit;
-        app.score = player.dkk;
+        player.money += profit;
+        app.score = player.money;
 
         weekCount();
     }

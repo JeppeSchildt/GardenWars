@@ -17,7 +17,6 @@ public class Fertilizer extends Skill {
         @Override
         public void skillLearned(){
             super.skillLearned();
-            player.makePlantAvailable(Constants.RICE);
         }
 
         // Visit plants and make them lose less water pr. turn. More resilient.
@@ -31,7 +30,7 @@ public class Fertilizer extends Skill {
 
                 if(!plant.isFertilizer1) {
                     plant.isFertilizer1 = true;
-                    plant.setWaterLoss(plant.getWaterLoss()-1f);
+                    plant.setWaterLoss(plant.getWaterLoss()-0.5f);
 
                 }
             }

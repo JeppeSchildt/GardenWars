@@ -23,8 +23,8 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public Unit unit;
-    public int dkk, water, maxWater, point, maxPoint;
-    private int waterSize;
+    public int money, water, maxWater, point, maxPoint;
+    private int waterSize, waterPerTurn;
     private ArrayList<Integer> availablePlants;
 
     private ArrayList<Plant> plants;
@@ -43,8 +43,8 @@ public class Player {
 
         // Skal fejnes igen - ER her kun fo viso
         water = 10;
-        maxWater = 100;
-
+        maxWater = 50;
+        waterPerTurn = 10;
         waterSize = 2;
 
         maxPoint = 1000;
@@ -71,10 +71,10 @@ public class Player {
     }
 
     public boolean canBuy(int id) {
-        return Constants.idPriceMap.get(id) <= dkk;
+        return Constants.idPriceMap.get(id) <= money;
     }
     public boolean canPlant(int id, int x, int y) {
-        return (Constants.idPriceMap.get(id) <= dkk) && (plants_.get(new Vector2(x, y)) == null);
+        return (Constants.idPriceMap.get(id) <= money) && (plants_.get(new Vector2(x, y)) == null);
     }
 
     public Plant getPlantAtPosition(int x, int y) {
@@ -82,14 +82,14 @@ public class Player {
     }
 
     public void plant(int x, int y, Plant plant) {
-        dkk -= plant.getPrice();
+        money -= plant.getPrice();
         addPlant(plant);
         unit.gotoAndPlant(x, y, plant);
     }
 
     public boolean canWater(int x, int y) {
         if (water != 0){
-            if(plants_.get(new Vector2(x,y)) != null && dkk >= 2) {
+            if(plants_.get(new Vector2(x,y)) != null && money >= 2) {
 
                 return true;
             }
@@ -99,7 +99,7 @@ public class Player {
     }
 
     public void water(int x, int y, int amount) {
-        dkk -= 2;
+        money -= 2;
         plants_.get(new Vector2(x,y)).water(amount);
         water -= waterSize;
     }
@@ -127,11 +127,11 @@ public class Player {
 
             if (plant.getState() == Plant.PlantState.DEAD) {
                 // Remove grass from improvement layer.
-                app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+                //app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
 
                 entryIt.remove();
             } else {
-                dkk += plant.profit;
+                money += plant.profit;
             }
         }
 

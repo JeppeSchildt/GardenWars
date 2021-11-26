@@ -16,6 +16,8 @@ public class Skill {
     }
 
 
+
+
     public void skillLearned(){
         learned = true;
     }

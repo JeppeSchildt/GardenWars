@@ -18,5 +18,13 @@ public class Communication extends Skill {
         super.skillLearned();
     }
 
+    @Override
+    public void nextTurn() {
+        super.nextTurn();
+        if(turns == 0) {
+            skillLearned();
+        }
+    }
+
 }
 

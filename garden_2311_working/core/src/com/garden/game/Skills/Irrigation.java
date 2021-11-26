@@ -38,4 +38,11 @@ public class Irrigation extends Skill {
         }
     }
 
+    @Override
+    public void nextTurn() {
+        super.nextTurn();
+        if(turns == 0) {
+            skillLearned();
+        }
+    }
 }

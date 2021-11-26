@@ -34,7 +34,7 @@ public class Player {
     public Player(GardenGame app) {
         this.app = app;
         unit = new Unit(this.app, "character000");
-        skillTree = new SkillTree();
+        skillTree = new SkillTree(this);
         plants = new ArrayList<>();
         plants_ = new HashMap<>();
         availablePlants = new ArrayList<>();

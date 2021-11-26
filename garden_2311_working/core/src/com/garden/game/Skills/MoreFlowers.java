@@ -16,4 +16,11 @@ public class MoreFlowers  extends Skill{
         player.makePlantAvailable(Constants.SUNFLOWER);
 
     }
+    @Override
+    public void nextTurn() {
+        super.nextTurn();
+        if(turns == 0) {
+            skillLearned();
+        }
+    }
 }

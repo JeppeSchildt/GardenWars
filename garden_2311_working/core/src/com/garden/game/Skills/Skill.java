@@ -6,7 +6,7 @@ public class Skill {
     public Player player;
     public int turns;
     public boolean learned;
-    boolean hasTurnWork;
+    public boolean hasTurnWork;
 
     public Skill (int turns, Player player){
      this.turns = turns;
@@ -16,14 +16,16 @@ public class Skill {
     }
 
 
-
-
     public void skillLearned(){
         learned = true;
     }
 
     public void turnWork() {
 
+    }
+
+    public void nextTurn() {
+        turns--;
     }
 
 }

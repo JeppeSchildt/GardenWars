@@ -67,6 +67,7 @@ public class GameScreen extends AbstractScreen {
         hud = new Stage(new ScreenViewport(camera));
         mux = new InputMultiplexer();
 
+
         //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
         //hud = new Stage(new ScreenViewport(world.worldCamera));
@@ -99,6 +100,9 @@ public class GameScreen extends AbstractScreen {
         imgBtnBorder = new Image(textureBtnBorder);
         imgBtnBorder.setPosition(app.maxWidth - (144 + 10), 35);
         hud.addActor(imgBtnBorder);
+
+        buttonTable = new Table(skin);
+        outerTable = new Table(skin);
 
         tabelSetup();
         setupTextIcons();
@@ -235,7 +239,39 @@ public class GameScreen extends AbstractScreen {
     // Can also be used when new skills are learned.
     void setupTileImprovementBox() {
 
-    	for (int i=0;i<2;i++) {
+        buttonTable = new Table(skin);
+        outerTable = new Table(skin);
+
+        TextButton waterTile = new TextButton("Water Tile", skin);
+        buttonTable.add(waterTile);
+        buttonTable.row();
+
+        waterTile.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(world.player.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                    world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
+                }
+
+
+                outerTable.remove();
+
+            }
+        });
+
+        for(int i : world.player.getAvailablePlants()) {
+            TextButton b = new TextButton(String.valueOf(i), skin);
+            buttonTable.add(b);
+            buttonTable.row();
+        }
+
+        buttonTable.setSize(200, 100);
+        outerTable.setSize(600, 400);
+        scrollPane = new ScrollPane(buttonTable, skin);
+        scrollPane.setScrollingDisabled(true, false);
+        outerTable.add(scrollPane).expandY();
+
+    	/*for (int i=0;i<2;i++) {
             String t = "";
     		if(i == 0) {
                 t = "Water tile";
@@ -335,7 +371,7 @@ public class GameScreen extends AbstractScreen {
         outerTable.setSize(600, 400);
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
-        outerTable.add(scrollPane).expandY();
+        outerTable.add(scrollPane).expandY();*/
 
     }
 
@@ -460,8 +496,8 @@ public class GameScreen extends AbstractScreen {
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {
-            dropOutTable.clearChildren();
-            dropOutTable.remove();
+            //dropOutTable.clearChildren();
+            //dropOutTable.remove();
             outerTable.remove();
             improvementsShown = false;
         }

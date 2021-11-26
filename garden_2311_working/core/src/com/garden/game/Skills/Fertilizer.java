@@ -11,6 +11,9 @@ import java.util.Map;
 public class Fertilizer extends Skill {
         public Fertilizer(int turns, Player player) {
             super(turns, player);
+            incoming = 1;
+            adjacent.add(Constants.MORE_FLOWERS);
+            adjacent.add(Constants.MORE_FRUITS);
             hasTurnWork = true;
         }
 

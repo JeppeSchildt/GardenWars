@@ -34,7 +34,30 @@ public class Constants {
     public static final int CORN = 18;
     public static final int SUNFLOWER = 19;
 
+    public static final Map<Integer, String> idNameMap;
+    static {
+        idNameMap = new HashMap<Integer, String>();
+        idNameMap.put(TURNIP, "Turnip");
+        idNameMap.put(ROSE, "Rose");
+        idNameMap.put(CUCUMBER, "Cucumber");
+        idNameMap.put(TOMATO, "Tomato");
+        idNameMap.put(MELON, "Melon");
+        idNameMap.put(EGGPLANT, "Eggplant");
+        idNameMap.put(LEMON, "Lemon");
+        idNameMap.put(PINEAPPLE, "Pineapple");
+        idNameMap.put(RICE, "Rice");
+        idNameMap.put(WHEAT, "Wheat");
+        idNameMap.put(GRAPES, "Grapes");
+        idNameMap.put(STRAWBERRY, "Strawberry");
+        idNameMap.put(CASSAVA, "Cassava");
+        idNameMap.put(POTATO, "Potato");
+        idNameMap.put(COFFEE, "Coffee");
+        idNameMap.put(ORANGE, "Orange");
+        idNameMap.put(AVOCADO, "Avocado");
+        idNameMap.put(CORN, "Corn");
+        idNameMap.put(SUNFLOWER, "Sunflower");
 
+    }
 
 
     // Indices of sprites associated with state of plant.
@@ -58,10 +81,41 @@ public class Constants {
     public static final Map<Integer, Integer> idPriceMap;
     static {
          idPriceMap = new HashMap<Integer, Integer>();
-         idPriceMap.put(GRASS, 10);
-        idPriceMap.put(TURNIP, 10);
+        idPriceMap.put(TURNIP, 5);
+        idPriceMap.put(ROSE, 10);
+        idPriceMap.put(CUCUMBER, 3);
+        idPriceMap.put(TOMATO, 7);
+        idPriceMap.put(MELON, 10);
+        idPriceMap.put(EGGPLANT, 5);
+        idPriceMap.put(LEMON, 5);
+        idPriceMap.put(PINEAPPLE, 10);
+        idPriceMap.put(RICE, 3);
+        idPriceMap.put(WHEAT, 3);
+        idPriceMap.put(GRAPES, 4);
+        idPriceMap.put(STRAWBERRY, 5);
+        idPriceMap.put(CASSAVA, 4);
+        idPriceMap.put(POTATO, 2);
+        idPriceMap.put(COFFEE, 10);
+        idPriceMap.put(ORANGE, 7);
+        idPriceMap.put(AVOCADO, 7);
+        idPriceMap.put(CORN, 4);
+        idPriceMap.put(SUNFLOWER, 7);
 
     }
+
+
+    public static final int BASIC_PLANTS = 0;
+    public static final int FERTILIZER_1 = 1;
+    public static final int MORE_FLOWERS = 2;
+    public static final int MORE_FRUITS = 3;
+    public static final int FERTILIZER_2 = 4;
+    public static final int GENERAL = 5;
+    public static final int CONSTRUCTION = 6;
+    public static final int COMMUNICATION = 7;
+    public static final int WATER_1 = 8;
+    public static final int WATER_2 = 9;
+    public static final int IRRIGATION = 10;
+    public static final int AUTO_HARVEST = 11;
 }
  /*
 - Rose

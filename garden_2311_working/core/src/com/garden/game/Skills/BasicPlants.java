@@ -4,9 +4,14 @@ import com.garden.game.player.Player;
 import com.garden.game.tools.Constants;
 import jdk.vm.ci.meta.Constant;
 
+import java.util.ArrayList;
+
 public class BasicPlants extends Skill {
-    public BasicPlants(int turns, Player player) {
+    public BasicPlants(int turns, Player player)
+    {
         super(turns, player);
+        adjacent.add(Constants.FERTILIZER_1);
+        incoming = 0;
     }
 
     @Override

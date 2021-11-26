@@ -1,50 +1,58 @@
 package com.garden.game.Skills;
 //  graph implementation https://www.geeksforgeeks.org/graph-and-its-representations/
 import com.garden.game.player.Player;
+import com.garden.game.tools.Constants;
 
 import java.util.ArrayList;
 import java.util.*;
 
 public class SkillTree {
 
-    static final int BASIC_PLANTS = 0;
-    static final int FERTILIZER_1 = 1;
-    static final int MORE_FLOWERS = 2;
-    static final int MORE_FRUITS = 3;
-    static final int FERTILIZER_2 = 4;
-    static final int GENERAL = 5;
-    static final int CONSTRUCTION = 6;
-    static final int COMMUNICATION = 7;
-    static final int WATER_1 = 8;
-    static final int WATER_2 = 9;
-    static final int IRRIGATION = 10;
-    static final int AUTO_HARVEST = 11;
 
-    ArrayList<ArrayList<Integer> > adj;
+    public ArrayList<ArrayList<Integer> > adj;
     public ArrayList<Skill> skills;
-    Player player;
+    public Player player;
+    public boolean[] availableToLearn;
+    public Skill currentlyLearning;
+    public boolean locked;
 
     public SkillTree(Player player) {
         this.player = player;
         // Creating a graph with 12 vertices
         int V = 12;
-
+        availableToLearn = new boolean[12];
+        availableToLearn[0] = true;
         skills = new ArrayList<>();
+<<<<<<< HEAD
 
         skills.add(BASIC_PLANTS, new BasicPlants(3, player));
-        skills.add(FERTILIZER_1, new BasicPlants(3, player));
-        skills.add(MORE_FLOWERS, new BasicPlants(3, player));
-        skills.add(MORE_FRUITS, new BasicPlants(3, player));
-        skills.add(FERTILIZER_2, new BasicPlants(3, player));
-        skills.add(GENERAL, new BasicPlants(3, player));
-        skills.add(CONSTRUCTION, new BasicPlants(3, player));
-        skills.add(COMMUNICATION, new BasicPlants(3, player));
-        skills.add(WATER_1, new BasicPlants(3, player));
-        skills.add(WATER_2, new BasicPlants(3, player));
-        skills.add(IRRIGATION, new BasicPlants(3, player));
-        skills.add(AUTO_HARVEST, new BasicPlants(3, player));
+        skills.add(FERTILIZER_1, new Fertilizer(3, player));
+        skills.add(MORE_FLOWERS, new MoreFlowers(3, player));
+        skills.add(MORE_FRUITS, new MoreFlowers(3, player));
+        skills.add(FERTILIZER_2, new Fertilizer2(3, player));
+        skills.add(GENERAL, new General(3, player));
+        skills.add(CONSTRUCTION, new Construction(3, player));
+        skills.add(COMMUNICATION, new Communication(3, player));
+        skills.add(WATER_1, new Water(3, player));
+        skills.add(WATER_2, new Water2(3, player));
+        skills.add(IRRIGATION, new Irrigation(3, player));
+        skills.add(AUTO_HARVEST, new AutoHarvest(3, player));
 
 
+=======
+        skills.add(Constants.BASIC_PLANTS, new BasicPlants(3, player));
+        skills.add(Constants.FERTILIZER_1, new Fertilizer(3, player));
+        skills.add(Constants.MORE_FLOWERS, new MoreFlowers(3, player));
+        skills.add(Constants.MORE_FRUITS, new MoreFruits(3, player));
+        skills.add(Constants.FERTILIZER_2, new Fertilizer2(3, player));
+        skills.add(Constants.GENERAL, new General(3, player));
+        skills.add(Constants.CONSTRUCTION, new Construction(3, player));
+        skills.add(Constants.COMMUNICATION, new Communication(3, player));
+        skills.add(Constants.WATER_1, new Water(3, player));
+        skills.add(Constants.WATER_2, new Water2(3, player));
+        skills.add(Constants.IRRIGATION, new Irrigation(3, player));
+        skills.add(Constants.AUTO_HARVEST, new AutoHarvest(3, player));
+>>>>>>> 4558d09cb320b7518374a752053f4811aabb5d92
 
 
         adj = new ArrayList<ArrayList<Integer> >(V);
@@ -52,33 +60,25 @@ public class SkillTree {
         for (int i = 0; i < V; i++)
             adj.add(new ArrayList<Integer>());
 
-        // Adding edges one by one
-        addEdge(adj, 0, 1);
-        addEdge(adj, 1, 2);
-        addEdge(adj, 1, 3);
-        addEdge(adj, 2, 4);
-        addEdge(adj, 3, 4);
+    }
 
-
-        addEdge(adj, 4, 11);
-        addEdge(adj, 5, 6);
-        addEdge(adj, 5, 7);
-        addEdge(adj, 5, 8);
-
-        addEdge(adj, 6, 11);
-        addEdge(adj, 8, 9);
-        addEdge(adj, 9, 10);
-        addEdge(adj, 10, 11);
+    public void setCurrentlyLearning(int i) {
+        if(!locked) {
+            currentlyLearning = skills.get(i);
+        }
 
     }
 
-    // A utility function to add an edge in an
-    // directed graph
-    static void addEdge(ArrayList<ArrayList<Integer>> adj,
-                        int u, int v)
-    {
-        adj.get(u).add(v);
-        //adj.get(v).add(u);     // If this line is uncommented then it's a undirected graph
+    public void nextTurn() {
+        if(currentlyLearning != null) {
+            currentlyLearning.nextTurn();
+            if (currentlyLearning.learned) {
+                locked = false;
+                for (int i : currentlyLearning.adjacent) {
+                    availableToLearn[i] = true;
+                }
+            }
+        }
     }
 
 

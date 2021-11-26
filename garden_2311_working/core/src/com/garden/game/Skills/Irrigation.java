@@ -2,6 +2,7 @@ package com.garden.game.Skills;
 
 import com.badlogic.gdx.math.Vector2;
 import com.garden.game.player.Player;
+import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Iterator;
@@ -11,6 +12,7 @@ public class Irrigation extends Skill {
     public Irrigation(int turns, Player player) {
         super(turns, player);
         hasTurnWork = true;
+        adjacent.add(Constants.AUTO_HARVEST);
     }
 
     @Override

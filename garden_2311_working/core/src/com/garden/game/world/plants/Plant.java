@@ -190,10 +190,10 @@ public class Plant extends Actor {
     public void changeState() {
         if(water <= waterStateMap.get(state).x) {
             state = state.prevState();
-            profit -= 2;
+            profit -= profit;
         } else if (water > waterStateMap.get(state).y) {
             state = state.nextState();
-            profit += 2;
+            profit += profit;
         }
 
         if(state == PlantState.DEAD) {

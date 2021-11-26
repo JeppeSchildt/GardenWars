@@ -6,6 +6,7 @@ import com.garden.game.tools.Constants;
 public class MoreFlowers  extends Skill{
     public MoreFlowers(int turns, Player player) {
         super(turns, player);
+        adjacent.add(Constants.FERTILIZER_2);
     }
 
     @Override

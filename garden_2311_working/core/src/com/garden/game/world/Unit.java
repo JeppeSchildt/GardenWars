@@ -204,10 +204,12 @@ public class Unit extends Actor {
     }
 
     // Go to lake and get some water
-    public void gotoAndGetMoreWater(final float x, final float y, final int newAmount) {
+    public void gotoAndGetMoreWater() {
         bucket = true;
         animationTime = 0.f;
         clearActions();
+        float x = 17*Constants.TILE_WIDTH;
+        float y = 12*Constants.TILE_HEIGHT;
         selectAnimation(x, y);
         MoveToAction moveToAction = new MoveToAction();
         moveToAction.setPosition(x, y);
@@ -216,7 +218,7 @@ public class Unit extends Actor {
 
 
         /*RunnableAction getMoreWater = new RunnableAction();
-        getMoreWater.setRunnable(new Runnable() {
+        /*getMoreWater.setRunnable(new Runnable() {
 
             @Override
             public void run() {
@@ -225,7 +227,7 @@ public class Unit extends Actor {
             }
         });*/
 
-        Action getMoreWater = new Action() {
+        /*Action getMoreWater = new Action() {
             @Override
             public boolean act(float delta) {
                 if(bucketAnimations.get(direc).isAnimationFinished(animationTime)) {
@@ -242,7 +244,7 @@ public class Unit extends Actor {
                 }
                 return false;
             }
-        };
+        };*/
 
         RunnableAction stop = new RunnableAction();
         stop.setRunnable(new Runnable() {
@@ -254,7 +256,7 @@ public class Unit extends Actor {
             }
         });
 
-        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater, stop);
+        SequenceAction sequence = new SequenceAction(moveToAction, stop);
 
         addAction(sequence);
 

@@ -14,4 +14,12 @@ public class Water extends Skill{
         player.maxWater += 50;
         player.waterPerTurn = 20;
     }
+
+    @Override
+    public void nextTurn() {
+        super.nextTurn();
+        if(turns == 0) {
+            skillLearned();
+        }
+    }
 }

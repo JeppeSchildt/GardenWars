@@ -20,8 +20,14 @@ public class BasicPlants extends Skill {
         player.makePlantAvailable(Constants.COFFEE);
         player.makePlantAvailable(Constants.EGGPLANT);
         player.makePlantAvailable(Constants.TURNIP);
-
-
-
     }
+
+    @Override
+    public void nextTurn() {
+        super.nextTurn();
+        if(turns == 0) {
+            skillLearned();
+        }
+    }
+
 }

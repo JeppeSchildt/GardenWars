@@ -270,6 +270,7 @@ public class GameScreen extends AbstractScreen {
                         if (world.user.canPlant(Constants.GRASS, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
                             Plant plant = actorFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
                             world.user.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
+                            //world.user.getMoreWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
                         }
                         dropOutTable.clearChildren();
                         dropOutTable.remove();
@@ -386,6 +387,7 @@ public class GameScreen extends AbstractScreen {
         grp.setPosition(bx,by);
         hud.addActor(grp);
         app.batch.end();
+
     }
     public void magazineEvent() {
         /*

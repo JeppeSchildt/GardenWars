@@ -27,13 +27,14 @@ public class Assets extends AssetManager {
     public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
     public TiledMapTileSet tileSet, tileSetNew;
     public TiledMapTileLayer.Cell grassCell;
-    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations;
+    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird;
     public Sound soundButtonPress, soundEnd, soundGameOver;
     public float musicVolume = 1.0f;
     public TextureRegion[][] plantTextures;
-    public TextureRegion[] buckets;
+    public TextureRegion[][] bucketTextures;
+
     
     public Assets() {
         loadFiles();
@@ -44,7 +45,7 @@ public class Assets extends AssetManager {
         initWalkAnimations();
         initStopAnimations();
         initPlantSprites();
-        initBucketSprites();
+        initWateringAnimations();
 
     }
 
@@ -115,6 +116,34 @@ public class Assets extends AssetManager {
 
     }
 
+    private void initWateringAnimations() {
+        this.bucketAnimations = new ArrayList<>();
+        this.wateringAnimations = new ArrayList<>();
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("M_1_Water");
+        TextureRegion[][] tmpFrames = atlasRegion.split(16,17);
+
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 0; j < 2; j++) {
+                animationFrames[index++] = tmpFrames[j][i];
+            }
+            index = 0;
+            this.bucketAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+        }
+
+        index = 0;
+        for (int i = 0; i < 4; i++) {
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 2; j < 5; j++) {
+                animationFrames[index++] = tmpFrames[j][i];
+            }
+            index = 0;
+            this.wateringAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+        }
+
+    }
+
     // Initialize textures used for plants.
     private void initPlantSprites() {
         // Change to this size!!
@@ -136,16 +165,7 @@ public class Assets extends AssetManager {
 
     }
 
-    // Initialize textures used for plants.
-    private void initBucketSprites() {
-        // Change to this size!!
-        buckets = new TextureRegion[2];
-        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("buckets");
-        TextureRegion[][] tmp = atlasRegion.split(16,15);
-        buckets[0] = tmp[0][0];
-        buckets[1] = tmp[0][1];
 
-    }
 
     // Load map, textures, sprites
     public void loadFiles(){

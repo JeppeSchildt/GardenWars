@@ -21,8 +21,10 @@ public class SkillTree {
     static final int AUTO_HARVEST = 11;
 
     ArrayList<ArrayList<Integer> > adj;
-    ArrayList<Skill> skills;
-    Player player;
+    public ArrayList<Skill> skills;
+    public Player player;
+    public boolean locked;
+    public Skill currentlyLearning;
 
     public SkillTree(Player player) {
         this.player = player;
@@ -81,6 +83,18 @@ public class SkillTree {
         //adj.get(v).add(u);     // If this line is uncommented then it's a undirected graph
     }
 
+    public void selectWhatToLearn(int i) {
+        if(!locked) {
+            currentlyLearning = skills.get(i);
+        }
+    }
+
+    public void nextTurn() {
+        currentlyLearning.nextTurn();
+        if (currentlyLearning.learned) {
+            locked = false;
+        }
+    }
 
 
 }

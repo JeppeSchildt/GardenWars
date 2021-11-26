@@ -493,6 +493,7 @@ public class GameScreen extends AbstractScreen {
             //outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
             outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
+
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {

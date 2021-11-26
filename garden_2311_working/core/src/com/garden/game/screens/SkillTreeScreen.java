@@ -129,15 +129,18 @@ public class SkillTreeScreen implements Screen {
         basicPlants.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-<<<<<<< HEAD
+
                 fertilizer.setTouchable(Touchable.enabled);
                 world.player.skillTree.skills.get(0).skillLearned();
                 basicPlants.setTouchable(Touchable.disabled);
-=======
+
                 skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
                 //fertilizer.setTouchable(Touchable.enabled);
                 //world.player.skillTree.skills.get(8).skillLearned();
->>>>>>> 4558d09cb320b7518374a752053f4811aabb5d92
+
+                skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
+                //fertilizer.setTouchable(Touchable.enabled);
+                //world.player.skillTree.skills.get(8).skillLearned();
             }
         });
 

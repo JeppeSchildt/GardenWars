@@ -398,12 +398,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-<<<<<<< HEAD
-        //dropOutTable.setVisible(false);
-        outerTable.remove();
-=======
 
->>>>>>> 4558d09cb320b7518374a752053f4811aabb5d92
         Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
 
         Vector3 position = camera.project(clickCoordinates);

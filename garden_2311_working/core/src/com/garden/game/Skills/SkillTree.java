@@ -23,23 +23,7 @@ public class SkillTree {
         availableToLearn = new boolean[12];
         availableToLearn[0] = true;
         skills = new ArrayList<>();
-<<<<<<< HEAD
 
-        skills.add(BASIC_PLANTS, new BasicPlants(3, player));
-        skills.add(FERTILIZER_1, new Fertilizer(3, player));
-        skills.add(MORE_FLOWERS, new MoreFlowers(3, player));
-        skills.add(MORE_FRUITS, new MoreFlowers(3, player));
-        skills.add(FERTILIZER_2, new Fertilizer2(3, player));
-        skills.add(GENERAL, new General(3, player));
-        skills.add(CONSTRUCTION, new Construction(3, player));
-        skills.add(COMMUNICATION, new Communication(3, player));
-        skills.add(WATER_1, new Water(3, player));
-        skills.add(WATER_2, new Water2(3, player));
-        skills.add(IRRIGATION, new Irrigation(3, player));
-        skills.add(AUTO_HARVEST, new AutoHarvest(3, player));
-
-
-=======
         skills.add(Constants.BASIC_PLANTS, new BasicPlants(3, player));
         skills.add(Constants.FERTILIZER_1, new Fertilizer(3, player));
         skills.add(Constants.MORE_FLOWERS, new MoreFlowers(3, player));
@@ -52,7 +36,7 @@ public class SkillTree {
         skills.add(Constants.WATER_2, new Water2(3, player));
         skills.add(Constants.IRRIGATION, new Irrigation(3, player));
         skills.add(Constants.AUTO_HARVEST, new AutoHarvest(3, player));
->>>>>>> 4558d09cb320b7518374a752053f4811aabb5d92
+
 
 
         adj = new ArrayList<ArrayList<Integer> >(V);

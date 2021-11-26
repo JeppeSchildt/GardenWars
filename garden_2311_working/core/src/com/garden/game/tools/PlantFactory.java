@@ -182,6 +182,40 @@ public class PlantFactory {
             }
         });
 
+
+        createActorMap.put(Constants.RICE, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Rice", 1, 4, 10, assets.plantTextures[Constants.RICE], waterStateMap);
+
+            }
+        });
+
+
+        createActorMap.put(Constants.WHEAT, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Wheat", 1, 4, 10, assets.plantTextures[Constants.WHEAT], waterStateMap);
+
+            }
+        });
+
     }
 
     public Plant createPlant(int plantID, int x, int y) {

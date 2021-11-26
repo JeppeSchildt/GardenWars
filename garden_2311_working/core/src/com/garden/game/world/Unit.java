@@ -19,23 +19,25 @@ import com.garden.game.world.plants.Plant;
 
 import java.util.ArrayList;
 
-// turn in to interface? actor?? plants and character implement this??
+// Character controlled by player.
 public class Unit extends Actor {
     GardenGame app;
     String assetName;
-    //Sprite sprite;
+
     public int maxX, minX, maxY, minY, direc;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
     public Animation<TextureRegion> activeAnimation;
-    public float elapsedTime;
+    public float elapsedTime, animationTime;
     TextureRegion drawThis;
     private final int DOWN = 0, RIGHT = 1, UP = 2, LEFT = 3;
-    float velocity = 100;
+    public float velocity = 100;
+    public boolean bucket;
+
 
     public Unit(GardenGame app, String assetName) {
         this.app = app;
         this.assetName = assetName;
-        //this.sprite = app.assets.textureAtlas.createSprite("character000");
+
         this.walkAnimations = app.assets.walkAnimations;
         this.stopAnimations = app.assets.stopAnimations;
         this.bucketAnimations = app.assets.bucketAnimations;
@@ -73,6 +75,15 @@ public class Unit extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         //super.draw(batch, parentAlpha);
         elapsedTime += Gdx.graphics.getDeltaTime();
+
+        batch.draw(drawThis, getX(), getY());
+
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
         if(app.gameScreen.world.mapInput.walking) {
             float x = getX();
             float y = getY();
@@ -95,18 +106,13 @@ public class Unit extends Actor {
             if(canMove((int) x/Constants.TILE_WIDTH, (int) y/Constants.TILE_HEIGHT))
                 setPosition(x, y);
         }
-        batch.draw(drawThis, getX(), getY());
 
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);
         if(!canMove((int) getX()/Constants.TILE_WIDTH, (int) getY()/Constants.TILE_HEIGHT)) {
             //clearActions();
 
             //activeAnimation = stopAnimations.get(direc);
         }
+
         drawThis = activeAnimation.getKeyFrame(elapsedTime, true);
     }
 
@@ -188,10 +194,6 @@ public class Unit extends Actor {
 
     // Go to plant and give it water.
     public void gotoAndWater(final float x, final float y, final Plant plant) {
-    }
-
-    // Go to lake and get some water
-    public void gotoAndGetMoreWater(final float x, final float y, final int newAmount) {
         clearActions();
         selectAnimation(x, y);
         MoveToAction moveToAction = new MoveToAction();
@@ -199,7 +201,21 @@ public class Unit extends Actor {
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
 
-        RunnableAction getMoreWater = new RunnableAction();
+    }
+
+    // Go to lake and get some water
+    public void gotoAndGetMoreWater(final float x, final float y, final int newAmount) {
+        bucket = true;
+        animationTime = 0.f;
+        clearActions();
+        selectAnimation(x, y);
+        MoveToAction moveToAction = new MoveToAction();
+        moveToAction.setPosition(x, y);
+        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
+        moveToAction.setDuration(duration);
+
+
+        /*RunnableAction getMoreWater = new RunnableAction();
         getMoreWater.setRunnable(new Runnable() {
 
             @Override
@@ -207,9 +223,28 @@ public class Unit extends Actor {
                 activeAnimation=bucketAnimations.get(direc);
 
             }
-        });
+        });*/
 
-        /*RunnableAction stop = new RunnableAction();
+        Action getMoreWater = new Action() {
+            @Override
+            public boolean act(float delta) {
+                if(bucketAnimations.get(direc).isAnimationFinished(animationTime)) {
+                    animationTime = 0f;
+                    bucket = false;
+                    return true;
+                }
+                if(bucket) {
+                    animationTime += delta;
+                    activeAnimation = bucketAnimations.get(direc);
+
+                    drawThis = bucketAnimations.get(direc).getKeyFrame(animationTime, false);
+
+                }
+                return false;
+            }
+        };
+
+        RunnableAction stop = new RunnableAction();
         stop.setRunnable(new Runnable() {
 
             @Override
@@ -217,9 +252,9 @@ public class Unit extends Actor {
                 activeAnimation=stopAnimations.get(direc);
 
             }
-        });*/
+        });
 
-        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater);
+        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater, stop);
 
         addAction(sequence);
 

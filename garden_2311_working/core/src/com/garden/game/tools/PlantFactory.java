@@ -216,6 +216,151 @@ public class PlantFactory {
             }
         });
 
+        createActorMap.put(Constants.GRAPES, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Grapes", 1, 4, 10, assets.plantTextures[Constants.GRAPES], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.STRAWBERRY, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Strawberry", 1, 4, 10, assets.plantTextures[Constants.STRAWBERRY], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.CASSAVA, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Cassava", 1, 4, 10, assets.plantTextures[Constants.CASSAVA], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.POTATO, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Potato", 1, 4, 10, assets.plantTextures[Constants.POTATO], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.COFFEE, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Coffee", 1, 4, 10, assets.plantTextures[Constants.COFFEE], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.ORANGE, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Orange", 1, 4, 10, assets.plantTextures[Constants.ORANGE], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.AVOCADO, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Avocado", 1, 4, 10, assets.plantTextures[Constants.AVOCADO], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.CORN, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Corn", 1, 4, 10, assets.plantTextures[Constants.CORN], waterStateMap);
+
+            }
+        });
+
+        createActorMap.put(Constants.SUNFLOWER, new IFCreatePlant() {
+            @Override
+            public Plant create(int x, int y) {
+
+                Map<Plant.PlantState, Vector2> waterStateMap = new HashMap<>();
+                waterStateMap.put(Plant.PlantState.SEED, new Vector2(0,2));
+                waterStateMap.put(Plant.PlantState.SMALL, new Vector2(2,5));
+                waterStateMap.put(Plant.PlantState.HEALTHY, new Vector2(5,2000));
+                waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,4));
+                waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
+
+                return new Plant(x, y, "Sunflower", 1, 4, 10, assets.plantTextures[Constants.SUNFLOWER], waterStateMap);
+
+            }
+        });
+
+
     }
 
     public Plant createPlant(int plantID, int x, int y) {

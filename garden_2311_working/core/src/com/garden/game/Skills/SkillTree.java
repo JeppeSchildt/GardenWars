@@ -1,5 +1,5 @@
 package com.garden.game.Skills;
-
+//  graph implementation https://www.geeksforgeeks.org/graph-and-its-representations/
 import java.util.ArrayList;
 import java.util.*;
 
@@ -18,7 +18,7 @@ class Graph {
                         int u, int v)
     {
         adj.get(u).add(v);
-        //adj.get(v).add(u);
+        //adj.get(v).add(u);     // If this line is uncommented then it's a undirected graph
     }
 
     // A utility function to print the adjacency list

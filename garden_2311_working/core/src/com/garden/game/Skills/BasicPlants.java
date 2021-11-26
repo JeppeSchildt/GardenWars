@@ -12,6 +12,16 @@ public class BasicPlants extends Skill {
     @Override
     public void skillLearned(){
         super.skillLearned();
-        player.makePlantAvailable(Constants.RICE);
+        player.makePlantAvailable(Constants.TOMATO);
+        player.makePlantAvailable(Constants.WHEAT);
+        player.makePlantAvailable(Constants.POTATO);
+        player.makePlantAvailable(Constants.CORN);
+        player.makePlantAvailable(Constants.CASSAVA);
+        player.makePlantAvailable(Constants.COFFEE);
+        player.makePlantAvailable(Constants.EGGPLANT);
+        player.makePlantAvailable(Constants.TURNIP);
+
+
+
     }
 }

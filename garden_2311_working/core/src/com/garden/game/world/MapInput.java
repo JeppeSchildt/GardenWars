@@ -1,9 +1,7 @@
 package com.garden.game.world;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Logger;
 import com.garden.game.GardenGame;
@@ -74,10 +72,10 @@ public class MapInput implements InputProcessor {
             tileSelected = false;
 
             // Check for bounds of map and water cells.
-            if (world.user.unit.canMove(tileX, tileY)) {
+            if (world.player.unit.canMove(tileX, tileY)) {
 
-                world.user.unit.move(tileX, tileY);
-                world.user.unit.setPosition(position.x, position.y);
+                world.player.unit.move(tileX, tileY);
+                world.player.unit.setPosition(position.x, position.y);
 
                 return true;
             }
@@ -174,8 +172,8 @@ public class MapInput implements InputProcessor {
          */
         // Min weird computer REMOVE BEFORE COMMIT!!!
 
-        world.worldCamera.position.x = world.user.unit.getX();
-        world.worldCamera.position.y = world.user.unit.getY();
+        world.worldCamera.position.x = world.player.unit.getX();
+        world.worldCamera.position.y = world.player.unit.getY();
 
         // Multiply by zoom to make scrolling through map faster when zoomed out. Within some bounds...
         world.worldCamera.position.x += xVelocity*delta*world.worldCamera.zoom;

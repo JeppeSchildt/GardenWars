@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -79,7 +78,7 @@ public class GameScreen extends AbstractScreen {
 
         //shapeRenderer = new ShapeRenderer();
 
-        world.user.dkk = 200;
+        world.player.dkk = 200;
         world.dayCount = 1;
 
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
@@ -207,7 +206,7 @@ public class GameScreen extends AbstractScreen {
     // Utility method, get info about hovered tile.
     public String getTileInfo(int x, int y) {
         String coordinates = "[" + x + "," + y + "]\n";
-        Plant plant = world.user.getPlantAtPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT);
+        Plant plant = world.player.getPlantAtPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT);
 
         String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
         return coordinates + improvement;
@@ -219,9 +218,9 @@ public class GameScreen extends AbstractScreen {
         //txtTurnNumber.setText("Days: " + world.turnNumber);
 
         String longSpace = "          ";
-        String txtWater = "Water: " + world.user.water + "/" + world.user.maxWater + longSpace;
-        String txtGold = "Gold: " + world.user.dkk + longSpace;
-        String txtPoint= "Point: " + world.user.point + "/" + world.user.maxPoint;
+        String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
+        String txtGold = "Gold: " + world.player.dkk + longSpace;
+        String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
 
         txtResources.setText(txtWater + txtGold  + txtPoint);
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
@@ -254,8 +253,8 @@ public class GameScreen extends AbstractScreen {
                 textButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if(world.user.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
-                            world.user.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
+                        if(world.player.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                            world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
                         }
                         dropOutTable.clearChildren();
                         dropOutTable.remove();;
@@ -267,10 +266,10 @@ public class GameScreen extends AbstractScreen {
                 textButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (world.user.canPlant(Constants.GRASS, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                        if (world.player.canPlant(Constants.GRASS, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
                             //Plant plant = actorFactory.createPlant(Constants.CUCUMBER, world.hoveredX, world.hoveredY);
                             //world.user.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
-                            world.user.getMoreWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
+                            world.player.getMoreWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
                         }
                         dropOutTable.clearChildren();
                         dropOutTable.remove();
@@ -359,8 +358,8 @@ public class GameScreen extends AbstractScreen {
         float dh = th + 0.05f * Gdx.graphics.getHeight();
 
         // bx, bh is the position of the buggle
-        float bx = world.user.unit.getX();//(Gdx.graphics.getWidth() - dw) / 2.0f;
-        float by = world.user.unit.getY();//Gdx.graphics.getHeight() - dh * 1.2f;
+        float bx = world.player.unit.getX();//(Gdx.graphics.getWidth() - dw) / 2.0f;
+        float by = world.player.unit.getY();//Gdx.graphics.getHeight() - dh * 1.2f;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         app.batch.enableBlending();
         app.batch.begin();

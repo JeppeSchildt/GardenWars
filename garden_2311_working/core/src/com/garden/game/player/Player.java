@@ -2,6 +2,7 @@ package com.garden.game.player;
 
 import com.badlogic.gdx.math.Vector2;
 import com.garden.game.GardenGame;
+import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.Unit;
@@ -28,10 +29,12 @@ public class Player {
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
+    private SkillTree skillTree;
 
     public Player(GardenGame app) {
         this.app = app;
         unit = new Unit(this.app, "character000");
+        skillTree = new SkillTree();
         plants = new ArrayList<>();
         plants_ = new HashMap<>();
         availablePlants = new ArrayList<>();
@@ -112,6 +115,9 @@ public class Player {
     }
 
     public void nextTurn() {
+
+        skillWork();
+
         Iterator<Map.Entry<Vector2, Plant>> entryIt = getPlants_().entrySet().iterator();
 
         while (entryIt.hasNext()) {
@@ -131,9 +137,10 @@ public class Player {
 
     }
 
-
-
-
+    private void skillWork() {
+        // For available skills
+        // Let them do their turn work if any
+    }
 
 
 }

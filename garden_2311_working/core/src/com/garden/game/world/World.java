@@ -7,18 +7,13 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
-import com.garden.game.screens.GameScreen;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class World extends Stage {
@@ -28,7 +23,7 @@ public class World extends Stage {
     TiledMapRenderer tiledMapRenderer;
     public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer;
     private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
-    public Player user;
+    public Player player;
     Sprite spriteHighlight;
 
     public MapInput mapInput;
@@ -50,7 +45,7 @@ public class World extends Stage {
         setViewport(new ScreenViewport(worldCamera));
         worldCamera.zoom = 0.6302493f;
         mapInput = new MapInput(app, this);
-        user = new Player(app);
+        player = new Player(app);
     }
 
     public void init(String map) {
@@ -84,7 +79,7 @@ public class World extends Stage {
 
 
 
-        addActor(user.unit);
+        addActor(player.unit);
 
         spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
@@ -119,7 +114,7 @@ public class World extends Stage {
         draw();
 
         //for ( Plant plant : user.getPlants() ) {
-        for (Map.Entry<Vector2, Plant> entry : user.getPlants_().entrySet()) {
+        for (Map.Entry<Vector2, Plant> entry : player.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
             plant.draw(app.batch, 1);
         }
@@ -135,17 +130,17 @@ public class World extends Stage {
         //startEvent("magazine"); //remove
         int profit = 0;
 
-        user.nextTurn();
+        player.nextTurn();
 
 
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);
-            if (user.dkk <= maxGold)
-                user.dkk += 100;
+            if (player.dkk <= maxGold)
+                player.dkk += 100;
         }
 
-        user.dkk += profit;
-        app.score = user.dkk;
+        player.dkk += profit;
+        app.score = player.dkk;
 
         weekCount();
     }

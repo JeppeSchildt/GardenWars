@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Plant extends Actor {
-    int water;
+    float water;
     int price;
     Integer typeID;
     TiledMapTileLayer.Cell cell;
@@ -21,7 +21,8 @@ public class Plant extends Actor {
     public int profit;
     public Map<PlantState, Vector2> waterStateMap;
     private ArrayList<Sprite> sprites;
-    private int waterLoss;
+    private float waterLoss;
+    public boolean isFertilizer1, isFertilizer2;
 
 
 
@@ -53,7 +54,7 @@ public class Plant extends Actor {
         SMALL {
             @Override
             public PlantState prevState() {
-                return DEAD;
+                return WITHERING;
             }
 
             @Override
@@ -73,7 +74,7 @@ public class Plant extends Actor {
         },
         HEALTHY {
             @Override
-            public PlantState prevState() { return WITHERING; }
+            public PlantState prevState() { return SMALL; }
 
             @Override
             public PlantState nextState() {
@@ -98,7 +99,7 @@ public class Plant extends Actor {
 
             @Override
             public PlantState nextState() {
-                return HEALTHY;
+                return SMALL;
             }
 
             @Override
@@ -233,7 +234,7 @@ public class Plant extends Actor {
         return price;
     }
 
-    public int getWater() { return water; }
+    public float getWater() { return water; }
 
     public void water(int amount) {
         water += amount;
@@ -269,11 +270,11 @@ public class Plant extends Actor {
         return sprites;
     }
 
-    public int getWaterLoss() {
+    public float getWaterLoss() {
         return waterLoss;
     }
 
-    public void setWaterLoss(int waterLoss) {
+    public void setWaterLoss(float waterLoss) {
         this.waterLoss = waterLoss;
     }
 

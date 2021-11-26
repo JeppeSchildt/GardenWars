@@ -44,11 +44,6 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, new Vector2(0,5));
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
-                /*Plant turnip = new Plant(x, y, assets.plantTextures[Constants.TURNIP]);
-                turnip.setWaterStateMap(waterStateMap);
-                turnip.setProfit(2);
-                turnip.setWaterLoss(1);
-                return turnip;*/
                 return new Plant(x, y, "Turnip", 1, 2, 10, assets.plantTextures[Constants.TURNIP], waterStateMap);
 
             }

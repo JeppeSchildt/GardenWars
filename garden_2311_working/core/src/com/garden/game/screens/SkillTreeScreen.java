@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
+import com.garden.game.Skills.MoreFlowers;
 import com.garden.game.world.World;
 
 
@@ -28,6 +30,8 @@ public class SkillTreeScreen implements Screen {
     private TextButton basicPlants, fertilizer, fertilizerPlus, general, moreFruits, moreFlowers,
             construction, communication, water, waterPlus, irrigation, autoHarvest,
             settingsButton, quitButton, playButton, resetButton;
+
+
 
     private ShapeRenderer shapeRenderer;
     private final Color hudColor;
@@ -106,10 +110,14 @@ public class SkillTreeScreen implements Screen {
         textureEmptyArrow = new Texture(Gdx.files.internal("arrows/EmptyArrow.png"));
         imgEmptyArrow = new Image(textureEmptyArrow);
 
+
         basicPlants = new TextButton("Basic Plants",skin);
         basicPlants.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
+                fertilizer.setTouchable(Touchable.enabled);
+
 
             }
         });
@@ -121,6 +129,7 @@ public class SkillTreeScreen implements Screen {
         fertilizer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
 
             }
         });
@@ -236,6 +245,19 @@ public class SkillTreeScreen implements Screen {
 
             }
         });
+
+
+        fertilizer.setTouchable(Touchable.disabled);
+        moreFlowers.setTouchable(Touchable.disabled);
+        moreFruits.setTouchable(Touchable.disabled);
+        fertilizerPlus.setTouchable(Touchable.disabled);
+        general.setTouchable(Touchable.disabled);
+        construction.setTouchable(Touchable.disabled);
+        communication.setTouchable(Touchable.disabled);
+        water.setTouchable(Touchable.disabled);
+        waterPlus.setTouchable(Touchable.disabled);
+        irrigation.setTouchable(Touchable.disabled);
+        autoHarvest.setTouchable(Touchable.disabled);
 
 
 

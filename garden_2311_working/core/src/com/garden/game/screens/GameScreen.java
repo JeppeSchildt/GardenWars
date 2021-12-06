@@ -241,10 +241,8 @@ public class GameScreen extends AbstractScreen {
 
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
-
+        buttonList.clear();
         TextButton waterTile = new TextButton("Water Tile", skin);
-        buttonTable.add(waterTile);
-        buttonTable.row();
 
         waterTile.addListener(new ClickListener() {
             @Override
@@ -256,20 +254,16 @@ public class GameScreen extends AbstractScreen {
                 outerTable.remove();
             }
         });
-
+        buttonList.add(waterTile);
         TextButton getWater = new TextButton("Get Water From Lake", skin);
-        buttonTable.add(getWater);
-        buttonTable.row();
-
         getWater.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 world.player.getMoreWater();
-
                 outerTable.remove();
             }
         });
-
+        buttonList.add(getWater);
         for(final int i : world.player.getAvailablePlants()) {
             TextButton b = new TextButton("Plant " + Constants.idNameMap.get(i), skin);
            b.addListener(new ClickListener() {
@@ -279,15 +273,12 @@ public class GameScreen extends AbstractScreen {
                        Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
                        world.player.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
                    }
-
-
                    outerTable.remove();
                }
            });
-            buttonTable.add(b);
-            buttonTable.row();
+            buttonList.add(b);
         }
-
+        ensureWidthButtonTable();
         buttonTable.setSize(200, 100);
         outerTable.setSize(600, 400);
         scrollPane = new ScrollPane(buttonTable, skin);
@@ -297,6 +288,46 @@ public class GameScreen extends AbstractScreen {
 
     }
 
+    /**
+     * Gets and returns the largest button (width) in a given table
+     */
+    private float getLargestButton(Table t) {
+        float highest = 0;
+        for (Actor b : t.getChildren()) {
+            System.out.println("width:"+b.getWidth());
+            if (b.getWidth()>highest) {
+                highest = b.getWidth();
+            }
+        }
+        return highest;
+    }
+
+    /**
+     * Ensures all buttons are set to same size as the largest
+     */
+    private void ensureWidthButtonTable() {
+        float highest = 0.00f;
+        Table newT = new Table(skin);
+        for (TextButton b : buttonList) {
+            System.out.println("width:"+b.getWidth());
+            if (b.getWidth()>highest) {
+                highest = b.getWidth();
+            }
+        }
+        buttonTable.clearChildren();
+        for (TextButton b : buttonList) {
+            System.out.println(b.getName());
+            float diff = highest - b.getWidth();
+            b.setWidth(highest);
+            b.padLeft(diff/2);
+            b.padRight(diff/2);
+            buttonTable.add(b);
+            buttonTable.row();
+
+
+            System.out.println("newwidth:"+b.getWidth());
+        }
+    }
 
     private void nextTurn(){
         grp.remove();
@@ -415,6 +446,8 @@ public class GameScreen extends AbstractScreen {
         	float goX = (float)(posX * world.tileSize + dist);
         	float goY = (float)(posY * world.tileSize + dist);
             //outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
+
+
             outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
 

@@ -116,6 +116,11 @@ public class Constants {
     public static final int WATER_2 = 9;
     public static final int IRRIGATION = 10;
     public static final int AUTO_HARVEST = 11;
+
+    public static final int DOWN = 0, RIGHT = 1, UP = 2, LEFT = 3;
+
+    public static final float FRONT_PORCH_X = 546.128f, FRONT_PORCH_Y = 797.53f;
+
 }
  /*
 - Rose

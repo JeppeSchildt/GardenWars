@@ -350,7 +350,7 @@ public class GameScreen extends AbstractScreen {
         nextTurnClicked = true;
 
         // Make character go to house
-        world.player.unit.setPosition(17*Constants.TILE_WIDTH, 24*Constants.TILE_HEIGHT);
+        world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
         world.nextTurn();
 
@@ -527,12 +527,18 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            if(blkScreenAlpha >= 2.f) {
+            if(blkScreenAlpha >= 2) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
-                System.out.println("HELLO FROM NEXTTURNINFO");
                 blkScreenAlpha = 0.0f;
+
+                // Move character to front porch instantly.
+                world.player.unit.clearActions();
+                world.player.unit.setDirec(Constants.DOWN);
+                world.player.unit.activeAnimation = world.player.unit.stopAnimations.get(Constants.DOWN);
+                world.player.unit.setX(Constants.FRONT_PORCH_X);
+                world.player.unit.setY(Constants.FRONT_PORCH_Y);
             }
             if(blkScreenAlpha >= 0.5f) {
                 nextTurnStr = "You wake up to day " + world.turnNumber;
@@ -541,7 +547,7 @@ public class GameScreen extends AbstractScreen {
             }
 
         }
-        blkScreenAlpha += 0.025f;
+        blkScreenAlpha += 0.015f;
         imgBlkScreen.setColor(0,0, 0, blkScreenAlpha);
     }
 

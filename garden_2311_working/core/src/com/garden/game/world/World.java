@@ -46,6 +46,7 @@ public class World extends Stage {
         worldCamera.zoom = 0.6302493f;
         mapInput = new MapInput(app, this);
         player = new Player(app);
+        turnNumber = 1;
     }
 
     public void init(String map) {

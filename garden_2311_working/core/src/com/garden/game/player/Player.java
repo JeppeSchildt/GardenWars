@@ -75,7 +75,7 @@ public class Player {
         return Constants.idPriceMap.get(id) <= money;
     }
 
-    // Player can plant at x,y if sufficient funds, no plant there already and tile is not water. 
+    // Player can plant at x,y if sufficient funds, no plant there already and tile is not water.
     public boolean canPlant(int id, int x, int y) {
         return (Constants.idPriceMap.get(id) <= money) &&
                 (plants_.get(new Vector2(x, y)) == null) &&

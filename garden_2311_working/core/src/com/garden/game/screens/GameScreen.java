@@ -119,7 +119,7 @@ public class GameScreen extends AbstractScreen {
         setupTextIcons();
         drawButtons();
 
-        setupTileImprovementBox();
+        setupTileImprovementBox(false);
 
         if (app.debugMode){
             debugButtons();
@@ -247,11 +247,14 @@ public class GameScreen extends AbstractScreen {
     }
     // Consider: Individual setup button methods and update scrollpane methods.
     // Can also be used when new skills are learned.
-    void setupTileImprovementBox() {
+    void setupTileImprovementBox(boolean canHarvest) {
 
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         buttonList.clear();
+        if(canHarvest) {
+            addHarvestButton();
+        }
         TextButton waterTile = new TextButton("Water Tile", skin);
 
         waterTile.addListener(new ClickListener() {
@@ -297,6 +300,22 @@ public class GameScreen extends AbstractScreen {
         outerTable.add(scrollPane).expandY();
 
 
+    }
+
+    /**
+     * Add harvest button to improvement box
+     * */
+    public void addHarvestButton() {
+        TextButton harvestPlant = new TextButton("Harvest Plant", skin);
+
+        harvestPlant.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                world.player.harvest(world.hoveredX*Constants.TILE_WIDTH, world.hoveredY*Constants.TILE_HEIGHT);
+                outerTable.remove();
+            }
+        });
+        buttonList.add(harvestPlant);
     }
 
     /**
@@ -458,7 +477,14 @@ public class GameScreen extends AbstractScreen {
         outerTable.remove(); // Remove the right click table on new click.
 
         if(button == Input.Buttons.RIGHT) {
-            setupTileImprovementBox();
+            boolean canHarvest = false;
+            Plant p = world.player.getPlantAtPosition(world.hoveredX*Constants.TILE_WIDTH, world.hoveredY*Constants.TILE_HEIGHT);
+            if(p != null) {
+                if (p.getState() == Plant.PlantState.HEALTHY) {
+                    canHarvest = true;
+                }
+            }
+            setupTileImprovementBox(canHarvest);
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
         	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
         	double cat = world.tileSize/2;
@@ -470,7 +496,6 @@ public class GameScreen extends AbstractScreen {
 
             outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
-
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {

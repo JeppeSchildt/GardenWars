@@ -5,6 +5,7 @@ import com.garden.game.GardenGame;
 import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
+import com.garden.game.world.World;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.Unit;
 
@@ -124,6 +125,20 @@ public class Player {
 
     public int getWater() {
         return water;
+    }
+
+    /**
+     * Harvest a plant
+     *
+     * @param x
+     * @param y
+     */
+    public void harvest(int x, int y) {
+        Plant p = plants_.get(new Vector2(x, y));
+        if(p != null) {
+            unit.setPosition(x, y);
+            money += p.harvest();
+        }
     }
 
     public void nextTurn() {

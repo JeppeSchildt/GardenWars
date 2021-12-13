@@ -341,7 +341,7 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurn(){
         grp.remove();
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
 
         // Set up fade to black stuff
         blkScreenAlpha = 0f;
@@ -583,7 +583,7 @@ public class GameScreen extends AbstractScreen {
     private void pauseScreen(){
             app.preferencesBool = true;
 
-            app.sound.buttonMenueSound();
+            app.sound.SoundButtonClick();
             if (app.pauseScreen == null) {
                 app.pauseScreen = new PauseScreen(app);
             }
@@ -592,6 +592,7 @@ public class GameScreen extends AbstractScreen {
 
     private void skillTreeScreen(){
 
+        app.sound.SoundButtonClick();
         if (app.skillTreeScreen == null) {
             app.skillTreeScreen = new SkillTreeScreen(app, world.player.skillTree);
         }

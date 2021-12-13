@@ -178,9 +178,25 @@ public class SoundFunctions {
     }
 
     /* -------- Sound Effect Function Setup -------- */
-    public void buttonMenueSound(){
+    public void SoundButtonClick(){
         app.assets.soundButtonPress.play();
     }
+
+    public void SoundUseWater(){
+        app.assets.soundUseWater.play();
+    }
+    public void SoundGetWater(){
+        app.assets.soundGetWater.play();
+    }
+    public void SoundUseGold(){
+        app.assets.soundUseGold.play();
+    }
+    public void SoundNewDay(){
+        app.assets.soundNewDay.play();
+    }
+
+
+
 
 
 }

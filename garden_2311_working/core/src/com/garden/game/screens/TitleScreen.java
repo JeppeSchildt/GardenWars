@@ -33,7 +33,7 @@ public class TitleScreen implements Screen {
 		app.sound.Play_Music();
 
 		//Delete when done debug/testing
- 		//app.sound.Play_Pause_Music();
+ 		app.sound.Play_Pause_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
@@ -116,7 +116,7 @@ public class TitleScreen implements Screen {
 
 	private void newGame(){
 		app.sound.Chance_Music();
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
@@ -124,7 +124,7 @@ public class TitleScreen implements Screen {
 	}
 
 	private void preferences(){
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 		if(app.preferencesScreen == null) {
 			app.preferencesScreen = new PreferencesScreen(app);
 		}
@@ -132,14 +132,14 @@ public class TitleScreen implements Screen {
 	}
 
 	private void continueGame(){
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 		app.setScreen(app.gameScreen);
 		//app.gameScreen.world.init("World1.tmx");
 	}
 
 	// Lazy load screens
 	private void exit(){
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 		if(app.exitScreen == null) {
 			app.exitScreen = new ExitScreen(app);
 		}

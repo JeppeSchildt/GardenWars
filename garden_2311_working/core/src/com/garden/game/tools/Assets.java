@@ -30,7 +30,7 @@ public class Assets extends AssetManager {
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird;
-    public Sound soundButtonPress, soundEnd, soundGameOver;
+    public Sound soundButtonPress, soundEnd, soundGameOver, soundGetWater, soundUseWater, soundUseGold, soundNewDay;
     public float musicVolume = 1.0f;
     public TextureRegion[][] plantTextures;
     public TextureRegion[][] bucketTextures;
@@ -77,6 +77,13 @@ public class Assets extends AssetManager {
         soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
         soundEnd = Gdx.audio.newSound(Gdx.files.internal("soundEffect/EndSound_mixkit-medieval-show-fanfare.mp3"));
         soundGameOver = Gdx.audio.newSound(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
+
+        /* --------- Sound Effect InGame playing Sound  ---------  */
+        soundGetWater = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundUseWater = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundUseGold = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundNewDay = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+
     }
 
     // Setup walking animations. Get region of spritesheet. Split into individual images.

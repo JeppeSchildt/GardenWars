@@ -539,6 +539,7 @@ public class GameScreen extends AbstractScreen {
                 world.player.unit.activeAnimation = world.player.unit.stopAnimations.get(Constants.DOWN);
                 world.player.unit.setX(Constants.FRONT_PORCH_X);
                 world.player.unit.setY(Constants.FRONT_PORCH_Y);
+                app.sound.SoundNewDay();
             }
             if(blkScreenAlpha >= 0.5f) {
                 nextTurnStr = "You wake up to day " + world.turnNumber;

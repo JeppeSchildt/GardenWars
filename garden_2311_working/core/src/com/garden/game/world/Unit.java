@@ -66,6 +66,10 @@ public class Unit extends Actor {
         // Check for water.
 
         canMove = canMove && !(app.gameScreen.world.isWaterTile(x,y));
+        canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Fence Layer", x,y));
+        canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x,y));
+        canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Trees Layer", x,y));
+        //canMove = canMove && (app.gameScreen.world.fenceLayer.getCell(x, y) == null);
 
         return canMove;
     }

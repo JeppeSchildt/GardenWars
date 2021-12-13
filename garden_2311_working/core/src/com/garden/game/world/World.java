@@ -21,7 +21,7 @@ public class World extends Stage {
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer;
+    public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer, fenceLayer, buildingsLayer, treesLayer;
     private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
     public Player player;
     Sprite spriteHighlight;
@@ -33,6 +33,7 @@ public class World extends Stage {
     public int turnNumber;
 
     public int dayCount, weekCount, monthCount;
+    public MapLayers mapLayers;
 
     private int maxGold = 9999;
 
@@ -73,10 +74,14 @@ public class World extends Stage {
         grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
          */
 
+        /* Get some layers, cast to TiledMapLayer. We can't walk/plant on certain layers */
         waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
+        /*fenceLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
+        buildingsLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
+        treesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+         */
 
-
-        MapLayers mapLayers = tiledMap.getLayers();
+        mapLayers = tiledMap.getLayers();
         mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
 
         mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
@@ -168,6 +173,12 @@ public class World extends Stage {
             //startEvent("magazine");
         }
 
+    }
+
+    // Player can't walk/plant on certain layers.
+    public boolean isNoAccessTile(String layerName, int x, int y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) mapLayers.get(layerName);
+        return layer.getCell(x,y) != null;
     }
 
     public boolean isWaterTile(int x, int y) {

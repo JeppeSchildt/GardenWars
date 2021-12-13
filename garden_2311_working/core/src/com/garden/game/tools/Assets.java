@@ -79,10 +79,10 @@ public class Assets extends AssetManager {
         soundGameOver = Gdx.audio.newSound(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
 
         /* --------- Sound Effect InGame playing Sound  ---------  */
-        soundGetWater = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/getWater_water_pouring.wav"));
+        soundGetWater = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
         soundUseWater = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
-        soundUseGold = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/use_gold.wav"));
-        soundNewDay = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.wav"));
+        soundUseGold = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundNewDay = Gdx.audio.newSound(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
 
     }
 

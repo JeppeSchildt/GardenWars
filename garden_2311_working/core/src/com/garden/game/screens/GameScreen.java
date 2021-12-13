@@ -551,6 +551,7 @@ public class GameScreen extends AbstractScreen {
 
     private void skillTreeScreen(){
 
+        app.sound.SoundButtonClick();
         if (app.skillTreeScreen == null) {
             app.skillTreeScreen = new SkillTreeScreen(app, world.player.skillTree);
         }

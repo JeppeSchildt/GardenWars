@@ -73,7 +73,7 @@ public class World extends Stage {
          */
 
         waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
-        
+
 
         MapLayers mapLayers = tiledMap.getLayers();
         mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
@@ -101,7 +101,7 @@ public class World extends Stage {
 
     public void render() {
         // Draw red around the edge of world
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(	0.184f, 0.505f, 0.211f,   1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

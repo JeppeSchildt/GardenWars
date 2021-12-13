@@ -194,6 +194,8 @@ public class Assets extends AssetManager {
         this.load("arrows/RightArrow.png", Texture.class);
         this.load("arrows/LeftArrow.png", Texture.class);
 
+        this.load("black_screen.png", Texture.class);
+
 
         setLoader(TiledMap.class, new TmxMapLoader());
         load("World1.tmx", TiledMap.class);

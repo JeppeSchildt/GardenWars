@@ -36,9 +36,11 @@ public class GameScreen extends AbstractScreen {
     public World world;
     GardenGame app;
     Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn;
+    private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
-    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent;
+    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
+    private float blkScreenAlpha;
     Table buttonTable,outerTable;
     SpriteBatch batchTest;
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
@@ -58,6 +60,8 @@ public class GameScreen extends AbstractScreen {
     Sprite spriteHighlight;
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo,dropOutTable;
+
+    private boolean nextTurnClicked;
 
     public GameScreen(GardenGame app) {
         this.app = app;
@@ -104,7 +108,14 @@ public class GameScreen extends AbstractScreen {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
 
-        tabelSetup();
+        txtNextTurn = new Label("", skin);
+        // 1024/2 - 75 :)
+        txtNextTurn.setPosition(1024/2-75, 768/2);
+        imgBlkScreen = new Image(new TextureRegion(app.assets.<Texture>get("black_screen.png")));
+        imgBlkScreen.setSize(1024,768);
+        //imgBlkScreen.setColor(0,0,0,1);
+
+        tableSetup();
         setupTextIcons();
         drawButtons();
 
@@ -116,7 +127,7 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-    private void tabelSetup(){
+    private void tableSetup(){
         // Create a table that fills the screen. Everything else will go inside this table.
         /*tableResources = new Table();
         tableResources.setFillParent(true);
@@ -220,7 +231,6 @@ public class GameScreen extends AbstractScreen {
     public void updateHUD() {
         //txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         //txtTurnNumber.setText("Days: " + world.turnNumber);
-
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
@@ -332,6 +342,15 @@ public class GameScreen extends AbstractScreen {
     private void nextTurn(){
         grp.remove();
         app.sound.SoundButtonClick();
+
+        // Set up fade to black stuff
+        blkScreenAlpha = 0f;
+        imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
+        hud.addActor(imgBlkScreen);
+        nextTurnClicked = true;
+
+        // Make character go to house
+        world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
         world.nextTurn();
 
@@ -489,6 +508,8 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         updateHUD();
+        nextTurnInfo();
+
         checkInput(); // Does not seem ideal to check input in render method. But convenient for now...
         world.update(delta);
         world.render();
@@ -502,6 +523,32 @@ public class GameScreen extends AbstractScreen {
         //renderBubble("HEJ");
         app.batch.end(); // End batch here, finishing rendering.
 
+    }
+
+    private void nextTurnInfo() {
+        if(nextTurnClicked) {
+            if(blkScreenAlpha >= 2) {
+                nextTurnClicked = false;
+                imgBlkScreen.remove();
+                txtNextTurn.remove();
+                blkScreenAlpha = 0.0f;
+
+                // Move character to front porch instantly.
+                world.player.unit.clearActions();
+                world.player.unit.setDirec(Constants.DOWN);
+                world.player.unit.activeAnimation = world.player.unit.stopAnimations.get(Constants.DOWN);
+                world.player.unit.setX(Constants.FRONT_PORCH_X);
+                world.player.unit.setY(Constants.FRONT_PORCH_Y);
+            }
+            if(blkScreenAlpha >= 0.5f) {
+                nextTurnStr = "You wake up to day " + world.turnNumber;
+                txtNextTurn.setText(nextTurnStr);
+                hud.addActor(txtNextTurn);
+            }
+
+        }
+        blkScreenAlpha += 0.015f;
+        imgBlkScreen.setColor(0,0, 0, blkScreenAlpha);
     }
 
 

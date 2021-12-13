@@ -62,7 +62,6 @@ public class MapInput implements InputProcessor {
         int tileX = (int) position.x / world.tileSize;
         int tileY = (int) position.y / world.tileSize;
 
-
         if(button == Input.Buttons.RIGHT) {
             tileSelected = true;
             world.hoveredX = tileX;

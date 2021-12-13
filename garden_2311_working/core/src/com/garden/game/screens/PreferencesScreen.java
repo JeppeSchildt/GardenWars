@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
@@ -72,7 +71,7 @@ public class PreferencesScreen implements Screen {
         musicButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                app.sound.buttonMenueSound();
+                app.sound.SoundButtonClick();
                 app.sound.Play_Pause_Music();
             }
         });
@@ -170,7 +169,7 @@ public class PreferencesScreen implements Screen {
         soundEffectsTestButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                app.sound.buttonMenueSound();
+                app.sound.SoundButtonClick();
                 app.sound.Play_Pause_Ambient_Sound();
             }
         });
@@ -215,7 +214,7 @@ public class PreferencesScreen implements Screen {
     }
 
     public void BackButton(){
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
 
         if (app.preferencesBool)
             app.setScreen(app.pauseScreen);

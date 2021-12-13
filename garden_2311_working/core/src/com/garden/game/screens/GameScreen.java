@@ -331,7 +331,7 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurn(){
         grp.remove();
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
 
         world.nextTurn();
 
@@ -542,7 +542,7 @@ public class GameScreen extends AbstractScreen {
     private void pauseScreen(){
             app.preferencesBool = true;
 
-            app.sound.buttonMenueSound();
+            app.sound.SoundButtonClick();
             if (app.pauseScreen == null) {
                 app.pauseScreen = new PauseScreen(app);
             }

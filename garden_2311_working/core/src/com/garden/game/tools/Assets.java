@@ -82,10 +82,10 @@ public class Assets extends AssetManager {
         soundTestEffektBeat = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/josefpres_bass-loops-063-with-drums-short-loop-120-bpm.mp3"));
 
         /* --------- Sound Effect InGame playing Sound  ---------  */
-        soundGetWater = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundGetWater = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/getWater_water_pouring.mp3"));
         soundUseWater = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
-        soundUseGold = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
-        soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundUseGold = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/use_gold.mp3"));
+        soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.mp3"));
 
     }
 

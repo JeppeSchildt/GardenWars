@@ -24,8 +24,10 @@ import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 // When tile is hovered, show some menu with things you can do to that
@@ -36,7 +38,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     private GardenGame app;
     private Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtDayToDryseason;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
@@ -58,8 +60,11 @@ public class GameScreen extends AbstractScreen {
     private final OrthographicCamera camera;
     //private ShapeRenderer shapeRenderer;
     private Sprite spriteHighlight;
+    private boolean BoolNextSeason = false;
 
-    private Table tableResources, tableDay, tableButtons, tableTileInfo,dropOutTable;
+    private int NextDrySeasonCount, lengthForDrySeason;
+
+    private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
 
     private boolean nextTurnClicked;
 
@@ -150,12 +155,10 @@ public class GameScreen extends AbstractScreen {
         tableTileInfo.setDebug(false);
         tableTileInfo.setPosition(200, -366);*/
 
-
     }
 
     /* Size of entire window has been fixed, so we can setup UI using constant values */
     private void setupTextIcons() {
-
 
         //hud.addActor(tableResources);
         txtResources = new Label("", skin);
@@ -174,6 +177,7 @@ public class GameScreen extends AbstractScreen {
         txtTileInfo.setPosition(30, 700);
         hud.addActor(txtTileInfo);
         //tableTileInfo.add(txtTileInfo);
+
 
     }
 
@@ -236,10 +240,16 @@ public class GameScreen extends AbstractScreen {
         String txtGold = "Gold: " + world.player.money + longSpace;
         String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
 
-        txtResources.setText(txtWater + txtGold  + txtPoint);
+        String txtNextDrySeason = longSpace + longSpace + "Days To Next Dry Season: " + (NextDrySeasonCount - world.turnNumber);
+
+        txtResources.setText(txtWater + txtGold  + txtPoint + txtNextDrySeason);
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);
+
+
+
+
     }
 
     void setButton (String text, Skin skin) {
@@ -524,6 +534,11 @@ public class GameScreen extends AbstractScreen {
         //renderBubble("HEJ");
         app.batch.end(); // End batch here, finishing rendering.
 
+        if (!BoolNextSeason){
+            BoolNextSeason = true;
+            NextDrySeasonCount = new Random().nextInt(10) + 5;
+        }
+
     }
 
     private void nextTurnInfo() {
@@ -533,6 +548,7 @@ public class GameScreen extends AbstractScreen {
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
                 blkScreenAlpha = 0.0f;
+                drySeasonEvent();
 
                 // Move character to front porch instantly.
                 world.player.unit.clearActions();
@@ -628,6 +644,29 @@ public class GameScreen extends AbstractScreen {
     public void dispose() {
 
     }
+
+    public void drySeasonEvent(){
+
+        if (world.turnNumber >= NextDrySeasonCount){
+            app.drySeason = true;
+        }
+
+        if (app.drySeason){
+            //int maxLengthDrySeason = new Random().nextInt(5) + 1;
+
+            if (lengthForDrySeason == 5){
+                app.drySeason = false;
+                BoolNextSeason = false;
+                lengthForDrySeason = 0;
+            }
+            lengthForDrySeason++;
+        }
+
+        // --- Første sæson virker - 
+
+    }
+
+
 
     private void debugButtons(){
 

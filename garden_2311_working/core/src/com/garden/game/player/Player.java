@@ -79,7 +79,10 @@ public class Player {
     public boolean canPlant(int id, int x, int y) {
         return (Constants.idPriceMap.get(id) <= money) &&
                 (plants_.get(new Vector2(x, y)) == null) &&
-                !(app.gameScreen.world.isWaterTile(x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT));
+                !(app.gameScreen.world.isWaterTile(x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
+                !(app.gameScreen.world.isNoAccessTile("Road Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
+                !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
+                !(app.gameScreen.world.isNoAccessTile("Trees Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT));
     }
 
     public Plant getPlantAtPosition(int x, int y) {

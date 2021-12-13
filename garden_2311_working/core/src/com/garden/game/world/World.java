@@ -106,8 +106,8 @@ public class World extends Stage {
     }
 
     public void render() {
-        // Draw red around the edge of world
-        Gdx.gl.glClearColor(	0.184f, 0.505f, 0.211f,   1);
+        // Draw same color as grass around the edge of world
+        Gdx.gl.glClearColor(0.184f, 0.505f, 0.211f,1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -115,10 +115,11 @@ public class World extends Stage {
         tiledMapRenderer.setView(worldCamera);
 
 
-        if (app.drySeason)
+        if (app.drySeason) {
             tiledMapRenderer.render(mapLayerIndicesDry);
-        else tiledMapRenderer.render(mapLayerIndices);
-
+        } else {
+            tiledMapRenderer.render(mapLayerIndices);
+        }
 
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
@@ -135,8 +136,6 @@ public class World extends Stage {
         }
 
         spriteHighlight.draw(app.batch);
-
-        //well.sprite.draw(app.batch);
 
     }
 

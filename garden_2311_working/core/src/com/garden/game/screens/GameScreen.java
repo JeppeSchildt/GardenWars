@@ -524,7 +524,7 @@ public class GameScreen extends AbstractScreen {
                 /*
                 app.gameScreen = new GameScreen(app);
                 app.setScreen(app.gameScreen);
-                app.gameScreen.world.init("World.tmx");
+                app.gameScreen.world.init("World1.tmx");
                  */
 
             }

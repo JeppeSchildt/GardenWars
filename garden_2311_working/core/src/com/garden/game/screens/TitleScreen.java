@@ -120,7 +120,7 @@ public class TitleScreen implements Screen {
 
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
-		app.gameScreen.world.init("World.tmx");
+		app.gameScreen.world.init("World1.tmx");
 	}
 
 	private void preferences(){
@@ -134,7 +134,7 @@ public class TitleScreen implements Screen {
 	private void continueGame(){
 		app.sound.buttonMenueSound();
 		app.setScreen(app.gameScreen);
-		//app.gameScreen.world.init("World.tmx");
+		//app.gameScreen.world.init("World1.tmx");
 	}
 
 	// Lazy load screens

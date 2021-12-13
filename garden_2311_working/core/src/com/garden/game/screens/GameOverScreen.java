@@ -127,7 +127,7 @@ public class GameOverScreen implements Screen {
         app.sound.Play_Music();
         app.sound.buttonMenueSound();
         app.setScreen(app.gameScreen);
-        app.gameScreen.world.init("World.tmx");
+        app.gameScreen.world.init("World1.tmx");
     }
     private void backToMenue(){
 

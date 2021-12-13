@@ -57,6 +57,8 @@ public class World extends Stage {
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
 
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
+
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterPlants Layer");
         waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
         noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
@@ -67,9 +69,9 @@ public class World extends Stage {
         grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
 
         MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
+        mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
 
-        mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
+        mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
 
 
         activeIndices = mapLayerIndicesDry;

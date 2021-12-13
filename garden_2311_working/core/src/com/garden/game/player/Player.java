@@ -74,8 +74,12 @@ public class Player {
     public boolean canBuy(int id) {
         return Constants.idPriceMap.get(id) <= money;
     }
+
+    // Player can plant at x,y if sufficient funds, no plant there already and tile is not water. 
     public boolean canPlant(int id, int x, int y) {
-        return (Constants.idPriceMap.get(id) <= money) && (plants_.get(new Vector2(x, y)) == null);
+        return (Constants.idPriceMap.get(id) <= money) &&
+                (plants_.get(new Vector2(x, y)) == null) &&
+                !(app.gameScreen.world.isWaterTile(x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT));
     }
 
     public Plant getPlantAtPosition(int x, int y) {

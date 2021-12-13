@@ -20,15 +20,9 @@ public class PreferencesScreen implements Screen {
     private GardenGame app;
     private Stage stage;
 
-    private Label titleLabel;
-    private Label volumeMusicLabel;
-    private Label volumeSoundLabel;
-    private Label musicOnOffLabel;
-    private Label soundOnOffLabel;
+    private Label titleLabel, volumeMusicLabel, volumeSoundLabel, volumeSoundEffectLabel, musicOnOffLabel, soundOnOffLabel, soundEffectTestLabel;
 
-    private Label soundEffectTestLabel;
-
-    private TextButton soundEffectsTestButton;
+    private TextButton soundAmbientBirdTestButton, soundSoundEffectTestButton;
 
     private Slider volumeMusicSlider;
     private CheckBox musicCheckbox;
@@ -76,7 +70,7 @@ public class PreferencesScreen implements Screen {
             }
         });
 
-        if (!app.preferencesBool){
+
             //Volume Music
             volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
             volumeMusicSlider.setValue( app.assets.menuMusic.getVolume() );
@@ -108,41 +102,15 @@ public class PreferencesScreen implements Screen {
                     return false;
                 }
             });
-        }else if (app.preferencesBool){
-            //Volume Music
-            final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
-            volumeMusicSlider.setValue( app.assets.inGameMusic.getVolume() );
-            volumeMusicSlider.addListener( new EventListener() {
-                @Override
-                public boolean handle(Event event) {
-                    app.assets.inGameMusic.setVolume( volumeMusicSlider.getValue() );
-                    return false;
-                }
-            });
 
-            //music
-            final CheckBox musicCheckbox = new CheckBox(null, skin);
-            musicCheckbox.setChecked( app.assets.inGameMusic.isPlaying() );
-            musicCheckbox.addListener( new EventListener() {
-                @Override
-                public boolean handle(Event event) {
-                    boolean enabled = musicCheckbox.isChecked();
-                    if (enabled)
-                        app.assets.inGameMusic.play();
-                    else
-                        app.assets.inGameMusic.pause();
-                    return false;
-                }
-            });
-        }
 
         //volume Sound
-        final Slider soundMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
-        soundMusicSlider.setValue( app.assets.ambientSound_Bird.getVolume() );
-        soundMusicSlider.addListener( new EventListener() {
+        final Slider ambientBirdMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
+        ambientBirdMusicSlider.setValue( app.assets.ambientSound_Bird.getVolume() );
+        ambientBirdMusicSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
-                app.assets.ambientSound_Bird.setVolume( soundMusicSlider.getValue() );
+                app.assets.ambientSound_Bird.setVolume( ambientBirdMusicSlider.getValue() );
                 return false;
             }
         });
@@ -163,14 +131,41 @@ public class PreferencesScreen implements Screen {
             }
         });
 
-        //Sound Effect Test Button
+        //Sound ambientBird Test Button
 
-        soundEffectsTestButton = new TextButton("Test Sound Effect",skin);
-        soundEffectsTestButton.addListener(new ChangeListener() {
+        soundAmbientBirdTestButton = new TextButton("Test Ambient Sound",skin);
+        soundAmbientBirdTestButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 app.sound.SoundButtonClick();
                 app.sound.Play_Pause_Ambient_Sound();
+            }
+        });
+
+        //volume Sound
+        final Slider soundEffectSlider = new Slider( 0f, 1f, 0.1f,false, skin );
+        soundEffectSlider.setValue( app.assets.ambientSound_Bird.getVolume() );
+        soundEffectSlider.addListener( new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                app.assets.soundNewDay.setVolume( soundEffectSlider.getValue() );
+                app.assets.soundGetWater.setVolume( soundEffectSlider.getValue() );
+                app.assets.soundUseWater.setVolume( soundEffectSlider.getValue() );
+                app.assets.soundButtonPress.setVolume( soundEffectSlider.getValue() );
+                app.assets.soundUseGold.setVolume( soundEffectSlider.getValue() );
+                return false;
+            }
+        });
+
+
+        //Sound Effect Test Button
+
+        soundSoundEffectTestButton = new TextButton("Test Sound Effect",skin);
+        soundSoundEffectTestButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                app.sound.SoundButtonClick();
+                app.sound.Play_Pause_EffektBeat_Sound();
             }
         });
 
@@ -188,7 +183,8 @@ public class PreferencesScreen implements Screen {
         titleLabel = new Label( "Preferences", app.assets.largeTextStyle);
         titleLabel.setFontScale(6);
         volumeMusicLabel = new Label( "Music Volume", app.assets.largeTextStyle );
-        volumeSoundLabel = new Label( "Sound Volume", app.assets.largeTextStyle );
+        volumeSoundLabel = new Label( "Ambient Volume", app.assets.largeTextStyle );
+        volumeSoundEffectLabel = new Label( "Sound Effect Volume", app.assets.largeTextStyle );
         musicOnOffLabel = new Label( "Music", app.assets.largeTextStyle );
         soundOnOffLabel = new Label( "Sound Effect", app.assets.largeTextStyle );
 
@@ -201,8 +197,13 @@ public class PreferencesScreen implements Screen {
         //table.add(musicCheckbox);
         //table.row();
         table.add(volumeSoundLabel).left();
-        table.add(soundMusicSlider).colspan(1);
-        table.add(soundEffectsTestButton);
+        table.add(ambientBirdMusicSlider).colspan(1);
+        table.add(soundAmbientBirdTestButton);
+        table.row();
+        // ---------
+        table.add(volumeSoundEffectLabel).left();
+        table.add(soundEffectSlider).colspan(1);
+        table.add(soundSoundEffectTestButton);
         table.row();
         //table.add(soundOnOffLabel).left();
         //table.add(soundEffectsCheckbox);
@@ -215,6 +216,8 @@ public class PreferencesScreen implements Screen {
 
     public void BackButton(){
         app.sound.SoundButtonClick();
+        app.sound.Stop_EffektBeat_Sound();
+        app.sound.Stop_AmbientBird_Sound();
 
         if (app.preferencesBool)
             app.setScreen(app.pauseScreen);

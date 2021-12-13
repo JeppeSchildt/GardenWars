@@ -34,30 +34,30 @@ import java.util.ArrayList;
 // This sort of stuff goes in a stage...?
 public class GameScreen extends AbstractScreen {
     public World world;
-    GardenGame app;
-    Stage hud;
+    private GardenGame app;
+    private Stage hud;
     public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
     private float blkScreenAlpha;
-    Table buttonTable,outerTable;
-    SpriteBatch batchTest;
+    private Table buttonTable, outerTable;
+    private SpriteBatch batchTest;
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
-    ScrollPane scrollPane;
-    Skin skin;
+    private ScrollPane scrollPane;
+    private Skin skin;
     private final InputMultiplexer mux;
     //private final Color hudColor;
     public Group grp;
     public NinePatch np;
     public BitmapFont font = new BitmapFont();
     private Label txtSelectedTileCoordinates;
-    ArrayList<TextButton> buttonList;
-    PlantFactory plantFactory;
+    private ArrayList<TextButton> buttonList;
+    private PlantFactory plantFactory;
     private boolean improvementsShown;
-    final OrthographicCamera camera;
+    private final OrthographicCamera camera;
     //private ShapeRenderer shapeRenderer;
-    Sprite spriteHighlight;
+    private Sprite spriteHighlight;
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo,dropOutTable;
 
@@ -275,7 +275,7 @@ public class GameScreen extends AbstractScreen {
         });
         buttonList.add(getWater);
         for(final int i : world.player.getAvailablePlants()) {
-            TextButton b = new TextButton("Plant " + Constants.idNameMap.get(i), skin);
+            TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + "XX" + ",-", skin);
            b.addListener(new ClickListener() {
                @Override
                public void clicked(InputEvent event, float x, float y) {
@@ -579,10 +579,6 @@ public class GameScreen extends AbstractScreen {
             debugButtons();
 
         }
-
-
-
-
 
     }
 

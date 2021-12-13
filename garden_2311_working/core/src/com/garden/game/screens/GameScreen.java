@@ -275,7 +275,7 @@ public class GameScreen extends AbstractScreen {
         });
         buttonList.add(getWater);
         for(final int i : world.player.getAvailablePlants()) {
-            TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + "XX" + ",-", skin);
+            TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
            b.addListener(new ClickListener() {
                @Override
                public void clicked(InputEvent event, float x, float y) {

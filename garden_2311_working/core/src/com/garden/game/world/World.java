@@ -52,7 +52,8 @@ public class World extends Stage {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         //soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+        //improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+        /*
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("TreesDead Layer");
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
@@ -60,13 +61,19 @@ public class World extends Stage {
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterPlants Layer");
-        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
-        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
+
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Road Layer");
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
+
+
+        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
         grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
+         */
+
+        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
+        
 
         MapLayers mapLayers = tiledMap.getLayers();
         mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};

@@ -21,6 +21,7 @@ import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.World;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -131,9 +132,15 @@ public class SkillTreeScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
 
                 skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
+                basicPlants.setColor(0,0,0,1);
 
             }
         });
+        //basicPlants.setVisible(false);
+
+
+
+
 
         basicPlants.setPosition(basicPlantsX, basicPlantsY);
         stage.addActor(basicPlants);
@@ -145,6 +152,7 @@ public class SkillTreeScreen implements Screen {
                 skillTree.setCurrentlyLearning(Constants.FERTILIZER_1);
                 //moreFlowers.setTouchable(Touchable.enabled);
                 //moreFruits.setTouchable(Touchable.enabled);
+                fertilizer.setColor(0,0,0,1);
 
             }
         });
@@ -159,6 +167,7 @@ public class SkillTreeScreen implements Screen {
                 //communication.setTouchable(Touchable.enabled);
                 //construction.setTouchable(Touchable.enabled);
                 //water.setTouchable(Touchable.enabled);
+                general.setColor(0,0,0,1);
             }
         });
         general.setPosition(generalX, generalY);
@@ -170,6 +179,7 @@ public class SkillTreeScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 //fertilizerPlus.setTouchable(Touchable.enabled);
                 skillTree.setCurrentlyLearning(Constants.MORE_FLOWERS);
+                moreFlowers.setColor(0,0,0,1);
             }
         });
         moreFlowers.setPosition(moreFlowersX, moreFlowersY);
@@ -181,6 +191,7 @@ public class SkillTreeScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.MORE_FRUITS);
                 //fertilizerPlus.setTouchable(Touchable.enabled);
+                moreFlowers.setColor(0,0,0,1);
             }
         });
         moreFruits.setPosition(moreFruitsX, moreFruitsY);
@@ -191,6 +202,7 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.CONSTRUCTION);
+                construction.setColor(0,0,0,1);
             }
         });
         construction.setPosition(constructionX, constructionY);
@@ -201,6 +213,7 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.COMMUNICATION);
+                communication.setColor(0,0,0,1);
             }
         });
         communication.setPosition(communicationX, communicationY);
@@ -214,6 +227,7 @@ public class SkillTreeScreen implements Screen {
                 //waterPlus.setTouchable(Touchable.enabled);
                 //world.player.skillTree.skills.get(8).skillLearned();
                 //water.setTouchable(Touchable.disabled);
+                water.setColor(0,0,0,1);
             }
         });
         water.setPosition(waterX, waterY);
@@ -224,6 +238,7 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.FERTILIZER_2);
+                fertilizerPlus.setColor(0,0,0,1);
 
             }
         });
@@ -237,6 +252,7 @@ public class SkillTreeScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.WATER_2);
                 //irrigation.setTouchable(Touchable.enabled);
+                waterPlus.setColor(0,0,0,1);
             }
         });
         waterPlus.setPosition(waterPlusX, waterPlusY);
@@ -247,6 +263,7 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.AUTO_HARVEST);
+                autoHarvest.setColor(0,0,0,1);
             }
         });
         autoHarvest.setPosition(autoHarvestX, autoHarvestY);
@@ -257,6 +274,7 @@ public class SkillTreeScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.IRRIGATION);
+                irrigation.setColor(0,0,0,1);
             }
         });
         irrigation.setPosition(irrigationX, irrigationY);

@@ -238,7 +238,7 @@ public class GameScreen extends AbstractScreen {
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
-        String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
+        String txtPoint= "Point: " + world.player.points + "/" + world.player.maxPoint;
 
 
         // Chance season string if it is dry season or not

@@ -25,9 +25,10 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public Unit unit;
-    public int money, water, maxWater, point, maxPoint, waterPerTurn;
+    public int money, water, maxWater, points, maxPoint, waterPerTurn;
     private int waterSize;
     private ArrayList<Integer> availablePlants;
+    private ArrayList<Quest> quests;
     private boolean gotWater;
 
     private ArrayList<Plant> plants;
@@ -43,6 +44,8 @@ public class Player {
         availablePlants = new ArrayList<>();
         availablePlants.add(Constants.RICE);
         availablePlants.add(Constants.CUCUMBER);
+        quests = new ArrayList<>();
+        quests.add(new KeepHealthyQuest(this));
 
         // Skal fejnes igen - ER her kun fo viso
         water = 10;
@@ -153,7 +156,6 @@ public class Player {
             Map.Entry<Vector2, Plant> entry = entryIt.next();
             Plant plant = entry.getValue();
             plant.nextTurn();
-
             if (plant.getState() == Plant.PlantState.DEAD) {
                 // Remove grass from improvement layer.
                 //app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
@@ -162,6 +164,12 @@ public class Player {
             } else {
                 money += plant.profit;
             }
+            for(Quest q : quests) {
+                q.checkPlant(plant);
+            }
+        }
+        for(Quest q : quests) {
+            q.nextTurn();
         }
 
     }

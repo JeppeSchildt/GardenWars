@@ -270,7 +270,7 @@ public class GameScreen extends AbstractScreen {
     void startIntroDialogue() {
         showDialouge = true;
         dialogBackground(Dialogue.dia_2);
-        camera.position.set(world.player.unit.getX(),world.player.unit.getY(),0);
+        //camera.position.set(world.player.unit.getX(),world.player.unit.getY(),0);
     }
     void dialogBackground(String text) {
         boolean start = false;
@@ -632,11 +632,6 @@ public class GameScreen extends AbstractScreen {
         if (showDialouge) {
             startIntroDialogue();
         }
-        if (!BoolNextSeason){
-            BoolNextSeason = true;
-            NextDrySeasonCount = new Random().nextInt(10) + 5;
-        }
-
     }
     private void moveToPorch() {
         world.player.unit.clearActions();

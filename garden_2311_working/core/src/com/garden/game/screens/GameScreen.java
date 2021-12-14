@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
+import com.garden.game.player.Quest;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
@@ -37,7 +38,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     private GardenGame app;
     private Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtDayToDryseason;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
@@ -119,6 +120,11 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen = new Image(new TextureRegion(app.assets.<Texture>get("black_screen.png")));
         imgBlkScreen.setSize(1024,768);
         //imgBlkScreen.setColor(0,0,0,1);
+
+        txtQuests = new Label("", skin);
+        txtQuests.setPosition(15, 768/2);
+        txtQuests.setText(world.player.quests.get(0).description);
+        hud.addActor(txtQuests);
 
         tableSetup();
         setupTextIcons();
@@ -238,7 +244,7 @@ public class GameScreen extends AbstractScreen {
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
-        String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
+        String txtPoint= "Point: " + world.player.points + "/" + world.player.maxPoint;
 
 
         // Chance season string if it is dry season or not
@@ -277,7 +283,7 @@ public class GameScreen extends AbstractScreen {
             public void clicked(InputEvent event, float x, float y) {
                 if(world.player.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
                     world.player.unit.setPosition(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
-                    world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
+                    world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, world.player.waterSize);
                 }
 
                 outerTable.remove();
@@ -395,6 +401,7 @@ public class GameScreen extends AbstractScreen {
         world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
         world.nextTurn();
+        txtQuests.setText(world.player.quests.get(0).description);
 
     }
     private void renderBubble(String text) {
@@ -741,6 +748,11 @@ public class GameScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 //app.batch.begin();
                 startEvent("magazine");
+                /*for(Quest q : world.player.quests) {
+                    if(q.isCompleted) {
+                        q.onCompleted();
+                    }
+                }*/
                 //font.draw(app.batch,"TEST",100,100);
                 //app.batch.end();
             }

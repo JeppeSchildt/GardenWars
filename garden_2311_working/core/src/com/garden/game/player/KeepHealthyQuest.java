@@ -6,13 +6,16 @@ import com.garden.game.world.plants.Plant;
 public class KeepHealthyQuest extends Quest {
     static int nCompleted = 0;
     int nPlants;
+    int nTurns;
+    int nCurrentTurns = 0;
     int plantType;
     int healthyPlants;
 
     public KeepHealthyQuest(Player player) {
         super(player);
-        selectNumberPlants();
+        selectNumber();
         selectPlantType();
+        initDescription();
 
     }
 
@@ -25,28 +28,60 @@ public class KeepHealthyQuest extends Quest {
         }while(!player.getAvailablePlants().contains(plantType));
     }
 
-    public void selectNumberPlants() {
+    public void selectNumber() {
         if(nCompleted == 0) {
             nPlants = 2;
+            nTurns = 2;
         } else {
             nPlants = nCompleted*2;
+            nTurns = nCompleted*2;
         }
     }
 
     @Override
     public void nextTurn() {
         super.nextTurn();
-        int healthyPlants_ = 0;
-        //for(Plant p : player.getPlants_().)
+        if(healthyPlants == nPlants) {
+            nCurrentTurns +=1;
+            if(nCurrentTurns == nTurns) {
+                isCompleted = true;
+                onCompleted();
+            }
+        } else {
+            nCurrentTurns = 0;
+        }
+        healthyPlants = 0;
     }
 
     @Override
     public void onCompleted() {
         super.onCompleted();
+        nCompleted += 1;
+        player.points += 10;
+        description += ": completed";
     }
 
     @Override
     public String getDescription() {
         return super.getDescription();
+    }
+
+    // Check if correct plant and healthy.
+    @Override
+    public void checkPlant(Plant plant) {
+        super.checkPlant(plant);
+        if(plant.getTypeID() == plantType) {
+            if(plant.getState() == Plant.PlantState.HEALTHY) {
+                healthyPlants++;
+            }
+
+        }
+    }
+
+    @Override
+    public void initDescription() {
+        super.initDescription();
+        String plantName = Constants.idNameMap.get(plantType);
+        description = "Keep " + nPlants + " " + plantName+  " in the Healthy state for " + nTurns + " turns";
     }
 }

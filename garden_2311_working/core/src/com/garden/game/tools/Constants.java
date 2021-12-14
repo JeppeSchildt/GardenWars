@@ -149,7 +149,7 @@ public class Constants {
 
     }
 
-    private static final int ProfitRate = 3;
+    private static final int ProfitRate = 2;
     public static final Map<Integer, Integer> idProfitMap;
     static {
         idProfitMap = new HashMap<Integer, Integer>();

@@ -255,8 +255,6 @@ public class GameScreen extends AbstractScreen {
         txtMonthWeekDay.setText(totalDays);
 
 
-
-
     }
 
     void setButton (String text, Skin skin) {

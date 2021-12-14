@@ -80,98 +80,106 @@ public class Constants {
     public static final Map<Integer, Integer> idPriceMap;
     static {
         idPriceMap = new HashMap<Integer, Integer>();
-        // -------- Crops ------- //
-        idPriceMap.put(CUCUMBER, 2);
-        idPriceMap.put(TOMATO, 7);
-        idPriceMap.put(TURNIP, 5);
-        idPriceMap.put(WHEAT, 3);
-        idPriceMap.put(POTATO, 2);
-        idPriceMap.put(RICE, 3);
-        idPriceMap.put(CORN, 4);
+        // -------- Start -------- //
+        idPriceMap.put(CUCUMBER, 20);
+        idPriceMap.put(RICE, 25);
 
-        // -------- Fruits ------- //
-        idPriceMap.put(MELON, 10);
-        idPriceMap.put(LEMON, 5);
-        idPriceMap.put(ORANGE, 7);
-        idPriceMap.put(PINEAPPLE, 10);
-        idPriceMap.put(GRAPES, 4);
-        idPriceMap.put(STRAWBERRY, 5);
+        // -------- Basic Plants -------- //
+        idPriceMap.put(TOMATO, 20);
+        idPriceMap.put(POTATO, 20);
+        idPriceMap.put(TURNIP, 25);
+        idPriceMap.put(WHEAT, 30);
+        idPriceMap.put(CORN, 30);
+        idPriceMap.put(CASSAVA, 40);
+        idPriceMap.put(EGGPLANT, 40);
+        idPriceMap.put(COFFEE, 55);
 
-        // -------- Flower ------- //
-        idPriceMap.put(SUNFLOWER, 7);
-        idPriceMap.put(ROSE, 10);
-        idPriceMap.put(TULIP, 5);
+        // -------- More Fruits -------- //
+        idPriceMap.put(ORANGE, 35);
+        idPriceMap.put(LEMON, 35);
+        idPriceMap.put(STRAWBERRY, 45);
+        idPriceMap.put(GRAPES, 45);
+        idPriceMap.put(AVOCADO, 65);
+        idPriceMap.put(MELON, 75);
+        idPriceMap.put(PINEAPPLE, 100);
 
-        // -------- Bonus Plants -------- /
-        idPriceMap.put(COFFEE, 10);
-        idPriceMap.put(AVOCADO, 7);
-        idPriceMap.put(EGGPLANT, 5);
-        idPriceMap.put(CASSAVA, 4);
+        // -------- More Flowers -------- //
+        idPriceMap.put(SUNFLOWER, 55);
+        idPriceMap.put(ROSE, 200);
+        idPriceMap.put(TULIP, 350);
+
+        // -------- Bonus Plants -------- //
+
     }
 
     public static final Map<Integer, Integer> idWaterLossMap;
     static {
         idWaterLossMap = new HashMap<Integer, Integer>();
-        // -------- Crops ------- //
-        idWaterLossMap.put(CUCUMBER, 2);
-        idWaterLossMap.put(TOMATO, 7);
-        idWaterLossMap.put(WHEAT, 3);
+        // -------- Start -------- //
+        idWaterLossMap.put(CUCUMBER, 1);
+        idWaterLossMap.put(RICE, 1);
+
+        // -------- Basic Plants -------- //
+        idWaterLossMap.put(TOMATO, 2);
         idWaterLossMap.put(POTATO, 2);
-        idWaterLossMap.put(RICE, 3);
-        idWaterLossMap.put(CORN, 4);
-        idWaterLossMap.put(TURNIP, 5);
+        idWaterLossMap.put(TURNIP, 2);
+        idWaterLossMap.put(WHEAT, 3);
+        idWaterLossMap.put(CORN, 3);
+        idWaterLossMap.put(CASSAVA, 3);
+        idWaterLossMap.put(EGGPLANT, 3);
+        idWaterLossMap.put(COFFEE, 4);
 
-        // -------- Fruits ------- //
-        idWaterLossMap.put(MELON, 10);
-        idWaterLossMap.put(LEMON, 5);
-        idWaterLossMap.put(ORANGE, 7);
-        idWaterLossMap.put(PINEAPPLE, 10);
+        // -------- More Fruits -------- //
+        idWaterLossMap.put(ORANGE, 3);
+        idWaterLossMap.put(LEMON, 3);
+        idWaterLossMap.put(STRAWBERRY, 4);
         idWaterLossMap.put(GRAPES, 4);
-        idWaterLossMap.put(STRAWBERRY, 5);
+        idWaterLossMap.put(AVOCADO, 4);
+        idWaterLossMap.put(MELON, 5);
+        idWaterLossMap.put(PINEAPPLE, 5);
 
-        // -------- Flower ------- //
-        idWaterLossMap.put(SUNFLOWER, 7);
-        idWaterLossMap.put(ROSE, 10);
+        // -------- More Flowers -------- //
+        idWaterLossMap.put(SUNFLOWER, 5);
+        idWaterLossMap.put(ROSE, 5);
         idWaterLossMap.put(TULIP, 5);
 
-        // -------- Bonus Plants -------- /
-        idWaterLossMap.put(COFFEE, 10);
-        idWaterLossMap.put(AVOCADO, 7);
-        idWaterLossMap.put(EGGPLANT, 5);
-        idWaterLossMap.put(CASSAVA, 4);
+        // -------- Bonus Plants -------- //
 
     }
 
+    private static final int ProfitRate = 3;
     public static final Map<Integer, Integer> idProfitMap;
     static {
         idProfitMap = new HashMap<Integer, Integer>();
-        // -------- Crops ------- //
-        idProfitMap.put(CUCUMBER, 2);
-        idProfitMap.put(TOMATO, 7);
-        idProfitMap.put(WHEAT, 3);
-        idProfitMap.put(POTATO, 2);
-        idProfitMap.put(RICE, 3);
-        idProfitMap.put(CORN, 4);
-        idProfitMap.put(TURNIP, 5);
+        // -------- Start -------- //
+        idProfitMap.put(CUCUMBER, 20 * ProfitRate);
+        idProfitMap.put(RICE, 25 * ProfitRate);
 
-        // -------- Fruits ------- //
-        idProfitMap.put(MELON, 10);
-        idProfitMap.put(LEMON, 5);
-        idProfitMap.put(ORANGE, 7);
-        idProfitMap.put(PINEAPPLE, 10);
-        idProfitMap.put(GRAPES, 4);
-        idProfitMap.put(STRAWBERRY, 5);
+        // -------- Basic Plants -------- //
+        idProfitMap.put(TOMATO, 20 * ProfitRate);
+        idProfitMap.put(POTATO, 20 * ProfitRate);
+        idProfitMap.put(TURNIP, 25 * ProfitRate);
+        idProfitMap.put(WHEAT, 30 * ProfitRate);
+        idProfitMap.put(CORN, 30 * ProfitRate);
+        idProfitMap.put(CASSAVA, 40 * ProfitRate);
+        idProfitMap.put(EGGPLANT, 40 * ProfitRate);
+        idProfitMap.put(COFFEE, 55 * ProfitRate);
 
-        // -------- Flower ------- //
-        idProfitMap.put(SUNFLOWER, 7);
-        idProfitMap.put(ROSE, 10);
-        idProfitMap.put(TULIP, 5);
+        // -------- More Fruits -------- //
+        idProfitMap.put(ORANGE, 35 * ProfitRate);
+        idProfitMap.put(LEMON, 35 * ProfitRate);
+        idProfitMap.put(STRAWBERRY, 45 * ProfitRate);
+        idProfitMap.put(GRAPES, 45 * ProfitRate);
+        idProfitMap.put(AVOCADO, 65 * ProfitRate);
+        idProfitMap.put(MELON, 75 * ProfitRate);
+        idProfitMap.put(PINEAPPLE, 100 * ProfitRate);
 
-        // -------- Bonus Plants -------- /
-        idProfitMap.put(COFFEE, 10);
-        idProfitMap.put(AVOCADO, 7);
-        idProfitMap.put(EGGPLANT, 5);
-        idProfitMap.put(CASSAVA, 4);
+        // -------- More Flowers -------- //
+        idProfitMap.put(SUNFLOWER, 55 * ProfitRate);
+        idProfitMap.put(ROSE, 200 * ProfitRate);
+        idProfitMap.put(TULIP, 350 * ProfitRate);
+
+        // -------- Bonus Plants -------- //
     }
 
 

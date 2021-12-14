@@ -12,13 +12,16 @@ public class MoreFruits extends Skill{
     @Override
     public void skillLearned(){
         super.skillLearned();
-        player.makePlantAvailable(Constants.MELON);
-        player.makePlantAvailable(Constants.LEMON);
-        player.makePlantAvailable(Constants.PINEAPPLE);
-        player.makePlantAvailable(Constants.AVOCADO);
-        player.makePlantAvailable(Constants.STRAWBERRY);
         player.makePlantAvailable(Constants.ORANGE);
+        player.makePlantAvailable(Constants.LEMON);
+        player.makePlantAvailable(Constants.STRAWBERRY);
         player.makePlantAvailable(Constants.GRAPES);
+        player.makePlantAvailable(Constants.AVOCADO);
+        player.makePlantAvailable(Constants.MELON);
+        player.makePlantAvailable(Constants.PINEAPPLE);
+
+
+
 
     }
 

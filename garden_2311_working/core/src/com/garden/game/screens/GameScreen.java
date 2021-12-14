@@ -299,6 +299,9 @@ public class GameScreen extends AbstractScreen {
         if (!app.drySeason)
             buttonList.add(getWater);
 
+        //TextButton getBlank = new TextButton("", skin);
+        //buttonList.add(getBlank);
+
         for(final int i : world.player.getAvailablePlants()) {
             TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
            b.addListener(new ClickListener() {
@@ -319,7 +322,6 @@ public class GameScreen extends AbstractScreen {
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
-
 
     }
 

@@ -12,9 +12,9 @@ public class MoreFlowers  extends Skill{
     @Override
     public void skillLearned(){
         super.skillLearned();
-        player.makePlantAvailable(Constants.TULIP);
-        player.makePlantAvailable(Constants.ROSE);
         player.makePlantAvailable(Constants.SUNFLOWER);
+        player.makePlantAvailable(Constants.ROSE);
+        player.makePlantAvailable(Constants.TULIP);
 
     }
     @Override

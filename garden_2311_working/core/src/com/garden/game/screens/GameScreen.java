@@ -286,6 +286,7 @@ public class GameScreen extends AbstractScreen {
             }
         });
         buttonList.add(waterTile);
+
         TextButton getWater = new TextButton("Get Water From Lake", skin);
         getWater.addListener(new ClickListener() {
             @Override
@@ -294,7 +295,10 @@ public class GameScreen extends AbstractScreen {
                 outerTable.remove();
             }
         });
-        buttonList.add(getWater);
+
+        if (!app.drySeason)
+            buttonList.add(getWater);
+
         for(final int i : world.player.getAvailablePlants()) {
             TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
            b.addListener(new ClickListener() {

@@ -193,8 +193,8 @@ public class Constants {
     public static final float FRONT_PORCH_X = 546.128f, FRONT_PORCH_Y = 797.53f;
 
     // -------- Dry Season Event -------- //
-    public static final int MAX_WET_SEASONS_DAYS = 40, MAX_DRY_SEASONS_DAYS = 10;
-    public static final int MIN_WET_SEASONS_DAYS = 15, MIN_DRY_SEASONS_DAYS = 5;
+    public static final int MAX_WET_SEASONS_DAYS = 5, MAX_DRY_SEASONS_DAYS = 3;
+    public static final int MIN_WET_SEASONS_DAYS = 3, MIN_DRY_SEASONS_DAYS = 2;
 
 
 }

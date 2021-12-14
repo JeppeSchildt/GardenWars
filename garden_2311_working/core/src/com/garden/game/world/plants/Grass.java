@@ -18,8 +18,6 @@ public class Grass extends Plant {
         profit = 2;
 
         initWaterStateMap();
-
-
     }
 
     public void initWaterStateMap() {

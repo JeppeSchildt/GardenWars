@@ -206,7 +206,7 @@ public class Constants {
     public static final int MAX_WET_SEASONS_DAYS = 5, MAX_DRY_SEASONS_DAYS = 3;
     public static final int MIN_WET_SEASONS_DAYS = 3, MIN_DRY_SEASONS_DAYS = 2;
 
-    
+
 
 
 }

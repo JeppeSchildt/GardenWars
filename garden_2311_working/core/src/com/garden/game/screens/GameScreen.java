@@ -310,6 +310,7 @@ public class GameScreen extends AbstractScreen {
                    if (world.player.canPlant(i, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
                        Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
                        world.player.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
+
                    }
                    outerTable.remove();
                }

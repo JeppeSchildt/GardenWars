@@ -179,6 +179,7 @@ public class Unit extends Actor {
             public void run() {
                 //app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, plant.getCell());
                 plant.setActiveAnimation();
+                app.gameScreen.world.grassLayer.setCell((int) x/Constants.TILE_WIDTH, (int) y/Constants.TILE_HEIGHT, plant.getCell());
             }
         });
 

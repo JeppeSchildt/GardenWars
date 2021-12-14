@@ -76,6 +76,7 @@ public class World extends Stage {
 
         /* Get some layers, cast to TiledMapLayer. We can't walk/plant on certain layers */
         waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
+        grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
         /*fenceLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
         buildingsLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
         treesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");

@@ -204,7 +204,7 @@ public class Assets extends AssetManager {
 
         tileSet = get("World1.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
         grassCell = new TiledMapTileLayer.Cell();
-        grassCell.setTile(this.tileSet.getTile(0x1));
+        grassCell.setTile(this.tileSet.getTile(0x244));
 
     }
 

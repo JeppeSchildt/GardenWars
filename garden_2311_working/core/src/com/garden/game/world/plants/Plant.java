@@ -159,7 +159,7 @@ public class Plant extends Actor {
     }
 
     // Is simpler constructor with setters better?
-    public Plant(int id, int x, int y, String name, int waterLoss, int profit, int price, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap) {
+    public Plant(int id, int x, int y, String name, int waterLoss, int profit, int price, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap, TiledMapTileLayer.Cell cell) {
         this.typeID = id;
         this.waterLoss = waterLoss;
         this.profit = profit;
@@ -167,6 +167,7 @@ public class Plant extends Actor {
         this.waterStateMap = waterStateMap;
         this.textureRegions = textureRegions;
         state = PlantState.SEED;
+        this.cell = cell;
 
         setPosition(x, y);
         setName(name);

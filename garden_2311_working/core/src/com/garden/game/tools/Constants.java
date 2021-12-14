@@ -34,6 +34,8 @@ public class Constants {
     public static final int CORN = 18;
     public static final int SUNFLOWER = 19;
 
+    public static final int N_PLANTS = 20;
+
     public static final Map<Integer, String> idNameMap;
     static {
         idNameMap = new HashMap<Integer, String>();

@@ -24,7 +24,6 @@ import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -60,9 +59,10 @@ public class GameScreen extends AbstractScreen {
     private final OrthographicCamera camera;
     //private ShapeRenderer shapeRenderer;
     private Sprite spriteHighlight;
-    private boolean BoolNextSeason = false;
+    private boolean isStartDrySeason = false, isStartWetSeason = false;
 
-    private int NextDrySeasonCount, lengthForDrySeason;
+    private int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
+    private int lengthForDrySeason, lengthForWetSeason;
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
 
@@ -240,9 +240,16 @@ public class GameScreen extends AbstractScreen {
         String txtGold = "Gold: " + world.player.money + longSpace;
         String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
 
-        String txtNextDrySeason = longSpace + longSpace + "Days To Next Dry Season: " + (NextDrySeasonCount - world.turnNumber);
 
-        txtResources.setText(txtWater + txtGold  + txtPoint + txtNextDrySeason);
+        // Chance season string if it is dry season or not
+        String txtSeason = "";
+        if (app.drySeason)
+            txtSeason = longSpace + longSpace + "Days To Next Wet Season: " + (WetSeasonCount_RandomNumber - lengthForDrySeason + 1);
+        else if (!app.drySeason)
+            txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (DrySeasonCount_RandomNumber - lengthForWetSeason + 1);
+
+
+        txtResources.setText(txtWater + txtGold  + txtPoint + txtSeason);
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);
@@ -414,7 +421,7 @@ public class GameScreen extends AbstractScreen {
         container.setSize(140,69);
         container.setOrigin(bx,by);
 
-        Label lbl = new Label("Yahooo",skin);
+        Label lbl = new Label("The instantreality framework is a advanced high-performance Mixed-Reality (MR) system, which combines various components to provide a single and consistent interface for AR and VR developers.",skin);
         lbl.setOrigin(container.getX()+100,container.getY());
         lbl.setAlignment(Align.center);
         lbl.setColor(Color.RED);
@@ -559,9 +566,9 @@ public class GameScreen extends AbstractScreen {
         //renderBubble("HEJ");
         app.batch.end(); // End batch here, finishing rendering.
 
-        if (!BoolNextSeason){
-            BoolNextSeason = true;
-            NextDrySeasonCount = new Random().nextInt(10) + 5;
+        if (!isStartDrySeason){
+            isStartDrySeason = true;
+            DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
         }
 
     }
@@ -573,6 +580,7 @@ public class GameScreen extends AbstractScreen {
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
                 blkScreenAlpha = 0.0f;
+
                 drySeasonEvent();
 
                 // Move character to front porch instantly.
@@ -672,23 +680,32 @@ public class GameScreen extends AbstractScreen {
 
     public void drySeasonEvent(){
 
-        if (world.turnNumber >= NextDrySeasonCount){
+        // DrySeasonCount_RandomNumber = Random number
+
+        if (lengthForWetSeason == DrySeasonCount_RandomNumber){
+            // Make Map DrySeason
             app.drySeason = true;
+            lengthForDrySeason = 0;
         }
 
         if (app.drySeason){
-            //int maxLengthDrySeason = new Random().nextInt(5) + 1;
+            if (!isStartWetSeason){
+                isStartWetSeason = true;
+                WetSeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_DRY_SEASONS_DAYS) + Constants.MIN_DRY_SEASONS_DAYS;
+            }
+            // WetSeasonCount_RandomNumber = Random number
+            // lengthForDrySeason = 0 counter
 
-            if (lengthForDrySeason == 5){
+            if (lengthForDrySeason == WetSeasonCount_RandomNumber){
+                // Make Map WetSeason
                 app.drySeason = false;
-                BoolNextSeason = false;
-                lengthForDrySeason = 0;
+                lengthForWetSeason = 0;
+
+                isStartDrySeason = false;
             }
             lengthForDrySeason++;
         }
-
-        // --- Første sæson virker - 
-
+        lengthForWetSeason++;
     }
 
 

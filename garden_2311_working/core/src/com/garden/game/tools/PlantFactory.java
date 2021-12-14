@@ -45,9 +45,6 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.DEAD, new Vector2(0,0));
 
                 return new Plant(Constants.TURNIP, x, y, Constants.TURNIP + "", Constants.idWaterLossMap.get(Constants.TURNIP), Constants.idProfitMap.get(Constants.TURNIP), Constants.idPriceMap.get(Constants.TURNIP), assets.plantTextures[Constants.TURNIP], waterStateMap);
-
-
-
             }
         });
 

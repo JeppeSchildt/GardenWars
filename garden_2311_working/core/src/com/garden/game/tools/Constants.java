@@ -40,6 +40,7 @@ public class Constants {
         idNameMap.put(TURNIP, "Turnip");
         idNameMap.put(ROSE, "Rose");
         idNameMap.put(CUCUMBER, "Cucumber");
+        idNameMap.put(TULIP, "Tulip");
         idNameMap.put(TOMATO, "Tomato");
         idNameMap.put(MELON, "Melon");
         idNameMap.put(EGGPLANT, "Eggplant");
@@ -74,15 +75,15 @@ public class Constants {
     public static final String SEED_STATE = "Seed";
     public static final String DEAD_STATE = "";
 
-
-
     public static final Integer GRASS_PRICE = 10;
     public static final Integer TURNIP_PRICE = 10;
     public static final Map<Integer, Integer> idPriceMap;
     static {
         idPriceMap = new HashMap<Integer, Integer>();
+        // -------- Crops ------- //
         idPriceMap.put(CUCUMBER, 2);
         idPriceMap.put(TOMATO, 7);
+        idPriceMap.put(TURNIP, 5);
         idPriceMap.put(WHEAT, 3);
         idPriceMap.put(POTATO, 2);
         idPriceMap.put(RICE, 3);
@@ -99,7 +100,7 @@ public class Constants {
         // -------- Flower ------- //
         idPriceMap.put(SUNFLOWER, 7);
         idPriceMap.put(ROSE, 10);
-        idPriceMap.put(TURNIP, 5);
+        idPriceMap.put(TULIP, 5);
 
         // -------- Bonus Plants -------- /
         idPriceMap.put(COFFEE, 10);
@@ -118,6 +119,7 @@ public class Constants {
         idWaterLossMap.put(POTATO, 2);
         idWaterLossMap.put(RICE, 3);
         idWaterLossMap.put(CORN, 4);
+        idWaterLossMap.put(TURNIP, 5);
 
         // -------- Fruits ------- //
         idWaterLossMap.put(MELON, 10);
@@ -130,13 +132,14 @@ public class Constants {
         // -------- Flower ------- //
         idWaterLossMap.put(SUNFLOWER, 7);
         idWaterLossMap.put(ROSE, 10);
-        idWaterLossMap.put(TURNIP, 5);
+        idWaterLossMap.put(TULIP, 5);
 
         // -------- Bonus Plants -------- /
         idWaterLossMap.put(COFFEE, 10);
         idWaterLossMap.put(AVOCADO, 7);
         idWaterLossMap.put(EGGPLANT, 5);
         idWaterLossMap.put(CASSAVA, 4);
+
     }
 
     public static final Map<Integer, Integer> idProfitMap;
@@ -149,6 +152,7 @@ public class Constants {
         idProfitMap.put(POTATO, 2);
         idProfitMap.put(RICE, 3);
         idProfitMap.put(CORN, 4);
+        idProfitMap.put(TURNIP, 5);
 
         // -------- Fruits ------- //
         idProfitMap.put(MELON, 10);
@@ -161,15 +165,13 @@ public class Constants {
         // -------- Flower ------- //
         idProfitMap.put(SUNFLOWER, 7);
         idProfitMap.put(ROSE, 10);
-        idProfitMap.put(TURNIP, 5);
+        idProfitMap.put(TULIP, 5);
 
         // -------- Bonus Plants -------- /
         idProfitMap.put(COFFEE, 10);
         idProfitMap.put(AVOCADO, 7);
         idProfitMap.put(EGGPLANT, 5);
         idProfitMap.put(CASSAVA, 4);
-
-
     }
 
 
@@ -190,7 +192,14 @@ public class Constants {
 
     public static final float FRONT_PORCH_X = 546.128f, FRONT_PORCH_Y = 797.53f;
 
+    // -------- Dry Season Event -------- //
+    public static final int MAX_WET_SEASONS_DAYS = 40, MAX_DRY_SEASONS_DAYS = 10;
+    public static final int MIN_WET_SEASONS_DAYS = 15, MIN_DRY_SEASONS_DAYS = 5;
+
+
 }
+
+
  /*
 - Rose
 - Cucumber

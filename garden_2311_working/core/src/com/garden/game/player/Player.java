@@ -162,7 +162,7 @@ public class Player {
             plant.nextTurn();
             if (plant.getState() == Plant.PlantState.DEAD) {
                 // Remove grass from improvement layer.
-                //app.gameScreen.world.improvementLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, plant.getCell());
+                app.gameScreen.world.grassLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, app.assets.grassCell);
 
                 entryIt.remove();
             } else {

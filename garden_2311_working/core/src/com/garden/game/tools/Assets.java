@@ -3,7 +3,6 @@ package com.garden.game.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class Assets extends AssetManager {
     public Label.LabelStyle largeTextStyle;
     public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
     public TiledMapTileSet tileSet, tileSetNew;
-    public TiledMapTileLayer.Cell grassCell;
+    public TiledMapTileLayer.Cell dirtCell, grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
@@ -203,8 +201,11 @@ public class Assets extends AssetManager {
         finishLoading();
 
         tileSet = get("World1.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
+        dirtCell = new TiledMapTileLayer.Cell();
+        dirtCell.setTile(this.tileSet.getTile(0x244));
+
         grassCell = new TiledMapTileLayer.Cell();
-        grassCell.setTile(this.tileSet.getTile(0x244));
+        grassCell.setTile(this.tileSet.getTile(0x125));
 
     }
 

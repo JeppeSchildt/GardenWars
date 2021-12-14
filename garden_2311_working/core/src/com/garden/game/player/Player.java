@@ -26,9 +26,9 @@ public class Player {
     GardenGame app;
     public Unit unit;
     public int money, water, maxWater, points, maxPoint, waterPerTurn;
-    private int waterSize;
+    public int waterSize;
     private ArrayList<Integer> availablePlants;
-    private ArrayList<Quest> quests;
+    public ArrayList<Quest> quests;
     private boolean gotWater;
 
     private ArrayList<Plant> plants;
@@ -44,15 +44,19 @@ public class Player {
         availablePlants = new ArrayList<>();
         availablePlants.add(Constants.RICE);
         availablePlants.add(Constants.CUCUMBER);
-        quests = new ArrayList<>();
-        quests.add(new KeepHealthyQuest(this));
 
+        initQuests();
         // Skal fejnes igen - ER her kun fo viso
         water = 10;
-        maxWater = 50;
-        waterPerTurn = 10;
-        waterSize = 2;
+        maxWater = 500;
+        waterPerTurn = 100;
+        waterSize = 20;
         maxPoint = 1000;
+    }
+
+    private void initQuests() {
+        quests = new ArrayList<>();
+        quests.add(new KeepHealthyQuest(this));
     }
 
     public void makePlantAvailable(int plantID) {
@@ -168,8 +172,12 @@ public class Player {
                 q.checkPlant(plant);
             }
         }
-        for(Quest q : quests) {
+        for(int i = 0; i < quests.size(); i++) {
+            Quest q = quests.get(i);
             q.nextTurn();
+            if(q.isCompleted) {
+                quests.set(i, new KeepHealthyQuest(this));
+            }
         }
 
     }

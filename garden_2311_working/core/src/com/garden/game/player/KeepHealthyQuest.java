@@ -15,6 +15,7 @@ public class KeepHealthyQuest extends Quest {
         super(player);
         selectNumber();
         selectPlantType();
+        initDescription();
 
     }
 
@@ -55,6 +56,7 @@ public class KeepHealthyQuest extends Quest {
     @Override
     public void onCompleted() {
         super.onCompleted();
+        nCompleted += 1;
         player.points += 10;
         description += ": completed";
     }
@@ -80,6 +82,6 @@ public class KeepHealthyQuest extends Quest {
     public void initDescription() {
         super.initDescription();
         String plantName = Constants.idNameMap.get(plantType);
-        description = "Keep " + nPlants + " in the Healthy state for " + nTurns + "turns";
+        description = "Keep " + nPlants + " " + plantName+  " in the Healthy state for " + nTurns + " turns";
     }
 }

@@ -59,6 +59,7 @@ public class KeepHealthyQuest extends Quest {
         nCompleted += 1;
         player.points += 10;
         description += ": completed";
+        System.out.println("HDELLO FROM IONcal");
     }
 
     @Override

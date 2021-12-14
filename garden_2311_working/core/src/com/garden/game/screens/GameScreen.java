@@ -447,6 +447,7 @@ public class GameScreen extends AbstractScreen {
 
         world.nextTurn();
         txtQuests.setText(world.player.quests.get(0).description);
+        System.out.println(world.player.quests.get(0).description);
 
     }
     private void renderBubble(String text) {

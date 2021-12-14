@@ -177,6 +177,7 @@ public class Player {
             q.nextTurn();
             if(q.isCompleted) {
                 quests.set(i, new KeepHealthyQuest(this));
+                System.out.println("asdnaklsdn");
             }
         }
 

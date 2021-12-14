@@ -142,6 +142,25 @@ public class SoundFunctions {
         }
     }
 
+    public void Stop_AmbientBird_Sound(){
+        app.assets.ambientSound_Bird.stop();
+    }
+
+
+    public void Play_Pause_EffektBeat_Sound(){
+        if (app.assets.soundTestEffektBeat.isPlaying()){
+            app.assets.soundTestEffektBeat.stop();
+        }
+        else if(!app.assets.soundTestEffektBeat.isPlaying()){
+            app.assets.soundTestEffektBeat.play();
+            app.assets.soundTestEffektBeat.setLooping(true);
+        }
+    }
+
+    public void Stop_EffektBeat_Sound(){
+        app.assets.soundTestEffektBeat.stop();
+    }
+
 
 
     public void GameOver_Sound(){
@@ -178,9 +197,25 @@ public class SoundFunctions {
     }
 
     /* -------- Sound Effect Function Setup -------- */
-    public void buttonMenueSound(){
+    public void SoundButtonClick(){
         app.assets.soundButtonPress.play();
     }
+
+    public void SoundUseWater(){
+        app.assets.soundUseWater.play();
+    }
+    public void SoundGetWater(){
+        app.assets.soundGetWater.play();
+    }
+    public void SoundUseGold(){
+        app.assets.soundUseGold.play();
+    }
+    public void SoundNewDay(){
+        app.assets.soundNewDay.play();
+    }
+
+
+
 
 
 }

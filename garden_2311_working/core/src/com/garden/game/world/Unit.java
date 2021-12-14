@@ -29,7 +29,6 @@ public class Unit extends Actor {
     public Animation<TextureRegion> activeAnimation;
     public float elapsedTime, animationTime;
     TextureRegion drawThis;
-    private final int DOWN = 0, RIGHT = 1, UP = 2, LEFT = 3;
     public float velocity = 100;
     public boolean bucket;
 
@@ -67,6 +66,10 @@ public class Unit extends Actor {
         // Check for water.
 
         canMove = canMove && !(app.gameScreen.world.isWaterTile(x,y));
+        canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Fence Layer", x,y));
+        canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x,y));
+        canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Trees Layer", x,y));
+        //canMove = canMove && (app.gameScreen.world.fenceLayer.getCell(x, y) == null);
 
         return canMove;
     }
@@ -123,17 +126,17 @@ public class Unit extends Actor {
 
         float angle = route.angleDeg();
         if(angle <= 45 || angle > 315) {
-            activeAnimation = walkAnimations.get(RIGHT);
-            direc = RIGHT;
+            activeAnimation = walkAnimations.get(Constants.RIGHT);
+            direc = Constants.RIGHT;
         } else if (45 < angle && angle <= 135) {
-            activeAnimation = walkAnimations.get(UP);
-            direc = UP;
+            activeAnimation = walkAnimations.get(Constants.UP);
+            direc = Constants.UP;
         } else if (135 < angle && angle < 225) {
-            activeAnimation = walkAnimations.get(LEFT);
-            direc = LEFT;
+            activeAnimation = walkAnimations.get(Constants.LEFT);
+            direc = Constants.LEFT;
         } else {
-            activeAnimation = walkAnimations.get(DOWN);
-            direc = DOWN;
+            activeAnimation = walkAnimations.get(Constants.DOWN);
+            direc = Constants.DOWN;
         }
     }
 
@@ -263,5 +266,8 @@ public class Unit extends Actor {
 
     }
 
+    public void setDirec(int dir) {
+        direc = dir;
+    }
 }
 

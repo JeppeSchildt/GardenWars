@@ -159,7 +159,8 @@ public class Plant extends Actor {
     }
 
     // Is simpler constructor with setters better?
-    public Plant(int x, int y, String name, int waterLoss, int profit, int price, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap) {
+    public Plant(int id, int x, int y, String name, int waterLoss, int profit, int price, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap) {
+        this.typeID = id;
         this.waterLoss = waterLoss;
         this.profit = profit;
         this.price = price;
@@ -222,6 +223,22 @@ public class Plant extends Actor {
     public void nextTurn() {
         water = water-waterLoss;
         changeState();
+    }
+
+    /* Harvest plant. Get some gold and set plant to the small state. */
+    public int harvest() {
+        // Can only harvest healthy plants.
+        if(getState() != PlantState.HEALTHY) {
+            return 0;
+        }
+
+        int profit_ = profit;
+        profit = 2*Constants.idProfitMap.get(typeID);
+        water = waterStateMap.get(PlantState.SMALL).x+2;
+        setState(PlantState.SMALL);
+        setActiveAnimation();
+
+        return  profit_;
     }
 
     public int getTypeID() {

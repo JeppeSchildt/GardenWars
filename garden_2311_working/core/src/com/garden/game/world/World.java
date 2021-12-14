@@ -21,7 +21,7 @@ public class World extends Stage {
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer;
+    public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer, fenceLayer, buildingsLayer, treesLayer;
     private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
     public Player player;
     Sprite spriteHighlight;
@@ -33,6 +33,7 @@ public class World extends Stage {
     public int turnNumber;
 
     public int dayCount, weekCount, monthCount;
+    public MapLayers mapLayers;
 
     private int maxGold = 9999;
 
@@ -46,30 +47,44 @@ public class World extends Stage {
         worldCamera.zoom = 0.6302493f;
         mapInput = new MapInput(app, this);
         player = new Player(app);
+        turnNumber = 1;
     }
 
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         //soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+        //improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+        /*
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("TreesDead Layer");
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
 
+        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
+
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterPlants Layer");
-        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
-        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
+
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Road Layer");
 
         improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
+
+
+        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
         grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
+         */
 
-        MapLayers mapLayers = tiledMap.getLayers();
-        mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
+        /* Get some layers, cast to TiledMapLayer. We can't walk/plant on certain layers */
+        waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
+        /*fenceLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
+        buildingsLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
+        treesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
+         */
 
-        mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
+        mapLayers = tiledMap.getLayers();
+        mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
+
+        mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
 
 
         activeIndices = mapLayerIndicesDry;
@@ -91,8 +106,8 @@ public class World extends Stage {
     }
 
     public void render() {
-        // Draw red around the edge of world
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        // Draw same color as grass around the edge of world
+        Gdx.gl.glClearColor(0.184f, 0.505f, 0.211f,1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -100,10 +115,11 @@ public class World extends Stage {
         tiledMapRenderer.setView(worldCamera);
 
 
-        if (app.drySeason)
+        if (app.drySeason) {
             tiledMapRenderer.render(mapLayerIndicesDry);
-        else tiledMapRenderer.render(mapLayerIndices);
-
+        } else {
+            tiledMapRenderer.render(mapLayerIndices);
+        }
 
         // Fixate sprites when moving camera. Consider fixing camera to main character.
         app.batch.setProjectionMatrix(worldCamera.combined);
@@ -120,8 +136,6 @@ public class World extends Stage {
         }
 
         spriteHighlight.draw(app.batch);
-
-        //well.sprite.draw(app.batch);
 
     }
 
@@ -158,6 +172,12 @@ public class World extends Stage {
             //startEvent("magazine");
         }
 
+    }
+
+    // Player can't walk/plant on certain layers.
+    public boolean isNoAccessTile(String layerName, int x, int y) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) mapLayers.get(layerName);
+        return layer.getCell(x,y) != null;
     }
 
     public boolean isWaterTile(int x, int y) {

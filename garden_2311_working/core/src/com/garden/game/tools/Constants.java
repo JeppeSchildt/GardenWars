@@ -80,26 +80,95 @@ public class Constants {
     public static final Integer TURNIP_PRICE = 10;
     public static final Map<Integer, Integer> idPriceMap;
     static {
-         idPriceMap = new HashMap<Integer, Integer>();
-        idPriceMap.put(TURNIP, 5);
-        idPriceMap.put(ROSE, 10);
-        idPriceMap.put(CUCUMBER, 3);
+        idPriceMap = new HashMap<Integer, Integer>();
+        idPriceMap.put(CUCUMBER, 2);
         idPriceMap.put(TOMATO, 7);
-        idPriceMap.put(MELON, 10);
-        idPriceMap.put(EGGPLANT, 5);
-        idPriceMap.put(LEMON, 5);
-        idPriceMap.put(PINEAPPLE, 10);
-        idPriceMap.put(RICE, 3);
         idPriceMap.put(WHEAT, 3);
+        idPriceMap.put(POTATO, 2);
+        idPriceMap.put(RICE, 3);
+        idPriceMap.put(CORN, 4);
+
+        // -------- Fruits ------- //
+        idPriceMap.put(MELON, 10);
+        idPriceMap.put(LEMON, 5);
+        idPriceMap.put(ORANGE, 7);
+        idPriceMap.put(PINEAPPLE, 10);
         idPriceMap.put(GRAPES, 4);
         idPriceMap.put(STRAWBERRY, 5);
-        idPriceMap.put(CASSAVA, 4);
-        idPriceMap.put(POTATO, 2);
-        idPriceMap.put(COFFEE, 10);
-        idPriceMap.put(ORANGE, 7);
-        idPriceMap.put(AVOCADO, 7);
-        idPriceMap.put(CORN, 4);
+
+        // -------- Flower ------- //
         idPriceMap.put(SUNFLOWER, 7);
+        idPriceMap.put(ROSE, 10);
+        idPriceMap.put(TURNIP, 5);
+
+        // -------- Bonus Plants -------- /
+        idPriceMap.put(COFFEE, 10);
+        idPriceMap.put(AVOCADO, 7);
+        idPriceMap.put(EGGPLANT, 5);
+        idPriceMap.put(CASSAVA, 4);
+    }
+
+    public static final Map<Integer, Integer> idWaterLossMap;
+    static {
+        idWaterLossMap = new HashMap<Integer, Integer>();
+        // -------- Crops ------- //
+        idWaterLossMap.put(CUCUMBER, 2);
+        idWaterLossMap.put(TOMATO, 7);
+        idWaterLossMap.put(WHEAT, 3);
+        idWaterLossMap.put(POTATO, 2);
+        idWaterLossMap.put(RICE, 3);
+        idWaterLossMap.put(CORN, 4);
+
+        // -------- Fruits ------- //
+        idWaterLossMap.put(MELON, 10);
+        idWaterLossMap.put(LEMON, 5);
+        idWaterLossMap.put(ORANGE, 7);
+        idWaterLossMap.put(PINEAPPLE, 10);
+        idWaterLossMap.put(GRAPES, 4);
+        idWaterLossMap.put(STRAWBERRY, 5);
+
+        // -------- Flower ------- //
+        idWaterLossMap.put(SUNFLOWER, 7);
+        idWaterLossMap.put(ROSE, 10);
+        idWaterLossMap.put(TURNIP, 5);
+
+        // -------- Bonus Plants -------- /
+        idWaterLossMap.put(COFFEE, 10);
+        idWaterLossMap.put(AVOCADO, 7);
+        idWaterLossMap.put(EGGPLANT, 5);
+        idWaterLossMap.put(CASSAVA, 4);
+    }
+
+    public static final Map<Integer, Integer> idProfitMap;
+    static {
+        idProfitMap = new HashMap<Integer, Integer>();
+        // -------- Crops ------- //
+        idProfitMap.put(CUCUMBER, 2);
+        idProfitMap.put(TOMATO, 7);
+        idProfitMap.put(WHEAT, 3);
+        idProfitMap.put(POTATO, 2);
+        idProfitMap.put(RICE, 3);
+        idProfitMap.put(CORN, 4);
+
+        // -------- Fruits ------- //
+        idProfitMap.put(MELON, 10);
+        idProfitMap.put(LEMON, 5);
+        idProfitMap.put(ORANGE, 7);
+        idProfitMap.put(PINEAPPLE, 10);
+        idProfitMap.put(GRAPES, 4);
+        idProfitMap.put(STRAWBERRY, 5);
+
+        // -------- Flower ------- //
+        idProfitMap.put(SUNFLOWER, 7);
+        idProfitMap.put(ROSE, 10);
+        idProfitMap.put(TURNIP, 5);
+
+        // -------- Bonus Plants -------- /
+        idProfitMap.put(COFFEE, 10);
+        idProfitMap.put(AVOCADO, 7);
+        idProfitMap.put(EGGPLANT, 5);
+        idProfitMap.put(CASSAVA, 4);
+
 
     }
 
@@ -116,6 +185,11 @@ public class Constants {
     public static final int WATER_2 = 9;
     public static final int IRRIGATION = 10;
     public static final int AUTO_HARVEST = 11;
+
+    public static final int DOWN = 0, RIGHT = 1, UP = 2, LEFT = 3;
+
+    public static final float FRONT_PORCH_X = 546.128f, FRONT_PORCH_Y = 797.53f;
+
 }
  /*
 - Rose

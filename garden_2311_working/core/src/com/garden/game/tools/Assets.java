@@ -29,8 +29,10 @@ public class Assets extends AssetManager {
     public TiledMapTileLayer.Cell grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
 
-    public Music menuMusic, inGameMusic, ambientSound_Bird;
-    public Sound soundButtonPress, soundEnd, soundGameOver;
+    public Music menuMusic, inGameMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
+            soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
+
+    //public Sound soundButtonPress, soundEnd, soundGameOver, soundGetWater, soundUseWater, soundUseGold, soundNewDay;
     public float musicVolume = 1.0f;
     public TextureRegion[][] plantTextures;
     public TextureRegion[][] bucketTextures;
@@ -67,16 +69,24 @@ public class Assets extends AssetManager {
         menuMusic.setLooping(true);
         menuMusic.setVolume(musicVolume);
 
-
         /* --------- Sound Effect setup  ---------  */
         ambientSound_Bird = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));
         ambientSound_Bird.setVolume(0.5f); //1.0f max
         ambientSound_Bird.setLooping(true);
 
         //soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-flute-alert-2307.mp3"));
-        soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
-        soundEnd = Gdx.audio.newSound(Gdx.files.internal("soundEffect/EndSound_mixkit-medieval-show-fanfare.mp3"));
-        soundGameOver = Gdx.audio.newSound(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
+        soundButtonPress = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
+        soundEnd = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/EndSound_mixkit-medieval-show-fanfare.mp3"));
+        soundGameOver = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
+
+        soundTestEffektBeat = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/josefpres_bass-loops-063-with-drums-short-loop-120-bpm.mp3"));
+
+        /* --------- Sound Effect InGame playing Sound  ---------  */
+        soundGetWater = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/getWater_water_pouring.mp3"));
+        soundUseWater = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
+        soundUseGold = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/use_gold.mp3"));
+        soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.mp3"));
+
     }
 
     // Setup walking animations. Get region of spritesheet. Split into individual images.
@@ -168,7 +178,6 @@ public class Assets extends AssetManager {
     }
 
 
-
     // Load map, textures, sprites
     public void loadFiles(){
         this.load("main_pack.atlas", TextureAtlas.class);
@@ -185,13 +194,15 @@ public class Assets extends AssetManager {
         this.load("arrows/RightArrow.png", Texture.class);
         this.load("arrows/LeftArrow.png", Texture.class);
 
+        this.load("black_screen.png", Texture.class);
+
 
         setLoader(TiledMap.class, new TmxMapLoader());
-        load("World.tmx", TiledMap.class);
+        load("World1.tmx", TiledMap.class);
 
         finishLoading();
 
-        tileSet = get("World.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
+        tileSet = get("World1.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
         grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(this.tileSet.getTile(0x1));
 

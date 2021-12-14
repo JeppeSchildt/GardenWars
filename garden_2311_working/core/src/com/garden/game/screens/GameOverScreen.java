@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
@@ -119,26 +118,26 @@ public class GameOverScreen implements Screen {
     }
 
     private void newGame(){
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
 
         app.currentGameBool = false;
         app.preferencesBool = true;
 
         app.sound.Play_Music();
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
         app.setScreen(app.gameScreen);
-        app.gameScreen.world.init("World.tmx");
+        app.gameScreen.world.init("World1.tmx");
     }
     private void backToMenue(){
 
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
 
         app.currentGameBool = true;
         app.preferencesBool = false;
 
         stage.dispose();
         app.sound.Play_Music();
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
         app.setScreen(app.titleScreen);
     }
 

@@ -69,7 +69,7 @@ public class WeekDayScreen implements Screen {
 
 
     private void resumeGame(){
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
         app.setScreen(app.gameScreen);
     }
 

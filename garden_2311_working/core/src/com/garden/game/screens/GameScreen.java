@@ -24,8 +24,10 @@ import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 // When tile is hovered, show some menu with things you can do to that
@@ -34,30 +36,37 @@ import java.util.ArrayList;
 // This sort of stuff goes in a stage...?
 public class GameScreen extends AbstractScreen {
     public World world;
-    GardenGame app;
-    Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo;
+    private GardenGame app;
+    private Stage hud;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtDayToDryseason;
+    private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
-    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent;
-    Table buttonTable,outerTable;
-    SpriteBatch batchTest;
+    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
+    private float blkScreenAlpha;
+    private Table buttonTable, outerTable;
+    private SpriteBatch batchTest;
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
-    ScrollPane scrollPane;
-    Skin skin;
+    private ScrollPane scrollPane;
+    private Skin skin;
     private final InputMultiplexer mux;
     //private final Color hudColor;
     public Group grp;
     public NinePatch np;
     public BitmapFont font = new BitmapFont();
     private Label txtSelectedTileCoordinates;
-    ArrayList<TextButton> buttonList;
-    PlantFactory plantFactory;
+    private ArrayList<TextButton> buttonList;
+    private PlantFactory plantFactory;
     private boolean improvementsShown;
-    final OrthographicCamera camera;
+    private final OrthographicCamera camera;
     //private ShapeRenderer shapeRenderer;
-    Sprite spriteHighlight;
+    private Sprite spriteHighlight;
+    private boolean BoolNextSeason = false;
 
-    private Table tableResources, tableDay, tableButtons, tableTileInfo,dropOutTable;
+    private int NextDrySeasonCount, lengthForDrySeason;
+
+    private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
+
+    private boolean nextTurnClicked;
 
     public GameScreen(GardenGame app) {
         this.app = app;
@@ -104,11 +113,18 @@ public class GameScreen extends AbstractScreen {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
 
-        tabelSetup();
+        txtNextTurn = new Label("", skin);
+        // 1024/2 - 75 :)
+        txtNextTurn.setPosition(1024/2-75, 768/2);
+        imgBlkScreen = new Image(new TextureRegion(app.assets.<Texture>get("black_screen.png")));
+        imgBlkScreen.setSize(1024,768);
+        //imgBlkScreen.setColor(0,0,0,1);
+
+        tableSetup();
         setupTextIcons();
         drawButtons();
 
-        setupTileImprovementBox();
+        setupTileImprovementBox(false);
 
         if (app.debugMode){
             debugButtons();
@@ -116,7 +132,7 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-    private void tabelSetup(){
+    private void tableSetup(){
         // Create a table that fills the screen. Everything else will go inside this table.
         /*tableResources = new Table();
         tableResources.setFillParent(true);
@@ -139,12 +155,10 @@ public class GameScreen extends AbstractScreen {
         tableTileInfo.setDebug(false);
         tableTileInfo.setPosition(200, -366);*/
 
-
     }
 
     /* Size of entire window has been fixed, so we can setup UI using constant values */
     private void setupTextIcons() {
-
 
         //hud.addActor(tableResources);
         txtResources = new Label("", skin);
@@ -163,6 +177,7 @@ public class GameScreen extends AbstractScreen {
         txtTileInfo.setPosition(30, 700);
         hud.addActor(txtTileInfo);
         //tableTileInfo.add(txtTileInfo);
+
 
     }
 
@@ -220,16 +235,21 @@ public class GameScreen extends AbstractScreen {
     public void updateHUD() {
         //txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
         //txtTurnNumber.setText("Days: " + world.turnNumber);
-
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
         String txtPoint= "Point: " + world.player.point + "/" + world.player.maxPoint;
 
-        txtResources.setText(txtWater + txtGold  + txtPoint);
+        String txtNextDrySeason = longSpace + longSpace + "Days To Next Dry Season: " + (NextDrySeasonCount - world.turnNumber);
+
+        txtResources.setText(txtWater + txtGold  + txtPoint + txtNextDrySeason);
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);
+
+
+
+
     }
 
     void setButton (String text, Skin skin) {
@@ -237,17 +257,21 @@ public class GameScreen extends AbstractScreen {
     }
     // Consider: Individual setup button methods and update scrollpane methods.
     // Can also be used when new skills are learned.
-    void setupTileImprovementBox() {
+    void setupTileImprovementBox(boolean canHarvest) {
 
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         buttonList.clear();
+        if(canHarvest) {
+            addHarvestButton();
+        }
         TextButton waterTile = new TextButton("Water Tile", skin);
 
         waterTile.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(world.player.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                    world.player.unit.setPosition(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
                     world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, 2);
                 }
 
@@ -265,7 +289,7 @@ public class GameScreen extends AbstractScreen {
         });
         buttonList.add(getWater);
         for(final int i : world.player.getAvailablePlants()) {
-            TextButton b = new TextButton("Plant " + Constants.idNameMap.get(i), skin);
+            TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
            b.addListener(new ClickListener() {
                @Override
                public void clicked(InputEvent event, float x, float y) {
@@ -286,6 +310,22 @@ public class GameScreen extends AbstractScreen {
         outerTable.add(scrollPane).expandY();
 
 
+    }
+
+    /**
+     * Add harvest button to improvement box
+     * */
+    public void addHarvestButton() {
+        TextButton harvestPlant = new TextButton("Harvest Plant", skin);
+
+        harvestPlant.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                world.player.harvest(world.hoveredX*Constants.TILE_WIDTH, world.hoveredY*Constants.TILE_HEIGHT);
+                outerTable.remove();
+            }
+        });
+        buttonList.add(harvestPlant);
     }
 
     /**
@@ -331,7 +371,16 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurn(){
         grp.remove();
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
+
+        // Set up fade to black stuff
+        blkScreenAlpha = 0f;
+        imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
+        hud.addActor(imgBlkScreen);
+        nextTurnClicked = true;
+
+        // Make character go to house
+        world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
         world.nextTurn();
 
@@ -438,7 +487,14 @@ public class GameScreen extends AbstractScreen {
         outerTable.remove(); // Remove the right click table on new click.
 
         if(button == Input.Buttons.RIGHT) {
-            setupTileImprovementBox();
+            boolean canHarvest = false;
+            Plant p = world.player.getPlantAtPosition(world.hoveredX*Constants.TILE_WIDTH, world.hoveredY*Constants.TILE_HEIGHT);
+            if(p != null) {
+                if (p.getState() == Plant.PlantState.HEALTHY) {
+                    canHarvest = true;
+                }
+            }
+            setupTileImprovementBox(canHarvest);
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
         	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
         	double cat = world.tileSize/2;
@@ -450,7 +506,6 @@ public class GameScreen extends AbstractScreen {
 
             outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
-
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {
@@ -489,6 +544,8 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         updateHUD();
+        nextTurnInfo();
+
         checkInput(); // Does not seem ideal to check input in render method. But convenient for now...
         world.update(delta);
         world.render();
@@ -502,6 +559,39 @@ public class GameScreen extends AbstractScreen {
         //renderBubble("HEJ");
         app.batch.end(); // End batch here, finishing rendering.
 
+        if (!BoolNextSeason){
+            BoolNextSeason = true;
+            NextDrySeasonCount = new Random().nextInt(10) + 5;
+        }
+
+    }
+
+    private void nextTurnInfo() {
+        if(nextTurnClicked) {
+            if(blkScreenAlpha >= 2) {
+                nextTurnClicked = false;
+                imgBlkScreen.remove();
+                txtNextTurn.remove();
+                blkScreenAlpha = 0.0f;
+                drySeasonEvent();
+
+                // Move character to front porch instantly.
+                world.player.unit.clearActions();
+                world.player.unit.setDirec(Constants.DOWN);
+                world.player.unit.activeAnimation = world.player.unit.stopAnimations.get(Constants.DOWN);
+                world.player.unit.setX(Constants.FRONT_PORCH_X);
+                world.player.unit.setY(Constants.FRONT_PORCH_Y);
+                app.sound.SoundNewDay();
+            }
+            if(blkScreenAlpha >= 0.5f) {
+                nextTurnStr = "You wake up to day " + world.turnNumber;
+                txtNextTurn.setText(nextTurnStr);
+                hud.addActor(txtNextTurn);
+            }
+
+        }
+        blkScreenAlpha += 0.015f;
+        imgBlkScreen.setColor(0,0, 0, blkScreenAlpha);
     }
 
 
@@ -524,7 +614,7 @@ public class GameScreen extends AbstractScreen {
                 /*
                 app.gameScreen = new GameScreen(app);
                 app.setScreen(app.gameScreen);
-                app.gameScreen.world.init("World.tmx");
+                app.gameScreen.world.init("World1.tmx");
                  */
 
             }
@@ -533,16 +623,12 @@ public class GameScreen extends AbstractScreen {
 
         }
 
-
-
-
-
     }
 
     private void pauseScreen(){
             app.preferencesBool = true;
 
-            app.sound.buttonMenueSound();
+            app.sound.SoundButtonClick();
             if (app.pauseScreen == null) {
                 app.pauseScreen = new PauseScreen(app);
             }
@@ -551,6 +637,7 @@ public class GameScreen extends AbstractScreen {
 
     private void skillTreeScreen(){
 
+        app.sound.SoundButtonClick();
         if (app.skillTreeScreen == null) {
             app.skillTreeScreen = new SkillTreeScreen(app, world.player.skillTree);
         }
@@ -582,6 +669,29 @@ public class GameScreen extends AbstractScreen {
     public void dispose() {
 
     }
+
+    public void drySeasonEvent(){
+
+        if (world.turnNumber >= NextDrySeasonCount){
+            app.drySeason = true;
+        }
+
+        if (app.drySeason){
+            //int maxLengthDrySeason = new Random().nextInt(5) + 1;
+
+            if (lengthForDrySeason == 5){
+                app.drySeason = false;
+                BoolNextSeason = false;
+                lengthForDrySeason = 0;
+            }
+            lengthForDrySeason++;
+        }
+
+        // --- Første sæson virker - 
+
+    }
+
+
 
     private void debugButtons(){
 

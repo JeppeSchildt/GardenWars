@@ -15,15 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
-import com.garden.game.Skills.MoreFlowers;
-import com.garden.game.Skills.BasicPlants;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.World;
 
 import javax.swing.*;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class SkillTreeScreen implements Screen {
@@ -348,7 +345,7 @@ public class SkillTreeScreen implements Screen {
      */
     private void backToMenue(){
         //Gdx.app.exit();
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
         app.preferencesBool = false;
         app.currentGameBool = true;
 
@@ -361,7 +358,7 @@ public class SkillTreeScreen implements Screen {
 
 
     private void preferences(){
-        app.sound.buttonMenueSound();
+        app.sound.SoundButtonClick();
         if(app.preferencesScreen == null) {
             app.preferencesScreen = new PreferencesScreen(app);
         }

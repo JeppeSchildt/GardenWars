@@ -12,10 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
-import com.garden.game.world.World;
 
 public class PauseScreen implements Screen {
 	private GardenGame app;
@@ -100,11 +98,11 @@ public class PauseScreen implements Screen {
 
 
 	private void resumeGame(){
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 		app.setScreen(app.gameScreen);
 	}
 	private void backToMenue(){
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 		app.preferencesBool = false;
 
 		app.sound.Chance_Music();
@@ -113,7 +111,7 @@ public class PauseScreen implements Screen {
 
 	private void restart(){
 		app.currentGameBool = false;
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 
 		app.gameScreen.dispose();
 		app.gameScreen.world.dispose();
@@ -121,14 +119,14 @@ public class PauseScreen implements Screen {
 		if (app.gameScreen == null){
 			app.gameScreen = new GameScreen(app);
 			app.setScreen(app.gameScreen);
-			app.gameScreen.world.init("World.tmx");
+			app.gameScreen.world.init("World1.tmx");
 		}
 		app.setScreen(app.gameScreen);
 
 	}
 
 	private void preferences(){
-		app.sound.buttonMenueSound();
+		app.sound.SoundButtonClick();
 		if(app.preferencesScreen == null) {
 			app.preferencesScreen = new PreferencesScreen(app);
 		}

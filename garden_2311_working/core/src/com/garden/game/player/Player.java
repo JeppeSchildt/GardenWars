@@ -5,6 +5,7 @@ import com.garden.game.GardenGame;
 import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
+import com.garden.game.world.World;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.Unit;
 
@@ -74,8 +75,15 @@ public class Player {
     public boolean canBuy(int id) {
         return Constants.idPriceMap.get(id) <= money;
     }
+
+    // Player can plant at x,y if sufficient funds, no plant there already and tile is not water.
     public boolean canPlant(int id, int x, int y) {
-        return (Constants.idPriceMap.get(id) <= money) && (plants_.get(new Vector2(x, y)) == null);
+        return (Constants.idPriceMap.get(id) <= money) &&
+                (plants_.get(new Vector2(x, y)) == null) &&
+                !(app.gameScreen.world.isWaterTile(x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
+                !(app.gameScreen.world.isNoAccessTile("Road Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
+                !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
+                !(app.gameScreen.world.isNoAccessTile("Trees Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT));
     }
 
     public Plant getPlantAtPosition(int x, int y) {
@@ -117,6 +125,20 @@ public class Player {
 
     public int getWater() {
         return water;
+    }
+
+    /**
+     * Harvest a plant
+     *
+     * @param x
+     * @param y
+     */
+    public void harvest(int x, int y) {
+        Plant p = plants_.get(new Vector2(x, y));
+        if(p != null) {
+            unit.setPosition(x, y);
+            money += p.harvest();
+        }
     }
 
     public void nextTurn() {

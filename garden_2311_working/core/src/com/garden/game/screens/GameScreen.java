@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Quest;
+import com.garden.game.tools.Dialogue;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
@@ -57,8 +59,9 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
+    private boolean showDialouge = false;
     private final OrthographicCamera camera;
-    //private ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer,shapeRendererV2;
     private Sprite spriteHighlight;
     private boolean isStartDrySeason = false, isStartWetSeason = false;
 
@@ -87,7 +90,8 @@ public class GameScreen extends AbstractScreen {
         //app.maxHeight = Gdx.graphics.getHeight()-100;
         plantFactory = new PlantFactory(app.assets);
 
-        //shapeRenderer = new ShapeRenderer();
+        shapeRenderer = new ShapeRenderer();
+        shapeRendererV2 = new ShapeRenderer();
 
         world.player.money = 200;
         world.dayCount = 1;
@@ -95,6 +99,8 @@ public class GameScreen extends AbstractScreen {
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
 
         initHUD();
+        moveToPorch();
+        startIntroDialogue(); //Starts dialouge with intro text
     }
 
     private void initHUD() {
@@ -259,17 +265,62 @@ public class GameScreen extends AbstractScreen {
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
         txtMonthWeekDay.setText(totalDays);
-
-
     }
 
+    void startIntroDialogue() {
+        showDialouge = true;
+        dialogBackground(Dialogue.dia_2);
+        camera.position.set(world.player.unit.getX(),world.player.unit.getY(),0);
+    }
+    void dialogBackground(String text) {
+        boolean start = false;
+        if (app.batch.isDrawing()) {
+            System.out.println("in dialouge thingy");
+            app.batch.end();
+            start = true;
+        }
+
+        Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
+        shapeRendererV2.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRendererV2.rect(235,35,510,160);
+        shapeRendererV2.setColor(1,1,1,0.70f);
+        shapeRendererV2.setProjectionMatrix(camera.combined);
+
+        shapeRendererV2.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(240,40,500,150);
+        shapeRenderer.setColor(45/255f,45/255f,45/255f,0.70f); //Colors are between 0 and 1.. wtf
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.end();
+        Label lbl = new Label(text,skin);
+        lbl.setWrap(true);
+        lbl.setPosition(240,85);
+        lbl.setWidth(500);
+        lbl.setHeight(150);
+        app.batch.begin();
+        lbl.draw(app.batch,10f);
+        app.batch.end();
+        camera.update();
+        if (start) {
+            app.batch.begin();
+        }
+        /*
+
+        Group grp = new Group();
+        grp.addActor();
+        lbl.setColor(Color.RED);
+        lbl.setSize(100,100);
+        lbl.toFront();
+        hud.addActor(lbl); */
+        //lbl.draw(app.batch,1f);
+        //fnt.draw(app.batch,"Hello",10,10);
+    }
     void setButton (String text, Skin skin) {
     	buttonList.add(new TextButton(text,skin));
     }
     // Consider: Individual setup button methods and update scrollpane methods.
     // Can also be used when new skills are learned.
     void setupTileImprovementBox(boolean canHarvest) {
-
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         buttonList.clear();
@@ -352,7 +403,6 @@ public class GameScreen extends AbstractScreen {
     private float getLargestButton(Table t) {
         float highest = 0;
         for (Actor b : t.getChildren()) {
-            System.out.println("width:"+b.getWidth());
             if (b.getWidth()>highest) {
                 highest = b.getWidth();
             }
@@ -367,23 +417,18 @@ public class GameScreen extends AbstractScreen {
         float highest = 0.00f;
         Table newT = new Table(skin);
         for (TextButton b : buttonList) {
-            System.out.println("width:"+b.getWidth());
             if (b.getWidth()>highest) {
                 highest = b.getWidth();
             }
         }
         buttonTable.clearChildren();
         for (TextButton b : buttonList) {
-            System.out.println(b.getName());
             float diff = highest - b.getWidth();
             b.setWidth(highest);
             b.padLeft(diff/2);
             b.padRight(diff/2);
             buttonTable.add(b);
             buttonTable.row();
-
-
-            System.out.println("newwidth:"+b.getWidth());
         }
     }
 
@@ -581,26 +626,41 @@ public class GameScreen extends AbstractScreen {
         if (!isStartDrySeason){
             isStartDrySeason = true;
             DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
+        //Needs to call dialouge from here, otherwise its not rendered.
+        //Keep an int indicating what text we wish to show?
+        }
+        if (showDialouge) {
+            startIntroDialogue();
+        }
+        if (!BoolNextSeason){
+            BoolNextSeason = true;
+            NextDrySeasonCount = new Random().nextInt(10) + 5;
         }
 
+    }
+    private void moveToPorch() {
+        world.player.unit.clearActions();
+        world.player.unit.setDirec(Constants.DOWN);
+        world.player.unit.activeAnimation = world.player.unit.stopAnimations.get(Constants.DOWN);
+        world.player.unit.setX(Constants.FRONT_PORCH_X);
+        world.player.unit.setY(Constants.FRONT_PORCH_Y);
     }
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
+            showDialouge = false;
             if(blkScreenAlpha >= 2) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
                 blkScreenAlpha = 0.0f;
 
+                //shapeRendererV2.dispose();
+                //shapeRenderer.dispose();
                 drySeasonEvent();
 
                 // Move character to front porch instantly.
-                world.player.unit.clearActions();
-                world.player.unit.setDirec(Constants.DOWN);
-                world.player.unit.activeAnimation = world.player.unit.stopAnimations.get(Constants.DOWN);
-                world.player.unit.setX(Constants.FRONT_PORCH_X);
-                world.player.unit.setY(Constants.FRONT_PORCH_Y);
+                moveToPorch();
                 app.sound.SoundNewDay();
             }
             if(blkScreenAlpha >= 0.5f) {
@@ -687,7 +747,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        app.batch.dispose();
     }
 
     public void drySeasonEvent(){

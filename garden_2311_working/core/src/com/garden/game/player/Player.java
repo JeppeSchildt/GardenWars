@@ -108,7 +108,7 @@ public class Player {
     }
 
     public void water(int x, int y, int amount) {
-        money -= 2;
+        //money -= 2;
         plants_.get(new Vector2(x,y)).water(amount);
         water -= waterSize;
     }

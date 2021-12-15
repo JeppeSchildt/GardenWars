@@ -86,27 +86,26 @@ public class Player {
     // Player can plant at x,y if sufficient funds, no plant there already and tile is not water.
     public boolean canPlant(int id, int x, int y) {
         return (Constants.idPriceMap.get(id) <= money) &&
-                (plants_.get(new Vector2(x, y)) == null) &&
-                !(app.gameScreen.world.isWaterTile(x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
-                !(app.gameScreen.world.isNoAccessTile("Road Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
-                !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT)) &&
-                !(app.gameScreen.world.isNoAccessTile("Trees Layer", x/Constants.TILE_WIDTH,y/Constants.TILE_HEIGHT));
+                (plants_.get(new Vector2((float) (x+Constants.PLANT_OFFSET_X)*Constants.TILE_WIDTH, (float) (y+Constants.PLANT_OFFSET_Y)*Constants.TILE_HEIGHT)) == null) &&
+                !(app.gameScreen.world.isWaterTile(x,y)) &&
+                !(app.gameScreen.world.isNoAccessTile("Road Layer", x,y)) &&
+                !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x,y)) &&
+                !(app.gameScreen.world.isNoAccessTile("Trees Layer", x,y));
     }
 
-    public Plant getPlantAtPosition(int x, int y) {
+    public Plant getPlantAtPosition(float x, float y) {
         return plants_.get(new Vector2(x, y));
     }
 
-    public void plant(int x, int y, Plant plant) {
+    public void plant(float x, float y, Plant plant) {
         money -= plant.getPrice();
         addPlant(plant);
         unit.gotoAndPlant(x, y, plant);
     }
 
-    public boolean canWater(int x, int y) {
+    public boolean canWater(float x, float y) {
         if (water != 0){
-            if(plants_.get(new Vector2(x,y)) != null && money >= 2) {
-
+            if(plants_.get(new Vector2(x,y)) != null) {
                 return true;
             }
         }
@@ -114,9 +113,8 @@ public class Player {
         return false;
     }
 
-    public void water(int x, int y, int amount) {
-        //money -= 2;
-        plants_.get(new Vector2(x,y)).water(amount);
+    public void water(float x, float y) {
+        plants_.get(new Vector2(x,y)).water(waterSize);
         water -= waterSize;
     }
 

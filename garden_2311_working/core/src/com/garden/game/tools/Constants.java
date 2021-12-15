@@ -36,6 +36,9 @@ public class Constants {
 
     public static final int N_PLANTS = 20;
 
+    public static final float PLANT_OFFSET_X = 0.2f;
+    public static final float PLANT_OFFSET_Y = 0.3f;
+
     public static final Map<Integer, String> idNameMap;
     static {
         idNameMap = new HashMap<Integer, String>();

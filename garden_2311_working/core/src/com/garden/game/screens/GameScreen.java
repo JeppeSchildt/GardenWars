@@ -237,7 +237,11 @@ public class GameScreen extends AbstractScreen {
     // Utility method, get info about hovered tile.
     public String getTileInfo(int x, int y) {
         String coordinates = "[" + x + "," + y + "]\n";
-        Plant plant = world.player.getPlantAtPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT);
+
+        float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+        float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+
+        Plant plant = world.player.getPlantAtPosition(plantX, plantY);
 
         String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
         return coordinates + improvement;
@@ -332,9 +336,11 @@ public class GameScreen extends AbstractScreen {
         waterTile.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(world.player.canWater(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
-                    world.player.unit.setPosition(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT);
-                    world.player.water(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, world.player.waterSize);
+                float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+                float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                if(world.player.canWater(plantX, plantY)) {
+                    world.player.unit.setPosition(plantX, plantY);
+                    world.player.water(plantX, plantY);
                 }
 
                 outerTable.remove();
@@ -362,9 +368,11 @@ public class GameScreen extends AbstractScreen {
            b.addListener(new ClickListener() {
                @Override
                public void clicked(InputEvent event, float x, float y) {
-                   if (world.player.canPlant(i, world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT)) {
+                   float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+                   float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                   if (world.player.canPlant(i, world.hoveredX, world.hoveredY)) {
                        Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
-                       world.player.plant(world.hoveredX * Constants.TILE_WIDTH, world.hoveredY * Constants.TILE_HEIGHT, plant);
+                       world.player.plant(plantX, plantY, plant);
 
                    }
                    outerTable.remove();

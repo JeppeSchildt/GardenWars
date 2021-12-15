@@ -23,9 +23,7 @@ public class KeepHealthyQuest extends Quest {
      * Select plant that should be kept healthy in quest among the plants available to player.
      */
     public void selectPlantType() {
-        do {
-            plantType = random.nextInt(Constants.N_PLANTS);
-        }while(!player.getAvailablePlants().contains(plantType));
+        plantType = player.getAvailablePlants().get(random.nextInt(player.getAvailablePlants().size()));
     }
 
     public void selectNumber() {
@@ -33,8 +31,8 @@ public class KeepHealthyQuest extends Quest {
             nPlants = 2;
             nTurns = 2;
         } else {
-            nPlants = nCompleted*2;
-            nTurns = nCompleted*2;
+            nPlants = nCompleted*2+1;
+            nTurns = nCompleted*2+1;
         }
     }
 

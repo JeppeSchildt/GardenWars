@@ -261,8 +261,13 @@ public class GameScreen extends AbstractScreen {
         String txtSeason = "";
         if (app.drySeason)
             txtSeason = longSpace + longSpace + "Days To Next Wet Season: " + (WetSeasonCount_RandomNumber - lengthForDrySeason + 1);
-        else if (!app.drySeason)
-            txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (DrySeasonCount_RandomNumber - lengthForWetSeason + 1);
+        else if (!app.drySeason){
+            if ((DrySeasonCount_RandomNumber - lengthForWetSeason) <= 2)
+                txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (DrySeasonCount_RandomNumber - lengthForWetSeason + 1);
+            else
+                txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + ("?");
+        }
+
 
 
         txtResources.setText(txtWater + txtGold  + txtPoint + txtSeason);

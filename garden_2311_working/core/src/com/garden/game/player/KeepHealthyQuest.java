@@ -4,15 +4,16 @@ import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 public class KeepHealthyQuest extends Quest {
-    static int nCompleted = 0;
-    int nPlants;
-    int nTurns;
-    int nCurrentTurns = 0;
-    int plantType;
-    int healthyPlants;
+    private static int nCompleted = 0;
+    private int nPlants;
+    private int nTurns;
+    private int nCurrentTurns = 0;
+    private int plantType;
+    private int healthyPlants;
 
     public KeepHealthyQuest(Player player) {
         super(player);
+        questID = Constants.KEEP_HEALTHY_QUEST_ID;
         selectNumber();
         selectPlantType();
         initDescription();
@@ -22,6 +23,7 @@ public class KeepHealthyQuest extends Quest {
     /**
      * Select plant that should be kept healthy in quest among the plants available to player.
      */
+    @Override
     public void selectPlantType() {
         plantType = player.getAvailablePlants().get(random.nextInt(player.getAvailablePlants().size()));
     }
@@ -39,9 +41,9 @@ public class KeepHealthyQuest extends Quest {
     @Override
     public void nextTurn() {
         super.nextTurn();
-        if(healthyPlants == nPlants) {
+        if(healthyPlants >= nPlants) {
             nCurrentTurns +=1;
-            if(nCurrentTurns == nTurns) {
+            if(nCurrentTurns >= nTurns) {
                 isCompleted = true;
                 onCompleted();
             }
@@ -81,6 +83,6 @@ public class KeepHealthyQuest extends Quest {
     public void initDescription() {
         super.initDescription();
         String plantName = Constants.idNameMap.get(plantType);
-        description = "Keep " + nPlants + " " + plantName+  " in the Healthy state for " + nTurns + " turns";
+        description = "Keep " + nPlants + " " + plantName+  " crops in the Healthy state for " + nTurns + " consecutive turns";
     }
 }

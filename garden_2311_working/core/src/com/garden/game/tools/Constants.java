@@ -187,6 +187,14 @@ public class Constants {
         // -------- Bonus Plants -------- //
     }
 
+    public static final Map<Integer, Boolean> idIsFlowerMap;
+    static {
+        idIsFlowerMap = new HashMap<Integer, Boolean>();
+        idIsFlowerMap.put(SUNFLOWER, true);
+        idIsFlowerMap.put(ROSE, true);
+        idIsFlowerMap.put(TULIP, true);
+    }
+
 
     public static final int BASIC_PLANTS = 0;
     public static final int FERTILIZER_1 = 1;
@@ -209,7 +217,10 @@ public class Constants {
     public static final int MAX_WET_SEASONS_DAYS = 5, MAX_DRY_SEASONS_DAYS = 3;
     public static final int MIN_WET_SEASONS_DAYS = 3, MIN_DRY_SEASONS_DAYS = 2;
 
-
+    /* Quest stuff */
+    public static final int KEEP_HEALTHY_QUEST_ID = 0;
+    public static final int FLOWER_QUEST_ID = 1;
+    public static final int HARVEST_QUEST_ID = 2;
 
 
 }

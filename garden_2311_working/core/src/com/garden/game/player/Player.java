@@ -56,7 +56,8 @@ public class Player {
 
     private void initQuests() {
         quests = new ArrayList<>();
-        quests.add(new KeepHealthyQuest(this));
+        quests.add(0, new KeepHealthyQuest(this));
+        quests.add(1, new FlowerQuest(this));
     }
 
     public void makePlantAvailable(int plantID) {
@@ -138,7 +139,7 @@ public class Player {
      * @param x
      * @param y
      */
-    public void harvest(int x, int y) {
+    public void harvest(float x, float y) {
         Plant p = plants_.get(new Vector2(x, y));
         if(p != null) {
             unit.setPosition(x, y);
@@ -170,15 +171,34 @@ public class Player {
                 q.checkPlant(plant);
             }
         }
-        for(int i = 0; i < quests.size(); i++) {
+
+        for(Quest q : quests) {
+            q.nextTurn();
+            if(q.isCompleted) {
+                setNewQuest(q.questID);
+                System.out.println("asdnaklsdn");
+            }
+        }
+        /*for(int i = 0; i < quests.size(); i++) {
             Quest q = quests.get(i);
             q.nextTurn();
             if(q.isCompleted) {
                 quests.set(i, new KeepHealthyQuest(this));
                 System.out.println("asdnaklsdn");
             }
-        }
+        }*/
 
+    }
+
+    public void setNewQuest(int i) {
+        switch (i) {
+            case 0:
+                quests.set(i, new KeepHealthyQuest(this));
+                break;
+            case 1:
+                quests.set(i, new FlowerQuest(this));
+                break;
+        }
     }
 
     private void skillWork() {

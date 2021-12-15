@@ -145,19 +145,6 @@ public class Plant extends Actor {
     }
     PlantState state;
 
-    // Two different constructors. For convenience. Maybe it's not necessary.
-    public Plant(int x, int y) {
-        setPosition(x, y);
-        state = PlantState.SEED;
-    }
-
-   public Plant(int x, int y, TextureRegion[] textureRegions) {
-        setPosition(x, y);
-        state = PlantState.SEED;
-        this.textureRegions = textureRegions;
-        initSprites();
-    }
-
     // Is simpler constructor with setters better?
     public Plant(int id, int x, int y, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap, TiledMapTileLayer.Cell cell) {
         this.typeID = id;
@@ -173,7 +160,6 @@ public class Plant extends Actor {
         initSprites();
 
     }
-
 
     // Initialize ArrayList of sprites. Only call when we have a TextureRegion.
     private void initSprites() {
@@ -223,6 +209,14 @@ public class Plant extends Actor {
     public void nextTurn() {
         water = water-waterLoss;
         changeState();
+    }
+
+    /* Is this plant a flower? */
+    public boolean isFlower() {
+        if(Constants.idIsFlowerMap.get(typeID)) {
+            return true;
+        }
+        return false;
     }
 
     /* Harvest plant. Get some gold and set plant to the small state. */

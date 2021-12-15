@@ -10,6 +10,7 @@ public class Quest {
     public String description;
     public Player player;
     public Random random;
+    public int questID;
 
     public Quest(Player player){
         this.player = player;
@@ -23,5 +24,6 @@ public class Quest {
     };
     public void checkPlant(Plant plant){};
     public void initDescription(){};
+    public void selectPlantType(){};
 
 }

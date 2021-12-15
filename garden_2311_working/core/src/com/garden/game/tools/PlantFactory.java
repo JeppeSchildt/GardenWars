@@ -1,7 +1,6 @@
 package com.garden.game.tools;
 
 import com.badlogic.gdx.math.Vector2;
-import com.garden.game.world.plants.Grass;
 import com.garden.game.world.plants.Plant;
 
 import java.util.HashMap;
@@ -25,12 +24,6 @@ public class PlantFactory {
         if(createActorMap == null) {
             createActorMap = new HashMap<Integer, IFCreatePlant>();
         }
-        createActorMap.put(Constants.GRASS, new IFCreatePlant() {
-            @Override
-            public Plant create(int x, int y) {
-                return new Grass(x, y, assets.dirtCell);
-            }
-        });
 
         createActorMap.put(Constants.TURNIP, new IFCreatePlant() {
             @Override

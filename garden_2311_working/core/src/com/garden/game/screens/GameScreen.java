@@ -129,7 +129,7 @@ public class GameScreen extends AbstractScreen {
 
         txtQuests = new Label("", skin);
         txtQuests.setPosition(15, 768/2);
-        txtQuests.setText(world.player.quests.get(0).description);
+        updateTxtQuests();
         hud.addActor(txtQuests);
 
         tableSetup();
@@ -403,7 +403,9 @@ public class GameScreen extends AbstractScreen {
         harvestPlant.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                world.player.harvest(world.hoveredX*Constants.TILE_WIDTH, world.hoveredY*Constants.TILE_HEIGHT);
+                float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+                float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                world.player.harvest(plantX, plantY);
                 outerTable.remove();
             }
         });
@@ -459,10 +461,21 @@ public class GameScreen extends AbstractScreen {
         world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
         world.nextTurn();
-        txtQuests.setText(world.player.quests.get(0).description);
-        System.out.println(world.player.quests.get(0).description);
+        //txtQuests.setText(world.player.quests.get(0).description);
+        //System.out.println(world.player.quests.get(0).description);
+        updateTxtQuests();
 
     }
+
+    public void updateTxtQuests() {
+        String strQuests = "";
+        for(Quest q: world.player.quests) {
+            strQuests += (q.description + "\n");
+        }
+
+        txtQuests.setText(strQuests);
+    }
+
     private void renderBubble(String text) {
         dialogGlyphLayout.setText(font, text, Color.WHITE, Gdx.graphics.getWidth() * 0.75f, Align.topLeft, true);
         float tw = dialogGlyphLayout.width;
@@ -566,7 +579,7 @@ public class GameScreen extends AbstractScreen {
 
         if(button == Input.Buttons.RIGHT) {
             boolean canHarvest = false;
-            Plant p = world.player.getPlantAtPosition(world.hoveredX*Constants.TILE_WIDTH, world.hoveredY*Constants.TILE_HEIGHT);
+            Plant p = world.player.getPlantAtPosition((world.hoveredX+Constants.PLANT_OFFSET_X)*Constants.TILE_WIDTH, (world.hoveredY+Constants.PLANT_OFFSET_Y)*Constants.TILE_HEIGHT);
             if(p != null) {
                 if (p.getState() == Plant.PlantState.HEALTHY) {
                     canHarvest = true;

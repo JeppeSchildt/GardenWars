@@ -3,29 +3,19 @@ package com.garden.game.player;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
-public class KeepHealthyQuest extends Quest {
+public class HarvestQuest extends Quest{
     private static int nCompleted = 0;
     private int nPlants;
     private int nTurns;
     private int nCurrentTurns = 0;
     private int plantType;
-    private int healthyPlants;
 
-    public KeepHealthyQuest(Player player) {
+    public HarvestQuest(Player player) {
         super(player);
-        questID = Constants.KEEP_HEALTHY_QUEST_ID;
+        questID = Constants.HARVEST_QUEST_ID;
         selectNumber();
         selectPlantType();
         initDescription();
-
-    }
-
-    /**
-     * Select plant that should be kept healthy in quest among the plants available to player.
-     */
-    @Override
-    public void selectPlantType() {
-        plantType = player.getAvailablePlants().get(random.nextInt(player.getAvailablePlants().size()));
     }
 
     public void selectNumber() {
@@ -34,15 +24,15 @@ public class KeepHealthyQuest extends Quest {
             nTurns = 2;
         } else {
             nPlants = nCompleted*2+1;
-            nTurns = nCompleted*2+1;
+            nTurns = nCompleted*2;
         }
     }
 
     @Override
     public void nextTurn() {
         super.nextTurn();
-        if(healthyPlants >= nPlants) {
-            nCurrentTurns +=1;
+        if(player.nHarvested >= nPlants) {
+            nCurrentTurns += 1;
             if(nCurrentTurns >= nTurns) {
                 isCompleted = true;
                 onCompleted();
@@ -50,7 +40,6 @@ public class KeepHealthyQuest extends Quest {
         } else {
             nCurrentTurns = 0;
         }
-        healthyPlants = 0;
     }
 
     @Override
@@ -67,22 +56,15 @@ public class KeepHealthyQuest extends Quest {
         return super.getDescription();
     }
 
-    // Check if correct plant and healthy.
+    // Does not do anything for this quest.
     @Override
     public void checkPlant(Plant plant) {
         super.checkPlant(plant);
-        if(plant.getTypeID() == plantType) {
-            if(plant.getState() == Plant.PlantState.HEALTHY) {
-                healthyPlants++;
-            }
-
-        }
     }
 
     @Override
     public void initDescription() {
         super.initDescription();
-        String plantName = Constants.idNameMap.get(plantType);
-        description = "Keep " + nPlants + " " + plantName +  " crops in the Healthy state for " + nTurns + " consecutive turns";
+        description = "Harvest " + nPlants +  " plants each turn for " + nTurns + " consecutive turns";
     }
 }

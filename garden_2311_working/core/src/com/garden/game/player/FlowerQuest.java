@@ -58,6 +58,9 @@ public class FlowerQuest extends Quest {
     @Override
     public void checkPlant(Plant plant) {
         super.checkPlant(plant);
+        if(isCompleted) {
+            return;
+        }
         for(int i = 0; i < nPlants; i++) {
             for(int j = 0; j < nPlants; j++) {
                 Plant p = player.getPlantAtPosition(plant.getX()+(i*Constants.TILE_WIDTH), plant.getY()+(j*Constants.TILE_HEIGHT));

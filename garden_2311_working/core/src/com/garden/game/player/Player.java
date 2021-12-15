@@ -25,7 +25,7 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public Unit unit;
-    public int money, water, maxWater, points, maxPoint, waterPerTurn;
+    public int money, water, maxWater, points, maxPoint, waterPerTurn, nHarvested;
     public int waterSize;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
@@ -52,12 +52,14 @@ public class Player {
         waterPerTurn = 100;
         waterSize = 20;
         maxPoint = 1000;
+        nHarvested = 0;
     }
 
     private void initQuests() {
         quests = new ArrayList<>();
         quests.add(0, new KeepHealthyQuest(this));
         quests.add(1, new FlowerQuest(this));
+        quests.add(2, new HarvestQuest(this));
     }
 
     public void makePlantAvailable(int plantID) {
@@ -144,6 +146,7 @@ public class Player {
         if(p != null) {
             unit.setPosition(x, y);
             money += p.harvest();
+            nHarvested++;
         }
     }
 
@@ -167,11 +170,19 @@ public class Player {
             } else {
                 money += plant.profit;
             }
+            // Check each plant with each quest.
             for(Quest q : quests) {
                 q.checkPlant(plant);
             }
         }
+        checkQuestsComplete();
 
+        // Reset number of harvested plants per turn.
+        nHarvested = 0;
+    }
+
+    // Check quests. Set new if completed. To be changed.
+    public void checkQuestsComplete() {
         for(Quest q : quests) {
             q.nextTurn();
             if(q.isCompleted) {
@@ -179,15 +190,6 @@ public class Player {
                 System.out.println("asdnaklsdn");
             }
         }
-        /*for(int i = 0; i < quests.size(); i++) {
-            Quest q = quests.get(i);
-            q.nextTurn();
-            if(q.isCompleted) {
-                quests.set(i, new KeepHealthyQuest(this));
-                System.out.println("asdnaklsdn");
-            }
-        }*/
-
     }
 
     public void setNewQuest(int i) {
@@ -198,6 +200,8 @@ public class Player {
             case 1:
                 quests.set(i, new FlowerQuest(this));
                 break;
+            case 2:
+                quests.set(i, new HarvestQuest(this));
         }
     }
 

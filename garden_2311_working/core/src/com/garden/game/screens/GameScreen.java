@@ -673,7 +673,7 @@ public class GameScreen extends AbstractScreen {
                 app.sound.SoundNewDay();
             }
             if(blkScreenAlpha >= 0.5f) {
-                nextTurnStr = "You wake up to day " + world.turnNumber;
+                nextTurnStr = "Day " + world.turnNumber;
                 txtNextTurn.setText(nextTurnStr);
                 hud.addActor(txtNextTurn);
             }

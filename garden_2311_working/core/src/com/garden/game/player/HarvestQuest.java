@@ -23,8 +23,11 @@ public class HarvestQuest extends Quest{
             nPlants = 2;
             nTurns = 2;
         } else {
-            nPlants = nCompleted*2+1;
-            nTurns = nCompleted*2;
+            //nPlants = nCompleted*2+1;
+            //nTurns = nCompleted*2;
+            nPlants = Math.min(nCompleted*2+1, 20);
+            nTurns = Math.min(nCompleted*2, 15);
+
         }
     }
 

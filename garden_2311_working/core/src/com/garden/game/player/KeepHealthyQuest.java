@@ -33,8 +33,10 @@ public class KeepHealthyQuest extends Quest {
             nPlants = 2;
             nTurns = 2;
         } else {
-            nPlants = nCompleted*2+1;
-            nTurns = nCompleted*2+1;
+            nPlants = Math.min(nCompleted*2+1, 20);
+            //nPlants = nCompleted*2+1;
+            nTurns = Math.min(nCompleted*2+1, 15);
+            //nTurns = nCompleted*2+1;
         }
     }
 

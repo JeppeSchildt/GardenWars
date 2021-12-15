@@ -40,7 +40,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     private GardenGame app;
     private Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
@@ -50,6 +50,7 @@ public class GameScreen extends AbstractScreen {
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
     private ScrollPane scrollPane;
     private Skin skin;
+    private float time = 0;
     private final InputMultiplexer mux;
     //private final Color hudColor;
     public Group grp;
@@ -64,7 +65,7 @@ public class GameScreen extends AbstractScreen {
     private ShapeRenderer shapeRenderer,shapeRendererV2;
     private Sprite spriteHighlight;
     private boolean isStartDrySeason = false, isStartWetSeason = false;
-
+    private int dialogStep = 0;
     private int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
     private int lengthForDrySeason, lengthForWetSeason;
 
@@ -100,7 +101,8 @@ public class GameScreen extends AbstractScreen {
 
         initHUD();
         moveToPorch();
-        startIntroDialogue(); //Starts dialouge with intro text
+        //
+        startIntroDialogue();
     }
 
     private void initHUD() {
@@ -126,7 +128,7 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen = new Image(new TextureRegion(app.assets.<Texture>get("black_screen.png")));
         imgBlkScreen.setSize(1024,768);
         //imgBlkScreen.setColor(0,0,0,1);
-
+        lbl = new Label("",skin);
         txtQuests = new Label("", skin);
         txtQuests.setPosition(15, 768/2-100);
         updateTxtQuests();
@@ -279,32 +281,44 @@ public class GameScreen extends AbstractScreen {
     void startIntroDialogue() {
         showDialouge = true;
         dialogBackground(Dialogue.dia_2);
-        //camera.position.set(world.player.unit.getX(),world.player.unit.getY(),0);
+    }
+    void changeDialog(String text) {
+        lbl.setText(text);
     }
     void dialogBackground(String text) {
         boolean start = false;
         if (app.batch.isDrawing()) {
-            System.out.println("in dialouge thingy");
             app.batch.end();
             start = true;
         }
+
+
+        int step = (int) (time*12);
+        if (step > text.length()) {
+            dialogStep = 0;
+            showDialouge = false;
+        }
+        else {
+            String textModified = text.substring(0,step);
+            changeDialog(textModified);
+        }
+
+
 
         Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
         shapeRendererV2.begin(ShapeRenderer.ShapeType.Filled);
         shapeRendererV2.rect(235,35,510,160);
         shapeRendererV2.setColor(1,1,1,0.70f);
         shapeRendererV2.setProjectionMatrix(camera.combined);
-
         shapeRendererV2.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(240,40,500,150);
         shapeRenderer.setColor(45/255f,45/255f,45/255f,0.70f); //Colors are between 0 and 1.. wtf
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.end();
-        Label lbl = new Label(text,skin);
         lbl.setWrap(true);
         lbl.setPosition(240,85);
-        lbl.setWidth(500);
+        lbl.setWidth(500); //500
         lbl.setHeight(150);
         app.batch.begin();
         lbl.draw(app.batch,10f);
@@ -365,8 +379,6 @@ public class GameScreen extends AbstractScreen {
         if (!app.drySeason)
             buttonList.add(getWater);
 
-        //TextButton getBlank = new TextButton("", skin);
-        //buttonList.add(getBlank);
 
         for(final int i : world.player.getAvailablePlants()) {
             TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
@@ -411,20 +423,6 @@ public class GameScreen extends AbstractScreen {
         });
         buttonList.add(harvestPlant);
     }
-
-    /**
-     * Gets and returns the largest button (width) in a given table
-     */
-    private float getLargestButton(Table t) {
-        float highest = 0;
-        for (Actor b : t.getChildren()) {
-            if (b.getWidth()>highest) {
-                highest = b.getWidth();
-            }
-        }
-        return highest;
-    }
-
     /**
      * Ensures all buttons are set to same size as the largest
      */
@@ -600,8 +598,6 @@ public class GameScreen extends AbstractScreen {
             hud.addActor(outerTable);
             improvementsShown = true;
         } else {
-            //dropOutTable.clearChildren();
-            //dropOutTable.remove();
             outerTable.remove();
             improvementsShown = false;
         }
@@ -634,9 +630,9 @@ public class GameScreen extends AbstractScreen {
     // Using camera here maybe.
     @Override
     public void render(float delta) {
+        time += delta;
         updateHUD();
         nextTurnInfo();
-
         checkInput(); // Does not seem ideal to check input in render method. But convenient for now...
         world.update(delta);
         world.render();
@@ -645,21 +641,18 @@ public class GameScreen extends AbstractScreen {
         app.batch.setProjectionMatrix(camera.combined);
         hud.act(delta);
         hud.draw();
-
+        if (showDialouge) {
+            startIntroDialogue(); //here
+        }
         camera.update();
-        //renderBubble("HEJ");
         app.batch.end(); // End batch here, finishing rendering.
 
         if (!isStartDrySeason){
             isStartDrySeason = true;
             DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
-        //Needs to call dialouge from here, otherwise its not rendered.
-        //Keep an int indicating what text we wish to show?
-        }
-        if (showDialouge) {
-            startIntroDialogue();
         }
     }
+
     private void moveToPorch() {
         world.player.unit.clearActions();
         world.player.unit.setDirec(Constants.DOWN);
@@ -676,9 +669,6 @@ public class GameScreen extends AbstractScreen {
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
                 blkScreenAlpha = 0.0f;
-
-                //shapeRendererV2.dispose();
-                //shapeRenderer.dispose();
                 drySeasonEvent();
 
                 // Move character to front porch instantly.
@@ -704,6 +694,10 @@ public class GameScreen extends AbstractScreen {
         {
             nextTurn();
             System.out.println("Key ENTER press");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            System.out.println("Space pressed");
+            showDialouge = false;
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))

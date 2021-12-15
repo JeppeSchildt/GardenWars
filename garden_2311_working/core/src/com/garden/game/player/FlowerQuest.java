@@ -82,15 +82,11 @@ public class FlowerQuest extends Quest {
     @Override
     public void selectPlantType() {
         int[] flowers = {Constants.ROSE, Constants.TULIP, Constants.SUNFLOWER};
-        int offset = random.nextInt(3);
-        int i = 0;
-        while(i < 3) {
-            plantType = flowers[(offset+i) % 3];
-            if(player.getAvailablePlants().contains(plantType)) {
-                initDescription();
-                return;
-            }
-            i++;
+        int index = random.nextInt(3);
+        plantType = flowers[index];
+        if(player.getAvailablePlants().contains(plantType)) {
+            initDescription();
+            return;
         }
         description = "Study More Flowers to access this quest";
     }

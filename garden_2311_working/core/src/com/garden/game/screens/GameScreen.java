@@ -128,7 +128,7 @@ public class GameScreen extends AbstractScreen {
         //imgBlkScreen.setColor(0,0,0,1);
 
         txtQuests = new Label("", skin);
-        txtQuests.setPosition(15, 768/2);
+        txtQuests.setPosition(15, 768/2-100);
         updateTxtQuests();
         hud.addActor(txtQuests);
 

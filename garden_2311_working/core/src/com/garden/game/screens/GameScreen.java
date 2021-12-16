@@ -256,7 +256,7 @@ public class GameScreen extends AbstractScreen {
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
-        String txtPoint= "Point: " + world.player.points + "/" + world.player.maxPoint;
+        String txtPoint= "Score: " + world.player.points + "/" + world.player.maxPoint;
 
 
         // Chance season string if it is dry season or not
@@ -358,8 +358,9 @@ public class GameScreen extends AbstractScreen {
                 float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
                 float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
                 if(world.player.canWater(plantX, plantY)) {
-                    world.player.unit.setPosition(plantX, plantY);
+                    //world.player.unit.setPosition(plantX, plantY);
                     world.player.water(plantX, plantY);
+                    //world.player.unit.gotoAndWater(plantX, plantY, );
                 }
 
                 outerTable.remove();

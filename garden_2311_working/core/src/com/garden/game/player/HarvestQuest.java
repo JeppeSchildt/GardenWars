@@ -16,6 +16,7 @@ public class HarvestQuest extends Quest{
         selectNumber();
         selectPlantType();
         initDescription();
+        //description = "";
     }
 
     public void selectNumber() {

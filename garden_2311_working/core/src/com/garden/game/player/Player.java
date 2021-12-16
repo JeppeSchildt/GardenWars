@@ -119,6 +119,8 @@ public class Player {
     public void water(float x, float y) {
         plants_.get(new Vector2(x,y)).water(waterSize);
         water -= waterSize;
+        unit.gotoAndWater(x,y);
+
     }
 
     public void getMoreWater(){

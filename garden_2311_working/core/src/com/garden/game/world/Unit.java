@@ -4,15 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.*;
+import com.badlogic.gdx.utils.Pool;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
@@ -31,7 +27,8 @@ public class Unit extends Actor {
     TextureRegion drawThis;
     public float velocity = 100;
     public boolean bucket;
-
+    public Pool<MoveToAction> moveToActionPool;
+    public Pool<TemporalAction> getWaterTemporalPool, waterTemporalPool;
 
     public Unit(GardenGame app, String assetName) {
         this.app = app;
@@ -51,6 +48,43 @@ public class Unit extends Actor {
         // Position character in middle of map.
         setX(Constants.MAP_WIDTH_TILES/2 * Constants.TILE_WIDTH);
         setY(Constants.MAP_HEIGHT_TILES/2 * Constants.TILE_HEIGHT);
+
+        moveToActionPool = new Pool<MoveToAction>(){
+            protected MoveToAction newObject(){
+                return new MoveToAction();
+            }
+        };
+
+        getWaterTemporalPool = new Pool<TemporalAction>() {
+            @Override
+            protected TemporalAction newObject() {
+                return new TemporalAction() {
+                    @Override
+                    protected void update(float percent) {
+                        activeAnimation = bucketAnimations.get(direc);
+                        if(isComplete()) {
+                            activeAnimation = stopAnimations.get(direc);
+                        }
+                    }
+                };
+            }
+        };
+
+        waterTemporalPool = new Pool<TemporalAction>() {
+            @Override
+            protected TemporalAction newObject() {
+                return new TemporalAction() {
+                    @Override
+                    protected void update(float percent) {
+                        activeAnimation = wateringAnimations.get(direc);
+                        if(isComplete()) {
+                            activeAnimation = stopAnimations.get(direc);
+                        }
+                    }
+                };
+            }
+        };
+
 
     }
 
@@ -116,7 +150,7 @@ public class Unit extends Actor {
             //activeAnimation = stopAnimations.get(direc);
         }
 
-        drawThis = activeAnimation.getKeyFrame(elapsedTime, true);
+        drawThis = activeAnimation.getKeyFrame(elapsedTime);
     }
 
     public void selectAnimation(float x, float y) {
@@ -146,7 +180,8 @@ public class Unit extends Actor {
         selectAnimation(x, y);
 
         clearActions();
-        MoveToAction moveToAction = new MoveToAction();
+        //MoveToAction moveToAction = new MoveToAction();
+        MoveToAction moveToAction = moveToActionPool.obtain();
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
@@ -169,7 +204,8 @@ public class Unit extends Actor {
     public void gotoAndPlant(final float x, final float y, final Plant plant) {
         clearActions();
         selectAnimation(x, y);
-        MoveToAction moveToAction = new MoveToAction();
+        //MoveToAction moveToAction = new MoveToAction();
+        MoveToAction moveToAction = moveToActionPool.obtain();
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
@@ -197,70 +233,44 @@ public class Unit extends Actor {
     }
 
     // Go to plant and give it water.
-    public void gotoAndWater(final float x, final float y, final Plant plant) {
+    public void gotoAndWater(final float x, final float y) {
         clearActions();
         selectAnimation(x, y);
-        MoveToAction moveToAction = new MoveToAction();
+        //MoveToAction moveToAction = new MoveToAction();
+        MoveToAction moveToAction = moveToActionPool.obtain();
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
+
+        TemporalAction waterPlant = waterTemporalPool.obtain();
+
+        waterPlant.setDuration(0.8f);
+
+        SequenceAction sequence = new SequenceAction(moveToAction, waterPlant);
+        addAction(sequence);
 
     }
 
     // Go to lake and get some water
     public void gotoAndGetMoreWater() {
-        bucket = true;
-        animationTime = 0.f;
         clearActions();
+        // Some fixed location above the lake.
         float x = 17*Constants.TILE_WIDTH;
         float y = 12*Constants.TILE_HEIGHT;
         selectAnimation(x, y);
-        MoveToAction moveToAction = new MoveToAction();
+
+        // Get MoveToAction from pool and set position and duration
+        MoveToAction moveToAction = moveToActionPool.obtain();
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
 
+        // Get get more water action from pool and set duration
+        TemporalAction getMoreWater = getWaterTemporalPool.obtain();
+        getMoreWater.setDuration(0.5f);
 
-        /*RunnableAction getMoreWater = new RunnableAction();
-        /*getMoreWater.setRunnable(new Runnable() {
-
-            @Override
-            public void run() {
-                activeAnimation=bucketAnimations.get(direc);
-
-            }
-        });*/
-
-        /*Action getMoreWater = new Action() {
-            @Override
-            public boolean act(float delta) {
-                if(bucketAnimations.get(direc).isAnimationFinished(animationTime)) {
-                    animationTime = 0f;
-                    bucket = false;
-                    return true;
-                }
-                if(bucket) {
-                    animationTime += delta;
-                    activeAnimation = bucketAnimations.get(direc);
-
-                    drawThis = bucketAnimations.get(direc).getKeyFrame(animationTime, false);
-
-                }
-                return false;
-            }
-        };*/
-
-        RunnableAction stop = new RunnableAction();
-        stop.setRunnable(new Runnable() {
-
-            @Override
-            public void run() {
-                activeAnimation=stopAnimations.get(direc);
-
-            }
-        });
-
-        SequenceAction sequence = new SequenceAction(moveToAction, stop);
+        // Create sequence action
+        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater);
 
         addAction(sequence);
 

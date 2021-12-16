@@ -102,7 +102,11 @@ public class Assets extends AssetManager {
             }
             index = 0;
             // First argument frame duration, how long does a frame last.
-            this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            //this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.walkAnimations.add(animation);
         }
 
     }
@@ -119,7 +123,10 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[0][i];
             }
             index = 0;
-            this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            //this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.stopAnimations.add(animation);
         }
 
     }
@@ -132,14 +139,16 @@ public class Assets extends AssetManager {
 
         int index = 0;
         for (int i = 0; i < 4; i++) {
-            TextureRegion[] animationFrames = new TextureRegion[3];
+            TextureRegion[] animationFrames = new TextureRegion[2];
             for (int j = 0; j < 2; j++) {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
-            //Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
-            //animation.setPlayMode();
-            this.bucketAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/4f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.NORMAL);
+            this.bucketAnimations.add(animation);
+
+
         }
 
         index = 0;
@@ -151,6 +160,9 @@ public class Assets extends AssetManager {
             index = 0;
             this.wateringAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
         }
+
+        Animation<TextureRegion> animation = this.wateringAnimations.get(0);
+        this.wateringAnimations.add(animation);
 
     }
 

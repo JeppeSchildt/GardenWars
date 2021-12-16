@@ -128,13 +128,14 @@ public class World extends Stage {
         app.batch.begin();  // Batch ended in GameScreens render
         act(Gdx.graphics.getDeltaTime());
         //renderBubble("TEST");
-        draw();
-
         //for ( Plant plant : user.getPlants() ) {
+
         for (Map.Entry<Vector2, Plant> entry : player.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
             plant.draw(app.batch, 1);
         }
+
+        draw();
 
         spriteHighlight.draw(app.batch);
 

@@ -60,7 +60,7 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, DialougeDone = false;
+    private boolean showDialouge = false, showQuest = true, questKeyPress;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox;
     private Sprite spriteHighlight;
@@ -687,13 +687,12 @@ public class GameScreen extends AbstractScreen {
             showQuest = false;
             txtQuests.remove();
         }
-        // Try to show Quest after dialouge remove
-        /*else {
-            if (DialougeDoneeDone)
+        else {
+            if (!questKeyPress)
                 showQuest = true;
         }
 
-         */
+
 
 
         camera.update();
@@ -762,12 +761,6 @@ public class GameScreen extends AbstractScreen {
             }
             else{
                 app.debugMode = false;
-                /*
-                app.gameScreen = new GameScreen(app);
-                app.setScreen(app.gameScreen);
-                app.gameScreen.world.init("World1.tmx");
-                 */
-
             }
             System.out.println("Key BACKSPACE press");
             debugButtons();
@@ -779,10 +772,12 @@ public class GameScreen extends AbstractScreen {
 
             if (!showQuest){
                 showQuest = true;
+                questKeyPress = false;
             }
             else{
                 showQuest = false;
                 txtQuests.remove();
+                questKeyPress = true;
 
             }
         }

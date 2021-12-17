@@ -19,7 +19,7 @@ public class GardenGame extends Game {
 
 	public SoundFunctions sound;
 
-	public Boolean preferencesBool, currentGameBool, drySeason, debugMode;
+	public Boolean preferencesBool, currentGameBool, debugMode;
 	public int maxWidth, maxHeight, score;
 
 
@@ -36,9 +36,6 @@ public class GardenGame extends Game {
 		currentGameBool = false;
 
 		debugMode = false;
-
-		//-- Event --
-		drySeason = false;
 
 		/* --------- Screen setup  ---------  Lazy loading, loading them we need them might be better. */
 		titleScreen = new TitleScreen(this);

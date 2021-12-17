@@ -133,7 +133,7 @@ public class Player {
     public void getMoreWater(){
         // Tile 17, 12
         // You get water once per round
-        if(!gotWater && !app.drySeason) {
+        if(!gotWater && !app.gameScreen.world.drySeason) {
             unit.gotoAndGetMoreWater();
             water += waterPerTurn;
             gotWater = true;

@@ -64,10 +64,9 @@ public class GameScreen extends AbstractScreen {
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox;
     private Sprite spriteHighlight;
-    private boolean isStartDrySeason = false, isStartWetSeason = false;
+
     private int dialogStep = 0;
-    private int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
-    private int lengthForDrySeason, lengthForWetSeason;
+
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
 
@@ -263,11 +262,11 @@ public class GameScreen extends AbstractScreen {
         String txtPoint= "Score: " + world.player.points + "/" + world.player.maxPoint;
         // Chance season string if it is dry season or not
         String txtSeason = "";
-        if (app.drySeason)
-            txtSeason = longSpace + longSpace + "Days To Next Wet Season: " + (WetSeasonCount_RandomNumber - lengthForDrySeason + 1);
-        else if (!app.drySeason){
-            if ((DrySeasonCount_RandomNumber - lengthForWetSeason) <= 2)
-                txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (DrySeasonCount_RandomNumber - lengthForWetSeason + 1);
+        if (world.drySeason)
+            txtSeason = longSpace + longSpace + "Days To Next Wet Season: " + (world.WetSeasonCount_RandomNumber - world.lengthForDrySeason + 1);
+        else if (!world.drySeason){
+            if ((world.DrySeasonCount_RandomNumber - world.lengthForWetSeason) <= 2)
+                txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (world.DrySeasonCount_RandomNumber - world.lengthForWetSeason + 1);
             else
                 txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + ("?");
         }
@@ -390,7 +389,7 @@ public class GameScreen extends AbstractScreen {
             }
         });
 
-        if (!app.drySeason)
+        if (!world.drySeason)
             buttonList.add(getWater);
 
 
@@ -670,9 +669,9 @@ public class GameScreen extends AbstractScreen {
         app.batch.end(); // End batch here, finishing rendering.
 
 
-        if (!isStartDrySeason){
-            isStartDrySeason = true;
-            DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
+        if (!world.isStartDrySeason){
+            world.isStartDrySeason = true;
+            world.DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
         }
     }
 
@@ -692,7 +691,6 @@ public class GameScreen extends AbstractScreen {
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
                 blkScreenAlpha = 0.0f;
-                drySeasonEvent();
 
                 // Move character to front porch instantly.
                 moveToPorch();
@@ -807,38 +805,6 @@ public class GameScreen extends AbstractScreen {
         app.batch.dispose();
     }
 
-    public void drySeasonEvent(){
-
-        // DrySeasonCount_RandomNumber = Random number
-
-        if (lengthForWetSeason == DrySeasonCount_RandomNumber){
-            // Make Map DrySeason
-            app.drySeason = true;
-            lengthForDrySeason = 0;
-        }
-
-        if (app.drySeason){
-            if (!isStartWetSeason){
-                isStartWetSeason = true;
-                WetSeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_DRY_SEASONS_DAYS) + Constants.MIN_DRY_SEASONS_DAYS;
-            }
-            // WetSeasonCount_RandomNumber = Random number
-            // lengthForDrySeason = 0 counter
-
-            if (lengthForDrySeason == WetSeasonCount_RandomNumber){
-                // Make Map WetSeason
-                app.drySeason = false;
-                lengthForWetSeason = 0;
-
-                isStartDrySeason = false;
-            }
-            lengthForDrySeason++;
-        }
-        lengthForWetSeason++;
-    }
-
-
-
     private void debugButtons(){
 
         Table DebugTable = new Table();
@@ -853,9 +819,9 @@ public class GameScreen extends AbstractScreen {
         debugSeasonButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!app.drySeason)
-                    app.drySeason = true;
-                else app.drySeason = false;
+                if (!world.drySeason)
+                    world.drySeason = true;
+                else world.drySeason = false;
             }
         });
 

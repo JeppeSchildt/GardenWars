@@ -1,5 +1,7 @@
 package com.garden.game.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -103,5 +105,41 @@ public class MainCharacter extends Unit{
         addAction(sequence);
 
 
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        if(app.gameScreen.world.mapInput.walking) {
+            float x = getX();
+            float y = getY();
+
+            // app.gameScreen.world.mapInput.... lol
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.UP] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.W]) {
+                y += velocity * Gdx.graphics.getDeltaTime();
+            }
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.DOWN] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.S]) {
+                y -= velocity * Gdx.graphics.getDeltaTime();
+            }
+
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.RIGHT] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.D]) {
+                x += velocity * Gdx.graphics.getDeltaTime();
+            }
+            if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.LEFT] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.A]) {
+                x -= velocity * Gdx.graphics.getDeltaTime();
+            }
+
+            if(canMove((int) x/Constants.TILE_WIDTH, (int) y/Constants.TILE_HEIGHT))
+                setPosition(x, y);
+        }
+
+        if(!canMove((int) getX()/Constants.TILE_WIDTH, (int) getY()/Constants.TILE_HEIGHT)) {
+            //clearActions();
+
+            //activeAnimation = stopAnimations.get(direc);
+        }
+
+        drawThis = activeAnimation.getKeyFrame(elapsedTime);
     }
 }

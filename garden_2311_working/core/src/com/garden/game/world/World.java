@@ -43,7 +43,7 @@ public class World extends Stage {
 
     public int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
     public int lengthForDrySeason, lengthForWetSeason;
-    public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false;
+    public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false, isJournalistEvent = false, beginJournalistEvent;
 
 
     public World(GardenGame app) {
@@ -112,6 +112,7 @@ public class World extends Stage {
 
         addActor(player.unit);
 
+
         spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
 
@@ -175,11 +176,18 @@ public class World extends Stage {
 
         weekCount();
         drySeasonEvent();
+
+        if(!beginJournalistEvent) {
+            journalist.remove();
+        }
     }
 
     private void weekCount(){
         dayCount++;
         if (dayCount == 8){
+            beginJournalistEvent = true;
+            addActor(journalist);
+            enterJournalist();
             dayCount = 1;
             weekCount++;
         }
@@ -242,6 +250,15 @@ public class World extends Stage {
             lengthForDrySeason++;
         }
         lengthForWetSeason++;
+    }
+
+    public void enterJournalist() {
+        journalist.setInitialPosition();
+        journalist.setPosition(player.unit.getX()+50, player.unit.getY());
+        //beginJournalistEvent = false;
+    }
+    public void checkJournalistEvent() {
+
     }
 
 }

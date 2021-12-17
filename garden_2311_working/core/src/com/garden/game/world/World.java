@@ -16,6 +16,7 @@ import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Map;
+import java.util.Random;
 
 public class World extends Stage {
     private final GardenGame app;
@@ -40,6 +41,11 @@ public class World extends Stage {
 
     public Journalist journalist;
 
+    public int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
+    public int lengthForDrySeason, lengthForWetSeason;
+    public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false;
+
+
     public World(GardenGame app) {
         this.app = app;
 
@@ -52,6 +58,10 @@ public class World extends Stage {
         player = new Player(app);
         turnNumber = 1;
         journalist = new Journalist(app);
+
+        // Dry season event
+        drySeason = false;
+
     }
 
     public void init(String map) {
@@ -121,7 +131,7 @@ public class World extends Stage {
         tiledMapRenderer.setView(worldCamera);
 
 
-        if (app.drySeason) {
+        if (drySeason) {
             tiledMapRenderer.render(mapLayerIndicesDry);
         } else {
             tiledMapRenderer.render(mapLayerIndices);
@@ -164,6 +174,7 @@ public class World extends Stage {
         app.score = player.money;
 
         weekCount();
+        drySeasonEvent();
     }
 
     private void weekCount(){
@@ -201,6 +212,36 @@ public class World extends Stage {
                 }
             }
         }
+    }
+
+    public void drySeasonEvent(){
+
+        // DrySeasonCount_RandomNumber = Random number
+
+        if (lengthForWetSeason == DrySeasonCount_RandomNumber){
+            // Make Map DrySeason
+            drySeason = true;
+            lengthForDrySeason = 0;
+        }
+
+        if (drySeason){
+            if (!isStartWetSeason){
+                isStartWetSeason = true;
+                WetSeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_DRY_SEASONS_DAYS) + Constants.MIN_DRY_SEASONS_DAYS;
+            }
+            // WetSeasonCount_RandomNumber = Random number
+            // lengthForDrySeason = 0 counter
+
+            if (lengthForDrySeason == WetSeasonCount_RandomNumber){
+                // Make Map WetSeason
+                drySeason = false;
+                lengthForWetSeason = 0;
+
+                isStartDrySeason = false;
+            }
+            lengthForDrySeason++;
+        }
+        lengthForWetSeason++;
     }
 
 }

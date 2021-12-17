@@ -29,6 +29,7 @@ public class Unit extends Actor {
     public boolean bucket;
     public Pool<MoveToAction> moveToActionPool;
     public Pool<TemporalAction> getWaterTemporalPool, waterTemporalPool;
+    public Pool<RunnableAction> stopActionPool;
 
     public Unit(GardenGame app, String assetName) {
         this.app = app;
@@ -49,6 +50,12 @@ public class Unit extends Actor {
         setX(Constants.MAP_WIDTH_TILES/2 * Constants.TILE_WIDTH);
         setY(Constants.MAP_HEIGHT_TILES/2 * Constants.TILE_HEIGHT);
 
+        initPools();
+
+    }
+
+    // Create Pools of actions instead of newing them all the time.
+    private void initPools() {
         moveToActionPool = new Pool<MoveToAction>(){
             protected MoveToAction newObject(){
                 return new MoveToAction();
@@ -64,6 +71,7 @@ public class Unit extends Actor {
                         activeAnimation = bucketAnimations.get(direc);
                         if(isComplete()) {
                             activeAnimation = stopAnimations.get(direc);
+                            setPlayerMovLocked(false);
                         }
                     }
                 };
@@ -79,13 +87,25 @@ public class Unit extends Actor {
                         activeAnimation = wateringAnimations.get(direc);
                         if(isComplete()) {
                             activeAnimation = stopAnimations.get(direc);
+                            setPlayerMovLocked(false);
                         }
                     }
                 };
             }
         };
 
-
+        stopActionPool = new Pool<RunnableAction>() {
+            @Override
+            protected RunnableAction newObject() {
+                return new RunnableAction() {
+                    @Override
+                    public void run() {
+                        setPlayerMovLocked(false);
+                        activeAnimation=stopAnimations.get(direc);
+                    }
+                };
+            }
+        };
     }
 
     public void move(float x, float y) {
@@ -93,6 +113,7 @@ public class Unit extends Actor {
 
     }
     public boolean canMove(int x, int y) {
+
 
         // Check for bounds of map.
         boolean canMove = x < maxX && y < maxY && x >= minX && y >= minY;
@@ -103,6 +124,7 @@ public class Unit extends Actor {
         canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Fence Layer", x,y));
         canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Buildings Layer", x,y));
         canMove = canMove && !(app.gameScreen.world.isNoAccessTile("Trees Layer", x,y));
+        canMove = canMove && !(app.gameScreen.world.player.isMovementLocked());
         //canMove = canMove && (app.gameScreen.world.fenceLayer.getCell(x, y) == null);
 
         return canMove;
@@ -174,6 +196,7 @@ public class Unit extends Actor {
         }
     }
 
+    // Add a MoveToAction to given position.
     @Override
     public void setPosition(float x, float y) {
 
@@ -186,7 +209,7 @@ public class Unit extends Actor {
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
 
-        RunnableAction stop = new RunnableAction();
+        /*RunnableAction stop = new RunnableAction();
         stop.setRunnable(new Runnable() {
 
             @Override
@@ -194,7 +217,9 @@ public class Unit extends Actor {
                 activeAnimation=stopAnimations.get(direc);
 
             }
-        });
+        });*/
+
+        RunnableAction stop = stopActionPool.obtain();
         SequenceAction sequence = new SequenceAction(moveToAction, stop);
 
         addAction(sequence);
@@ -219,13 +244,15 @@ public class Unit extends Actor {
             }
         });
 
-        RunnableAction stop = new RunnableAction();
+        /*RunnableAction stop = new RunnableAction();
         stop.setRunnable(new Runnable() {
             @Override
             public void run() {
                 activeAnimation=stopAnimations.get(direc);
             }
-        });
+        });*/
+
+        RunnableAction stop = stopActionPool.obtain();
 
         SequenceAction sequence = new SequenceAction(moveToAction, run, stop);
 
@@ -280,5 +307,11 @@ public class Unit extends Actor {
     public void setDirec(int dir) {
         direc = dir;
     }
+
+
+    private void setPlayerMovLocked(boolean b) {
+        app.gameScreen.world.player.setMovementLocked(b);
+    }
+
 }
 

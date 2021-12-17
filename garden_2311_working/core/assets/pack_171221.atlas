@@ -1,0 +1,48 @@
+
+pack_171221.png
+size: 256, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Crop_Spritesheet
+  rotate: false
+  xy: 2, 90
+  size: 192, 160
+  orig: 192, 160
+  offset: 0, 0
+  index: -1
+M
+  rotate: false
+  xy: 68, 37
+  size: 64, 51
+  orig: 64, 51
+  offset: 0, 0
+  index: 1
+M_1_Water
+  rotate: false
+  xy: 2, 2
+  size: 64, 86
+  orig: 64, 86
+  offset: 0, 0
+  index: -1
+border_tile
+  rotate: false
+  xy: 196, 218
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+highlight_test
+  rotate: false
+  xy: 68, 3
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+journalist
+  rotate: false
+  xy: 134, 37
+  size: 64, 51
+  orig: 64, 51
+  offset: 0, 0
+  index: -1

@@ -25,7 +25,8 @@ public class Assets extends AssetManager {
     public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
     public TiledMapTileSet tileSet, tileSetNew;
     public TiledMapTileLayer.Cell dirtCell, grassCell;
-    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
+    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations,
+            wateringAnimations, journalistWalkAnimations, journalistStopAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
             soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
@@ -40,18 +41,19 @@ public class Assets extends AssetManager {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("main_pack.atlas");
+        textureAtlas = this.get("pack_171221.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
         initPlantSprites();
         initWateringAnimations();
+        initJournalist();
 
     }
 
     // Close files
     public void unloadAll() {
-        this.unload("main_pack.atlas");
+        this.unload("pack_171221.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -166,6 +168,42 @@ public class Assets extends AssetManager {
 
     }
 
+    public void initJournalist() {
+        journalistWalkAnimations = new ArrayList<>();
+        journalistStopAnimations = new ArrayList<>();
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("journalist");
+        TextureRegion[][] tmpFrames = atlasRegion.split(16,17);
+
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 0; j < 3; j++) {
+                animationFrames[index++] = tmpFrames[j][i];
+            }
+            index = 0;
+            // First argument frame duration, how long does a frame last.
+            //this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.journalistWalkAnimations.add(animation);
+        }
+
+        index = 0;
+        for (int i = 0; i < 4; i++) {  // 0 = down, 1 = right, 2 = up, 3 = left
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 0; j < 3; j++) {  // 0 = stop, 1 and 2 = walk
+                animationFrames[index++] = tmpFrames[0][i];
+            }
+            index = 0;
+            //this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.journalistStopAnimations.add(animation);
+        }
+
+    }
+
     // Initialize textures used for plants.
     private void initPlantSprites() {
         // Change to this size!!
@@ -190,7 +228,7 @@ public class Assets extends AssetManager {
 
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("main_pack.atlas", TextureAtlas.class);
+        this.load("pack_171221.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
 
         this.load("inGameDesign/GameBorderNew.png", Texture.class);

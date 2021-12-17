@@ -5,6 +5,7 @@ import com.garden.game.GardenGame;
 import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
+import com.garden.game.world.MainCharacter;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.Unit;
 
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class Player {
     GardenGame app;
-    public Unit unit;
+    public MainCharacter unit;
     public int money, water, maxWater, points, maxPoint, waterPerTurn, nHarvested;
     public int waterSize;
     private ArrayList<Integer> availablePlants;
@@ -36,7 +37,7 @@ public class Player {
 
     public Player(GardenGame app) {
         this.app = app;
-        unit = new Unit(this.app);
+        unit = new MainCharacter(this.app);
         skillTree = new SkillTree(this);
         plants = new ArrayList<>();
         plants_ = new HashMap<>();

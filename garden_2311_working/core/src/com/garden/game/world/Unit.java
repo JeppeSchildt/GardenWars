@@ -15,36 +15,34 @@ import com.garden.game.world.plants.Plant;
 
 import java.util.ArrayList;
 
-// Character controlled by player.
+/*
+    walk and stop animations.
+     MoveToActionPool
+    initPools();
+
+ */
+
+
+// Class for characters.
 public class Unit extends Actor {
     GardenGame app;
-    String assetName;
 
     public int maxX, minX, maxY, minY, direc;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
     public Animation<TextureRegion> activeAnimation;
-    public float elapsedTime, animationTime;
-    TextureRegion drawThis;
+    public float elapsedTime;
+    public TextureRegion drawThis;
     public float velocity = 100;
-    public boolean bucket;
     public Pool<MoveToAction> moveToActionPool;
-    public Pool<TemporalAction> getWaterTemporalPool, waterTemporalPool;
     public Pool<RunnableAction> stopActionPool;
 
     public Unit(GardenGame app) {
         this.app = app;
 
-        this.walkAnimations = app.assets.walkAnimations;
-        this.stopAnimations = app.assets.stopAnimations;
-        this.bucketAnimations = app.assets.bucketAnimations;
-        this.wateringAnimations = app.assets.wateringAnimations;
-
         maxX = Constants.MAP_WIDTH_TILES; // Hardcoded...
         maxY = Constants.MAP_HEIGHT_TILES;
         minX = 0;
         minY = 0;
-        activeAnimation = stopAnimations.get(0);
-
         // Position character in middle of map.
         setX(Constants.MAP_WIDTH_TILES/2 * Constants.TILE_WIDTH);
         setY(Constants.MAP_HEIGHT_TILES/2 * Constants.TILE_HEIGHT);
@@ -54,44 +52,13 @@ public class Unit extends Actor {
     }
 
     // Create Pools of actions instead of newing them all the time.
-    private void initPools() {
+    public void initPools() {
         moveToActionPool = new Pool<MoveToAction>(){
             protected MoveToAction newObject(){
                 return new MoveToAction();
             }
         };
 
-        getWaterTemporalPool = new Pool<TemporalAction>() {
-            @Override
-            protected TemporalAction newObject() {
-                return new TemporalAction() {
-                    @Override
-                    protected void update(float percent) {
-                        activeAnimation = bucketAnimations.get(direc);
-                        if(isComplete()) {
-                            activeAnimation = stopAnimations.get(direc);
-                            setPlayerMovLocked(false);
-                        }
-                    }
-                };
-            }
-        };
-
-        waterTemporalPool = new Pool<TemporalAction>() {
-            @Override
-            protected TemporalAction newObject() {
-                return new TemporalAction() {
-                    @Override
-                    protected void update(float percent) {
-                        activeAnimation = wateringAnimations.get(direc);
-                        if(isComplete()) {
-                            activeAnimation = stopAnimations.get(direc);
-                            setPlayerMovLocked(false);
-                        }
-                    }
-                };
-            }
-        };
 
         stopActionPool = new Pool<RunnableAction>() {
             @Override
@@ -208,16 +175,6 @@ public class Unit extends Actor {
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
 
-        /*RunnableAction stop = new RunnableAction();
-        stop.setRunnable(new Runnable() {
-
-            @Override
-            public void run() {
-                activeAnimation=stopAnimations.get(direc);
-
-            }
-        });*/
-
         RunnableAction stop = stopActionPool.obtain();
         SequenceAction sequence = new SequenceAction(moveToAction, stop);
 
@@ -243,14 +200,6 @@ public class Unit extends Actor {
             }
         });
 
-        /*RunnableAction stop = new RunnableAction();
-        stop.setRunnable(new Runnable() {
-            @Override
-            public void run() {
-                activeAnimation=stopAnimations.get(direc);
-            }
-        });*/
-
         RunnableAction stop = stopActionPool.obtain();
 
         SequenceAction sequence = new SequenceAction(moveToAction, run, stop);
@@ -258,57 +207,12 @@ public class Unit extends Actor {
         addAction(sequence);
     }
 
-    // Go to plant and give it water.
-    public void gotoAndWater(final float x, final float y) {
-        clearActions();
-        selectAnimation(x, y);
-        //MoveToAction moveToAction = new MoveToAction();
-        MoveToAction moveToAction = moveToActionPool.obtain();
-        moveToAction.setPosition(x, y);
-        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
-        moveToAction.setDuration(duration);
-
-        TemporalAction waterPlant = waterTemporalPool.obtain();
-
-        waterPlant.setDuration(0.8f);
-
-        SequenceAction sequence = new SequenceAction(moveToAction, waterPlant);
-        addAction(sequence);
-
-    }
-
-    // Go to lake and get some water
-    public void gotoAndGetMoreWater() {
-        clearActions();
-        // Some fixed location above the lake.
-        float x = 17*Constants.TILE_WIDTH;
-        float y = 12*Constants.TILE_HEIGHT;
-        selectAnimation(x, y);
-
-        // Get MoveToAction from pool and set position and duration
-        MoveToAction moveToAction = moveToActionPool.obtain();
-        moveToAction.setPosition(x, y);
-        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
-        moveToAction.setDuration(duration);
-
-        // Get get more water action from pool and set duration
-        TemporalAction getMoreWater = getWaterTemporalPool.obtain();
-        getMoreWater.setDuration(0.5f);
-
-        // Create sequence action
-        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater);
-
-        addAction(sequence);
-
-
-    }
-
     public void setDirec(int dir) {
         direc = dir;
     }
 
 
-    private void setPlayerMovLocked(boolean b) {
+    public void setPlayerMovLocked(boolean b) {
         app.gameScreen.world.player.setMovementLocked(b);
     }
 

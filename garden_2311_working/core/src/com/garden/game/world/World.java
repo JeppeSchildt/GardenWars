@@ -38,7 +38,7 @@ public class World extends Stage {
 
     private int maxGold = 9999;
 
-    public Unit journalist;
+    public Journalist journalist;
 
     public World(GardenGame app) {
         this.app = app;
@@ -51,7 +51,7 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         player = new Player(app);
         turnNumber = 1;
-        journalist = new Unit(app);
+        journalist = new Journalist(app);
     }
 
     public void init(String map) {

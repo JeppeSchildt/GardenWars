@@ -97,6 +97,7 @@ public class SkillTreeScreen implements Screen {
         title.setFontScale(5);
 
         /*
+
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);
         playButton = new TextButton("Resume",skin);
         playButton.addListener(new ChangeListener() {

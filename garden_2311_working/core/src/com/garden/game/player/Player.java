@@ -117,12 +117,16 @@ public class Player {
         return false;
     }
 
+    // Water plant at given position.
     public void water(float x, float y) {
-        plants_.get(new Vector2(x,y)).water(waterSize);
+        Plant p = plants_.get(new Vector2(x,y));
+        if(p == null) { return; }
+        if(water-waterSize < 0) { return; }
+
+        p.water(waterSize);
         water -= waterSize;
         unit.gotoAndWater(x,y);
         setMovementLocked(true);
-
     }
 
     public void getMoreWater(){

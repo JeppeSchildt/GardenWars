@@ -193,7 +193,7 @@ public class Assets extends AssetManager {
         this.load("main_pack.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
 
-        this.load("inGameDesign/GameBorder.png", Texture.class);
+        this.load("inGameDesign/GameBorderNew.png", Texture.class);
         this.load("inGameDesign/ButtonBorder.png", Texture.class);
 
         this.load("inGameDesign/ButtonNextTurn.png", Texture.class);

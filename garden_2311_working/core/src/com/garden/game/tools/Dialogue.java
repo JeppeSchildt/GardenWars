@@ -7,8 +7,8 @@ public class Dialogue {
 
 
     // -------- Intro ---------- //
-    public static String dia_intro = "Hello to your litte man";
-
+    public static String dia_intro_0 = "Hello to your litte man";
+    public static String dia_intro_1 = "Who's there !! I hear the voice in my head";
 
     // --------- Journalist ------------ //
 

@@ -87,6 +87,10 @@ public class Assets extends AssetManager {
         soundUseGold = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/use_gold.mp3"));
         soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.mp3"));
 
+
+
+
+
     }
 
     // Setup walking animations. Get region of spritesheet. Split into individual images.
@@ -241,6 +245,10 @@ public class Assets extends AssetManager {
         this.load("arrows/DownArrow.png", Texture.class);
         this.load("arrows/RightArrow.png", Texture.class);
         this.load("arrows/LeftArrow.png", Texture.class);
+
+        /* --------- Keyboard Controls img  ---------  */
+        this.load("KeyboardControls.png", Texture.class);
+
 
         this.load("black_screen.png", Texture.class);
 

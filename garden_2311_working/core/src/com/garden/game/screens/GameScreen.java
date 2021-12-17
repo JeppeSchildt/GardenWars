@@ -40,10 +40,10 @@ public class GameScreen extends AbstractScreen {
     public World world;
     private GardenGame app;
     private Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid;
     private String nextTurnStr = "Day number ";
-    private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent;
-    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
+    private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
+    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen, imgKeyboardControls;
     private float blkScreenAlpha;
     private Table buttonTable, outerTable;
     private SpriteBatch batchTest;
@@ -60,9 +60,9 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, questKeyPress;
+    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress;
     private final OrthographicCamera camera;
-    private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox;
+    private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
 
     private int dialogStep = 0;
@@ -94,6 +94,7 @@ public class GameScreen extends AbstractScreen {
         shapeRendererV2 = new ShapeRenderer();
 
         shapeRendererQuestBox = new ShapeRenderer();
+        shapeRendererGuidBox = new ShapeRenderer();
 
         world.player.money = 200;
         world.dayCount = 1;
@@ -135,7 +136,14 @@ public class GameScreen extends AbstractScreen {
         //imgBlkScreen.setColor(0,0,0,1);
 
 
+        imgKeyboardControls = new Image(new TextureRegion(app.assets.<Texture>get("KeyboardControls.png")));
+        imgKeyboardControls.setSize(844,284);
+        imgKeyboardControls.setPosition(100, 250);
+
+
+
         txtQuests = new Label("", skin);
+        txtGuid = new Label("", skin);
         lbl = new Label("",skin);
 
 
@@ -237,6 +245,7 @@ public class GameScreen extends AbstractScreen {
 
         tableButtons.add(imgTalent);
         tableButtons.add(imgSettings);
+
     }
 
     // Utility method, get info about hovered tile.
@@ -294,7 +303,7 @@ public class GameScreen extends AbstractScreen {
 
     void startIntroDialogue() {
         showDialouge = true;
-        dialogBackground(Dialogue.dia_2);
+        dialogBackground(Dialogue.dia_3);
     }
     void changeDialog(String text) {
         lbl.setText(text);
@@ -464,6 +473,10 @@ public class GameScreen extends AbstractScreen {
         blkScreenAlpha = 0f;
         imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
         hud.addActor(imgBlkScreen);
+
+
+
+
         nextTurnClicked = true;
 
         // Make character go to house
@@ -655,15 +668,27 @@ public class GameScreen extends AbstractScreen {
         if (showQuest)
             questSetup();
 
+        if (showGuid){
+            guidBoxSetup();
+
+        }
+
+
+
         if (showDialouge) {
             startIntroDialogue(); //here
 
             showQuest = false;
             txtQuests.remove();
+
+            showGuid = false;
+            txtGuid.remove();
         }
         else {
             if (!questKeyPress)
                 showQuest = true;
+            if (!guidKeyPress)
+                showGuid = true;
         }
         camera.update();
         app.batch.end(); // End batch here, finishing rendering.
@@ -747,6 +772,27 @@ public class GameScreen extends AbstractScreen {
         }
 
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            System.out.println("Key I pressed");
+
+            if (!showGuid){
+                showGuid = true;
+                guidKeyPress = false;
+                hud.addActor(imgKeyboardControls);
+
+
+
+            }
+            else{
+                showGuid = false;
+                imgKeyboardControls.remove();
+
+                txtGuid.remove();
+                guidKeyPress = true;
+            }
+        }
+
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
 
@@ -758,7 +804,34 @@ public class GameScreen extends AbstractScreen {
                 showDialouge = false;
             }
         }
+
+
+
+
     }
+
+    void guidBoxSetup(){
+        // ------ QuestBox draw --------- //
+        Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
+        shapeRendererGuidBox.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRendererGuidBox.rect(20,300,250,300);
+        shapeRendererGuidBox.setColor(0,0,0,0.2f);
+        shapeRendererGuidBox.setProjectionMatrix(camera.combined);
+        shapeRendererGuidBox.end();
+        // -------- Quests hud setup -------- //
+        txtGuid.setPosition(27, 490);
+        updateTxtQuests();
+        hud.addActor(txtGuid);
+
+
+        txtGuid.setText("Beginner’s Guide: \t'I' hide\n\n" +
+                "Lorem Ipsum is simply dummy \ntext of the printing and \n typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy text ever since \nthe 1500s, when an unknown \nprinter took a galley of type and \nscrambled it t");
+
+
+
+
+    }
+
 
     private void pauseScreen(){
             app.preferencesBool = true;

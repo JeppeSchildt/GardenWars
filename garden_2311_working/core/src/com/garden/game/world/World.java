@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.tools.Assets;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
@@ -96,6 +97,7 @@ public class World extends Stage {
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
+        resetMap();
 
 
         addActor(player.unit);
@@ -189,5 +191,16 @@ public class World extends Stage {
         return waterLayer.getCell(x, y) != null;
     }
 
+    private void resetMap(){
+        TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayers.get("Grass Layer");
+        for (int i = 0; i < Constants.MAP_WIDTH_TILES; i++){
+
+            for(int j = 0; j < Constants.MAP_HEIGHT_TILES; j++){
+                if (tileLayer.getCell(i,j) != null){
+                    tileLayer.setCell(i,j, app.assets.grassCell);
+                }
+            }
+        }
+    }
 
 }

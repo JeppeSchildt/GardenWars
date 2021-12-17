@@ -6,6 +6,9 @@ public class Dialogue {
     public static String dia_3 = "Hello!!";
 
 
+    // Er er ansatd i en park hvor vi har opgaver vi skal læse hver uge.
+    //Intro - ParksChefen kommer ud og fortæller hvordan versen hænger sammen
+    // Spil guid kan - vise som en pop op box når spillet starter - og kan skules ved at trykke på I key
     // -------- Intro ---------- //
         // Spaghetti god
     public static String dia_intro_0 = "Spaghetti god: \n 'Hello to your litte boy'";

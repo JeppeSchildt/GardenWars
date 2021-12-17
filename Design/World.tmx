@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1">
- <tileset firstgid="1" source="mapResource/Terrain.tsx"/>
- <tileset firstgid="1025" source="mapResource/Farmhouse_388x324.tsx"/>
- <tileset firstgid="1026" source="mapResource/Trees-green.tsx"/>
- <tileset firstgid="2050" source="mapResource/Trees-dead.tsx"/>
- <tileset firstgid="3074" source="mapResource/house1.tsx"/>
- <tileset firstgid="3075" source="mapResource/fence_remix.tsx"/>
- <tileset firstgid="3096" source="mapResource/house1.tsx"/>
+ <tileset firstgid="1" source="Terrain.tsx"/>
+ <tileset firstgid="1025" source="Farmhouse_388x324.tsx"/>
+ <tileset firstgid="1026" source="Trees-green.tsx"/>
+ <tileset firstgid="2050" source="Trees-dead.tsx"/>
+ <tileset firstgid="3074" source="house1.tsx"/>
+ <tileset firstgid="3109" source="fence_remix.tsx"/>
  <layer id="2" name="Grass Layer" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztwwEJAAAMA6C9yvqHXI+jYC+pqqqq+voAZa+MAQ==
@@ -19,7 +18,7 @@
  </layer>
  <layer id="5" name="Road Layer" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztz7ENwCAMRFGaZBQmIZkEmCQwd2zJRWoicc3/0tXPTomIViq2K3YL/Gprsb7Z9t9z2IdtbvaVv+Pj4+Pj6/zHdn5uUOQ3DJFNRPS3FxFSGVA=
+   eJztksENgCAQBO+jpVCJWglQiaET+3RJoAD57MOZZN7DAhEAsMIhz+FlOkOWj6yGdt+f5Cabod+3l/Bsn33X3c++e//f+7w/ff6fh1vu4wwAAPCNF61iE1w=
   </data>
  </layer>
  <layer id="1" name="NoWater Layer" width="32" height="32">
@@ -36,7 +35,7 @@
    <property name="hasWater" type="bool" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztktEJgDAMBbuIjuIk6iTqJOqsptDCIx9qIWlR3sF9X9I0BEIIIYQQ8jVGcUrODfqLuCa3yu24+9Cwj7v/tY//S4tv79HX933Sqp93Lmlb9vVda/d3sS9sd+Jp1M8zHODdPNbtN/Og3m0vLl+yNTE=
+   eJztktEJgDAMBat76ChOok6iTqLO0lEcxQgthH6ohaSB8g7u+5KmztWNb2z7l3HftcZ9AAAAAKgwklNwNugv5BrcCref3QfDPt+91j7/X6n87TX66X2/lOrHnXPakv30rqX7O9lntjvyFOrHGQ7m2zzS7T/zcLXbWty/FjbV
   </data>
  </layer>
  <layer id="9" name="WaterPlants Layer" width="32" height="32">
@@ -46,22 +45,22 @@
  </layer>
  <layer id="10" name="Fence Layer" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt1zEKADAIQ1HBxaGldCi9/02rp0jBH8j8UFxcw2yKurORVSXw8fFlcbFf6Tx/2d74/n7w2T8+Pj4+Pn4//wj/75t9YGYK4Q==
+   eJwz5GFg0B8AbAzEIKAFpekNtEbtH7V/BNuvOsD2w8BItX+gwx9mr+oITf+Dxf7R8B+1f9T+UftH7R+1f9T+kWe/+QD1vy2h9gMA5TYaiw==
   </data>
  </layer>
  <layer id="8" name="Buildings Layer" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztzckRglAURNEfAAGAILMKKKAMMuQfmDcFoeqt+ladbbdzx/M95wJcECLyTowd6MpfjAQpMuP/nL8CJW64G/8/+KtQo8HT+P/FX4sOPd7G/x/+BoyYMBv/f/lbsGLDbvyvlFJKKaWUUv/0A9nzB0A=
+   eJzt0rcOwjAYRWErAYdiUujptCfnSTkrUqag/EO4R/oGS5bvYufGFwXnYiywhA8/PDaihL0V1thga7wf2NshRYbceL9gb48DjjgZ75/Zu+CKEpXxfs1egxYdeuP9G3t3PPDEy3hfKaWUUmpuRf777P3wPaWm6P0H/+0D36ME+g==
   </data>
  </layer>
  <layer id="6" name="TreesDead Layer" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztlLsNg0AQRC8E3CY0Ahiog38dYGxED2SQXBVMhuToTrYYQPukSU6reZfsKnUdEkepFMmc/U175rO/UqOrQVqDTptZU97o+iCjQafN7L8I4YoO9H2Tw10Q/R3cPdHPYHpw/ZrsFwRBODuzy/6BIFwTH7sTEPcnhvtJ9JdwV0T/C+6B6F/gXm96PzfooRq5
+   eJztltsJwkAQAA9fRO3CVyEaLcRXIYnG1JFotA4FFXuwgVTh/AkB4YK6p7AD83HHspP8nTH/Q+QZs8HYe97lLfvZd8nYtceDxc4ys7ac2XXBq8XOMrOfIqAVCvaKJLRTwb5faB05nxz+vwtubbf93HFfURTl17k3XX+BopSjwtu+ijWsY+PFW/9bdOh1sYd9HAj3h/RG6OMYJ8L9Kb0ZznGBS+F+QC/EFa4xEu4n9FLc4g4z4b4EDymwH0I=
   </data>
  </layer>
  <layer id="7" name="Trees Layer" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztjkkKg1AQRHvx1Xtq1JxDzXCOOMRzOJNzJJucwtoFBKFFTIP2g9o0Rb0m4hMYohA5m9/tZfO7a7li64bcGZtLulwKbD2RkrG5pMulw1aPDDObLu6e4XW3IIIr/qNvygPuVNBfwV0L+o/I15H+QFEURVGUPXKyiHxLzp/AfRH0Z3Dngv4G7lbQ/4b7I+jfkhHj1Rud
+   eJztl9sJwkAQAA89LcRXIRotJNFoHYlG60g0WoeCilU5f0IgsEGyIuzAfNyx7HCf55yc2Du3xo3/3L368tlvydi1x4NgZ5NZKSW7zngR7GwyK+XOrgc+a3aG3EdeNtsGCa1UsVclp10o9oNK68r59sP3G4ZhGIZh/Dsd/hZd9NjDfs1foy0G9IY4wjFOlPtTejMMcI4L5X5IL8IlrjBW7if0UtziDjPlfk6vwCOesFTua/AGpyse4Q==
   </data>
  </layer>
 </map>

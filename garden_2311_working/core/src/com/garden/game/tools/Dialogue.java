@@ -8,7 +8,7 @@ public class Dialogue {
 
     // -------- Intro ---------- //
         // Spaghetti god
-    public static String dia_intro_0 = "Hello to your litte boy";
+    public static String dia_intro_0 = "Spaghetti god: \n 'Hello to your litte boy'";
         // MainCharacter
     public static String dia_intro_1 = "Who's there... I hear the voice in my head";
         // Spaghetti god
@@ -22,7 +22,7 @@ public class Dialogue {
 
 
 
-    
+
     // --------- Journalist ------------ //
 
 

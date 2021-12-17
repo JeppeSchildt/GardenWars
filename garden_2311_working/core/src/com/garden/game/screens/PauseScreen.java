@@ -113,6 +113,7 @@ public class PauseScreen implements Screen {
 		app.currentGameBool = false;
 		app.sound.SoundButtonClick();
 
+		/*
 		app.gameScreen.dispose();
 		app.gameScreen.world.dispose();
 
@@ -121,6 +122,13 @@ public class PauseScreen implements Screen {
 			app.setScreen(app.gameScreen);
 			app.gameScreen.world.init("World1.tmx");
 		}
+		 */
+
+		app.gameScreen = new GameScreen(app);
+		app.setScreen(app.gameScreen);
+		app.gameScreen.world.init("World1.tmx");
+
+
 		app.setScreen(app.gameScreen);
 
 	}

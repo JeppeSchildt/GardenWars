@@ -15,14 +15,6 @@ import com.garden.game.world.plants.Plant;
 
 import java.util.ArrayList;
 
-/*
-    walk and stop animations.
-     MoveToActionPool
-    initPools();
-
- */
-
-
 // Class for characters.
 public class Unit extends Actor {
     GardenGame app;

@@ -449,6 +449,7 @@ public class GameScreen extends AbstractScreen {
         });
         buttonList.add(harvestPlant);
     }
+    
     /**
      * Ensures all buttons are set to same size as the largest
      */

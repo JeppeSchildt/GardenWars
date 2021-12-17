@@ -215,7 +215,6 @@ public class GameScreen extends AbstractScreen {
         });
         imgNextTurn.setPosition(app.maxWidth-140, 45);
         hud.addActor(imgNextTurn);
-
         // ----- Settings Icon Setup----- //
         textureSettings = new Texture(Gdx.files.internal("inGameDesign/ButtonSettings.png"));
         imgSettings = new Image(textureSettings);
@@ -225,7 +224,6 @@ public class GameScreen extends AbstractScreen {
                 pauseScreen();
             }
         });
-
         // ----- Talent Icon Setup----- //
         textureTalent  = new Texture(Gdx.files.internal("inGameDesign/ButtonTalent.png"));
         imgTalent = new Image(textureTalent);
@@ -240,7 +238,6 @@ public class GameScreen extends AbstractScreen {
 
         tableButtons.add(imgTalent);
         tableButtons.add(imgSettings);
-
     }
 
     // Utility method, get info about hovered tile.
@@ -264,7 +261,6 @@ public class GameScreen extends AbstractScreen {
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
         String txtPoint= "Score: " + world.player.points + "/" + world.player.maxPoint;
-
         // Chance season string if it is dry season or not
         String txtSeason = "";
         if (app.drySeason)
@@ -275,7 +271,6 @@ public class GameScreen extends AbstractScreen {
             else
                 txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + ("?");
         }
-
         txtResources.setText(txtWater + txtGold  + txtPoint + txtSeason);
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));
         String totalDays = "Month: " + world.monthCount + ", " + "Week: " + world.weekCount + ", " + "Day: " + world.dayCount;
@@ -290,14 +285,10 @@ public class GameScreen extends AbstractScreen {
         shapeRendererQuestBox.setColor(0,0,0,0.2f);
         shapeRendererQuestBox.setProjectionMatrix(camera.combined);
         shapeRendererQuestBox.end();
-
         // -------- Quests hud setup -------- //
-
-
         txtQuests.setPosition(27, 80);
         updateTxtQuests();
         hud.addActor(txtQuests);
-
     }
 
 
@@ -348,9 +339,7 @@ public class GameScreen extends AbstractScreen {
         camera.update();
         if (start) {
             app.batch.begin();
-
         }
-
 
         /*
 
@@ -387,7 +376,6 @@ public class GameScreen extends AbstractScreen {
                     world.player.water(plantX, plantY);
                     //world.player.unit.gotoAndWater(plantX, plantY, );
                 }
-
                 outerTable.remove();
             }
         });
@@ -416,7 +404,6 @@ public class GameScreen extends AbstractScreen {
                    if (world.player.canPlant(i, world.hoveredX, world.hoveredY)) {
                        Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
                        world.player.plant(plantX, plantY, plant);
-
                    }
                    outerTable.remove();
                }
@@ -429,7 +416,6 @@ public class GameScreen extends AbstractScreen {
         scrollPane = new ScrollPane(buttonTable, skin);
         scrollPane.setScrollingDisabled(true, false);
         outerTable.add(scrollPane).expandY();
-
     }
 
     /**
@@ -437,7 +423,6 @@ public class GameScreen extends AbstractScreen {
      * */
     public void addHarvestButton() {
         TextButton harvestPlant = new TextButton("Harvest Plant", skin);
-
         harvestPlant.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -472,7 +457,6 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void nextTurn(){
-
         grp.remove();
         app.sound.SoundButtonClick();
 
@@ -485,23 +469,18 @@ public class GameScreen extends AbstractScreen {
         // Make character go to house
         world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
-
         world.nextTurn();
         //txtQuests.setText(world.player.quests.get(0).description);
         //System.out.println(world.player.quests.get(0).description);
 
         updateTxtQuests();
-
-
     }
 
     public void updateTxtQuests() {
-
         String strQuests = "Quest: \n";
         for(Quest q: world.player.quests) {
             strQuests += (q.description + "\n");
         }
-
         txtQuests.setText(strQuests);
     }
 
@@ -544,8 +523,8 @@ public class GameScreen extends AbstractScreen {
         grp.setPosition(bx,by);
         hud.addActor(grp);
         app.batch.end();
-
     }
+
     public void magazineEvent() {
         /*
         NinePatch np = new NinePatch(new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png")),10,10,10,10);
@@ -655,14 +634,10 @@ public class GameScreen extends AbstractScreen {
     }
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
-
-
     // Render player things like character and plants in this method.
     // Using camera here maybe.
     @Override
     public void render(float delta) {
-
-
         time += delta;
         updateHUD();
         nextTurnInfo();
@@ -673,17 +648,16 @@ public class GameScreen extends AbstractScreen {
         //app.batch.begin(); //remove ?
         drawMenu();
 
-
         app.batch.setProjectionMatrix(camera.combined);
         hud.act(delta);
         hud.draw();
-
 
         if (showQuest)
             questSetup();
 
         if (showDialouge) {
             startIntroDialogue(); //here
+
             showQuest = false;
             txtQuests.remove();
         }
@@ -691,10 +665,6 @@ public class GameScreen extends AbstractScreen {
             if (!questKeyPress)
                 showQuest = true;
         }
-
-
-
-
         camera.update();
         app.batch.end(); // End batch here, finishing rendering.
 
@@ -703,8 +673,6 @@ public class GameScreen extends AbstractScreen {
             isStartDrySeason = true;
             DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
         }
-
-
     }
 
     private void moveToPorch() {
@@ -734,7 +702,6 @@ public class GameScreen extends AbstractScreen {
                 txtNextTurn.setText(nextTurnStr);
                 hud.addActor(txtNextTurn);
             }
-
         }
         blkScreenAlpha += 0.015f;
         imgBlkScreen.setColor(0,0, 0, blkScreenAlpha);
@@ -764,7 +731,6 @@ public class GameScreen extends AbstractScreen {
             }
             System.out.println("Key BACKSPACE press");
             debugButtons();
-
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
@@ -778,11 +744,21 @@ public class GameScreen extends AbstractScreen {
                 showQuest = false;
                 txtQuests.remove();
                 questKeyPress = true;
-
             }
         }
 
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            System.out.println("Key X pressed");
+
+            if (!showDialouge){
+                showDialouge = true;
+                dialogBackground(Dialogue.dia_1);
+            }
+            else{
+                showDialouge = false;
+            }
+        }
     }
 
     private void pauseScreen(){

@@ -37,6 +37,8 @@ public class World extends Stage {
 
     private int maxGold = 9999;
 
+    public Unit journalist;
+
     public World(GardenGame app) {
         this.app = app;
 
@@ -48,6 +50,7 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         player = new Player(app);
         turnNumber = 1;
+        journalist = new Unit(app);
     }
 
     public void init(String map) {
@@ -185,5 +188,6 @@ public class World extends Stage {
     public boolean isWaterTile(int x, int y) {
         return waterLayer.getCell(x, y) != null;
     }
+
 
 }

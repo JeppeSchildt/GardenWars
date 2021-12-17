@@ -31,9 +31,8 @@ public class Unit extends Actor {
     public Pool<TemporalAction> getWaterTemporalPool, waterTemporalPool;
     public Pool<RunnableAction> stopActionPool;
 
-    public Unit(GardenGame app, String assetName) {
+    public Unit(GardenGame app) {
         this.app = app;
-        this.assetName = assetName;
 
         this.walkAnimations = app.assets.walkAnimations;
         this.stopAnimations = app.assets.stopAnimations;

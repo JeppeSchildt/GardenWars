@@ -51,7 +51,6 @@ public class SkillTree {
         if(!locked) {
             currentlyLearning = skills.get(i);
         }
-
     }
 
     public void nextTurn() {

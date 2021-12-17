@@ -60,7 +60,7 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false;
+    private boolean showDialog = false;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2;
     private Sprite spriteHighlight;
@@ -279,7 +279,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     void startIntroDialogue() {
-        showDialouge = true;
+        showDialog = true;
         dialogBackground(Dialogue.dia_2);
     }
     void changeDialog(String text) {
@@ -296,7 +296,7 @@ public class GameScreen extends AbstractScreen {
         int step = (int) (time*12);
         if (step > text.length()) {
             dialogStep = 0;
-            showDialouge = false;
+            showDialog = false;
         }
         else {
             String textModified = text.substring(0,step);
@@ -642,7 +642,7 @@ public class GameScreen extends AbstractScreen {
         app.batch.setProjectionMatrix(camera.combined);
         hud.act(delta);
         hud.draw();
-        if (showDialouge) {
+        if (showDialog) {
             startIntroDialogue(); //here
         }
         camera.update();
@@ -664,7 +664,7 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            showDialouge = false;
+            showDialog = false;
             if(blkScreenAlpha >= 2) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
@@ -698,7 +698,7 @@ public class GameScreen extends AbstractScreen {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             System.out.println("Space pressed");
-            showDialouge = false;
+            showDialog = false;
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))

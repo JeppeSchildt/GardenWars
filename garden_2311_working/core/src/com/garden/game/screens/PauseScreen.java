@@ -120,13 +120,13 @@ public class PauseScreen implements Screen {
 		if (app.gameScreen == null){
 			app.gameScreen = new GameScreen(app);
 			app.setScreen(app.gameScreen);
-			app.gameScreen.world.init("World1.tmx");
+			app.gameScreen.world.init("World.tmx");
 		}
 		 */
 
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
-		app.gameScreen.world.init("World1.tmx");
+		app.gameScreen.world.init("World.tmx");
 
 
 		app.setScreen(app.gameScreen);

@@ -7,7 +7,20 @@ public class Dialogue {
 
 
     // -------- Intro ---------- //
-    public static String dia_intro = "Hello to your litte man";
+        // Spaghetti god
+    public static String dia_intro_0 = "Spaghetti god: \n 'Hello to your litte boy'";
+        // MainCharacter
+    public static String dia_intro_1 = "Who's there... I hear the voice in my head";
+        // Spaghetti god
+    public static String dia_intro_2 = "No no little boy! I'm your grate god";
+    public static String dia_intro_3 = "The grate Spaghetti God";
+        // MainCharacter
+    public static String dia_intro_4 = "I'm definitely not small boy! I am a big man with nice blue hair!";
+        // Spaghetti god
+    public static String dia_intro_5 = "Where it's what it takes to make you happy. Big boy!";
+    public static String dia_intro_6 = "I'm here to make you a little bit lighter";
+
+
 
 
     // --------- Journalist ------------ //

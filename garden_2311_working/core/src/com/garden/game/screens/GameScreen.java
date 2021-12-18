@@ -60,7 +60,7 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress;
+    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
@@ -735,7 +735,7 @@ public class GameScreen extends AbstractScreen {
             }
             if(blkScreenAlpha >= 0.5f) { // change this to longer
                 nextTurnStr = "Day " + world.turnNumber;
-                txtSkills.setText("Days to learn:");
+                skillInfo();
 
                 hud.addActor(txtSkills);
 
@@ -745,6 +745,30 @@ public class GameScreen extends AbstractScreen {
         }
         blkScreenAlpha += 0.015f;
         imgBlkScreen.setColor(0,0, 0, blkScreenAlpha);
+    }
+
+    public void skillInfo() {
+        String currentlyLearning = "";
+        if(world.player.skillTree.currentlyLearning == null) {
+            currentlyLearning = "You are not studying anything";
+        } else {
+            int turns = world.player.skillTree.currentlyLearning.turns;
+            String name = world.player.skillTree.currentlyLearning.name;
+            if (turns > 0) {
+                currentlyLearning = "Currently studying ";
+                currentlyLearning += name;
+                currentlyLearning += ". Learned in " + turns + " day(s)";
+            } else if (turns == 0) {
+                currentlyLearning = "You have just learned ";
+                currentlyLearning += name;
+            } else {
+                currentlyLearning = "You are not studying anything";
+            }
+        }
+
+        txtSkills.setText(currentlyLearning);
+
+
     }
 
 

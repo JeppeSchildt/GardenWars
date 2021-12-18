@@ -11,6 +11,7 @@ public class Communication extends Skill {
     public Communication(int turns, Player player) {
         super(turns, player);
         hasTurnWork = true;
+        name = "Communication";
     }
 
     @Override

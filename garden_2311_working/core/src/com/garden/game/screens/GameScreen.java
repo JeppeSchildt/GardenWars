@@ -40,7 +40,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     private GardenGame app;
     private Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid, txtSkills;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
@@ -60,7 +60,7 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress;
+    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
@@ -127,6 +127,8 @@ public class GameScreen extends AbstractScreen {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         txtNextTurn = new Label("", skin);
+        txtSkills = new Label("", skin);
+        txtSkills.setPosition(1024/2-75, 768/2-40);
         // 1024/2 - 75 :)
         txtNextTurn.setPosition(1024/2-75, 768/2);
 
@@ -313,15 +315,20 @@ public class GameScreen extends AbstractScreen {
             start = true;
         }
 
-        int step = (int) (time*12);
+        int step = (int) (time*12);//Dialogue.readingSpeed);
         if (step > text.length()) {
-            dialogStep = 0;
-            showDialouge = false;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                dialogStep = 0;
+                showDialouge = false;
+            }
+            //dialogStep = 0;
+            //showDialouge = false;
         }
         else {
             String textModified = text.substring(0,step);
             changeDialog(textModified);
         }
+        Label spaceToSkip = new Label("Press {space} to skip",skin);
 
         Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
         shapeRendererV2.begin(ShapeRenderer.ShapeType.Filled);
@@ -336,10 +343,15 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.end();
         lbl.setWrap(true);
         lbl.setPosition(240,85);
+        spaceToSkip.setPosition(580,45);
+       //spaceToSkip.setColor(210/255f,229/255f,216/255f,0.80f); //green-gray ish
+        spaceToSkip.setColor(241/255f,241/255f,208/255f,0.60f); //yellow ish
+       //spaceToSkip.setColor(205/255f,253/255f,254/255f,0.90f); //blue ish
         lbl.setWidth(500); //500
         lbl.setHeight(150);
         app.batch.begin();
         lbl.draw(app.batch,10f);
+        spaceToSkip.draw(app.batch,10f);
         app.batch.end();
         camera.update();
         if (start) {
@@ -704,24 +716,53 @@ public class GameScreen extends AbstractScreen {
     private void nextTurnInfo() {
         if(nextTurnClicked) {
             showDialouge = false;
-            if(blkScreenAlpha >= 2) {
+            if(blkScreenAlpha >= 3.5f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
+                txtSkills.remove();
                 blkScreenAlpha = 0.0f;
 
                 // Move character to front porch instantly.
                 moveToPorch();
                 app.sound.SoundNewDay();
             }
-            if(blkScreenAlpha >= 0.5f) {
+            if(blkScreenAlpha >= 0.5f) { // change this to longer
                 nextTurnStr = "Day " + world.turnNumber;
+                skillInfo();
+
+                hud.addActor(txtSkills);
+
                 txtNextTurn.setText(nextTurnStr);
                 hud.addActor(txtNextTurn);
             }
         }
         blkScreenAlpha += 0.015f;
         imgBlkScreen.setColor(0,0, 0, blkScreenAlpha);
+    }
+
+    public void skillInfo() {
+        String currentlyLearning = "";
+        if(world.player.skillTree.currentlyLearning == null) {
+            currentlyLearning = "You are not studying anything";
+        } else {
+            int turns = world.player.skillTree.currentlyLearning.turns;
+            String name = world.player.skillTree.currentlyLearning.name;
+            if (turns > 0) {
+                currentlyLearning = "Currently studying ";
+                currentlyLearning += name;
+                currentlyLearning += ". Learned in " + turns + " day(s)";
+            } else if (turns == 0) {
+                currentlyLearning = "You have just learned ";
+                currentlyLearning += name;
+            } else {
+                currentlyLearning = "You are not studying anything";
+            }
+        }
+
+        txtSkills.setText(currentlyLearning);
+
+
     }
 
 
@@ -806,7 +847,7 @@ public class GameScreen extends AbstractScreen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
             showDialouge = true;
-            updateDialog(Dialogue.dia_1);
+            updateDialog(Dialogue.dia_intro_0);
 
             dialogBackground();
 

@@ -50,14 +50,10 @@ public class SkillTree {
     }
 
     public void setCurrentlyLearning(int i) {
-
-
         if(!locked) {
             currentlyLearning = skills.get(i);
         }
-
         index = i;
-
     }
 
 

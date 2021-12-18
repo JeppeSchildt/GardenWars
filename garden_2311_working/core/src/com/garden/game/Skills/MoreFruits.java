@@ -6,6 +6,7 @@ import com.garden.game.tools.Constants;
 public class MoreFruits extends Skill{
     public MoreFruits(int turns, Player player) {
         super(turns, player);
+        name = "More Fruits";
         adjacent.add(Constants.FERTILIZER_2);
     }
 

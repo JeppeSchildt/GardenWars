@@ -70,7 +70,7 @@ public class MapInput implements InputProcessor {
         } else if(button == Input.Buttons.LEFT) {
             tileSelected = false;
 
-            // Check for bounds of map and water cells.
+            // Check for bounds of map and water cells. Can't move while for instance getting water from lake.
             if (world.player.unit.canMove(tileX, tileY) && !world.player.isMovementLocked()) {
 
                 world.player.unit.move(tileX, tileY);

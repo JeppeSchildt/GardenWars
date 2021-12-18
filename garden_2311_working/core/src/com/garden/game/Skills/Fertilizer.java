@@ -16,6 +16,7 @@ public class Fertilizer extends Skill {
             adjacent.add(Constants.MORE_FLOWERS);
             adjacent.add(Constants.MORE_FRUITS);
             hasTurnWork = true;
+            name = "Fertilizer";
         }
 
         @Override

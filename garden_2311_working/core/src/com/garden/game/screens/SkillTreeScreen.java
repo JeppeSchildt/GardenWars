@@ -31,8 +31,8 @@ public class SkillTreeScreen implements Screen {
     private GardenGame app;
     private Stage stage;
     private Table table;
-    private String currentLearning = "", strLearned = "";
-    private String local;
+    public String currentLearning = "", strLearned = "";
+
     private Label curentL, learnedSkills;
     private Texture textureRightArrow, textureLeftArrow, textureDownArrow, textureEmptyArrow;
     private Image imgRightArrow, imgLeftArrow, imgDownArrow, imgEmptyArrow;
@@ -543,7 +543,6 @@ public class SkillTreeScreen implements Screen {
         if(strLearned.compareTo("Learned skills: ") == 0) {
             strLearned += "None";
         }
-
         learnedSkills.setText(strLearned);
 
     }

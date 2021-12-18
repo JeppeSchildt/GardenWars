@@ -29,6 +29,7 @@ import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -60,12 +61,13 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
+    private boolean showDialog = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
     private String currentDialog = "";
-    private int dialogStep = 0;
+    private int dialogStep = 0, dialogIndex = 0;
+    private List<String> currentDialogList;
 
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
@@ -80,14 +82,6 @@ public class GameScreen extends AbstractScreen {
         hud = new Stage(new ScreenViewport(camera));
         mux = new InputMultiplexer();
 
-
-        //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
-
-        //hud = new Stage(new ScreenViewport(world.worldCamera));
-        //hudColor = new Color(1, 1, 1, 0.5f);
-
-        //app.maxWidth = world.tileSize*world.worldWidth;
-        //app.maxHeight = Gdx.graphics.getHeight()-100;
         plantFactory = new PlantFactory(app.assets);
 
         shapeRenderer = new ShapeRenderer();
@@ -137,16 +131,9 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen.setSize(1024,768);
         //imgBlkScreen.setColor(0,0,0,1);
 
-
-
-
-
-
         txtQuests = new Label("", skin);
         txtGuid = new Label("", skin);
         lbl = new Label("",skin);
-
-
 
         tableSetup();
         setupTextIcons();
@@ -210,7 +197,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void drawButtons(){
-        // ----- NextTurn Icon Setup----- //
+        /* ----- NextTurn Icon Setup----- */
         //TextButton btnEndTurn = new TextButton("Next Day", skin);
         textureNextTurn = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
         imgNextTurn = new Image(textureNextTurn);
@@ -303,10 +290,15 @@ public class GameScreen extends AbstractScreen {
         currentDialog = text; //Updates the dialouge
         time = 0; //Resets timer
     }
+
     void startIntroDialogue() {
-        showDialouge = true;
-        updateDialog(Dialogue.dia_3);
+        showDialog = true;
+        world.introBoss();
+
         //currentDialog = Dialogue.dia_3;
+        currentDialogList = Dialogue.DIALOG_INTRO;
+        updateDialog(currentDialogList.get(dialogIndex));
+        dialogIndex++;
         dialogBackground();
         //dialogBackground(Dialogue.dia_3);
     }
@@ -314,7 +306,7 @@ public class GameScreen extends AbstractScreen {
         lbl.setText(text);
     }
     void dialogBackground() {
-        String text = currentDialog;
+        String text = currentDialogList.get(dialogIndex);
         boolean start = false;
         if (app.batch.isDrawing()) {
             app.batch.end();
@@ -323,10 +315,10 @@ public class GameScreen extends AbstractScreen {
 
         int step = (int) (time*12);//Dialogue.readingSpeed);
         if (step > text.length()) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            /*if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.K)) {
                 dialogStep = 0;
                 showDialouge = false;
-            }
+            }*/
             //dialogStep = 0;
             //showDialouge = false;
         }
@@ -483,13 +475,11 @@ public class GameScreen extends AbstractScreen {
     private void nextTurn(){
         grp.remove();
         app.sound.SoundButtonClick();
-
+        dialogIndex = 0;
         // Set up fade to black stuff
         blkScreenAlpha = 0f;
         imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
         hud.addActor(imgBlkScreen);
-
-
 
 
         nextTurnClicked = true;
@@ -500,6 +490,13 @@ public class GameScreen extends AbstractScreen {
         world.nextTurn();
         //txtQuests.setText(world.player.quests.get(0).description);
         //System.out.println(world.player.quests.get(0).description);
+        if(world.isBossEvent) {
+            currentDialogList = world.boss.currentDialog;
+            showDialog = true;
+            updateDialog(currentDialogList.get(dialogIndex));
+            dialogIndex++;
+            dialogBackground();
+        }
 
         updateTxtQuests();
     }
@@ -570,6 +567,7 @@ public class GameScreen extends AbstractScreen {
         np = new NinePatch(new TextureRegion(bubble,0,0,bubble.getWidth(),bubble.getHeight()),5,5,5,5);
         renderBubble("TEST");
     }
+
     public void droughtEvent() {
 
     }
@@ -589,17 +587,6 @@ public class GameScreen extends AbstractScreen {
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
-        //app.batch.draw(inGameBorder,0,0);
-        /*Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        int rect_x = Gdx.graphics.getWidth();
-        int rect_y = Gdx.graphics.getHeight() - 100;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(hudColor);
-        //shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
-        shapeRenderer.rect(0,0, Gdx.graphics.getWidth(), 100);
-        shapeRenderer.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);*/
         updateHUD();
     }
 
@@ -673,7 +660,6 @@ public class GameScreen extends AbstractScreen {
         world.update(delta);
         world.render();
 
-        //app.batch.begin(); //remove ?
         drawMenu();
 
         app.batch.setProjectionMatrix(camera.combined);
@@ -686,7 +672,7 @@ public class GameScreen extends AbstractScreen {
             guidBoxSetup();
         }
 
-        if (showDialouge) {
+        if (showDialog) {
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;
@@ -721,8 +707,8 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            showDialouge = false;
-            if(blkScreenAlpha >= 3.5f) {
+            showDialog = false;
+            if(blkScreenAlpha >= 2f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
@@ -768,7 +754,6 @@ public class GameScreen extends AbstractScreen {
 
         txtSkills.setText(currentlyLearning);
 
-
     }
 
 
@@ -780,9 +765,24 @@ public class GameScreen extends AbstractScreen {
             nextTurn();
             System.out.println("Key ENTER pressed");
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            System.out.println("Key SPACE pressed");
-            showDialouge = false;
+        if(world.isBossEvent) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+                System.out.println("Key SPACE pressed");
+                if(currentDialogList == null) {
+                    return;
+                }
+                dialogStep = 0;
+                dialogIndex++;
+                if (dialogIndex >= currentDialogList.size()) {
+                    showDialog = false;
+                    dialogIndex = 0;
+                    world.leaveBoss();
+                } else {
+                    updateDialog(currentDialogList.get(dialogIndex));
+                    dialogBackground();
+                }
+
+            }
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
@@ -829,10 +829,9 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
-            showDialouge = true;
+            showDialog = true;
             updateDialog(Dialogue.dia_intro_0);
 
             dialogBackground();

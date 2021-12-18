@@ -1,12 +1,13 @@
 package com.garden.game.tools;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Dialogue {
 
 
-    private static String BOSS = "Boss Ladies: \n";
-    private static String MainCharacter = "Me: \n";
+    public static String BOSS = "Boss Ladies: \n";
+    public static String MainCharacter = "Me: \n";
     private static int readingSpeed = 12;
     public static String dia_1 = "Hello you motherfucker, are you okay? I wish to help you, ok? ";
     public static String dia_2 = "Your mother is worried, you're not planting enough plants. You don't want to make the spaghetti God angry, do you?";
@@ -18,7 +19,6 @@ public class Dialogue {
     // Spil guide kan - vises som en pop op box når spillet starter - og kan skjules ved at trykke på I key
 
     /* -------- Intro ---------- */
-    public static String DIALOG_INTRO;
 
     public static String dia_intro_0 = BOSS + "'Good morning Johnny boy'";
 
@@ -52,7 +52,28 @@ public class Dialogue {
     public static String dia_intro_19 = BOSS + "'As long as you give them water once in a while, it should all work out'";
 
 
-    // --------- The Boss Comes By - Week ------------ //
+    public static final List<String> DIALOG_INTRO = new ArrayList<String>() {{
+        add(dia_intro_0);
+        add(dia_intro_1);
+        add(dia_intro_2);
+        add(dia_intro_3);
+        add(dia_intro_4);
+        add(dia_intro_5);
+        add(dia_intro_6);
+        add(dia_intro_7);
+        add(dia_intro_8);
+        add(dia_intro_9);
+        add(dia_intro_10);
+        add(dia_intro_11);
+        add(dia_intro_12);
+        add(dia_intro_13);
+        add(dia_intro_14);
+        add(dia_intro_15);
+        add(dia_intro_16);
+        add(dia_intro_17);
+        add(dia_intro_18);
+        add(dia_intro_19);
+    }};
 
 
 

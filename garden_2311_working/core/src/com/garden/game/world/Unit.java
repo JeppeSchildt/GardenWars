@@ -137,6 +137,30 @@ public class Unit extends Actor {
 
     }
 
+    // Go to x, y and remove actor from whatever stage it appears in.
+    public void goSomewhereRemove(float x, float y) {
+        selectAnimation(x, y);
+
+        clearActions();
+        //MoveToAction moveToAction = new MoveToAction();
+        MoveToAction moveToAction = moveToActionPool.obtain();
+        moveToAction.setPosition(x, y);
+        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
+        moveToAction.setDuration(duration);
+
+        RunnableAction stop = stopActionPool.obtain();
+
+
+        RunnableAction remove = new RunnableAction() {
+            @Override
+            public void run() {
+                remove();
+            }
+        };
+        SequenceAction sequence = new SequenceAction(moveToAction, stop, remove);
+        addAction(sequence);
+    }
+
     public void gotoAndPlant(final float x, final float y, final Plant plant) {
         clearActions();
         selectAnimation(x, y);

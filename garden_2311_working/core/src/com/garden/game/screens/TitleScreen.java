@@ -110,7 +110,7 @@ public class TitleScreen implements Screen {
 		});
 
 		debugModeButton.setPosition(app.maxWidth - 125, 15);
-		stage.addActor(debugModeButton);
+		//stage.addActor(debugModeButton);
 
 	}
 

@@ -7,6 +7,7 @@ public class Construction extends Skill {
     public Construction(int turns, Player player) {
         super(turns, player);
         adjacent.add(Constants.AUTO_HARVEST);
+        name = "Construction";
 
     }
 

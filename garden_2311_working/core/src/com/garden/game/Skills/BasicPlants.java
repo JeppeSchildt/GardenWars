@@ -14,6 +14,7 @@ public class BasicPlants extends Skill {
         super(turns, player);
         adjacent.add(Constants.FERTILIZER_1);
         incoming = 0;
+        name = "Basic Plants";
     }
 
     @Override

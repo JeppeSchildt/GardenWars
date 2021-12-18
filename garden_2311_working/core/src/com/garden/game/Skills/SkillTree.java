@@ -15,6 +15,8 @@ public class SkillTree {
     public boolean[] availableToLearn;
     public Skill currentlyLearning;
     public boolean locked;
+    public int index;
+
 
     public SkillTree(Player player) {
         this.player = player;
@@ -48,10 +50,16 @@ public class SkillTree {
     }
 
     public void setCurrentlyLearning(int i) {
+
+
         if(!locked) {
             currentlyLearning = skills.get(i);
         }
+
+        index = i;
+
     }
+
 
     public void nextTurn() {
         if(currentlyLearning != null) {

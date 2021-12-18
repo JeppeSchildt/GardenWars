@@ -40,7 +40,7 @@ public class KeyboardControlsScreen implements Screen {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         imgKeyboardControls = new Image(new TextureRegion(app.assets.<Texture>get("KeyboardControls.png")));
-        imgKeyboardControls.setPosition(10, 300);
+        imgKeyboardControls.setPosition(10, 200);
 
         hud.addActor(imgKeyboardControls);
 
@@ -64,20 +64,33 @@ public class KeyboardControlsScreen implements Screen {
 
     private void backToMenue(){
         app.sound.SoundButtonClick();
-
         //hud.dispose();
+        if(app.pauseScreen == null) {
+            app.pauseScreen = new PauseScreen(app);
+        }
         app.setScreen(app.pauseScreen);
     }
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) backToMenue();
+
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         hud.act();
         hud.draw();
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            backToMenue();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            app.sound.SoundButtonClick();
+
+            app.setScreen(app.gameScreen);
+        }
     }
 
     @Override

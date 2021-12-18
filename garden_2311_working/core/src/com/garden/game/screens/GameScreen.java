@@ -765,8 +765,6 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-
-
     private void checkInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             app.sound.SoundButtonClick();
@@ -788,7 +786,7 @@ public class GameScreen extends AbstractScreen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             app.sound.SoundButtonClick();
-            world.player.getWater();
+            world.player.getMoreWater();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
@@ -842,8 +840,6 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
-
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
             showDialouge = true;
@@ -852,9 +848,6 @@ public class GameScreen extends AbstractScreen {
             dialogBackground();
 
         }
-
-
-
 
     }
 
@@ -870,7 +863,6 @@ public class GameScreen extends AbstractScreen {
         txtGuid.setPosition(27, 490);
         updateTxtQuests();
         hud.addActor(txtGuid);
-
 
         txtGuid.setText("Beginner’s Guide: \n\n" +
                 "More info 'Press key 'S' \n" +

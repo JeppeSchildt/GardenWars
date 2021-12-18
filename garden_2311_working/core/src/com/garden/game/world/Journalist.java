@@ -5,7 +5,6 @@ import com.garden.game.tools.Constants;
 
 // Journalist class
 public class Journalist extends Unit {
-    String journalist = "journalist";
     public Journalist(GardenGame app) {
         super(app);
         this.walkAnimations = app.assets.journalistWalkAnimations;

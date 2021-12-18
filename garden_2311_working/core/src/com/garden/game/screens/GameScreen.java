@@ -493,7 +493,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void updateTxtQuests() {
-        String strQuests = "Quest: \n";
+        String strQuests = "Quests: \n";
         for(Quest q: world.player.quests) {
             strQuests += (q.description + "\n");
         }

@@ -498,13 +498,6 @@ public class GameScreen extends AbstractScreen {
 
         updateTxtQuests();
         dialogIndex = 0;
-        if(world.isBossEvent) {
-            currentDialogList = world.boss.currentDialog;
-            showDialog = true;
-            updateDialog(currentDialogList.get(0));
-            dialogBackground();
-
-        }
     }
 
     public void updateTxtQuests() {
@@ -712,19 +705,16 @@ public class GameScreen extends AbstractScreen {
             world.DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
         }
 
-        if (world.weekCount == 1)
-            weekBoos();
+        /*if (world.isBossEvent) {
+            weekBoss();
+        }*/
     }
 
-    private void weekBoos(){
-        dialogIndex = 0;
-        if(world.isBossEvent) {
-            currentDialogList = world.boss.currentDialog;
-            showDialog = true;
-            updateDialog(currentDialogList.get(0));
-            dialogBackground();
-
-        }
+    private void weekBoss(){
+        //currentDialogList = world.boss.currentDialog;
+        showDialog = true;
+        updateDialog(currentDialogList.get(dialogIndex));
+        dialogBackground();
     }
 
     private void moveToPorch() {

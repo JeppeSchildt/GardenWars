@@ -827,9 +827,6 @@ public class GameScreen extends AbstractScreen {
         txtGuid.setText("Beginner’s Guide: \t'I' hide\n\n" +
                 "Lorem Ipsum is simply dummy \ntext of the printing and \n typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy text ever since \nthe 1500s, when an unknown \nprinter took a galley of type and \nscrambled it t");
 
-
-
-
     }
 
 

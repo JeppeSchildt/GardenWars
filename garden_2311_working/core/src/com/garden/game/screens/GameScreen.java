@@ -64,7 +64,7 @@ public class GameScreen extends AbstractScreen {
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
-
+    private String currentDialog = "";
     private int dialogStep = 0;
 
 
@@ -299,17 +299,22 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtQuests);
     }
 
-
-
+    void updateDialog(String text) {
+        currentDialog = text; //Updates the dialouge
+        time = 0; //Resets timer
+    }
     void startIntroDialogue() {
         showDialouge = true;
-        dialogBackground(Dialogue.dia_3);
+        updateDialog(Dialogue.dia_3);
+        //currentDialog = Dialogue.dia_3;
+        dialogBackground();
+        //dialogBackground(Dialogue.dia_3);
     }
     void changeDialog(String text) {
         lbl.setText(text);
     }
-    void dialogBackground(String text) {
-
+    void dialogBackground() {
+        String text = currentDialog;
         boolean start = false;
         if (app.batch.isDrawing()) {
             app.batch.end();
@@ -667,17 +672,13 @@ public class GameScreen extends AbstractScreen {
 
         if (showQuest)
             questSetup();
-
         if (showGuid){
             guidBoxSetup();
-
         }
 
-
-
         if (showDialouge) {
-            startIntroDialogue(); //here
-
+            //startIntroDialogue(); //here
+            dialogBackground();
             showQuest = false;
             txtQuests.remove();
 
@@ -779,9 +780,6 @@ public class GameScreen extends AbstractScreen {
                 showGuid = true;
                 guidKeyPress = false;
                 hud.addActor(imgKeyboardControls);
-
-
-
             }
             else{
                 showGuid = false;
@@ -795,14 +793,19 @@ public class GameScreen extends AbstractScreen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
+            showDialouge = true;
+            updateDialog(Dialogue.dia_1);
 
+            dialogBackground();
+            //dialogBackground(Dialogue.dia_1);
+            /*
             if (!showDialouge){
                 showDialouge = true;
                 dialogBackground(Dialogue.dia_1);
             }
             else{
                 showDialouge = false;
-            }
+            } */
         }
 
 
@@ -826,9 +829,6 @@ public class GameScreen extends AbstractScreen {
 
         txtGuid.setText("Beginner’s Guide: \t'I' hide\n\n" +
                 "Lorem Ipsum is simply dummy \ntext of the printing and \n typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy text ever since \nthe 1500s, when an unknown \nprinter took a galley of type and \nscrambled it t");
-
-
-
 
     }
 

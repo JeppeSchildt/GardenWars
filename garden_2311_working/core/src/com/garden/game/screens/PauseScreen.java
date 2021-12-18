@@ -55,8 +55,6 @@ public class PauseScreen implements Screen {
 			}
 		});
 
-
-
 		TextButton resetButton = new TextButton("Restart",skin);
 		resetButton.addListener(new ChangeListener() {
 			@Override
@@ -70,6 +68,15 @@ public class PauseScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				preferences();
+
+			}
+		});
+
+		TextButton keyboardControlsButton = new TextButton("Keyboard Controls",skin);
+		keyboardControlsButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				keyboardControls();
 
 			}
 		});
@@ -91,6 +98,8 @@ public class PauseScreen implements Screen {
 		table.add(resetButton).left();
 		table.row();
 		table.add(settingsButton).left();
+		table.row();
+		table.add(keyboardControlsButton).left();
 		table.row();
 		table.add(quitButton).left();
 		table.row();
@@ -140,6 +149,17 @@ public class PauseScreen implements Screen {
 		}
 		app.setScreen(app.preferencesScreen);
 	}
+
+	private void keyboardControls(){
+		app.sound.SoundButtonClick();
+		if(app.keyboardControlsScreen == null) {
+			app.keyboardControlsScreen = new KeyboardControlsScreen(app);
+		}
+		app.setScreen(app.keyboardControlsScreen);
+	}
+
+
+
 
 	@Override
 	public void show() {

@@ -43,7 +43,7 @@ public class GameScreen extends AbstractScreen {
     public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
-    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen, imgKeyboardControls;
+    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
     private float blkScreenAlpha;
     private Table buttonTable, outerTable;
     private SpriteBatch batchTest;
@@ -136,9 +136,7 @@ public class GameScreen extends AbstractScreen {
         //imgBlkScreen.setColor(0,0,0,1);
 
 
-        imgKeyboardControls = new Image(new TextureRegion(app.assets.<Texture>get("KeyboardControls.png")));
-        imgKeyboardControls.setSize(844,284);
-        imgKeyboardControls.setPosition(100, 250);
+
 
 
 
@@ -779,11 +777,11 @@ public class GameScreen extends AbstractScreen {
             if (!showGuid){
                 showGuid = true;
                 guidKeyPress = false;
-                hud.addActor(imgKeyboardControls);
+
             }
             else{
                 showGuid = false;
-                imgKeyboardControls.remove();
+
 
                 txtGuid.remove();
                 guidKeyPress = true;

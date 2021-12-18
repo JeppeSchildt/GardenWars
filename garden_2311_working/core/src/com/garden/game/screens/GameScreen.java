@@ -500,6 +500,13 @@ public class GameScreen extends AbstractScreen {
         //System.out.println(world.player.quests.get(0).description);
 
         updateTxtQuests();
+        dialogIndex = 0;
+        if(world.isBossEvent) {
+            currentDialogList = world.boss.currentDialog;
+            showDialog = true;
+            updateDialog(currentDialogList.get(0));
+
+        }
     }
 
     public void updateTxtQuests() {
@@ -720,7 +727,7 @@ public class GameScreen extends AbstractScreen {
     private void nextTurnInfo() {
         if(nextTurnClicked) {
             showDialog = false;
-            if(blkScreenAlpha >= 3.5f) {
+            if(blkScreenAlpha >= 2f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();

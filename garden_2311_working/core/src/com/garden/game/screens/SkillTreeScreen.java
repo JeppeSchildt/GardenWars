@@ -98,15 +98,6 @@ public class SkillTreeScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-
-
-
-
-
-
-
-
-
         /*
 
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);

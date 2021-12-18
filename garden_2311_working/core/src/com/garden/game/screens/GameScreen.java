@@ -45,7 +45,7 @@ public class GameScreen extends AbstractScreen {
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
     private float blkScreenAlpha;
-    private Table buttonTable, outerTable;
+    private Table buttonTable, outerTable, DebugTable;
     private SpriteBatch batchTest;
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
     private ScrollPane scrollPane;
@@ -135,22 +135,16 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen.setSize(1024,768);
         //imgBlkScreen.setColor(0,0,0,1);
 
-
-
-
-
-
         txtQuests = new Label("", skin);
         txtGuid = new Label("", skin);
         lbl = new Label("",skin);
-
-
 
         tableSetup();
         setupTextIcons();
         drawButtons();
 
         setupTileImprovementBox(false);
+
 
         // ------ Debug mode -------- //
         if (app.debugMode){
@@ -733,32 +727,13 @@ public class GameScreen extends AbstractScreen {
 
 
     private void checkInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
-        {
-            nextTurn();
-            System.out.println("Key ENTER pressed");
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            System.out.println("Key SPACE pressed");
-            showDialouge = false;
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
-        {
-            if (!app.debugMode){
-                app.debugMode = true;
-            }
-            else{
-                app.debugMode = false;
-            }
-            System.out.println("Key BACKSPACE press");
-            debugButtons();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            app.sound.SoundButtonClick();
+            pauseScreen();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            System.out.println("Key Q pressed");
-
+            app.sound.SoundButtonClick();
             if (!showQuest){
                 showQuest = true;
                 questKeyPress = false;
@@ -770,23 +745,62 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            app.sound.SoundButtonClick();
+            world.player.getWater();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            app.sound.SoundButtonClick();
+            skillTreeScreen();
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            System.out.println("Key I pressed");
-
+            app.sound.SoundButtonClick();
             if (!showGuid){
                 showGuid = true;
                 guidKeyPress = false;
-
             }
             else{
                 showGuid = false;
-
 
                 txtGuid.remove();
                 guidKeyPress = true;
             }
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        {
+            app.sound.SoundButtonClick();
+            nextTurn();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            app.sound.SoundButtonClick();
+            if(app.keyboardControlsScreen == null) {
+                app.keyboardControlsScreen = new KeyboardControlsScreen(app);
+            }
+            app.setScreen(app.keyboardControlsScreen);
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            app.sound.SoundButtonClick();
+            showDialouge = false;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT))
+        {
+            app.sound.SoundButtonClick();
+            if (!app.debugMode){
+                app.debugMode = true;
+                debugButtons();
+            }
+            else{
+                app.debugMode = false;
+                DebugTable.remove();
+            }
+        }
+
 
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
@@ -795,15 +809,7 @@ public class GameScreen extends AbstractScreen {
             updateDialog(Dialogue.dia_1);
 
             dialogBackground();
-            //dialogBackground(Dialogue.dia_1);
-            /*
-            if (!showDialouge){
-                showDialouge = true;
-                dialogBackground(Dialogue.dia_1);
-            }
-            else{
-                showDialouge = false;
-            } */
+
         }
 
 
@@ -825,8 +831,9 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtGuid);
 
 
-        txtGuid.setText("Beginner’s Guide: \t'I' hide\n\n" +
-                "Lorem Ipsum is simply dummy \ntext of the printing and \n typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy text ever since \nthe 1500s, when an unknown \nprinter took a galley of type and \nscrambled it t");
+        txtGuid.setText("Beginner’s Guide: \n\n" +
+                "More info 'Press key 'S' \n" +
+                "To hide me 'Press key 'I'");
 
     }
 
@@ -877,8 +884,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void debugButtons(){
-
-        Table DebugTable = new Table();
+        DebugTable = new Table();
 
         DebugTable.setFillParent(true);
         DebugTable.setDebug(false);
@@ -924,7 +930,6 @@ public class GameScreen extends AbstractScreen {
             System.out.println("DebugMode = " + app.debugMode + ": removeActor");
             DebugTable.removeActor(debugSeasonButton);
             DebugTable.removeActor(debugEvenButton);
-
 
         }
 

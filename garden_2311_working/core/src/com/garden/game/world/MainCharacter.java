@@ -135,9 +135,9 @@ public class MainCharacter extends Unit{
         }
 
         if(!canMove((int) getX()/Constants.TILE_WIDTH, (int) getY()/Constants.TILE_HEIGHT)) {
-            //clearActions();
-
-            //activeAnimation = stopAnimations.get(direc);
+            clearActions();
+            activeAnimation = stopAnimations.get(direc);
+            setPlayerMovLocked(false);
         }
 
         drawThis = activeAnimation.getKeyFrame(elapsedTime);

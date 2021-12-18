@@ -43,7 +43,7 @@ public class GameScreen extends AbstractScreen {
     public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid, txtSkills;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
-    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen, imgKeyboardControls;
+    private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
     private float blkScreenAlpha;
     private Table buttonTable, outerTable;
     private SpriteBatch batchTest;
@@ -138,9 +138,7 @@ public class GameScreen extends AbstractScreen {
         //imgBlkScreen.setColor(0,0,0,1);
 
 
-        imgKeyboardControls = new Image(new TextureRegion(app.assets.<Texture>get("KeyboardControls.png")));
-        imgKeyboardControls.setSize(844,284);
-        imgKeyboardControls.setPosition(100, 250);
+
 
 
 
@@ -323,15 +321,20 @@ public class GameScreen extends AbstractScreen {
             start = true;
         }
 
-        int step = (int) (time*12);
+        int step = (int) (time*12);//Dialogue.readingSpeed);
         if (step > text.length()) {
-            dialogStep = 0;
-            showDialouge = false;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                dialogStep = 0;
+                showDialouge = false;
+            }
+            //dialogStep = 0;
+            //showDialouge = false;
         }
         else {
             String textModified = text.substring(0,step);
             changeDialog(textModified);
         }
+        Label spaceToSkip = new Label("Press {space} to skip",skin);
 
         Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
         shapeRendererV2.begin(ShapeRenderer.ShapeType.Filled);
@@ -346,10 +349,15 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.end();
         lbl.setWrap(true);
         lbl.setPosition(240,85);
+        spaceToSkip.setPosition(580,45);
+       //spaceToSkip.setColor(210/255f,229/255f,216/255f,0.80f); //green-gray ish
+        spaceToSkip.setColor(241/255f,241/255f,208/255f,0.60f); //yellow ish
+       //spaceToSkip.setColor(205/255f,253/255f,254/255f,0.90f); //blue ish
         lbl.setWidth(500); //500
         lbl.setHeight(150);
         app.batch.begin();
         lbl.draw(app.batch,10f);
+        spaceToSkip.draw(app.batch,10f);
         app.batch.end();
         camera.update();
         if (start) {
@@ -497,7 +505,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void updateTxtQuests() {
-        String strQuests = "Quest: \n";
+        String strQuests = "Quests: \n";
         for(Quest q: world.player.quests) {
             strQuests += (q.description + "\n");
         }
@@ -786,11 +794,11 @@ public class GameScreen extends AbstractScreen {
             if (!showGuid){
                 showGuid = true;
                 guidKeyPress = false;
-                hud.addActor(imgKeyboardControls);
+
             }
             else{
                 showGuid = false;
-                imgKeyboardControls.remove();
+
 
                 txtGuid.remove();
                 guidKeyPress = true;
@@ -801,7 +809,7 @@ public class GameScreen extends AbstractScreen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
             showDialouge = true;
-            updateDialog(Dialogue.dia_1);
+            updateDialog(Dialogue.dia_intro_0);
 
             dialogBackground();
             //dialogBackground(Dialogue.dia_1);

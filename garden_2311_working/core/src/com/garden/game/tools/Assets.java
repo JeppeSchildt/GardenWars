@@ -88,9 +88,6 @@ public class Assets extends AssetManager {
         soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.mp3"));
 
 
-
-
-
     }
 
     // Setup walking animations. Get region of spritesheet. Split into individual images.

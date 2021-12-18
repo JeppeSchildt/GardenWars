@@ -1,10 +1,13 @@
 package com.garden.game.tools;
 
+import java.util.ArrayList;
+
 public class Dialogue {
+
 
     private static String BOSS = "Boss Ladies: \n";
     private static String MainCharacter = "Me: \n";
-
+    private static int readingSpeed = 12;
     public static String dia_1 = "Hello you motherfucker, are you okay? I wish to help you, ok? ";
     public static String dia_2 = "Your mother is worried, you're not planting enough plants. You don't want to make the spaghetti God angry, do you?";
     public static String dia_3 = "Hello!!";
@@ -14,7 +17,9 @@ public class Dialogue {
     //Intro - ParksChefen kommer ud og fortæller hvordan verden hænger sammen
     // Spil guide kan - vises som en pop op box når spillet starter - og kan skjules ved at trykke på I key
 
-    // -------- Intro ---------- //
+    /* -------- Intro ---------- */
+    public static String DIALOG_INTRO;
+
     public static String dia_intro_0 = BOSS + "'Good morning Johnny boy'";
 
     public static String dia_intro_1 = MainCharacter + "'Jonny boy!'";
@@ -47,12 +52,16 @@ public class Dialogue {
     public static String dia_intro_19 = BOSS + "'As long as you give them water once in a while, it should all work out'";
 
 
-
     // --------- The Boss Comes By - Week ------------ //
 
 
 
-
+    public static int getReadingSpeed() {
+        return readingSpeed;
+    }
+    public static void setReadingSpeed(int val) {
+        readingSpeed = val;
+    }
     public String test() {
         return dia_2;
     }

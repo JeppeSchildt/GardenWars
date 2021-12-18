@@ -25,6 +25,7 @@ import com.garden.game.player.Quest;
 import com.garden.game.tools.Dialogue;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
+import com.garden.game.tools.SoundFunctions;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
 
@@ -929,9 +930,12 @@ public class GameScreen extends AbstractScreen {
         debugSeasonButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!world.drySeason)
+                if (!world.drySeason){
                     world.drySeason = true;
-                else world.drySeason = false;
+                }
+                else {
+                    world.drySeason = false;
+                }
             }
         });
 

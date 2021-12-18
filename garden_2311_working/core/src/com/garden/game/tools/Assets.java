@@ -28,7 +28,7 @@ public class Assets extends AssetManager {
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations,
             wateringAnimations, journalistWalkAnimations, journalistStopAnimations;
 
-    public Music menuMusic, inGameMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
+    public Music menuMusic, inGameMusic, inGameDryMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
             soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
 
     //public Sound soundButtonPress, soundEnd, soundGameOver, soundGetWater, soundUseWater, soundUseGold, soundNewDay;
@@ -64,10 +64,17 @@ public class Assets extends AssetManager {
         inGameMusic.setLooping(true);
         inGameMusic.setVolume(musicVolume);
 
-        /* --------- InGameMusic setup  ---------  */
+        /* --------- InGameMusic Dry Season setup  ---------  */
+        //inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Slow-Desert-Blues-Backing-Track-in-D.mp3"));
+        inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-cold-desert-short.mp3"));
+        inGameDryMusic.setLooping(true);
+        inGameDryMusic.setVolume(musicVolume);
+
+        /* --------- menuMusic setup  ---------  */
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Cooking-mania-short.mp3"));
         menuMusic.setLooping(true);
         menuMusic.setVolume(musicVolume);
+
 
         /* --------- Sound Effect setup  ---------  */
         ambientSound_Bird = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));

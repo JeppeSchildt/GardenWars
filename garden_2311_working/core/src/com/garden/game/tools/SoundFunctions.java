@@ -72,6 +72,20 @@ public class SoundFunctions {
     }
 
 
+    public void Chance_InGameMusic(){
+        if (app.assets.inGameMusic.isPlaying()){
+            app.assets.inGameMusic.stop();
+            app.assets.ambientSound_Bird.stop();
+            app.assets.inGameDryMusic.play();
+        }
+        else if (app.assets.inGameDryMusic.isPlaying()){
+            app.assets.inGameDryMusic.stop();
+            app.assets.inGameMusic.play();
+            app.assets.ambientSound_Bird.play();
+        }
+    }
+
+
     public void Play_Music(){
         if (app.preferencesBool){
             if(!app.assets.inGameMusic.isPlaying()){

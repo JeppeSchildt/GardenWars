@@ -31,9 +31,9 @@ public class SkillTreeScreen implements Screen {
     private GardenGame app;
     private Stage stage;
     private Table table;
-    private String currentLearning = "";
+    private String currentLearning = "", strLearned = "";
     private String local;
-    private Label curentL;
+    private Label curentL, learnedSkills;
     private Texture textureRightArrow, textureLeftArrow, textureDownArrow, textureEmptyArrow;
     private Image imgRightArrow, imgLeftArrow, imgDownArrow, imgEmptyArrow;
     public static TextButton basicPlants, fertilizer, fertilizerPlus, general, moreFruits, moreFlowers,
@@ -62,13 +62,8 @@ public class SkillTreeScreen implements Screen {
     private  int irrigationX = waterX , irrigationY = waterPlusY - offsetY;
     private  float autoHarvestX = (float) ((fertilizerPlusX + irrigationX) *0.5) -50, autoHarvestY = fertilizerPlusY - 2* offsetY;
 
-
-
-
-
-
-
     Skin skin;
+
     public SkillTreeScreen(GardenGame app, SkillTree skillTree) {
         this.app = app;
         this.skillTree = app.gameScreen.world.player.skillTree;
@@ -79,8 +74,15 @@ public class SkillTreeScreen implements Screen {
 
         hudColor = Color.BLACK;
         shapeRenderer = new ShapeRenderer();
-        //lockedMap = new HashMap<>();
+        curentL = new Label("", skin);
+        curentL.setColor(0,1,1,1);
+        curentL.setPosition(700, 100);
+        stage.addActor(curentL);
 
+        learnedSkills = new Label(strLearned, skin);
+        learnedSkills.setPosition(25, 700);
+        learnedSkills.setColor(0.184f, 0.505f, 0.211f,1);
+        stage.addActor(learnedSkills);
 
     }
 
@@ -388,6 +390,7 @@ public class SkillTreeScreen implements Screen {
     @Override
     public void show() {
         manageButtons();
+        updateText();
         Gdx.input.setInputProcessor(stage);
 
 
@@ -486,7 +489,6 @@ public class SkillTreeScreen implements Screen {
     }
 
     public void manageButtons() {
-        currentLearning = "";
 
         if(     skillTree.skills.get(Constants.FERTILIZER_2).learned &&
                 skillTree.skills.get(Constants.CONSTRUCTION).learned &&
@@ -519,26 +521,39 @@ public class SkillTreeScreen implements Screen {
             lockedMap.get(skillTree.index).setTouchable(Touchable.disabled);
         }
 
+        updateText();
 
-        currentLearning = lockedMap.get(skillTree.index).toString();
-        String localLearning = currentLearning.substring(currentLearning.lastIndexOf(":") + 1);
 
-        curentL = new Label(local, app.assets.largeTextStyle);
-        curentL.setFontScale(1);
-        //curentL.setPosition(12,12);
 
-        table.add(curentL).colspan(2).left();
+    }
 
-        if(currentLearning.contains(":")){
-            local ="CurrentLearning: " +  localLearning;
+    private void updateText() {
+        currentLearning = "Currently Learning: ";
+        strLearned = "Learned skills: ";
 
-        } else{
-            local = "CurrentLearning: None";
+        if(skillTree.currentlyLearning == null) {
+            currentLearning += "None";
+        } else if (skillTree.currentlyLearning.learned) {
+            currentLearning += "None";
+        } else {
+            String localLearning = lockedMap.get(skillTree.index).toString();
+            currentLearning  += localLearning.substring(localLearning.lastIndexOf(":") + 1);
         }
 
+        curentL.setText(currentLearning);
 
+        for(int i = 0; i < 12; i++) {
+            if(skillTree.skills.get(i).learned) {
+                String skill = lockedMap.get(i).toString();
+                skill = skill.substring(skill.lastIndexOf(":") + 1);
+                strLearned += "\n" + skill;
+            }
+        }
+        if(strLearned.compareTo("Learned skills: ") == 0) {
+            strLearned += "None";
+        }
 
-
+        learnedSkills.setText(strLearned);
 
     }
 

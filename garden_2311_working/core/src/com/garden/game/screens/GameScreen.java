@@ -40,7 +40,7 @@ public class GameScreen extends AbstractScreen {
     public World world;
     private GardenGame app;
     private Stage hud;
-    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid;
+    public Label txtGold, txtWater, txtTurnNumber, txtTitle, txtMonthWeekDay, txtResources, txtTileInfo, txtNextTurn, txtQuests, lbl, txtGuid, txtSkills;
     private String nextTurnStr = "Day number ";
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen, imgKeyboardControls;
@@ -127,6 +127,8 @@ public class GameScreen extends AbstractScreen {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         txtNextTurn = new Label("", skin);
+        txtSkills = new Label("", skin);
+        txtSkills.setPosition(1024/2-75, 768/2-40);
         // 1024/2 - 75 :)
         txtNextTurn.setPosition(1024/2-75, 768/2);
 
@@ -712,18 +714,23 @@ public class GameScreen extends AbstractScreen {
     private void nextTurnInfo() {
         if(nextTurnClicked) {
             showDialouge = false;
-            if(blkScreenAlpha >= 2) {
+            if(blkScreenAlpha >= 3.5f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
+                txtSkills.remove();
                 blkScreenAlpha = 0.0f;
 
                 // Move character to front porch instantly.
                 moveToPorch();
                 app.sound.SoundNewDay();
             }
-            if(blkScreenAlpha >= 0.5f) {
+            if(blkScreenAlpha >= 0.5f) { // change this to longer
                 nextTurnStr = "Day " + world.turnNumber;
+                txtSkills.setText("Days to learn:");
+
+                hud.addActor(txtSkills);
+
                 txtNextTurn.setText(nextTurnStr);
                 hud.addActor(txtNextTurn);
             }

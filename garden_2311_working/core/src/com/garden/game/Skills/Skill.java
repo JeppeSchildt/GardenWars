@@ -11,6 +11,7 @@ public class Skill {
     public boolean hasTurnWork;
     public ArrayList<Integer> adjacent; // Edges from this node.
     int incoming; // Edges ending at this node. Not used
+    public String name;
 
     public Skill (int turns, Player player){
      this.turns = turns;

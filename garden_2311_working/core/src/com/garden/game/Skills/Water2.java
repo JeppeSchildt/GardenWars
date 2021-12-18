@@ -6,6 +6,7 @@ import com.garden.game.tools.Constants;
 public class Water2 extends Skill{
     public Water2(int turns, Player player) {
         super(turns, player);
+        name = "Water 2";
         hasTurnWork = true;
         adjacent.add(Constants.IRRIGATION);
 

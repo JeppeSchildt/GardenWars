@@ -11,6 +11,7 @@ import java.util.Map;
 public class Irrigation extends Skill {
     public Irrigation(int turns, Player player) {
         super(turns, player);
+        name = "Irrigation";
         hasTurnWork = true;
         adjacent.add(Constants.AUTO_HARVEST);
     }

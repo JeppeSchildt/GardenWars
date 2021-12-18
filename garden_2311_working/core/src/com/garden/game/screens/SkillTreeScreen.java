@@ -15,9 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
+import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.World;
+import com.sun.tools.javac.util.StringUtils;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -29,9 +31,12 @@ public class SkillTreeScreen implements Screen {
     private GardenGame app;
     private Stage stage;
     private Table table;
+    private String currentLearning = "";
+    private String local;
+    private Label curentL;
     private Texture textureRightArrow, textureLeftArrow, textureDownArrow, textureEmptyArrow;
     private Image imgRightArrow, imgLeftArrow, imgDownArrow, imgEmptyArrow;
-    private TextButton basicPlants, fertilizer, fertilizerPlus, general, moreFruits, moreFlowers,
+    public static TextButton basicPlants, fertilizer, fertilizerPlus, general, moreFruits, moreFlowers,
             construction, communication, water, waterPlus, irrigation, autoHarvest,
             settingsButton, quitButton, playButton, backButton;
 
@@ -81,7 +86,6 @@ public class SkillTreeScreen implements Screen {
 
     private void initStage() {
 
-
         // Create a table that fills the screen. Everything else will go inside this table.
         table = new Table();
 
@@ -93,8 +97,13 @@ public class SkillTreeScreen implements Screen {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 
-        Label title = new Label("Skill Tree", app.assets.largeTextStyle);
-        title.setFontScale(5);
+
+
+
+
+
+
+
 
         /*
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);
@@ -109,47 +118,35 @@ public class SkillTreeScreen implements Screen {
          */
 
 
-
-        textureRightArrow = new Texture(Gdx.files.internal("arrows/RightArrow.png"));
-        imgRightArrow = new Image(textureRightArrow);
-
-        textureLeftArrow = new Texture(Gdx.files.internal("arrows/LeftArrow.png"));
-        imgLeftArrow = new Image(textureLeftArrow);
-
-        textureDownArrow = new Texture(Gdx.files.internal("arrows/DownArrow.png"));
-        imgDownArrow = new Image(textureDownArrow);
-
-        textureEmptyArrow = new Texture(Gdx.files.internal("arrows/EmptyArrow.png"));
-        imgEmptyArrow = new Image(textureEmptyArrow);
-
-
         basicPlants = new TextButton("Basic Plants",skin);
+
         basicPlants.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
                 skillTree.setCurrentlyLearning(Constants.BASIC_PLANTS);
-                basicPlants.setColor(0,0,0,1);
+                //basicPlants.setColor(0.184f, 0.505f, 0.211f,1);
+                //basicPlants.setTouchable(Touchable.disabled);
+                manageButtons();
+
+
 
             }
         });
         //basicPlants.setVisible(false);
-
-
-
-
-
         basicPlants.setPosition(basicPlantsX, basicPlantsY);
         stage.addActor(basicPlants);
 
+
         fertilizer = new TextButton("Fertilizer",skin);
+        //fertilizer.setColor(0,0,0,0.5f);
         fertilizer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.FERTILIZER_1);
-                //moreFlowers.setTouchable(Touchable.enabled);
+                //moreFlowers.setTouchable(Touchable.disabled);
                 //moreFruits.setTouchable(Touchable.enabled);
-                fertilizer.setColor(0,0,0,1);
+                manageButtons();
 
             }
         });
@@ -157,66 +154,77 @@ public class SkillTreeScreen implements Screen {
         stage.addActor(fertilizer);
 
         general = new TextButton("General",skin);
+
         general.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.GENERAL);
-                //communication.setTouchable(Touchable.enabled);
+                //general.setTouchable(Touchable.disabled);
                 //construction.setTouchable(Touchable.enabled);
                 //water.setTouchable(Touchable.enabled);
-                general.setColor(0,0,0,1);
+               // general.setColor(0.184f, 0.505f, 0.211f,1);
+                manageButtons();
+
             }
         });
         general.setPosition(generalX, generalY);
         stage.addActor(general);
 
         moreFlowers = new TextButton("More Flowers",skin);
+        moreFlowers.setColor(0,0,0,0.5f);
         moreFlowers.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //fertilizerPlus.setTouchable(Touchable.enabled);
+               // moreFruits.setTouchable(Touchable.disabled);
                 skillTree.setCurrentlyLearning(Constants.MORE_FLOWERS);
-                moreFlowers.setColor(0,0,0,1);
+                manageButtons();
+
             }
         });
         moreFlowers.setPosition(moreFlowersX, moreFlowersY);
         stage.addActor(moreFlowers);
 
         moreFruits = new TextButton("More Fruits",skin);
+        //moreFruits.setColor(0,0,0,0.5f);
         moreFruits.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.MORE_FRUITS);
+                manageButtons();
                 //fertilizerPlus.setTouchable(Touchable.enabled);
-                moreFlowers.setColor(0,0,0,1);
+
             }
         });
         moreFruits.setPosition(moreFruitsX, moreFruitsY);
         stage.addActor(moreFruits);
 
         construction = new TextButton("Construction",skin);
+        //construction.setColor(0,0,0,0.5f);
         construction.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.CONSTRUCTION);
-                construction.setColor(0,0,0,1);
+                manageButtons();
+
             }
         });
         construction.setPosition(constructionX, constructionY);
         stage.addActor(construction);
 
         communication = new TextButton("Communication",skin);
+        //communication.setColor(0,0,0,0.5f);
         communication.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.COMMUNICATION);
-                communication.setColor(0,0,0,1);
+                manageButtons();
             }
         });
         communication.setPosition(communicationX, communicationY);
         stage.addActor(communication);
 
         water = new TextButton("Water",skin);
+       // water.setColor(0,0,0,0.5f);
         water.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -224,18 +232,20 @@ public class SkillTreeScreen implements Screen {
                 //waterPlus.setTouchable(Touchable.enabled);
                 //world.player.skillTree.skills.get(8).skillLearned();
                 //water.setTouchable(Touchable.disabled);
-                water.setColor(0,0,0,1);
+                manageButtons();
+
             }
         });
         water.setPosition(waterX, waterY);
         stage.addActor(water);
 
         fertilizerPlus = new TextButton("Fertilizer++",skin);
+        //fertilizerPlus.setColor(0,0,0,0.5f);
         fertilizerPlus.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.FERTILIZER_2);
-                fertilizerPlus.setColor(0,0,0,1);
+                manageButtons();
 
             }
         });
@@ -244,34 +254,40 @@ public class SkillTreeScreen implements Screen {
         stage.addActor(fertilizerPlus);
 
         waterPlus = new TextButton("Water++",skin);
+        //waterPlus.setColor(0,0,0,0.5f);
         waterPlus.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.WATER_2);
                 //irrigation.setTouchable(Touchable.enabled);
-                waterPlus.setColor(0,0,0,1);
+                manageButtons();
+
             }
         });
         waterPlus.setPosition(waterPlusX, waterPlusY);
         stage.addActor(waterPlus);
 
         autoHarvest = new TextButton("Auto harvest",skin);
+        //autoHarvest.setColor(0,0,0,0.5f);
         autoHarvest.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.AUTO_HARVEST);
-                autoHarvest.setColor(0,0,0,1);
+                manageButtons();
+
             }
         });
         autoHarvest.setPosition(autoHarvestX, autoHarvestY);
         stage.addActor(autoHarvest);
 
         irrigation = new TextButton("Irrigation",skin);
+        //irrigation.setColor(0,0,0,0.5f);
         irrigation.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.IRRIGATION);
-                irrigation.setColor(0,0,0,1);
+                manageButtons();
+
             }
         });
         irrigation.setPosition(irrigationX, irrigationY);
@@ -316,6 +332,9 @@ public class SkillTreeScreen implements Screen {
         waterPlus.setTouchable(Touchable.disabled);
         irrigation.setTouchable(Touchable.disabled);
         autoHarvest.setTouchable(Touchable.disabled);*/
+
+
+
 
 
 
@@ -466,20 +485,58 @@ public class SkillTreeScreen implements Screen {
     }
 
     public void manageButtons() {
+        currentLearning = "";
 
         if(     skillTree.skills.get(Constants.FERTILIZER_2).learned &&
                 skillTree.skills.get(Constants.CONSTRUCTION).learned &&
                 skillTree.skills.get(Constants.IRRIGATION).learned ) {
             skillTree.availableToLearn[Constants.AUTO_HARVEST] = true;
+        } else{
+            skillTree.availableToLearn[Constants.AUTO_HARVEST] = false;
         }
 
         for(int i=0; i < 12; i++) {
             if (skillTree.availableToLearn[i]) {
                 lockedMap.get(i).setTouchable(Touchable.enabled);
+                lockedMap.get(i).setColor(1,1,1,1);
             } else {
+                lockedMap.get(i).setColor(0,0,0,0.5f);
                 lockedMap.get(i).setTouchable(Touchable.disabled);
             }
+            if (skillTree.skills.get(i).learned){
+                lockedMap.get(i).setColor(0.184f, 0.505f, 0.211f,1);
+                lockedMap.get(i).setTouchable(Touchable.disabled);
+               // skillTree.currentlyLearning = null;
+            }
+
         }
+        if(skillTree.currentlyLearning != null) {
+            lockedMap.get(skillTree.index).setColor(0,1,1,0.5f);
+            if(skillTree.skills.get(skillTree.index).learned){
+                lockedMap.get(skillTree.index).setColor(0.184f, 0.505f, 0.211f,1);
+            }
+            lockedMap.get(skillTree.index).setTouchable(Touchable.disabled);
+        }
+
+
+        currentLearning = lockedMap.get(skillTree.index).toString();
+        String localLearning = currentLearning.substring(currentLearning.lastIndexOf(":") + 1);
+
+        curentL = new Label(local, app.assets.largeTextStyle);
+        curentL.setFontScale(1);
+        //curentL.setPosition(12,12);
+
+        table.add(curentL).colspan(2).left();
+
+        if(currentLearning.contains(":")){
+            local ="CurrentLearning: " +  localLearning;
+
+        } else{
+            local = "CurrentLearning: None";
+        }
+
+
+
 
 
     }

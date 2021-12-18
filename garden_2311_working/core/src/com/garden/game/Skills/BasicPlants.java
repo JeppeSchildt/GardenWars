@@ -1,8 +1,10 @@
 package com.garden.game.Skills;
 
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.garden.game.player.Player;
 import com.garden.game.tools.Constants;
 import jdk.vm.ci.meta.Constant;
+import com.garden.game.screens.SkillTreeScreen;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,8 @@ public class BasicPlants extends Skill {
         super.nextTurn();
         if(turns == 0) {
             skillLearned();
+
+
         }
     }
-
 }

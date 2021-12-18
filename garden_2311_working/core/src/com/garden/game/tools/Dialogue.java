@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 public class Dialogue {
 
+
     private static String BOSS = "Boss Ladies: \n";
     private static String MainCharacter = "Me: \n";
-
+    private static int readingSpeed = 12;
     public static String dia_1 = "Hello you motherfucker, are you okay? I wish to help you, ok? ";
     public static String dia_2 = "Your mother is worried, you're not planting enough plants. You don't want to make the spaghetti God angry, do you?";
     public static String dia_3 = "Hello!!";
@@ -55,7 +56,12 @@ public class Dialogue {
 
 
 
-
+    public static int getReadingSpeed() {
+        return readingSpeed;
+    }
+    public static void setReadingSpeed(int val) {
+        readingSpeed = val;
+    }
     public String test() {
         return dia_2;
     }

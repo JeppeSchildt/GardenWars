@@ -26,6 +26,7 @@ public class PreferencesScreen implements Screen {
 
     private Slider volumeMusicSlider;
     private CheckBox musicCheckbox;
+    private Slider dialougeSpeedSlider;
 
 
     // Once this reaches 1.0f the next scene is shown
@@ -70,7 +71,8 @@ public class PreferencesScreen implements Screen {
             }
         });
 
-
+            dialougeSpeedSlider = new Slider(0f,1f,0.1f,false,skin);
+            //dialougeSpeedSlider.setValue()
             //Volume Music
             volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin);
             volumeMusicSlider.setValue( app.assets.menuMusic.getVolume() );

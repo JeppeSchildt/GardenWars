@@ -65,8 +65,8 @@ public class Assets extends AssetManager {
         inGameMusic.setVolume(musicVolume);
 
         /* --------- InGameMusic Dry Season setup  ---------  */
-        //inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Slow-Desert-Blues-Backing-Track-in-D.mp3"));
-        inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-cold-desert-short.mp3"));
+        //inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-sadistic-game-short.mp3"));
+        inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-fragments-short.mp3"));
         inGameDryMusic.setLooping(true);
         inGameDryMusic.setVolume(musicVolume);
 

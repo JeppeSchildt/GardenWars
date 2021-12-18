@@ -17,6 +17,7 @@ public class KeepHealthyQuest extends Quest {
         selectNumber();
         selectPlantType();
         initDescription();
+        //description = "";
 
     }
 

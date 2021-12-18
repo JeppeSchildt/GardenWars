@@ -71,7 +71,7 @@ public class MapInput implements InputProcessor {
             tileSelected = false;
 
             // Check for bounds of map and water cells.
-            if (world.player.unit.canMove(tileX, tileY)) {
+            if (world.player.unit.canMove(tileX, tileY) && !world.player.isMovementLocked()) {
 
                 world.player.unit.move(tileX, tileY);
                 world.player.unit.setPosition(position.x, position.y);

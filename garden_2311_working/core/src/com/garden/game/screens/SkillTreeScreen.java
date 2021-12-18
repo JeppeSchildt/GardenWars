@@ -106,6 +106,7 @@ public class SkillTreeScreen implements Screen {
 
 
         /*
+
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);
         playButton = new TextButton("Resume",skin);
         playButton.addListener(new ChangeListener() {

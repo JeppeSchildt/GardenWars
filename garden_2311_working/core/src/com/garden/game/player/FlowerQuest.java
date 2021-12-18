@@ -92,5 +92,6 @@ public class FlowerQuest extends Quest {
             return;
         }
         description = "Study More Flowers to access this quest";
+        //description = "";
     }
 }

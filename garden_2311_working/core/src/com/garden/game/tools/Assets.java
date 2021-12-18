@@ -25,7 +25,8 @@ public class Assets extends AssetManager {
     public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
     public TiledMapTileSet tileSet, tileSetNew;
     public TiledMapTileLayer.Cell dirtCell, grassCell;
-    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations, wateringAnimations;
+    public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations,
+            wateringAnimations, journalistWalkAnimations, journalistStopAnimations;
 
     public Music menuMusic, inGameMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
             soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
@@ -40,18 +41,19 @@ public class Assets extends AssetManager {
         loadFiles();
         generateFonts();
         loadSound();
-        textureAtlas = this.get("main_pack.atlas");
+        textureAtlas = this.get("pack_171221.atlas");
         styleAtlas = this.get("uiskin.atlas");
         initWalkAnimations();
         initStopAnimations();
         initPlantSprites();
         initWateringAnimations();
+        initJournalist();
 
     }
 
     // Close files
     public void unloadAll() {
-        this.unload("main_pack.atlas");
+        this.unload("pack_171221.atlas");
         this.unload("uiskin.atlas");
         //this.unload("NewDesign/.png");
     }
@@ -85,6 +87,10 @@ public class Assets extends AssetManager {
         soundUseGold = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/use_gold.mp3"));
         soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.mp3"));
 
+
+
+
+
     }
 
     // Setup walking animations. Get region of spritesheet. Split into individual images.
@@ -102,7 +108,11 @@ public class Assets extends AssetManager {
             }
             index = 0;
             // First argument frame duration, how long does a frame last.
-            this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            //this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.walkAnimations.add(animation);
         }
 
     }
@@ -119,7 +129,10 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[0][i];
             }
             index = 0;
-            this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            //this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.stopAnimations.add(animation);
         }
 
     }
@@ -132,14 +145,16 @@ public class Assets extends AssetManager {
 
         int index = 0;
         for (int i = 0; i < 4; i++) {
-            TextureRegion[] animationFrames = new TextureRegion[3];
+            TextureRegion[] animationFrames = new TextureRegion[2];
             for (int j = 0; j < 2; j++) {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
-            //Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
-            //animation.setPlayMode();
-            this.bucketAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/4f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.NORMAL);
+            this.bucketAnimations.add(animation);
+
+
         }
 
         index = 0;
@@ -150,6 +165,45 @@ public class Assets extends AssetManager {
             }
             index = 0;
             this.wateringAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+        }
+
+        Animation<TextureRegion> animation = this.wateringAnimations.get(0);
+        this.wateringAnimations.add(animation);
+
+    }
+
+    public void initJournalist() {
+        journalistWalkAnimations = new ArrayList<>();
+        journalistStopAnimations = new ArrayList<>();
+        TextureAtlas.AtlasRegion atlasRegion = textureAtlas.findRegion("journalist");
+        TextureRegion[][] tmpFrames = atlasRegion.split(16,17);
+
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 0; j < 3; j++) {
+                animationFrames[index++] = tmpFrames[j][i];
+            }
+            index = 0;
+            // First argument frame duration, how long does a frame last.
+            //this.walkAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.journalistWalkAnimations.add(animation);
+        }
+
+        index = 0;
+        for (int i = 0; i < 4; i++) {  // 0 = down, 1 = right, 2 = up, 3 = left
+            TextureRegion[] animationFrames = new TextureRegion[3];
+            for (int j = 0; j < 3; j++) {  // 0 = stop, 1 and 2 = walk
+                animationFrames[index++] = tmpFrames[0][i];
+            }
+            index = 0;
+            //this.stopAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/5f, animationFrames);
+            animation.setPlayMode(Animation.PlayMode.LOOP);
+            this.journalistStopAnimations.add(animation);
         }
 
     }
@@ -178,10 +232,10 @@ public class Assets extends AssetManager {
 
     // Load map, textures, sprites
     public void loadFiles(){
-        this.load("main_pack.atlas", TextureAtlas.class);
+        this.load("pack_171221.atlas", TextureAtlas.class);
         this.load("uiskin.atlas", TextureAtlas.class);
 
-        this.load("inGameDesign/GameBorder.png", Texture.class);
+        this.load("inGameDesign/GameBorderNew.png", Texture.class);
         this.load("inGameDesign/ButtonBorder.png", Texture.class);
 
         this.load("inGameDesign/ButtonNextTurn.png", Texture.class);
@@ -192,15 +246,19 @@ public class Assets extends AssetManager {
         this.load("arrows/RightArrow.png", Texture.class);
         this.load("arrows/LeftArrow.png", Texture.class);
 
+        /* --------- Keyboard Controls img  ---------  */
+        this.load("KeyboardControls.png", Texture.class);
+
+
         this.load("black_screen.png", Texture.class);
 
 
         setLoader(TiledMap.class, new TmxMapLoader());
-        load("World1.tmx", TiledMap.class);
+        load("World.tmx", TiledMap.class);
 
         finishLoading();
 
-        tileSet = get("World1.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
+        tileSet = get("World.tmx", TiledMap.class).getTileSets().getTileSet("Terrain");
         dirtCell = new TiledMapTileLayer.Cell();
         dirtCell.setTile(this.tileSet.getTile(0x244));
 

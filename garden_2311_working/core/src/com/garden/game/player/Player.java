@@ -5,7 +5,7 @@ import com.garden.game.GardenGame;
 import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.World;
+import com.garden.game.world.MainCharacter;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.Unit;
 
@@ -24,12 +24,12 @@ import java.util.Map;
  */
 public class Player {
     GardenGame app;
-    public Unit unit;
+    public MainCharacter unit;
     public int money, water, maxWater, points, maxPoint, waterPerTurn, nHarvested;
     public int waterSize;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
-    private boolean gotWater;
+    private boolean gotWater, isMovementLocked;
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
@@ -37,7 +37,7 @@ public class Player {
 
     public Player(GardenGame app) {
         this.app = app;
-        unit = new Unit(this.app, "character000");
+        unit = new MainCharacter(this.app);
         skillTree = new SkillTree(this);
         plants = new ArrayList<>();
         plants_ = new HashMap<>();
@@ -100,10 +100,12 @@ public class Player {
         return plants_.get(new Vector2(x, y));
     }
 
+    // Add plant to map. We do not check any conditions here...??
     public void plant(float x, float y, Plant plant) {
         money -= plant.getPrice();
         addPlant(plant);
         unit.gotoAndPlant(x, y, plant);
+        setMovementLocked(true);
     }
 
     public boolean canWater(float x, float y) {
@@ -116,18 +118,26 @@ public class Player {
         return false;
     }
 
+    // Water plant at given position.
     public void water(float x, float y) {
-        plants_.get(new Vector2(x,y)).water(waterSize);
+        Plant p = plants_.get(new Vector2(x,y));
+        if(p == null) { return; }
+        if(water-waterSize < 0) { return; }
+
+        p.water(waterSize);
         water -= waterSize;
+        unit.gotoAndWater(x,y);
+        setMovementLocked(true);
     }
 
     public void getMoreWater(){
         // Tile 17, 12
         // You get water once per round
-        if(!gotWater && !app.drySeason) {
+        if(!gotWater && !app.gameScreen.world.drySeason) {
             unit.gotoAndGetMoreWater();
             water += waterPerTurn;
             gotWater = true;
+            setMovementLocked(true);
         }
     }
 
@@ -144,6 +154,7 @@ public class Player {
     public void harvest(float x, float y) {
         Plant p = plants_.get(new Vector2(x, y));
         if(p != null) {
+            setMovementLocked(true);
             unit.setPosition(x, y);
             money += p.harvest();
             nHarvested++;
@@ -215,5 +226,12 @@ public class Player {
         }
     }
 
+    // Disable movements for player.
+    public void setMovementLocked(boolean locked) {
+        isMovementLocked = locked;
+    }
 
+    public boolean isMovementLocked() {
+        return isMovementLocked;
+    }
 }

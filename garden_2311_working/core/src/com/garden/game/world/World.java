@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.tools.Assets;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.plants.Plant;
 
 import java.util.Map;
+import java.util.Random;
 
 public class World extends Stage {
     private final GardenGame app;
@@ -37,6 +39,13 @@ public class World extends Stage {
 
     private int maxGold = 9999;
 
+    public Journalist journalist;
+
+    public int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
+    public int lengthForDrySeason, lengthForWetSeason;
+    public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false, isJournalistEvent = false, beginJournalistEvent;
+
+
     public World(GardenGame app) {
         this.app = app;
 
@@ -48,6 +57,11 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         player = new Player(app);
         turnNumber = 1;
+        journalist = new Journalist(app);
+
+        // Dry season event
+        drySeason = false;
+
     }
 
     public void init(String map) {
@@ -93,9 +107,11 @@ public class World extends Stage {
         worldWidth = tiledMap.getProperties().get("width", Integer.class);
         worldHeight = tiledMap.getProperties().get("height", Integer.class);
 
+        resetMap();
 
 
         addActor(player.unit);
+
 
         spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
@@ -116,7 +132,7 @@ public class World extends Stage {
         tiledMapRenderer.setView(worldCamera);
 
 
-        if (app.drySeason) {
+        if (drySeason) {
             tiledMapRenderer.render(mapLayerIndicesDry);
         } else {
             tiledMapRenderer.render(mapLayerIndices);
@@ -128,13 +144,14 @@ public class World extends Stage {
         app.batch.begin();  // Batch ended in GameScreens render
         act(Gdx.graphics.getDeltaTime());
         //renderBubble("TEST");
-        draw();
-
         //for ( Plant plant : user.getPlants() ) {
+
         for (Map.Entry<Vector2, Plant> entry : player.getPlants_().entrySet()) {
             Plant plant = entry.getValue();
             plant.draw(app.batch, 1);
         }
+
+        draw();
 
         spriteHighlight.draw(app.batch);
 
@@ -158,11 +175,19 @@ public class World extends Stage {
         app.score = player.money;
 
         weekCount();
+        drySeasonEvent();
+
+        if(!beginJournalistEvent) {
+            journalist.remove();
+        }
     }
 
     private void weekCount(){
         dayCount++;
         if (dayCount == 8){
+            beginJournalistEvent = true;
+            addActor(journalist);
+            enterJournalist();
             dayCount = 1;
             weekCount++;
         }
@@ -183,6 +208,57 @@ public class World extends Stage {
 
     public boolean isWaterTile(int x, int y) {
         return waterLayer.getCell(x, y) != null;
+    }
+
+    private void resetMap(){
+        TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayers.get("Grass Layer");
+        for (int i = 0; i < Constants.MAP_WIDTH_TILES; i++){
+
+            for(int j = 0; j < Constants.MAP_HEIGHT_TILES; j++){
+                if (tileLayer.getCell(i,j) != null){
+                    tileLayer.setCell(i,j, app.assets.grassCell);
+                }
+            }
+        }
+    }
+
+    public void drySeasonEvent(){
+
+        // DrySeasonCount_RandomNumber = Random number
+
+        if (lengthForWetSeason == DrySeasonCount_RandomNumber){
+            // Make Map DrySeason
+            drySeason = true;
+            lengthForDrySeason = 0;
+        }
+
+        if (drySeason){
+            if (!isStartWetSeason){
+                isStartWetSeason = true;
+                WetSeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_DRY_SEASONS_DAYS) + Constants.MIN_DRY_SEASONS_DAYS;
+            }
+            // WetSeasonCount_RandomNumber = Random number
+            // lengthForDrySeason = 0 counter
+
+            if (lengthForDrySeason == WetSeasonCount_RandomNumber){
+                // Make Map WetSeason
+                drySeason = false;
+                lengthForWetSeason = 0;
+
+                isStartDrySeason = false;
+            }
+            lengthForDrySeason++;
+        }
+        lengthForWetSeason++;
+    }
+
+    public void enterJournalist() {
+        journalist.setInitialPosition();
+        journalist.setPosition(player.unit.getX()+50, player.unit.getY());
+        //beginJournalistEvent = false;
+    }
+    public void checkJournalistEvent() {
+
     }
 
 }

@@ -25,11 +25,11 @@ import com.garden.game.player.Quest;
 import com.garden.game.tools.Dialogue;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
-import com.garden.game.tools.SoundFunctions;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -61,12 +61,13 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
+    private boolean showDialog = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
     private String currentDialog = "";
-    private int dialogStep = 0;
+    private int dialogStep = 0, dialogIndex = 0;
+    private List<String> currentDialogList;
 
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
@@ -104,7 +105,6 @@ public class GameScreen extends AbstractScreen {
 
         initHUD();
         moveToPorch();
-        //
         startIntroDialogue();
     }
 
@@ -299,17 +299,20 @@ public class GameScreen extends AbstractScreen {
         time = 0; //Resets timer
     }
     void startIntroDialogue() {
-        showDialouge = true;
-        updateDialog(Dialogue.dia_3);
-        //currentDialog = Dialogue.dia_3;
+        showDialog = true;
+        world.introBoss();
+
+        currentDialogList = Dialogue.DIALOG_INTRO;
+        updateDialog(currentDialogList.get(dialogIndex));
+        dialogIndex++;
         dialogBackground();
-        //dialogBackground(Dialogue.dia_3);
+
     }
     void changeDialog(String text) {
         lbl.setText(text);
     }
     void dialogBackground() {
-        String text = currentDialog;
+        String text = currentDialogList.get(dialogIndex);
         boolean start = false;
         if (app.batch.isDrawing()) {
             app.batch.end();
@@ -320,7 +323,7 @@ public class GameScreen extends AbstractScreen {
         if (step > text.length()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 dialogStep = 0;
-                showDialouge = false;
+                showDialog = false;
             }
             //dialogStep = 0;
             //showDialouge = false;
@@ -681,7 +684,7 @@ public class GameScreen extends AbstractScreen {
             guidBoxSetup();
         }
 
-        if (showDialouge) {
+        if (showDialog) {
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;
@@ -716,7 +719,7 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            showDialouge = false;
+            showDialog = false;
             if(blkScreenAlpha >= 3.5f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
@@ -823,10 +826,26 @@ public class GameScreen extends AbstractScreen {
             app.setScreen(app.keyboardControlsScreen);
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            app.sound.SoundButtonClick();
-            showDialouge = false;
+        if(world.isBossEvent) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                app.sound.SoundButtonClick();
+                if(currentDialogList == null) {
+                    return;
+                }
+                dialogStep = 0;
+                dialogIndex++;
+                if (dialogIndex >= currentDialogList.size()) {
+                    showDialog = false;
+                    dialogIndex = 0;
+                    world.leaveBoss();
+                } else {
+                    updateDialog(currentDialogList.get(dialogIndex));
+                    dialogBackground();
+                }
+
+            }
         }
+
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT))
         {
@@ -839,15 +858,6 @@ public class GameScreen extends AbstractScreen {
                 app.debugMode = false;
                 DebugTable.remove();
             }
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            System.out.println("Key X pressed");
-            showDialouge = true;
-            updateDialog(Dialogue.dia_intro_0);
-
-            dialogBackground();
-
         }
 
     }

@@ -25,11 +25,11 @@ import com.garden.game.player.Quest;
 import com.garden.game.tools.Dialogue;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
+import com.garden.game.tools.SoundFunctions;
 import com.garden.game.world.plants.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -46,7 +46,7 @@ public class GameScreen extends AbstractScreen {
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
     private float blkScreenAlpha;
-    private Table buttonTable, outerTable;
+    private Table buttonTable, outerTable, DebugTable;
     private SpriteBatch batchTest;
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
     private ScrollPane scrollPane;
@@ -61,13 +61,12 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialog = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
+    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
     private String currentDialog = "";
-    private int dialogStep = 0, dialogIndex = 0;
-    private List<String> currentDialogList;
+    private int dialogStep = 0;
 
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
@@ -82,6 +81,14 @@ public class GameScreen extends AbstractScreen {
         hud = new Stage(new ScreenViewport(camera));
         mux = new InputMultiplexer();
 
+
+        //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+
+        //hud = new Stage(new ScreenViewport(world.worldCamera));
+        //hudColor = new Color(1, 1, 1, 0.5f);
+
+        //app.maxWidth = world.tileSize*world.worldWidth;
+        //app.maxHeight = Gdx.graphics.getHeight()-100;
         plantFactory = new PlantFactory(app.assets);
 
         shapeRenderer = new ShapeRenderer();
@@ -141,6 +148,7 @@ public class GameScreen extends AbstractScreen {
 
         setupTileImprovementBox(false);
 
+
         // ------ Debug mode -------- //
         if (app.debugMode){
             debugButtons();
@@ -197,7 +205,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void drawButtons(){
-        /* ----- NextTurn Icon Setup----- */
+        // ----- NextTurn Icon Setup----- //
         //TextButton btnEndTurn = new TextButton("Next Day", skin);
         textureNextTurn = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
         imgNextTurn = new Image(textureNextTurn);
@@ -290,15 +298,10 @@ public class GameScreen extends AbstractScreen {
         currentDialog = text; //Updates the dialouge
         time = 0; //Resets timer
     }
-
     void startIntroDialogue() {
-        showDialog = true;
-        world.introBoss();
-
+        showDialouge = true;
+        updateDialog(Dialogue.dia_3);
         //currentDialog = Dialogue.dia_3;
-        currentDialogList = Dialogue.DIALOG_INTRO;
-        updateDialog(currentDialogList.get(dialogIndex));
-        dialogIndex++;
         dialogBackground();
         //dialogBackground(Dialogue.dia_3);
     }
@@ -306,7 +309,7 @@ public class GameScreen extends AbstractScreen {
         lbl.setText(text);
     }
     void dialogBackground() {
-        String text = currentDialogList.get(dialogIndex);
+        String text = currentDialog;
         boolean start = false;
         if (app.batch.isDrawing()) {
             app.batch.end();
@@ -315,10 +318,10 @@ public class GameScreen extends AbstractScreen {
 
         int step = (int) (time*12);//Dialogue.readingSpeed);
         if (step > text.length()) {
-            /*if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 dialogStep = 0;
                 showDialouge = false;
-            }*/
+            }
             //dialogStep = 0;
             //showDialouge = false;
         }
@@ -475,11 +478,13 @@ public class GameScreen extends AbstractScreen {
     private void nextTurn(){
         grp.remove();
         app.sound.SoundButtonClick();
-        dialogIndex = 0;
+
         // Set up fade to black stuff
         blkScreenAlpha = 0f;
         imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
         hud.addActor(imgBlkScreen);
+
+
 
 
         nextTurnClicked = true;
@@ -490,13 +495,6 @@ public class GameScreen extends AbstractScreen {
         world.nextTurn();
         //txtQuests.setText(world.player.quests.get(0).description);
         //System.out.println(world.player.quests.get(0).description);
-        if(world.isBossEvent) {
-            currentDialogList = world.boss.currentDialog;
-            showDialog = true;
-            updateDialog(currentDialogList.get(dialogIndex));
-            dialogIndex++;
-            dialogBackground();
-        }
 
         updateTxtQuests();
     }
@@ -567,7 +565,6 @@ public class GameScreen extends AbstractScreen {
         np = new NinePatch(new TextureRegion(bubble,0,0,bubble.getWidth(),bubble.getHeight()),5,5,5,5);
         renderBubble("TEST");
     }
-
     public void droughtEvent() {
 
     }
@@ -587,6 +584,17 @@ public class GameScreen extends AbstractScreen {
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
+        //app.batch.draw(inGameBorder,0,0);
+        /*Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        int rect_x = Gdx.graphics.getWidth();
+        int rect_y = Gdx.graphics.getHeight() - 100;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(hudColor);
+        //shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+        shapeRenderer.rect(0,0, Gdx.graphics.getWidth(), 100);
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);*/
         updateHUD();
     }
 
@@ -660,6 +668,7 @@ public class GameScreen extends AbstractScreen {
         world.update(delta);
         world.render();
 
+        //app.batch.begin(); //remove ?
         drawMenu();
 
         app.batch.setProjectionMatrix(camera.combined);
@@ -672,7 +681,7 @@ public class GameScreen extends AbstractScreen {
             guidBoxSetup();
         }
 
-        if (showDialog) {
+        if (showDialouge) {
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;
@@ -707,8 +716,8 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            showDialog = false;
-            if(blkScreenAlpha >= 2f) {
+            showDialouge = false;
+            if(blkScreenAlpha >= 3.5f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
@@ -754,52 +763,17 @@ public class GameScreen extends AbstractScreen {
 
         txtSkills.setText(currentlyLearning);
 
+
     }
 
-
-
     private void checkInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
-        {
-            nextTurn();
-            System.out.println("Key ENTER pressed");
-        }
-        if(world.isBossEvent) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.K)) {
-                System.out.println("Key SPACE pressed");
-                if(currentDialogList == null) {
-                    return;
-                }
-                dialogStep = 0;
-                dialogIndex++;
-                if (dialogIndex >= currentDialogList.size()) {
-                    showDialog = false;
-                    dialogIndex = 0;
-                    world.leaveBoss();
-                } else {
-                    updateDialog(currentDialogList.get(dialogIndex));
-                    dialogBackground();
-                }
-
-            }
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
-        {
-            if (!app.debugMode){
-                app.debugMode = true;
-            }
-            else{
-                app.debugMode = false;
-            }
-            System.out.println("Key BACKSPACE press");
-            debugButtons();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            app.sound.SoundButtonClick();
+            pauseScreen();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            System.out.println("Key Q pressed");
-
+            app.sound.SoundButtonClick();
             if (!showQuest){
                 showQuest = true;
                 questKeyPress = false;
@@ -811,43 +785,70 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            app.sound.SoundButtonClick();
+            world.player.getMoreWater();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            app.sound.SoundButtonClick();
+            skillTreeScreen();
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            System.out.println("Key I pressed");
-
+            app.sound.SoundButtonClick();
             if (!showGuid){
                 showGuid = true;
                 guidKeyPress = false;
-
             }
             else{
                 showGuid = false;
-
 
                 txtGuid.remove();
                 guidKeyPress = true;
             }
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        {
+            app.sound.SoundButtonClick();
+            nextTurn();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            app.sound.SoundButtonClick();
+            if(app.keyboardControlsScreen == null) {
+                app.keyboardControlsScreen = new KeyboardControlsScreen(app);
+            }
+            app.setScreen(app.keyboardControlsScreen);
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            app.sound.SoundButtonClick();
+            showDialouge = false;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT))
+        {
+            app.sound.SoundButtonClick();
+            if (!app.debugMode){
+                app.debugMode = true;
+                debugButtons();
+            }
+            else{
+                app.debugMode = false;
+                DebugTable.remove();
+            }
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
             System.out.println("Key X pressed");
-            showDialog = true;
+            showDialouge = true;
             updateDialog(Dialogue.dia_intro_0);
 
             dialogBackground();
-            //dialogBackground(Dialogue.dia_1);
-            /*
-            if (!showDialouge){
-                showDialouge = true;
-                dialogBackground(Dialogue.dia_1);
-            }
-            else{
-                showDialouge = false;
-            } */
+
         }
-
-
-
 
     }
 
@@ -864,9 +865,9 @@ public class GameScreen extends AbstractScreen {
         updateTxtQuests();
         hud.addActor(txtGuid);
 
-
-        txtGuid.setText("Beginner’s Guide: \t'I' hide\n\n" +
-                "Lorem Ipsum is simply dummy \ntext of the printing and \n typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy text ever since \nthe 1500s, when an unknown \nprinter took a galley of type and \nscrambled it t");
+        txtGuid.setText("Beginner’s Guide: \n\n" +
+                "More info 'Press key 'S' \n" +
+                "To hide me 'Press key 'I'");
 
     }
 
@@ -917,8 +918,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void debugButtons(){
-
-        Table DebugTable = new Table();
+        DebugTable = new Table();
 
         DebugTable.setFillParent(true);
         DebugTable.setDebug(false);
@@ -930,9 +930,12 @@ public class GameScreen extends AbstractScreen {
         debugSeasonButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!world.drySeason)
+                if (!world.drySeason){
                     world.drySeason = true;
-                else world.drySeason = false;
+                }
+                else {
+                    world.drySeason = false;
+                }
             }
         });
 
@@ -964,7 +967,6 @@ public class GameScreen extends AbstractScreen {
             System.out.println("DebugMode = " + app.debugMode + ": removeActor");
             DebugTable.removeActor(debugSeasonButton);
             DebugTable.removeActor(debugEvenButton);
-
 
         }
 

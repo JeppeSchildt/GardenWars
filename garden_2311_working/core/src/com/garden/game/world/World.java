@@ -230,6 +230,7 @@ public class World extends Stage {
         if (lengthForWetSeason == DrySeasonCount_RandomNumber){
             // Make Map DrySeason
             drySeason = true;
+            app.sound.Chance_InGameMusic();
             lengthForDrySeason = 0;
         }
 
@@ -244,6 +245,7 @@ public class World extends Stage {
             if (lengthForDrySeason == WetSeasonCount_RandomNumber){
                 // Make Map WetSeason
                 drySeason = false;
+                app.sound.Chance_InGameMusic();
                 lengthForWetSeason = 0;
 
                 isStartDrySeason = false;

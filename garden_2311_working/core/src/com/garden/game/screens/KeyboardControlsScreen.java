@@ -22,6 +22,8 @@ public class KeyboardControlsScreen implements Screen {
 
     private Image imgKeyboardControls;
 
+    private Skin skin;
+
 
     public KeyboardControlsScreen(GardenGame app) {
         this.app = app;
@@ -35,31 +37,43 @@ public class KeyboardControlsScreen implements Screen {
     }
     private void initStage() {
 
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
         imgKeyboardControls = new Image(new TextureRegion(app.assets.<Texture>get("KeyboardControls.png")));
-        imgKeyboardControls.setSize(844,284);
-        imgKeyboardControls.setPosition(100, 250);
+        imgKeyboardControls.setPosition(10, 200);
 
         hud.addActor(imgKeyboardControls);
+
+        TextButton backButton = new TextButton("Back",skin);
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                backToMenue();
+            }
+        });
+
+        backButton.setPosition(app.maxWidth/2, 85);
+        hud.addActor(backButton);
 
     }
 
     @Override
     public void show() {
-        //Gdx.input.setInputProcessor(hud);
+        Gdx.input.setInputProcessor(hud);
     }
 
     private void backToMenue(){
-
         app.sound.SoundButtonClick();
-
-        hud.dispose();
-        app.sound.SoundButtonClick();
+        //hud.dispose();
+        if(app.pauseScreen == null) {
+            app.pauseScreen = new PauseScreen(app);
+        }
         app.setScreen(app.pauseScreen);
     }
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) backToMenue();
+
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -67,6 +81,16 @@ public class KeyboardControlsScreen implements Screen {
         hud.act();
         hud.draw();
 
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            backToMenue();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            app.sound.SoundButtonClick();
+
+            app.setScreen(app.gameScreen);
+        }
     }
 
     @Override

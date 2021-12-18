@@ -85,8 +85,8 @@ public class MainCharacter extends Unit{
     public void gotoAndGetMoreWater() {
         clearActions();
         // Some fixed location above the lake.
-        float x = 17* Constants.TILE_WIDTH;
-        float y = 12*Constants.TILE_HEIGHT;
+        float x = 19* Constants.TILE_WIDTH;
+        float y = 13*Constants.TILE_HEIGHT;
         selectAnimation(x, y);
 
         // Get MoveToAction from pool and set position and duration
@@ -111,7 +111,7 @@ public class MainCharacter extends Unit{
     public void act(float delta) {
         super.act(delta);
 
-        if(app.gameScreen.world.mapInput.walking) {
+        if(app.gameScreen.world.mapInput.walking && !app.gameScreen.world.player.isMovementLocked()) {
             float x = getX();
             float y = getY();
 

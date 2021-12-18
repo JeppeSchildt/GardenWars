@@ -1,5 +1,7 @@
 package com.garden.game.tools;
 
+import java.util.ArrayList;
+
 public class Dialogue {
 
     private static String BOSS = "Boss Ladies: \n";
@@ -14,7 +16,9 @@ public class Dialogue {
     //Intro - ParksChefen kommer ud og fortæller hvordan verden hænger sammen
     // Spil guide kan - vises som en pop op box når spillet starter - og kan skjules ved at trykke på I key
 
-    // -------- Intro ---------- //
+    /* -------- Intro ---------- */
+    public static String DIALOG_INTRO;
+
     public static String dia_intro_0 = BOSS + "'Good morning Johnny boy'";
 
     public static String dia_intro_1 = MainCharacter + "'Jonny boy!'";
@@ -45,7 +49,6 @@ public class Dialogue {
 
     public static String dia_intro_18 = BOSS + "'Nope!'";
     public static String dia_intro_19 = BOSS + "'As long as you give them water once in a while, it should all work out'";
-
 
 
     // --------- The Boss Comes By - Week ------------ //

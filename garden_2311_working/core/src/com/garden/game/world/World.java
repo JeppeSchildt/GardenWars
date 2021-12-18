@@ -261,6 +261,7 @@ public class World extends Stage {
         addActor(boss);
         boss.enterJournalist(player.unit.getX()+50, player.unit.getY());
 
+
     }
 
     public void leaveBoss() {

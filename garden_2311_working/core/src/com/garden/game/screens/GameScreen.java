@@ -487,9 +487,6 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
         hud.addActor(imgBlkScreen);
 
-
-
-
         nextTurnClicked = true;
 
         // Make character go to house
@@ -505,6 +502,7 @@ public class GameScreen extends AbstractScreen {
             currentDialogList = world.boss.currentDialog;
             showDialog = true;
             updateDialog(currentDialogList.get(0));
+            dialogBackground();
 
         }
     }
@@ -709,10 +707,23 @@ public class GameScreen extends AbstractScreen {
         camera.update();
         app.batch.end(); // End batch here, finishing rendering.
 
-
         if (!world.isStartDrySeason){
             world.isStartDrySeason = true;
             world.DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
+        }
+
+        if (world.weekCount == 1)
+            weekBoos();
+    }
+
+    private void weekBoos(){
+        dialogIndex = 0;
+        if(world.isBossEvent) {
+            currentDialogList = world.boss.currentDialog;
+            showDialog = true;
+            updateDialog(currentDialogList.get(0));
+            dialogBackground();
+
         }
     }
 
@@ -854,6 +865,7 @@ public class GameScreen extends AbstractScreen {
         }
 
 
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT))
         {
             app.sound.SoundButtonClick();
@@ -866,6 +878,14 @@ public class GameScreen extends AbstractScreen {
                 DebugTable.remove();
             }
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X))
+        {
+            showDialog = true;
+            updateDialog(currentDialogList.get(0));
+            dialogBackground();
+        }
+
 
     }
 

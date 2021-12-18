@@ -11,6 +11,7 @@ import java.util.Map;
 public class General extends Skill {
     public General(int turns, Player player) {
         super(turns, player);
+        name = "General";
         hasTurnWork = true;
         adjacent.add(Constants.CONSTRUCTION);
         adjacent.add(Constants.COMMUNICATION);

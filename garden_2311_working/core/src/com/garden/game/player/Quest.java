@@ -1,6 +1,6 @@
 package com.garden.game.player;
 
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 import java.util.Random;
 
@@ -22,6 +22,11 @@ public class Quest {
     public String getDescription() {
         return description;
     };
+
+    public void updateDescComplete() {
+        description += ": completed";
+    }
+
     public void checkPlant(Plant plant){};
     public void initDescription(){};
     public void selectPlantType(){};

@@ -1,4 +1,4 @@
-package com.garden.game.world.plants;
+package com.garden.game.world;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -243,9 +243,6 @@ public class Plant extends Actor {
         return cell;
     }
 
-    public Sprite getActiveSprite() {
-        return activeSprite;
-    }
 
     public int getPrice() {
         return price;
@@ -256,36 +253,6 @@ public class Plant extends Actor {
     public void water(int amount) {
         water += amount;
     };
-
-
-    public TextureRegion[] getTextureRegions() {
-        return textureRegions;
-    }
-
-    public void setTextureRegions(TextureRegion[] textureRegions) {
-        this.textureRegions = textureRegions;
-    }
-
-
-    public int getProfit() {
-        return profit;
-    }
-
-    public void setProfit(int profit) {
-        this.profit = profit;
-    }
-
-    public Map<PlantState, Vector2> getWaterStateMap() {
-        return waterStateMap;
-    }
-
-    public void setWaterStateMap(Map<PlantState, Vector2> waterStateMap) {
-        this.waterStateMap = waterStateMap;
-    }
-
-    public ArrayList<Sprite> getSprites() {
-        return sprites;
-    }
 
     public float getWaterLoss() {
         return waterLoss;

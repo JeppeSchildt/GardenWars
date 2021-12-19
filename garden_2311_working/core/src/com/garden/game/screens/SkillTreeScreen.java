@@ -98,15 +98,6 @@ public class SkillTreeScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-
-
-
-
-
-
-
-
-
         /*
 
         //ImageButton playButton = new ImageButton(app.assets.goldIcon);
@@ -337,13 +328,6 @@ public class SkillTreeScreen implements Screen {
         autoHarvest.setTouchable(Touchable.disabled);*/
 
 
-
-
-
-
-
-
-
         quitButton = new TextButton("Back to menu",skin);
         quitButton.addListener(new ChangeListener() {
             @Override
@@ -376,15 +360,9 @@ public class SkillTreeScreen implements Screen {
     }
 
 
-
-
-
-    private void preferences(){
+    private void resumeGame(){
         app.sound.SoundButtonClick();
-        if(app.preferencesScreen == null) {
-            app.preferencesScreen = new PreferencesScreen(app);
-        }
-        app.setScreen(app.preferencesScreen);
+        app.setScreen(app.gameScreen);
     }
 
     @Override
@@ -398,8 +376,9 @@ public class SkillTreeScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) backToMenue();
-        //if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) resumeGame();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) resumeGame();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) resumeGame();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) resumeGame();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -408,6 +387,7 @@ public class SkillTreeScreen implements Screen {
         stage.draw();
 
         drawMenu();
+
     }
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx

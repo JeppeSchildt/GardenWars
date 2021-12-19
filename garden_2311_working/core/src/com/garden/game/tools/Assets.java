@@ -28,7 +28,7 @@ public class Assets extends AssetManager {
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations,
             wateringAnimations, journalistWalkAnimations, journalistStopAnimations;
 
-    public Music menuMusic, inGameMusic, ambientSound_Bird, soundButtonPress, soundEnd, soundGameOver,
+    public Music menuMusic, inGameMusic, inGameDryMusic, ambientSound_Bird, ambientSound_Crickets, soundButtonPress, soundEnd, soundGameOver,
             soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
 
     //public Sound soundButtonPress, soundEnd, soundGameOver, soundGetWater, soundUseWater, soundUseGold, soundNewDay;
@@ -64,15 +64,26 @@ public class Assets extends AssetManager {
         inGameMusic.setLooping(true);
         inGameMusic.setVolume(musicVolume);
 
-        /* --------- InGameMusic setup  ---------  */
+        /* --------- InGameMusic Dry Season setup  ---------  */
+        //inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-sadistic-game-short.mp3"));
+        inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-fragments-short.mp3"));
+        inGameDryMusic.setLooping(true);
+        inGameDryMusic.setVolume(musicVolume);
+
+        /* --------- menuMusic setup  ---------  */
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Cooking-mania-short.mp3"));
         menuMusic.setLooping(true);
         menuMusic.setVolume(musicVolume);
+
 
         /* --------- Sound Effect setup  ---------  */
         ambientSound_Bird = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/POL-morning-birds.mp3"));
         ambientSound_Bird.setVolume(0.5f); //1.0f max
         ambientSound_Bird.setLooping(true);
+
+        ambientSound_Crickets = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/mixkit-crickets-and-insects-in-the-wild-ambience-39.mp3"));
+        ambientSound_Crickets.setVolume(0.5f); //1.0f max
+        ambientSound_Crickets.setLooping(true);
 
         //soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-flute-alert-2307.mp3"));
         soundButtonPress = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
@@ -161,7 +172,7 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
-            this.wateringAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            this.wateringAnimations.add(new Animation<TextureRegion>(1f, animationFrames));
         }
 
         Animation<TextureRegion> animation = this.wateringAnimations.get(0);

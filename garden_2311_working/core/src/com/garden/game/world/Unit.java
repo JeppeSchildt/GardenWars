@@ -1,7 +1,6 @@
 package com.garden.game.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Pool;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
 
 import java.util.ArrayList;
 
@@ -137,30 +135,32 @@ public class Unit extends Actor {
 
     }
 
-    public void gotoAndPlant(final float x, final float y, final Plant plant) {
-        clearActions();
+    // Go to x, y and remove actor from whatever stage it appears in.
+    public void goSomewhereRemove(float x, float y) {
         selectAnimation(x, y);
+
+        clearActions();
         //MoveToAction moveToAction = new MoveToAction();
         MoveToAction moveToAction = moveToActionPool.obtain();
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
         moveToAction.setDuration(duration);
-        RunnableAction run = new RunnableAction();
-        run.setRunnable(new Runnable() {
-            @Override
-            public void run() {
-                //app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, plant.getCell());
-                plant.setActiveAnimation();
-                app.gameScreen.world.grassLayer.setCell((int) x/Constants.TILE_WIDTH, (int) y/Constants.TILE_HEIGHT, plant.getCell());
-            }
-        });
 
         RunnableAction stop = stopActionPool.obtain();
 
-        SequenceAction sequence = new SequenceAction(moveToAction, run, stop);
 
+        RunnableAction remove = new RunnableAction() {
+            @Override
+            public void run() {
+                remove();
+            }
+        };
+
+        SequenceAction sequence = new SequenceAction(moveToAction, stop, remove);
         addAction(sequence);
     }
+
+
 
     public void setDirec(int dir) {
         direc = dir;

@@ -2,9 +2,11 @@ package com.garden.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.utils.Pool;
@@ -74,11 +76,17 @@ public class MainCharacter extends Unit{
 
         TemporalAction waterPlant = waterTemporalPool.obtain();
 
-        waterPlant.setDuration(0.8f);
+        waterPlant.setDuration(2f);
 
-        SequenceAction sequence = new SequenceAction(moveToAction, waterPlant);
+        RunnableAction playSound = new RunnableAction(){
+            @Override
+            public void run(){
+                app.sound.SoundUseWater();
+            }
+        };
+
+        SequenceAction sequence = new SequenceAction(moveToAction, playSound, waterPlant);
         addAction(sequence);
-
     }
 
     // Go to lake and get some water
@@ -97,14 +105,46 @@ public class MainCharacter extends Unit{
 
         // Get get more water action from pool and set duration
         TemporalAction getMoreWater = getWaterTemporalPool.obtain();
-        getMoreWater.setDuration(0.5f);
+        getMoreWater.setDuration(1f);
+
+        RunnableAction playSound = new RunnableAction(){
+            @Override
+            public void run(){
+                app.sound.SoundGetWater();
+            }
+        };
 
         // Create sequence action
-        SequenceAction sequence = new SequenceAction(moveToAction, getMoreWater);
+        SequenceAction sequence = new SequenceAction(moveToAction, playSound, getMoreWater);
 
         addAction(sequence);
 
+     }
 
+    public void gotoAndPlant(final float x, final float y, final Plant plant) {
+        app.sound.SoundUseGold();
+        clearActions();
+        selectAnimation(x, y);
+        //MoveToAction moveToAction = new MoveToAction();
+        MoveToAction moveToAction = moveToActionPool.obtain();
+        moveToAction.setPosition(x, y);
+        float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
+        moveToAction.setDuration(duration);
+        RunnableAction run = new RunnableAction();
+        run.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                //app.gameScreen.world.improvementLayer.setCell((int) x/32, (int) y/32, plant.getCell());
+                plant.setActiveAnimation();
+                app.gameScreen.world.grassLayer.setCell((int) x/Constants.TILE_WIDTH, (int) y/Constants.TILE_HEIGHT, plant.getCell());
+            }
+        });
+
+        RunnableAction stop = stopActionPool.obtain();
+
+        SequenceAction sequence = new SequenceAction(moveToAction, run, stop);
+
+        addAction(sequence);
     }
 
     @Override

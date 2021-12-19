@@ -1,7 +1,7 @@
 package com.garden.game.player;
 
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 public class FlowerQuest extends Quest {
     private static int nCompleted = 0;
@@ -29,6 +29,9 @@ public class FlowerQuest extends Quest {
     @Override
     public void nextTurn() {
         super.nextTurn();
+        if(isCompleted) {
+            return;
+        }
         if(!isAvailable) {
             if(player.getAvailablePlants().contains(Constants.ROSE)) {
                 isAvailable = true;
@@ -37,17 +40,13 @@ public class FlowerQuest extends Quest {
             }
 
         }
-        if(isCompleted) {
-            onCompleted();
-        }
     }
 
     @Override
     public void onCompleted() {
         super.onCompleted();
         nCompleted += 1;
-        player.points += 10;
-        description += ": completed";
+        player.points += 10*player.questPointFactor;
     }
 
     @Override
@@ -61,6 +60,7 @@ public class FlowerQuest extends Quest {
         if(isCompleted) {
             return;
         }
+        // Check surroundings of given plant. Return if conditions are not met. Otherwise isCompleted is true.
         for(int i = 0; i < nPlants; i++) {
             for(int j = 0; j < nPlants; j++) {
                 Plant p = player.getPlantAtPosition(plant.getX()+(i*Constants.TILE_WIDTH), plant.getY()+(j*Constants.TILE_HEIGHT));
@@ -70,6 +70,8 @@ public class FlowerQuest extends Quest {
             }
         }
         isCompleted = true;
+        description += ": completed";
+
     }
 
     @Override

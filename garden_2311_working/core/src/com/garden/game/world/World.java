@@ -11,9 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
-import com.garden.game.tools.Assets;
+import com.garden.game.player.Quest;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
 
 import java.util.Map;
 import java.util.Random;
@@ -39,11 +38,11 @@ public class World extends Stage {
 
     private int maxGold = 9999;
 
-    public Journalist journalist;
+    public Boss boss;
 
     public int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
     public int lengthForDrySeason, lengthForWetSeason;
-    public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false, isJournalistEvent = false, beginJournalistEvent;
+    public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false, isBossEvent = false;
 
 
     public World(GardenGame app) {
@@ -57,7 +56,7 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         player = new Player(app);
         turnNumber = 1;
-        journalist = new Journalist(app);
+        boss = new Boss(app);
 
         // Dry season event
         drySeason = false;
@@ -162,6 +161,12 @@ public class World extends Stage {
         //startEvent("magazine"); //remove
         int profit = 0;
 
+        // Making sure boss doesn't show up unexpectedly...?
+        if(isBossEvent) {
+            isBossEvent = false;
+            boss.remove();
+        }
+
         player.nextTurn();
 
 
@@ -177,17 +182,14 @@ public class World extends Stage {
         weekCount();
         drySeasonEvent();
 
-        if(!beginJournalistEvent) {
-            journalist.remove();
-        }
+
     }
 
     private void weekCount(){
         dayCount++;
         if (dayCount == 8){
-            beginJournalistEvent = true;
-            addActor(journalist);
-            enterJournalist();
+            enterBoss();
+            setNewQuests();
             dayCount = 1;
             weekCount++;
         }
@@ -229,6 +231,7 @@ public class World extends Stage {
         if (lengthForWetSeason == DrySeasonCount_RandomNumber){
             // Make Map DrySeason
             drySeason = true;
+            app.sound.Chance_InGameMusic();
             lengthForDrySeason = 0;
         }
 
@@ -243,6 +246,7 @@ public class World extends Stage {
             if (lengthForDrySeason == WetSeasonCount_RandomNumber){
                 // Make Map WetSeason
                 drySeason = false;
+                app.sound.Chance_InGameMusic();
                 lengthForWetSeason = 0;
 
                 isStartDrySeason = false;
@@ -252,13 +256,33 @@ public class World extends Stage {
         lengthForWetSeason++;
     }
 
-    public void enterJournalist() {
-        journalist.setInitialPosition();
-        journalist.setPosition(player.unit.getX()+50, player.unit.getY());
-        //beginJournalistEvent = false;
-    }
-    public void checkJournalistEvent() {
+    public void enterBoss() {
+        boss.weeklyCheck();
+        isBossEvent = true;
+        addActor(boss);
+        boss.enterJournalist(player.unit.getX()+50, player.unit.getY());
 
+
+    }
+
+    public void leaveBoss() {
+        boss.leave();
+    }
+
+    public void introBoss() {
+        isBossEvent = true;
+        addActor(boss);
+        boss.intro(player.unit.getX()+50, player.unit.getY());
+    }
+
+    // If quest is completed give a new quest.
+    private void setNewQuests() {
+        for(Quest q : player.quests) {
+            if(q.isCompleted) {
+                q.onCompleted();
+                player.setNewQuest(q.questID);
+            }
+        }
     }
 
 }

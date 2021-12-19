@@ -33,7 +33,7 @@ public class TitleScreen implements Screen {
 		app.sound.Play_Music();
 
 		//Delete when done debug/testing
- 		app.sound.Play_Pause_Music();
+ 		//app.sound.Play_Pause_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
@@ -46,10 +46,6 @@ public class TitleScreen implements Screen {
 
 		final int midX = Gdx.graphics.getWidth() / 2;
 		final int butY = Gdx.graphics.getHeight() / 3;
-
-
-
-
 
 		title = new Label("Garden", app.assets.largeTextStyle);
 		title.setFontScale(8);
@@ -110,7 +106,7 @@ public class TitleScreen implements Screen {
 		});
 
 		debugModeButton.setPosition(app.maxWidth - 125, 15);
-		stage.addActor(debugModeButton);
+		//stage.addActor(debugModeButton);
 
 	}
 

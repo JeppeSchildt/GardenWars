@@ -25,10 +25,11 @@ import com.garden.game.player.Quest;
 import com.garden.game.tools.Dialogue;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -45,7 +46,7 @@ public class GameScreen extends AbstractScreen {
     private Texture textureGameBorder, textureBtnBorder, textureNextTurn, textureSettings, textureTalent, textureKeyboardControls;
     private Image imgGameBorder, imgBtnBorder, imgNextTurn, imgSettings, imgTalent, imgBlkScreen;
     private float blkScreenAlpha;
-    private Table buttonTable, outerTable;
+    private Table buttonTable, outerTable, DebugTable;
     private SpriteBatch batchTest;
     private GlyphLayout dialogGlyphLayout = new GlyphLayout();
     private ScrollPane scrollPane;
@@ -60,12 +61,13 @@ public class GameScreen extends AbstractScreen {
     private ArrayList<TextButton> buttonList;
     private PlantFactory plantFactory;
     private boolean improvementsShown;
-    private boolean showDialouge = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
+    private boolean showDialog = false, showQuest = true, questKeyPress, showGuid = true, guidKeyPress, justLearned;
     private final OrthographicCamera camera;
     private ShapeRenderer shapeRenderer,shapeRendererV2, shapeRendererQuestBox, shapeRendererGuidBox;
     private Sprite spriteHighlight;
     private String currentDialog = "";
-    private int dialogStep = 0;
+    private int dialogStep = 0, dialogIndex = 0;
+    private List<String> currentDialogList;
 
 
     private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
@@ -103,7 +105,6 @@ public class GameScreen extends AbstractScreen {
 
         initHUD();
         moveToPorch();
-        //
         startIntroDialogue();
     }
 
@@ -137,22 +138,16 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen.setSize(1024,768);
         //imgBlkScreen.setColor(0,0,0,1);
 
-
-
-
-
-
         txtQuests = new Label("", skin);
         txtGuid = new Label("", skin);
         lbl = new Label("",skin);
-
-
 
         tableSetup();
         setupTextIcons();
         drawButtons();
 
         setupTileImprovementBox(false);
+
 
         // ------ Debug mode -------- //
         if (app.debugMode){
@@ -268,7 +263,7 @@ public class GameScreen extends AbstractScreen {
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
-        String txtPoint= "Score: " + world.player.points + "/" + world.player.maxPoint;
+        String txtPoint= "Score: " + String.format("%.2f", world.player.points)  + "/" + world.player.maxPoint;
         // Chance season string if it is dry season or not
         String txtSeason = "";
         if (world.drySeason)
@@ -304,17 +299,20 @@ public class GameScreen extends AbstractScreen {
         time = 0; //Resets timer
     }
     void startIntroDialogue() {
-        showDialouge = true;
-        updateDialog(Dialogue.dia_3);
-        //currentDialog = Dialogue.dia_3;
+        showDialog = true;
+        world.introBoss();
+
+        currentDialogList = Dialogue.DIALOG_INTRO;
+        updateDialog(currentDialogList.get(dialogIndex));
+        dialogIndex++;
         dialogBackground();
-        //dialogBackground(Dialogue.dia_3);
+
     }
     void changeDialog(String text) {
         lbl.setText(text);
     }
     void dialogBackground() {
-        String text = currentDialog;
+        String text = currentDialogList.get(dialogIndex);
         boolean start = false;
         if (app.batch.isDrawing()) {
             app.batch.end();
@@ -325,7 +323,7 @@ public class GameScreen extends AbstractScreen {
         if (step > text.length()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 dialogStep = 0;
-                showDialouge = false;
+                showDialog = false;
             }
             //dialogStep = 0;
             //showDialouge = false;
@@ -489,9 +487,6 @@ public class GameScreen extends AbstractScreen {
         imgBlkScreen.setColor(0,0,0,blkScreenAlpha);
         hud.addActor(imgBlkScreen);
 
-
-
-
         nextTurnClicked = true;
 
         // Make character go to house
@@ -502,6 +497,7 @@ public class GameScreen extends AbstractScreen {
         //System.out.println(world.player.quests.get(0).description);
 
         updateTxtQuests();
+        dialogIndex = 0;
     }
 
     public void updateTxtQuests() {
@@ -686,7 +682,7 @@ public class GameScreen extends AbstractScreen {
             guidBoxSetup();
         }
 
-        if (showDialouge) {
+        if (showDialog) {
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;
@@ -704,11 +700,21 @@ public class GameScreen extends AbstractScreen {
         camera.update();
         app.batch.end(); // End batch here, finishing rendering.
 
-
         if (!world.isStartDrySeason){
             world.isStartDrySeason = true;
             world.DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
         }
+
+        /*if (world.isBossEvent) {
+            weekBoss();
+        }*/
+    }
+
+    private void weekBoss(){
+        //currentDialogList = world.boss.currentDialog;
+        showDialog = true;
+        updateDialog(currentDialogList.get(dialogIndex));
+        dialogBackground();
     }
 
     private void moveToPorch() {
@@ -723,6 +729,7 @@ public class GameScreen extends AbstractScreen {
         if(nextTurnClicked) {
             showDialouge = false;
             if(blkScreenAlpha >= 4.5f) {
+
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
@@ -771,35 +778,14 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-
-
     private void checkInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { pauseScreen(); }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
-        {
-            nextTurn();
-            System.out.println("Key ENTER pressed");
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            System.out.println("Key SPACE pressed");
-            showDialouge = false;
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
-        {
-            if (!app.debugMode){
-                app.debugMode = true;
-            }
-            else{
-                app.debugMode = false;
-            }
-            System.out.println("Key BACKSPACE press");
-            debugButtons();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            app.sound.SoundButtonClick();
+            pauseScreen();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            System.out.println("Key Q pressed");
-
+            app.sound.SoundButtonClick();
             if (!showQuest){
                 showQuest = true;
                 questKeyPress = false;
@@ -811,43 +797,85 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            app.sound.SoundButtonClick();
+            world.player.getMoreWater();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            app.sound.SoundButtonClick();
+            skillTreeScreen();
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-            System.out.println("Key I pressed");
-
+            app.sound.SoundButtonClick();
             if (!showGuid){
                 showGuid = true;
                 guidKeyPress = false;
-
             }
             else{
                 showGuid = false;
-
 
                 txtGuid.remove();
                 guidKeyPress = true;
             }
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        {
+            app.sound.SoundButtonClick();
+            nextTurn();
+        }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-            System.out.println("Key X pressed");
-            showDialouge = true;
-            updateDialog(Dialogue.dia_intro_0);
-
-            dialogBackground();
-            //dialogBackground(Dialogue.dia_1);
-            /*
-            if (!showDialouge){
-                showDialouge = true;
-                dialogBackground(Dialogue.dia_1);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+            app.sound.SoundButtonClick();
+            if(app.keyboardControlsScreen == null) {
+                app.keyboardControlsScreen = new KeyboardControlsScreen(app);
             }
-            else{
-                showDialouge = false;
-            } */
+            app.setScreen(app.keyboardControlsScreen);
+        }
+
+        if(world.isBossEvent) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                app.sound.SoundButtonClick();
+                if(currentDialogList == null) {
+                    return;
+                }
+                dialogStep = 0;
+                dialogIndex++;
+                if (dialogIndex >= currentDialogList.size()) {
+                    showDialog = false;
+                    dialogIndex = 0;
+                    world.leaveBoss();
+                } else {
+                    updateDialog(currentDialogList.get(dialogIndex));
+                    dialogBackground();
+                }
+
+            }
         }
 
 
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT))
+        {
+            app.sound.SoundButtonClick();
+            if (!app.debugMode){
+                app.debugMode = true;
+                debugButtons();
+            }
+            else{
+                app.debugMode = false;
+                DebugTable.remove();
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X))
+        {
+            showDialog = true;
+            updateDialog(currentDialogList.get(0));
+            dialogBackground();
+        }
 
 
     }
@@ -865,9 +893,9 @@ public class GameScreen extends AbstractScreen {
         updateTxtQuests();
         hud.addActor(txtGuid);
 
-
-        txtGuid.setText("Beginner’s Guide: \t'I' hide\n\n" +
-                "Lorem Ipsum is simply dummy \ntext of the printing and \n typesetting industry. Lorem \nIpsum has been the industry's \nstandard dummy text ever since \nthe 1500s, when an unknown \nprinter took a galley of type and \nscrambled it t");
+        txtGuid.setText("Beginner’s Guide: \n\n" +
+                "More info 'Press key 'S' \n" +
+                "To hide me 'Press key 'I'");
 
     }
 
@@ -918,8 +946,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void debugButtons(){
-
-        Table DebugTable = new Table();
+        DebugTable = new Table();
 
         DebugTable.setFillParent(true);
         DebugTable.setDebug(false);
@@ -931,25 +958,24 @@ public class GameScreen extends AbstractScreen {
         debugSeasonButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!world.drySeason)
+                if (!world.drySeason){
                     world.drySeason = true;
-                else world.drySeason = false;
+                }
+                else {
+                    world.drySeason = false;
+                }
             }
         });
 
-        TextButton debugEvenButton = new TextButton("Test Event",skin);
+        TextButton debugEvenButton = new TextButton("GameOver",skin);
         debugEvenButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //app.batch.begin();
-                startEvent("magazine");
-                /*for(Quest q : world.player.quests) {
-                    if(q.isCompleted) {
-                        q.onCompleted();
-                    }
-                }*/
-                //font.draw(app.batch,"TEST",100,100);
-                //app.batch.end();
+
+                if(app.gameOverScreen == null) {
+                    app.gameOverScreen = new GameOverScreen(app, world.player.points);
+                }
+                app.setScreen(app.gameOverScreen);
             }
         });
 
@@ -965,7 +991,6 @@ public class GameScreen extends AbstractScreen {
             System.out.println("DebugMode = " + app.debugMode + ": removeActor");
             DebugTable.removeActor(debugSeasonButton);
             DebugTable.removeActor(debugEvenButton);
-
 
         }
 

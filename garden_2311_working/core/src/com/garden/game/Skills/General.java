@@ -3,7 +3,7 @@ package com.garden.game.Skills;
 import com.badlogic.gdx.math.Vector2;
 import com.garden.game.player.Player;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 import java.util.Iterator;
 import java.util.Map;

@@ -23,11 +23,11 @@ public class GameOverScreen implements Screen {
 
     private Table table;
 
-    private int score, highscore;
+    private float score, highscore;
 
     Skin skin;
 
-    public GameOverScreen(GardenGame app, int score) {
+    public GameOverScreen(GardenGame app, float score) {
         this.app = app;
         this.score = score;
 
@@ -38,11 +38,11 @@ public class GameOverScreen implements Screen {
 
         // Get highscore from save file
         Preferences prefs = Gdx.app.getPreferences("gardengame");
-        this.highscore = prefs.getInteger("highscore", 0);
+        this.highscore = prefs.getFloat("highscore", 0);
 
         // Check if score beats highscore
         if (score > highscore) {
-            prefs.putInteger("highscore", score);
+            prefs.putFloat("highscore", score);
             prefs.flush();
         }
 

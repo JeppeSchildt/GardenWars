@@ -30,7 +30,6 @@ public class SoundFunctions {
                 }
             },0.5f);
 
-
         }
         else if(app.assets.menuMusic.isPlaying()) {
             app.assets.menuMusic.stop();
@@ -68,6 +67,25 @@ public class SoundFunctions {
                 app.assets.menuMusic.play();
                 app.assets.menuMusic.setLooping(true);
             }
+        }
+    }
+
+
+    public void Chance_InGameMusic(){
+        if (app.assets.inGameMusic.isPlaying()){
+
+            app.assets.inGameMusic.stop();
+            app.assets.ambientSound_Bird.stop();
+
+            app.assets.inGameDryMusic.play();
+            app.assets.ambientSound_Crickets.play();
+        }
+        else if (app.assets.inGameDryMusic.isPlaying()){
+            app.assets.inGameDryMusic.stop();
+            app.assets.ambientSound_Crickets.stop();
+
+            app.assets.inGameMusic.play();
+            app.assets.ambientSound_Bird.play();
         }
     }
 

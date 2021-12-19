@@ -65,7 +65,6 @@ public class Constants {
 
     }
 
-
     // Indices of sprites associated with state of plant.
     public static final int SPRITE_HEALTHY = 0;
     public static final int SPRITE_SMALL = 1;
@@ -80,9 +79,8 @@ public class Constants {
     public static final String SEED_STATE = "Seed";
     public static final String DEAD_STATE = "";
 
-    public static final Integer GRASS_PRICE = 10;
-    public static final Integer TURNIP_PRICE = 10;
-    public static final Map<Integer, Integer> idPriceMap;
+    // Not actually a constant. Is changed if Construction is learned.
+    public static Map<Integer, Integer> idPriceMap;
     static {
         idPriceMap = new HashMap<Integer, Integer>();
         // -------- Start -------- //

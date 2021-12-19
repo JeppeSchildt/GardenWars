@@ -168,7 +168,7 @@ public class PauseScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) backToMenue();
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) resumeGame();
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) resumeGame();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);

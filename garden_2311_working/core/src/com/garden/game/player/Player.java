@@ -6,8 +6,7 @@ import com.garden.game.Skills.Skill;
 import com.garden.game.Skills.SkillTree;
 import com.garden.game.tools.Constants;
 import com.garden.game.world.MainCharacter;
-import com.garden.game.world.plants.Plant;
-import com.garden.game.world.Unit;
+import com.garden.game.world.Plant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +24,8 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public MainCharacter unit;
-    public int money, water, maxWater, points, maxPoint, waterPerTurn, nHarvested;
-    public int waterSize;
+    public int money, water, maxWater, maxPoint, waterPerTurn, nHarvested, waterSize;
+    public float points, questPointFactor = 1f;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
     private boolean gotWater, isMovementLocked;
@@ -53,6 +52,7 @@ public class Player {
         waterSize = 20;
         maxPoint = 1000;
         nHarvested = 0;
+
     }
 
     private void initQuests() {
@@ -102,7 +102,7 @@ public class Player {
 
     // Add plant to map. We do not check any conditions here...??
     public void plant(float x, float y, Plant plant) {
-        money -= plant.getPrice();
+        money -= plant.getPrice(); // Construction bonus set when skill construction learned.
         addPlant(plant);
         unit.gotoAndPlant(x, y, plant);
         setMovementLocked(true);
@@ -173,33 +173,33 @@ public class Player {
             Map.Entry<Vector2, Plant> entry = entryIt.next();
             Plant plant = entry.getValue();
             plant.nextTurn();
-            if (plant.getState() == Plant.PlantState.DEAD) {
-                // Remove grass from improvement layer.
-                app.gameScreen.world.grassLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, app.assets.grassCell);
 
-                entryIt.remove();
-            } else {
-                money += plant.profit;
+            switch (plant.getState()) {
+                case DEAD:
+                    // Remove grass from improvement layer.
+                    app.gameScreen.world.grassLayer.setCell((int) plant.getX() / 32, (int) plant.getY() / 32, app.assets.grassCell);
+                    entryIt.remove();
+                    break;
+                case HEALTHY:
+                    points += plant.profit*0.001;
+                    break;
             }
+
             // Check each plant with each quest.
             for(Quest q : quests) {
                 q.checkPlant(plant);
             }
         }
-        checkQuestsComplete();
+        updateQuests();
 
         // Reset number of harvested plants per turn.
         nHarvested = 0;
     }
 
-    // Check quests. Set new if completed. To be changed.
-    public void checkQuestsComplete() {
+    // Call nextTurn on each quests. Checks if conditions for completion are met.
+    public void updateQuests() {
         for(Quest q : quests) {
             q.nextTurn();
-            if(q.isCompleted) {
-                setNewQuest(q.questID);
-                System.out.println("asdnaklsdn");
-            }
         }
     }
 

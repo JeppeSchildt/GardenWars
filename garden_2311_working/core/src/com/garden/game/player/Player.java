@@ -24,7 +24,7 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public MainCharacter unit;
-    public int money, water, maxWater, maxPoint, waterPerTurn, nHarvested, waterSize, constructionBonus;
+    public int money, water, maxWater, maxPoint, waterPerTurn, nHarvested, waterSize;
     public float points, questPointFactor = 1f;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
@@ -52,7 +52,6 @@ public class Player {
         waterSize = 20;
         maxPoint = 1000;
         nHarvested = 0;
-        constructionBonus = 0;
     }
 
     private void initQuests() {

@@ -82,7 +82,7 @@ public class Constants {
 
     public static final Integer GRASS_PRICE = 10;
     public static final Integer TURNIP_PRICE = 10;
-    public static final Map<Integer, Integer> idPriceMap;
+    public static Map<Integer, Integer> idPriceMap;
     static {
         idPriceMap = new HashMap<Integer, Integer>();
         // -------- Start -------- //

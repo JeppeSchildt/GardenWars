@@ -155,6 +155,7 @@ public class Unit extends Actor {
                 remove();
             }
         };
+
         SequenceAction sequence = new SequenceAction(moveToAction, stop, remove);
         addAction(sequence);
     }

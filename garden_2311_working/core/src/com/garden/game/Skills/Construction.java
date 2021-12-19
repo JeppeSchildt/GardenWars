@@ -3,6 +3,8 @@ package com.garden.game.Skills;
 import com.garden.game.player.Player;
 import com.garden.game.tools.Constants;
 
+import java.util.Map;
+
 // Make plants cheaper.
 public class Construction extends Skill {
     public Construction(int turns, Player player) {
@@ -15,7 +17,9 @@ public class Construction extends Skill {
     @Override
     public void skillLearned(){
         super.skillLearned();
-        player.constructionBonus = 50; // Deducted from price of plants.
+        for (Map.Entry<Integer, Integer> entry : Constants.idPriceMap.entrySet()) {
+            entry.setValue(entry.getValue()-10);
+        }
     }
 
 

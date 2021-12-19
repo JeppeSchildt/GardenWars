@@ -1,7 +1,7 @@
 package com.garden.game.player;
 
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 public class FlowerQuest extends Quest {
     private static int nCompleted = 0;
@@ -29,6 +29,9 @@ public class FlowerQuest extends Quest {
     @Override
     public void nextTurn() {
         super.nextTurn();
+        if(isCompleted) {
+            return;
+        }
         if(!isAvailable) {
             if(player.getAvailablePlants().contains(Constants.ROSE)) {
                 isAvailable = true;

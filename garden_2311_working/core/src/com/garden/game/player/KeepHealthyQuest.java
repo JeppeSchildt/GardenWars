@@ -1,7 +1,7 @@
 package com.garden.game.player;
 
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 public class KeepHealthyQuest extends Quest {
     private static int nCompleted = 0;
@@ -44,6 +44,10 @@ public class KeepHealthyQuest extends Quest {
     @Override
     public void nextTurn() {
         super.nextTurn();
+        if(isCompleted) {
+            return;
+        }
+
         if(healthyPlants >= nPlants) {
             nCurrentTurns +=1;
             if(nCurrentTurns >= nTurns) {
@@ -59,6 +63,7 @@ public class KeepHealthyQuest extends Quest {
     @Override
     public void onCompleted() {
         super.onCompleted();
+
         nCompleted += 1;
         player.points += 10;
         description += ": completed";

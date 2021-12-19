@@ -1,7 +1,6 @@
 package com.garden.game.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.utils.Pool;
 import com.garden.game.GardenGame;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
 
 import java.util.ArrayList;
 

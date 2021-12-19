@@ -25,7 +25,7 @@ import com.garden.game.player.Quest;
 import com.garden.game.tools.Dialogue;
 import com.garden.game.tools.PlantFactory;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 import com.garden.game.world.World;
 
 import java.util.ArrayList;

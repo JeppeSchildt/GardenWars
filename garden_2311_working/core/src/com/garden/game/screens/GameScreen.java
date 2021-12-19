@@ -722,7 +722,7 @@ public class GameScreen extends AbstractScreen {
     private void nextTurnInfo() {
         if(nextTurnClicked) {
             showDialouge = false;
-            if(blkScreenAlpha >= 3.5f) {
+            if(blkScreenAlpha >= 4.5f) {
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();

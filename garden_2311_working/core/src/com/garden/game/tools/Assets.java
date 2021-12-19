@@ -172,7 +172,7 @@ public class Assets extends AssetManager {
                 animationFrames[index++] = tmpFrames[j][i];
             }
             index = 0;
-            this.wateringAnimations.add(new Animation<TextureRegion>(1f/5f, animationFrames));
+            this.wateringAnimations.add(new Animation<TextureRegion>(1f, animationFrames));
         }
 
         Animation<TextureRegion> animation = this.wateringAnimations.get(0);

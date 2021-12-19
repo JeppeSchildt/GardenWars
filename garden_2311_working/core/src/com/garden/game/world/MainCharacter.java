@@ -114,16 +114,8 @@ public class MainCharacter extends Unit{
             }
         };
 
-        TemporalAction stopRun = new TemporalAction() {
-            @Override
-            protected void update(float percent) {
-                activeAnimation = stopAnimations.get(direc);
-            }
-        };
-        stopRun.setDuration(0f);
-
         // Create sequence action
-        SequenceAction sequence = new SequenceAction(moveToAction, playSound, stopRun, getMoreWater);
+        SequenceAction sequence = new SequenceAction(moveToAction, playSound, getMoreWater);
 
         addAction(sequence);
 

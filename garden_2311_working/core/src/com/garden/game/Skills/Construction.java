@@ -3,6 +3,7 @@ package com.garden.game.Skills;
 import com.garden.game.player.Player;
 import com.garden.game.tools.Constants;
 
+// Make plants cheaper.
 public class Construction extends Skill {
     public Construction(int turns, Player player) {
         super(turns, player);
@@ -14,6 +15,7 @@ public class Construction extends Skill {
     @Override
     public void skillLearned(){
         super.skillLearned();
+        player.constructionBonus = 50; // Deducted from price of plants.
     }
 
 

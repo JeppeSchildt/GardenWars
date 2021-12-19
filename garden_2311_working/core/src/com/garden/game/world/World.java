@@ -275,10 +275,11 @@ public class World extends Stage {
         boss.intro(player.unit.getX()+50, player.unit.getY());
     }
 
-    // If quest is completed give a new quest. 
+    // If quest is completed give a new quest.
     private void setNewQuests() {
         for(Quest q : player.quests) {
             if(q.isCompleted) {
+                q.onCompleted();
                 player.setNewQuest(q.questID);
             }
         }

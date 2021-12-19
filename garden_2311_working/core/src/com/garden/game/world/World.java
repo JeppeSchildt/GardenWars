@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Player;
+import com.garden.game.player.Quest;
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
 
 import java.util.Map;
 import java.util.Random;
@@ -189,6 +189,7 @@ public class World extends Stage {
         dayCount++;
         if (dayCount == 8){
             enterBoss();
+            setNewQuests();
             dayCount = 1;
             weekCount++;
         }
@@ -273,8 +274,14 @@ public class World extends Stage {
         addActor(boss);
         boss.intro(player.unit.getX()+50, player.unit.getY());
     }
-    public void checkJournalistEvent() {
 
+    // If quest is completed give a new quest. 
+    private void setNewQuests() {
+        for(Quest q : player.quests) {
+            if(q.isCompleted) {
+                player.setNewQuest(q.questID);
+            }
+        }
     }
 
 }

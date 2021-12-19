@@ -1,6 +1,6 @@
 package com.garden.game.player;
 
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 import java.util.Random;
 

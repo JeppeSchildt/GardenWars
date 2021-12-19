@@ -1,7 +1,7 @@
 package com.garden.game.player;
 
 import com.garden.game.tools.Constants;
-import com.garden.game.world.plants.Plant;
+import com.garden.game.world.Plant;
 
 public class HarvestQuest extends Quest{
     private static int nCompleted = 0;
@@ -35,6 +35,9 @@ public class HarvestQuest extends Quest{
     @Override
     public void nextTurn() {
         super.nextTurn();
+        if(isCompleted) {
+            return;
+        }
         if(player.nHarvested >= nPlants) {
             nCurrentTurns += 1;
             if(nCurrentTurns >= nTurns) {

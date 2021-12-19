@@ -85,15 +85,7 @@ public class MainCharacter extends Unit{
             }
         };
 
-        TemporalAction stopRun = new TemporalAction() {
-            @Override
-            protected void update(float percent) {
-                activeAnimation = stopAnimations.get(direc);
-            }
-        };
-        stopRun.setDuration(0.4f);
-
-        SequenceAction sequence = new SequenceAction(moveToAction, playSound, stopRun, waterPlant);
+        SequenceAction sequence = new SequenceAction(moveToAction, playSound, waterPlant);
         addAction(sequence);
     }
 
@@ -113,7 +105,7 @@ public class MainCharacter extends Unit{
 
         // Get get more water action from pool and set duration
         TemporalAction getMoreWater = getWaterTemporalPool.obtain();
-        getMoreWater.setDuration(0.5f);
+        getMoreWater.setDuration(1f);
 
         RunnableAction playSound = new RunnableAction(){
             @Override
@@ -128,7 +120,7 @@ public class MainCharacter extends Unit{
                 activeAnimation = stopAnimations.get(direc);
             }
         };
-        stopRun.setDuration(1f);
+        stopRun.setDuration(0f);
 
         // Create sequence action
         SequenceAction sequence = new SequenceAction(moveToAction, playSound, stopRun, getMoreWater);

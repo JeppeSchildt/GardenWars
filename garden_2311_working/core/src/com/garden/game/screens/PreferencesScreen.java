@@ -80,8 +80,8 @@ public class PreferencesScreen implements Screen {
                 @Override
                 public boolean handle(Event event) {
                     app.assets.menuMusic.setVolume( volumeMusicSlider.getValue() );
-                    // Need fix
                     app.assets.inGameMusic.setVolume( volumeMusicSlider.getValue() );
+                    app.assets.inGameDryMusic.setVolume( volumeMusicSlider.getValue() );
 
                     // Global Value
                     app.musicVolume = volumeMusicSlider.getValue();
@@ -113,6 +113,7 @@ public class PreferencesScreen implements Screen {
             @Override
             public boolean handle(Event event) {
                 app.assets.ambientSound_Bird.setVolume( ambientBirdMusicSlider.getValue() );
+                app.assets.ambientSound_Crickets.setVolume( ambientBirdMusicSlider.getValue() );
                 return false;
             }
         });
@@ -155,6 +156,9 @@ public class PreferencesScreen implements Screen {
                 app.assets.soundUseWater.setVolume( soundEffectSlider.getValue() );
                 app.assets.soundButtonPress.setVolume( soundEffectSlider.getValue() );
                 app.assets.soundUseGold.setVolume( soundEffectSlider.getValue() );
+
+                // ---- test button Preferences screen
+                app.assets.soundTestEffektBeat.setVolume( soundEffectSlider.getValue() );
                 return false;
             }
         });

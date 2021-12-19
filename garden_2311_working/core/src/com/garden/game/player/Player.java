@@ -102,7 +102,7 @@ public class Player {
 
     // Add plant to map. We do not check any conditions here...??
     public void plant(float x, float y, Plant plant) {
-        money -= plant.getPrice() + constructionBonus; // Construction bonus set when skill construction learned.
+        money -= plant.getPrice(); // Construction bonus set when skill construction learned.
         addPlant(plant);
         unit.gotoAndPlant(x, y, plant);
         setMovementLocked(true);

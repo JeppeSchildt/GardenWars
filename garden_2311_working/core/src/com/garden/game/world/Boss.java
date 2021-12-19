@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Random;
 
 // Journalist class
-public class Employer extends Unit {
+public class Boss extends Unit {
     public List<String> introDialog;
     public List<String> currentDialog;
     Random random;
 
-    public Employer(GardenGame app) {
+    public Boss(GardenGame app) {
         super(app);
         this.walkAnimations = app.assets.journalistWalkAnimations;
         this.stopAnimations = app.assets.journalistStopAnimations;

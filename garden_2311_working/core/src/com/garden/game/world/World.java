@@ -38,7 +38,7 @@ public class World extends Stage {
 
     private int maxGold = 9999;
 
-    public Employer boss;
+    public Boss boss;
 
     public int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
     public int lengthForDrySeason, lengthForWetSeason;
@@ -56,7 +56,7 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         player = new Player(app);
         turnNumber = 1;
-        boss = new Employer(app);
+        boss = new Boss(app);
 
         // Dry season event
         drySeason = false;

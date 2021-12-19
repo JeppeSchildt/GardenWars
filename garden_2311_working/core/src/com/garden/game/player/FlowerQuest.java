@@ -40,16 +40,13 @@ public class FlowerQuest extends Quest {
             }
 
         }
-        if(isCompleted) {
-            onCompleted();
-        }
     }
 
     @Override
     public void onCompleted() {
         super.onCompleted();
         nCompleted += 1;
-        player.points += 10;
+        player.points += 10*player.questPointFactor;
         description += ": completed";
     }
 
@@ -64,6 +61,7 @@ public class FlowerQuest extends Quest {
         if(isCompleted) {
             return;
         }
+        // Check surroundings of given plant. Return if conditions are not met. Otherwise isCompleted is true.
         for(int i = 0; i < nPlants; i++) {
             for(int j = 0; j < nPlants; j++) {
                 Plant p = player.getPlantAtPosition(plant.getX()+(i*Constants.TILE_WIDTH), plant.getY()+(j*Constants.TILE_HEIGHT));
@@ -73,6 +71,7 @@ public class FlowerQuest extends Quest {
             }
         }
         isCompleted = true;
+
     }
 
     @Override

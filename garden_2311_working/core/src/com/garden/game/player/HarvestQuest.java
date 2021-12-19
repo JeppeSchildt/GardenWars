@@ -42,7 +42,7 @@ public class HarvestQuest extends Quest{
             nCurrentTurns += 1;
             if(nCurrentTurns >= nTurns) {
                 isCompleted = true;
-                onCompleted();
+                updateDescComplete();
             }
         } else {
             nCurrentTurns = 0;
@@ -53,9 +53,7 @@ public class HarvestQuest extends Quest{
     public void onCompleted() {
         super.onCompleted();
         nCompleted += 1;
-        player.points += 10;
-        description += ": completed";
-        System.out.println("HDELLO FROM IONcal");
+        player.points += 10*player.questPointFactor;
     }
 
     @Override

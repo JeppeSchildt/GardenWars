@@ -24,8 +24,8 @@ import java.util.Map;
 public class Player {
     GardenGame app;
     public MainCharacter unit;
-    public int money, water, maxWater, maxPoint, waterPerTurn, nHarvested, waterSize;
-    public float points;
+    public int money, water, maxWater, maxPoint, waterPerTurn, nHarvested, waterSize, constructionBonus;
+    public float points, questPointFactor = 1f;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
     private boolean gotWater, isMovementLocked;
@@ -52,6 +52,7 @@ public class Player {
         waterSize = 20;
         maxPoint = 1000;
         nHarvested = 0;
+        constructionBonus = 0;
     }
 
     private void initQuests() {
@@ -101,7 +102,7 @@ public class Player {
 
     // Add plant to map. We do not check any conditions here...??
     public void plant(float x, float y, Plant plant) {
-        money -= plant.getPrice();
+        money -= plant.getPrice() + constructionBonus; // Construction bonus set when skill construction learned.
         addPlant(plant);
         unit.gotoAndPlant(x, y, plant);
         setMovementLocked(true);

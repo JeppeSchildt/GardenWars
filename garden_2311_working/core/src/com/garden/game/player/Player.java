@@ -52,6 +52,7 @@ public class Player {
         waterSize = 20;
         maxPoint = 1000;
         nHarvested = 0;
+        
     }
 
     private void initQuests() {

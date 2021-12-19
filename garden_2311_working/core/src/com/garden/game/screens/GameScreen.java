@@ -966,19 +966,15 @@ public class GameScreen extends AbstractScreen {
             }
         });
 
-        TextButton debugEvenButton = new TextButton("Test Event",skin);
+        TextButton debugEvenButton = new TextButton("GameOver",skin);
         debugEvenButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //app.batch.begin();
-                startEvent("magazine");
-                /*for(Quest q : world.player.quests) {
-                    if(q.isCompleted) {
-                        q.onCompleted();
-                    }
-                }*/
-                //font.draw(app.batch,"TEST",100,100);
-                //app.batch.end();
+
+                if(app.gameOverScreen == null) {
+                    app.gameOverScreen = new GameOverScreen(app, world.player.points);
+                }
+                app.setScreen(app.gameOverScreen);
             }
         });
 

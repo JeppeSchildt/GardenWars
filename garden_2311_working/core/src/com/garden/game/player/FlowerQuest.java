@@ -47,7 +47,6 @@ public class FlowerQuest extends Quest {
         super.onCompleted();
         nCompleted += 1;
         player.points += 10*player.questPointFactor;
-        description += ": completed";
     }
 
     @Override
@@ -71,6 +70,7 @@ public class FlowerQuest extends Quest {
             }
         }
         isCompleted = true;
+        description += ": completed";
 
     }
 

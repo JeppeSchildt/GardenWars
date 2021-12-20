@@ -12,7 +12,7 @@ public class MapInput implements InputProcessor {
     public final boolean[] keyPressed;
     private int[] toggleKey;
     Logger debugLog;
-    boolean tileSelected;
+    public boolean tileSelected;
     private final float maxZoom = 1.75f;
     public Boolean walking;
 

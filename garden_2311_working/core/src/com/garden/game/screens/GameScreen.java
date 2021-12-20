@@ -248,6 +248,16 @@ public class GameScreen extends AbstractScreen {
         Plant plant = world.player.getPlantAtPosition(plantX, plantY);
 
         String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
+        if(plant != null) {
+            improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName();
+            if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned) {
+                String on_off = !plant.stopAutoHarvest ? ": on" : ": off";
+                improvement += "\n Auto Harvest" + on_off;
+            }
+        }
+
+
+
         return coordinates + improvement;
     }
 
@@ -401,19 +411,21 @@ public class GameScreen extends AbstractScreen {
             buttonList.add(getWater);
 
         if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned && isPlant) {
-            TextButton removeAutoHarvest = new TextButton("Auto Harvest", skin);
+            String txtButton = "Toggle Auto Harvest";
+            final TextButton removeAutoHarvest = new TextButton(txtButton, skin);
+            final float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+            final float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+
+            final Plant p = world.player.getPlantAtPosition(plantX, plantY);
+
             removeAutoHarvest.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
-                    float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
-                    Plant p = world.player.getPlantAtPosition(plantX, plantY);
-                    if(p != null) {
-                        p.stopAutoHarvest = !p.stopAutoHarvest;
-                    }
+                    p.toggleAutoHarvest();
                     outerTable.remove();
                 }
             });
+            buttonList.add(removeAutoHarvest);
         }
 
         if(!isPlant) {

@@ -33,7 +33,7 @@ public class TitleScreen implements Screen {
 		app.sound.Play_Music();
 
 		//Delete when done debug/testing
- 		//app.sound.Play_Pause_Music();
+ 		app.sound.Play_Pause_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();

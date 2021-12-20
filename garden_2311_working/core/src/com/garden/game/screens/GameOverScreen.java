@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
 public class GameOverScreen implements Screen {
 
     private GardenGame app;
@@ -23,7 +26,7 @@ public class GameOverScreen implements Screen {
 
     private Table table;
 
-    private float score, highscore;
+    private float score, highestScore;
 
     Skin skin;
 
@@ -35,13 +38,22 @@ public class GameOverScreen implements Screen {
         stage = new Stage(new ScreenViewport(camera));
 
         initStage();
+       // E:/computerspille/GardenWars/garden_2311_working/core/assets
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"), StandardCharsets.UTF_8))) {
+            writer.write(score + "\n");
+            System.out.println("Score" + score);
+        }
+        catch (IOException ex) {
+            System.out.println("nope");
+        }
+
 
         // Get highscore from save file
         Preferences prefs = Gdx.app.getPreferences("gardengame");
-        this.highscore = prefs.getFloat("highscore", 0);
+        this.highestScore = prefs.getFloat("highestscore", 0);
 
         // Check if score beats highscore
-        if (score > highscore) {
+        if (score > highestScore) {
             prefs.putFloat("highscore", score);
             prefs.flush();
         }
@@ -49,6 +61,8 @@ public class GameOverScreen implements Screen {
 
     }
     private void initStage() {
+
+
 
 
         // Create a table that fills the screen. Everything else will go inside this table.
@@ -64,7 +78,7 @@ public class GameOverScreen implements Screen {
         titleText.setFontScale(5);
 
         Label scoreText = new Label("Score: " + score, app.assets.largeTextStyle);
-        Label highscoreText = new Label("Highscore: " + highscore, app.assets.largeTextStyle);
+        Label highscoreText = new Label("highest Score: " + highestScore, app.assets.largeTextStyle);
 
 
         TextButton newgameButton = new TextButton("New Game",skin);
@@ -96,6 +110,7 @@ public class GameOverScreen implements Screen {
         table.add(mainMenuButton).center();
 
     }
+
 
     @Override
     public void show() {

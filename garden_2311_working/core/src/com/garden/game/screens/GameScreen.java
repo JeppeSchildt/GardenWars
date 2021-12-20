@@ -493,8 +493,6 @@ public class GameScreen extends AbstractScreen {
         world.player.unit.setPosition(Constants.FRONT_PORCH_X, Constants.FRONT_PORCH_Y);
 
         world.nextTurn();
-
-
         //txtQuests.setText(world.player.quests.get(0).description);
         //System.out.println(world.player.quests.get(0).description);
 
@@ -510,11 +508,94 @@ public class GameScreen extends AbstractScreen {
         txtQuests.setText(strQuests);
     }
 
+    private void renderBubble(String text) {
+        dialogGlyphLayout.setText(font, text, Color.WHITE, Gdx.graphics.getWidth() * 0.75f, Align.topLeft, true);
+        float tw = dialogGlyphLayout.width;
+        float th = dialogGlyphLayout.height;
 
+        // 0.05 for 5% margin, dw and dh are the width of the bubble
+        // bo the bubble is the size of the text, plus a 5% margin (of the window size)
+        float dw = tw + 0.05f * Gdx.graphics.getWidth();
+        float dh = th + 0.05f * Gdx.graphics.getHeight();
+
+        // bx, bh is the position of the buggle
+        float bx = world.player.unit.getX();//(Gdx.graphics.getWidth() - dw) / 2.0f;
+        float by = world.player.unit.getY();//Gdx.graphics.getHeight() - dh * 1.2f;
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        app.batch.enableBlending();
+        app.batch.begin();
+        app.batch.setProjectionMatrix(camera.combined);
+        np.draw(app.batch, 100, 100, 100, 100);
+        //font.draw(app.batch,  dialogGlyphLayout, bx + (dw-tw) / 2.0f, by + dh - (dh-th) / 2.0f);
+        System.out.println("In here yada");
+        Color c = app.batch.getColor();
+        app.batch.setColor(c.r,c.g,c.b,1f);
+        Image image = new Image(np);
+        image.setWidth(140);
+        Container<Image> container = new Container<Image>(image);
+        container.fill();
+        container.setSize(140,69);
+        container.setOrigin(bx,by);
+
+        Label lbl = new Label("Random TEXT",skin);
+        lbl.setOrigin(container.getX()+100,container.getY());
+        lbl.setAlignment(Align.center);
+        lbl.setColor(Color.RED);
+        lbl.setSize(100,100);
+        grp.addActor(container);
+        grp.addActor(lbl);
+        grp.setPosition(bx,by);
+        hud.addActor(grp);
+        app.batch.end();
+    }
+
+    public void magazineEvent() {
+        /*
+        NinePatch np = new NinePatch(new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png")),10,10,10,10);
+        np.draw(app.batch,100,100,100,100);
+        spriteHighlight.draw(getBatch()); */
+
+        int textBoxBuffer = 5;
+        int textBoxWidth = 80;
+        //GlyphLayout layout = new GlyphLayout(font,"hej",200,200,textBoxWidth, Align.left,true)
+        //batchTest = new SpriteBatch();
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        font = skin.get("default-font", BitmapFont.class);
+        //Texture bubble = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
+        Texture bubble = new Texture(Gdx.files.internal("speech_bubble_v3.png"));
+        np = new NinePatch(new TextureRegion(bubble,0,0,bubble.getWidth(),bubble.getHeight()),5,5,5,5);
+        renderBubble("TEST");
+    }
+    public void droughtEvent() {
+
+    }
+
+    public void startEvent(String event) {
+        switch(event) {
+            case "magazine":
+                magazineEvent();
+                System.out.println("Magazine visit");
+                break;
+            case "drought":
+                droughtEvent();
+                System.out.println("Drought event");
+                break;
+        }
+    }
 
     // https://stackoverflow.com/questions/14700577/drawing-transparent-shaperenderer-in-libgdx
     public void drawMenu(){
-
+        //app.batch.draw(inGameBorder,0,0);
+        /*Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        int rect_x = Gdx.graphics.getWidth();
+        int rect_y = Gdx.graphics.getHeight() - 100;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(hudColor);
+        //shapeRenderer.rect(0, rect_y, Gdx.graphics.getWidth(), rect_x);
+        shapeRenderer.rect(0,0, Gdx.graphics.getWidth(), 100);
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);*/
         updateHUD();
     }
 
@@ -540,7 +621,7 @@ public class GameScreen extends AbstractScreen {
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
         	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
         	double cat = world.tileSize/2;
-        	double dist = Math.sqrt(Math.pow(cat, 2)*2); 
+        	double dist = Math.sqrt(Math.pow(cat, 2)*2);
         	float goX = (float)(posX * world.tileSize + dist);
         	float goY = (float)(posY * world.tileSize + dist);
             //outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
@@ -602,7 +683,6 @@ public class GameScreen extends AbstractScreen {
         }
 
         if (showDialog) {
-            System.out.println("showdialog true");
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;
@@ -631,9 +711,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void weekBoss(){
-
-        dialogIndex = 0;
-        currentDialogList = world.boss.currentDialog;
+        //currentDialogList = world.boss.currentDialog;
         showDialog = true;
         updateDialog(currentDialogList.get(dialogIndex));
         dialogBackground();
@@ -650,7 +728,7 @@ public class GameScreen extends AbstractScreen {
     private void nextTurnInfo() {
         if(nextTurnClicked) {
             showDialog = false;
-            if(blkScreenAlpha >= 2.5f) {
+            if(blkScreenAlpha >= 4.5f) {
 
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
@@ -660,10 +738,6 @@ public class GameScreen extends AbstractScreen {
 
                 // Move character to front porch instantly.
                 moveToPorch();
-                 if (world.isBossEvent) {
-                    weekBoss(); //updates dialouge
-                    System.out.println("boss thingy");
-                }
                 app.sound.SoundNewDay();
             }
             if(blkScreenAlpha >= 0.5f) { // change this to longer
@@ -770,17 +844,14 @@ public class GameScreen extends AbstractScreen {
                 dialogStep = 0;
                 dialogIndex++;
                 if (dialogIndex >= currentDialogList.size()) {
-                    System.out.println("End of dialouge");
-                    world.isBossEvent = false;
                     showDialog = false;
                     dialogIndex = 0;
                     world.leaveBoss();
                 } else {
-                    showDialog = true;
                     updateDialog(currentDialogList.get(dialogIndex));
-                    System.out.println(currentDialogList.get(dialogIndex));
-                    //dialogBackground();
+                    dialogBackground();
                 }
+
             }
         }
 
@@ -823,7 +894,7 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtGuid);
 
         txtGuid.setText("Beginner’s Guide: \n\n" +
-                "More info 'Press key 'K' \n" +
+                "More info 'Press key 'S' \n" +
                 "To hide me 'Press key 'I'");
 
     }

@@ -130,6 +130,7 @@ public class TitleScreen implements Screen {
 
 	private void continueGame(){
 		app.sound.SoundButtonClick();
+		app.gameOverScreen = null;
 		app.setScreen(app.gameScreen);
 		//app.gameScreen.world.init("World.tmx");
 	}

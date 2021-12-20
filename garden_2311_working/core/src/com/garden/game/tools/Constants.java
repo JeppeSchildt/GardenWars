@@ -215,7 +215,7 @@ public class Constants {
 
     // -------- Dry Season Event -------- //
     public static final int MAX_WET_SEASONS_DAYS = 15, MAX_DRY_SEASONS_DAYS = 7;
-    public static final int MIN_WET_SEASONS_DAYS = 5, MIN_DRY_SEASONS_DAYS = 3;
+    public static final int MIN_WET_SEASONS_DAYS = 7, MIN_DRY_SEASONS_DAYS = 2;
 
     /* Quest stuff */
     public static final int KEEP_HEALTHY_QUEST_ID = 0;

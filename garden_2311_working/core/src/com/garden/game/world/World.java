@@ -253,6 +253,7 @@ public class World extends Stage {
                 lengthForWetSeason = 0;
 
                 isStartDrySeason = false;
+                isStartWetSeason = false;
             }
             lengthForDrySeason++;
         }

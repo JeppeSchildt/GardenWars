@@ -269,8 +269,7 @@ public class GameScreen extends AbstractScreen {
             if ((world.DrySeasonCount_RandomNumber - world.lengthForWetSeason) <= 2)
                 txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (world.DrySeasonCount_RandomNumber - world.lengthForWetSeason + 1);
             else
-                txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + (world.DrySeasonCount_RandomNumber - world.lengthForWetSeason + 1);
-                //txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + ("?");
+                txtSeason = longSpace + longSpace + "Days To Next Dry Season: " + ("?");
         }
         txtResources.setText(txtWater + txtGold  + txtPoint + txtSeason);
         txtTileInfo.setText(getTileInfo(world.hoveredX, world.hoveredY));

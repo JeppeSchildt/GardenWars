@@ -27,6 +27,7 @@ public class Assets extends AssetManager {
     public TiledMapTileLayer.Cell dirtCell, grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations,
             wateringAnimations, journalistWalkAnimations, journalistStopAnimations;
+    public String scoreFile;
 
     public Music menuMusic, inGameMusic, inGameDryMusic, ambientSound_Bird, ambientSound_Crickets, soundButtonPress, soundEnd, soundGameOver,
             soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
@@ -259,6 +260,8 @@ public class Assets extends AssetManager {
 
 
         this.load("black_screen.png", Texture.class);
+
+        scoreFile = "scores.txt";
 
 
         setLoader(TiledMap.class, new TmxMapLoader());

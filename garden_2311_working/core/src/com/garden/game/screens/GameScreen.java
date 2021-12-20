@@ -791,7 +791,7 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtGuid);
 
         txtGuid.setText("Beginner’s Guide: \n\n" +
-                "More info 'Press key 'S' \n" +
+                "More info 'Press key 'K' \n" +
                 "To hide me 'Press key 'I'");
 
     }

@@ -20,10 +20,6 @@ public class MoreFruits extends Skill{
         player.makePlantAvailable(Constants.AVOCADO);
         player.makePlantAvailable(Constants.MELON);
         player.makePlantAvailable(Constants.PINEAPPLE);
-
-
-
-
     }
 
     @Override

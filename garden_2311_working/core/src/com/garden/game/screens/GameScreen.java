@@ -322,8 +322,8 @@ public class GameScreen extends AbstractScreen {
         int step = (int) (time*12);//Dialogue.readingSpeed);
         if (step > text.length()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                dialogStep = 0;
-                showDialog = false;
+            //    dialogStep = 0;
+            //    showDialouge = false;
             }
             //dialogStep = 0;
             //showDialouge = false;
@@ -727,8 +727,9 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            showDialog = false;
-            if(blkScreenAlpha >= 2f) {
+            showDialouge = false;
+            if(blkScreenAlpha >= 4.5f) {
+
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
@@ -966,19 +967,15 @@ public class GameScreen extends AbstractScreen {
             }
         });
 
-        TextButton debugEvenButton = new TextButton("Test Event",skin);
+        TextButton debugEvenButton = new TextButton("GameOver",skin);
         debugEvenButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //app.batch.begin();
-                startEvent("magazine");
-                /*for(Quest q : world.player.quests) {
-                    if(q.isCompleted) {
-                        q.onCompleted();
-                    }
-                }*/
-                //font.draw(app.batch,"TEST",100,100);
-                //app.batch.end();
+
+                if(app.gameOverScreen == null) {
+                    app.gameOverScreen = new GameOverScreen(app, world.player.points);
+                }
+                app.setScreen(app.gameOverScreen);
             }
         });
 

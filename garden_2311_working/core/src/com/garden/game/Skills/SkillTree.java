@@ -27,18 +27,18 @@ public class SkillTree {
         availableToLearn[Constants.GENERAL] = true;
         skills = new ArrayList<>();
 
-        skills.add(Constants.BASIC_PLANTS, new BasicPlants(3, player));
-        skills.add(Constants.FERTILIZER_1, new Fertilizer(3, player));
-        skills.add(Constants.MORE_FLOWERS, new MoreFlowers(3, player));
-        skills.add(Constants.MORE_FRUITS, new MoreFruits(3, player));
+        skills.add(Constants.BASIC_PLANTS, new BasicPlants(2, player));
+        skills.add(Constants.FERTILIZER_1, new Fertilizer(2, player));
+        skills.add(Constants.MORE_FLOWERS, new MoreFlowers(2, player));
+        skills.add(Constants.MORE_FRUITS, new MoreFruits(2, player));
         skills.add(Constants.FERTILIZER_2, new Fertilizer2(3, player));
-        skills.add(Constants.GENERAL, new General(3, player));
+        skills.add(Constants.GENERAL, new General(2, player));
         skills.add(Constants.CONSTRUCTION, new Construction(3, player));
         skills.add(Constants.COMMUNICATION, new Communication(3, player));
         skills.add(Constants.WATER_1, new Water(3, player));
-        skills.add(Constants.WATER_2, new Water2(3, player));
+        skills.add(Constants.WATER_2, new Water2(4, player));
         skills.add(Constants.IRRIGATION, new Irrigation(3, player));
-        skills.add(Constants.AUTO_HARVEST, new AutoHarvest(3, player));
+        skills.add(Constants.AUTO_HARVEST, new AutoHarvest(6, player));
 
 
 

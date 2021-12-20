@@ -184,8 +184,15 @@ public class World extends Stage {
 
         weekCount();
         drySeasonEvent();
+        checkPoints();
 
+    }
 
+    private void checkPoints() {
+        player.checkPoints();
+        if(player.gameWon) {
+            bossGameWon();
+        }
     }
 
     private void weekCount(){
@@ -264,7 +271,7 @@ public class World extends Stage {
         boss.weeklyCheck();
         isBossEvent = true;
         addActor(boss);
-        boss.enterJournalist(player.unit.getX()+50, player.unit.getY());
+        boss.enterBoss(player.unit.getX()+50, player.unit.getY());
     }
 
     public void leaveBoss() {
@@ -285,6 +292,12 @@ public class World extends Stage {
                 player.setNewQuest(q.questID);
             }
         }
+    }
+    private void bossGameWon() {
+        isBossEvent = true;
+        boss.remove();
+        addActor(boss);
+        boss.gameWon(player.unit.getX(), player.unit.getY());
     }
 
 }

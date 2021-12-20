@@ -38,7 +38,7 @@ public class Boss extends Unit {
         setY(22*Constants.TILE_HEIGHT);
     }
 
-    public void enterJournalist(float x, float y) {
+    public void enterBoss(float x, float y) {
         setInitialPosition();
         setPosition(x+50, y);
     }
@@ -48,6 +48,12 @@ public class Boss extends Unit {
         setX(31*Constants.TILE_WIDTH);
         setY(22*Constants.TILE_HEIGHT);
         setPosition(x+30, y-10);
+    }
+
+    public void gameWon(float x, float y) {
+        gameWonDialog();
+        setInitialPosition();
+        setPosition(x+50, y);
     }
 
     public void leave() {
@@ -104,5 +110,13 @@ public class Boss extends Unit {
                 "What is this supposed to look like a garden? Please do better.",
                 "I think you are not doing your best."};
         return Dialogue.BOSS + replies[random.nextInt(replies.length)];
+    }
+
+    public void gameWonDialog() {
+        currentDialog.clear();
+        currentDialog.add(Dialogue.BOSS + "The park has never looked better. People from near and far are talking about this place. All due to your dedication and hard work");
+        currentDialog.add(Dialogue.MainCharacter + "It's been a pleasure and an honor");
+        currentDialog.add(Dialogue.BOSS + "If you want you can keep this job for life. The city thanks you and the mayor wants to give you the keys to the city!");
+        currentDialog.add(Dialogue.MainCharacter + "*blushes*");
     }
 }

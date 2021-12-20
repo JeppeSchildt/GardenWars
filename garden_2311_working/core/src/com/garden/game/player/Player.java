@@ -28,7 +28,7 @@ public class Player {
     public float points, questPointFactor = 1f;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
-    public boolean gotWater, isMovementLocked;
+    public boolean gotWater, isMovementLocked, gameWon = false;
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
@@ -47,10 +47,8 @@ public class Player {
         initQuests();
 
         water = 0;
-
         maxWater = 50;
         waterPerTurn = 15;
-
         waterSize = 4;
         maxPoint = 1000;
         nHarvested = 0;
@@ -238,5 +236,11 @@ public class Player {
 
     public boolean isMovementLocked() {
         return isMovementLocked;
+    }
+
+    public void checkPoints() {
+        if(points >= 1000) {
+            gameWon = true;
+        }
     }
 }

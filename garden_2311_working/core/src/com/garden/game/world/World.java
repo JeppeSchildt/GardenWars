@@ -248,11 +248,13 @@ public class World extends Stage {
         }
     }
     private void bossGameWon() {
-        isBossEvent = true;
-        boss.remove();
-        addActor(boss);
-        boss.gameWon(player.unit.getX(), player.unit.getY());
-        player.gameWon = false;
+        if(!boss.lastEnter) {
+            isBossEvent = true;
+            boss.remove();
+            addActor(boss);
+            boss.gameWon(player.unit.getX(), player.unit.getY());
+            player.gameWon = false;
+        }
     }
 
 }

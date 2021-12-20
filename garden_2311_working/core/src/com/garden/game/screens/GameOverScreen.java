@@ -31,6 +31,8 @@ public class GameOverScreen implements Screen {
     private Table table;
 
     private float score, highestScore;
+    private Label txtGoal, scoreText, highscoreText, titleText;
+    private TextButton newgameButton, mainMenuButton;
 
     Skin skin;
 
@@ -40,8 +42,6 @@ public class GameOverScreen implements Screen {
 
         final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(new ScreenViewport(camera));
-
-
 
         try (BufferedReader br = new BufferedReader(new FileReader(app.assets.scoreFile))) {
             String text = br.readLine(); // first line only
@@ -90,16 +90,16 @@ public class GameOverScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        Label titleText = new Label("GAME OVER!", app.assets.largeTextStyle);
+        titleText = new Label("GAME OVER!", app.assets.largeTextStyle);
         titleText.setFontScale(5);
 
-        Label scoreText = new Label("Score: " + Math.round(score*100.0)/100.0, app.assets.largeTextStyle);
+        scoreText = new Label("Score: " + Math.round(score*100.0)/100.0, app.assets.largeTextStyle);
 
 
-        Label highscoreText = new Label("highest Score: " + Math.round(highestScore*100.0)/100.0, app.assets.largeTextStyle);
+        highscoreText = new Label("highest Score: " + Math.round(highestScore*100.0)/100.0, app.assets.largeTextStyle);
 
 
-        TextButton newgameButton = new TextButton("Continue Playing",skin);
+        newgameButton = new TextButton("Continue Playing",skin);
         newgameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -107,7 +107,7 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        TextButton mainMenuButton = new TextButton("Main Menu",skin);
+        mainMenuButton = new TextButton("Main Menu",skin);
         mainMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -115,11 +115,24 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        Label txtGoal;
-        if (true)
+
+
+
+    }
+
+
+    @Override
+    public void show() {
+
+        app.sound.GameOver_Sound();
+        app.preferencesBool = false;
+
+
+        if (app.gameScreen.world.player.gameWon)
             txtGoal = new Label("You reached 1000 scores in time !! Congratulations !!\n", app.assets.largeTextStyle);
         else
             txtGoal = new Label("You failed to reach 1000 points in time...<(x_X)> \n", app.assets.largeTextStyle);
+
 
         table.add(titleText).center();
         table.row();
@@ -134,14 +147,6 @@ public class GameOverScreen implements Screen {
         table.row();
         table.add(mainMenuButton).center();
 
-    }
-
-
-    @Override
-    public void show() {
-
-        app.sound.GameOver_Sound();
-        app.preferencesBool = false;
 
         Gdx.input.setInputProcessor(stage);
 

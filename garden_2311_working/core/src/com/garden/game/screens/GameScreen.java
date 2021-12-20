@@ -905,7 +905,7 @@ public class GameScreen extends AbstractScreen {
         });
 
         TextButton debugGetGold = new TextButton("Get 100 Gold",skin);
-        debugGetPoint.addListener(new ChangeListener() {
+        debugGetGold.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 world.player.money += 100;
@@ -914,7 +914,7 @@ public class GameScreen extends AbstractScreen {
 
 
         TextButton debugGetWater = new TextButton("Get 100 Water",skin);
-        debugGetPoint.addListener(new ChangeListener() {
+        debugGetWater.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 world.player.water += 100;

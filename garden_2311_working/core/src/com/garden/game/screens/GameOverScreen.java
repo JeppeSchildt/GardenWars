@@ -52,7 +52,6 @@ public class GameOverScreen implements Screen {
 
             } else{
 
-                // E:/computerspille/GardenWars/garden_2311_working/core/assets
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(app.assets.scoreFile), StandardCharsets.UTF_8))) {
                     writer.write(score + "\n");
 
@@ -150,16 +149,6 @@ public class GameOverScreen implements Screen {
 
 
         Gdx.input.setInputProcessor(stage);
-
-        /*
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                app.setScreen(app.titleScreen);
-                app.sound.Play_Music();
-            }
-        },4.2f);
-         */
 
     }
 

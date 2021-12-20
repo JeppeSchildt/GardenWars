@@ -290,4 +290,8 @@ public class Plant extends Actor {
             activeSprite.draw(batch);
         }
     }
+
+    public void toggleAutoHarvest() {
+        stopAutoHarvest = !stopAutoHarvest;
+    }
 }

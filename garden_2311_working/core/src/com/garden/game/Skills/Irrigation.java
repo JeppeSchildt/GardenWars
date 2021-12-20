@@ -31,9 +31,7 @@ public class Irrigation extends Skill {
             Plant plant = entry.getValue();
 
             if(plant.getState() != Plant.PlantState.HEALTHY) {
-                //plant.setState(Plant.PlantState.HEALTHY);
-                // Penal user somehow. Or just think about it very powerful now.
-                plant.water += plant.waterStateMap.get(Plant.PlantState.HEALTHY).x;
+                plant.water = plant.waterStateMap.get(Plant.PlantState.SMALL)+5;
             }
 
 

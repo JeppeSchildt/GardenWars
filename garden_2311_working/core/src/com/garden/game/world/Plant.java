@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.garden.game.tools.Constants;
 
@@ -19,8 +18,8 @@ public class Plant extends Actor {
     Sprite activeSprite;
     TextureRegion[] textureRegions;
     public float profit;
-    public Map<PlantState, Vector2> waterStateMap;
-    public Map<PlantState, Float> waterStateMap_;
+    //public Map<PlantState, Vector2> waterStateMap;
+    public Map<PlantState, Float> waterStateMap;
     private ArrayList<Sprite> sprites;
     private float waterLoss;
 
@@ -150,7 +149,7 @@ public class Plant extends Actor {
         this.waterLoss = Constants.idWaterLossMap.get(id);
         this.profit = Constants.idProfitMap.get(id);
         this.price = Constants.idPriceMap.get(id);
-        this.waterStateMap_ = waterStateMap;
+        this.waterStateMap = waterStateMap;
         this.textureRegions = textureRegions;
         state = PlantState.SEED;
         this.cell = cell;
@@ -174,7 +173,7 @@ public class Plant extends Actor {
         super.setPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT); // 32 is length of a tile...
     }
 
-    public void changeState() {
+   /* public void changeState() {
         if(water <= waterStateMap.get(state).x) {
             state = state.prevState();
             profit -= profit;
@@ -192,12 +191,12 @@ public class Plant extends Actor {
         }
         setActiveSprite();
 
-    }
+    }*/
 
-    public void changeState_() {
-        if(water <= waterStateMap_.get(state.prevState())) {
+    public void changeState() {
+        if(water <= waterStateMap.get(state.prevState())) {
             state = state.prevState();
-        } else if (water > waterStateMap_.get(state)) {
+        } else if (water > waterStateMap.get(state)) {
             state = state.nextState();
         }
 
@@ -226,7 +225,7 @@ public class Plant extends Actor {
 
     public void nextTurn() {
         water = water-waterLoss;
-        changeState_();
+        changeState();
     }
 
     /* Is this plant a flower? */

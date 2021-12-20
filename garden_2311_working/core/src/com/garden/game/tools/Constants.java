@@ -77,7 +77,7 @@ public class Constants {
     public static final String SMALL_STATE = "Small";
     public static final String WITHERING_STATE = "Withering";
     public static final String SEED_STATE = "Seed";
-    public static final String DEAD_STATE = "";
+    public static final String DEAD_STATE = "Dead";
 
     // Not actually a constant. Is changed if Construction is learned.
     public static Map<Integer, Integer> idPriceMap;

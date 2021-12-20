@@ -49,7 +49,7 @@ public class Player {
         water = 10;
         maxWater = 500;
         waterPerTurn = 100;
-        waterSize = 20;
+        waterSize = 5;
         maxPoint = 1000;
         nHarvested = 0;
 

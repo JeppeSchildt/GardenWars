@@ -18,6 +18,10 @@ import com.garden.game.GardenGame;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 
 public class GameOverScreen implements Screen {
 
@@ -37,29 +41,45 @@ public class GameOverScreen implements Screen {
         final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(new ScreenViewport(camera));
 
-        initStage();
-       // E:/computerspille/GardenWars/garden_2311_working/core/assets
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"), StandardCharsets.UTF_8))) {
-            writer.write(score + "\n");
-            System.out.println("Score" + score);
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"))) {
+            String text = br.readLine(); // first line only
+            System.out.println("score file:" + text);
+            float scoreFile = Float.parseFloat(text);
+            if( scoreFile >= score){
+                highestScore = scoreFile;
+
+            } else{
+
+                // E:/computerspille/GardenWars/garden_2311_working/core/assets
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"), StandardCharsets.UTF_8))) {
+                    writer.write(score + "\n");
+                    System.out.println("Score" + score);
+                }
+                catch (IOException ex) {
+                    System.out.println("nope write");
+                }
+                highestScore = score;
+            }
         }
         catch (IOException ex) {
-            System.out.println("nope");
+            System.out.println("nope read");
         }
+
+
+
 
 
         // Get highscore from save file
         Preferences prefs = Gdx.app.getPreferences("gardengame");
-        this.highestScore = prefs.getFloat("highestscore", 0);
+        this.highestScore = prefs.getFloat("highestscore", highestScore);
+        System.out.println("highest score : " + highestScore);
 
-        // Check if score beats highscore
-        if (score > highestScore) {
-            prefs.putFloat("highscore", score);
-            prefs.flush();
-        }
-
-
+        initStage();
     }
+
+
     private void initStage() {
 
         // Create a table that fills the screen. Everything else will go inside this table.
@@ -74,8 +94,8 @@ public class GameOverScreen implements Screen {
         Label titleText = new Label("GAME OVER!", app.assets.largeTextStyle);
         titleText.setFontScale(5);
 
-        Label scoreText = new Label("Score: " + score, app.assets.largeTextStyle);
-        Label highscoreText = new Label("highest Score: " + highestScore, app.assets.largeTextStyle);
+        Label scoreText = new Label("Score: " + Math.round(score*100.0)/100.0, app.assets.largeTextStyle);
+        Label highscoreText = new Label("highest Score: " + Math.round(highestScore*100.0)/100.0, app.assets.largeTextStyle);
 
 
         TextButton newgameButton = new TextButton("New Game",skin);

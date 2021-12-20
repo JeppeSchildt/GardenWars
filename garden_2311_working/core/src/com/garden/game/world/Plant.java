@@ -20,6 +20,7 @@ public class Plant extends Actor {
     TextureRegion[] textureRegions;
     public int profit;
     public Map<PlantState, Vector2> waterStateMap;
+    public Map<PlantState, Float> waterStateMap_;
     private ArrayList<Sprite> sprites;
     private float waterLoss;
 
@@ -146,12 +147,12 @@ public class Plant extends Actor {
     PlantState state;
 
     // Is simpler constructor with setters better?
-    public Plant(int id, int x, int y, TextureRegion[] textureRegions, Map<PlantState, Vector2> waterStateMap, TiledMapTileLayer.Cell cell) {
+    public Plant(int id, int x, int y, TextureRegion[] textureRegions, Map<PlantState, Float> waterStateMap, TiledMapTileLayer.Cell cell) {
         this.typeID = id;
         this.waterLoss = Constants.idWaterLossMap.get(id);
         this.profit = Constants.idProfitMap.get(id);
         this.price = Constants.idPriceMap.get(id);
-        this.waterStateMap = waterStateMap;
+        this.waterStateMap_ = waterStateMap;
         this.textureRegions = textureRegions;
         state = PlantState.SEED;
         this.cell = cell;
@@ -194,6 +195,26 @@ public class Plant extends Actor {
 
     }
 
+    public void changeState_() {
+        if(water <= waterStateMap_.get(state.prevState())) {
+            state = state.prevState();
+            profit -= profit;
+        } else if (water > waterStateMap_.get(state)) {
+            state = state.nextState();
+            profit += profit;
+        }
+
+        if(state == PlantState.DEAD) {
+            activeSprite = null;
+            cell = null;
+            sprites = null;
+            return;
+            // Something is wrong here.... null pointer exception :O !!!
+        }
+        setActiveSprite();
+
+    }
+
     public void setState(PlantState newState) {
         this.state = newState;
     }
@@ -208,7 +229,7 @@ public class Plant extends Actor {
 
     public void nextTurn() {
         water = water-waterLoss;
-        changeState();
+        changeState_();
     }
 
     /* Is this plant a flower? */

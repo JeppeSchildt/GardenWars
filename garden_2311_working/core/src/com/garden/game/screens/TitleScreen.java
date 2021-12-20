@@ -114,6 +114,7 @@ public class TitleScreen implements Screen {
 		app.sound.Chance_Music();
 		app.sound.SoundButtonClick();
 
+		app.gameOverScreen = null;
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
 		app.gameScreen.world.init("World.tmx");

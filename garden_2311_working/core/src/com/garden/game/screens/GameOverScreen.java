@@ -95,6 +95,8 @@ public class GameOverScreen implements Screen {
         titleText.setFontScale(5);
 
         Label scoreText = new Label("Score: " + Math.round(score*100.0)/100.0, app.assets.largeTextStyle);
+
+
         Label highscoreText = new Label("highest Score: " + Math.round(highestScore*100.0)/100.0, app.assets.largeTextStyle);
 
 
@@ -114,8 +116,15 @@ public class GameOverScreen implements Screen {
             }
         });
 
+        Label txtGoal;
+        if (true)
+            txtGoal = new Label("You reached 1000 scores in time !! Congratulations !!\n", app.assets.largeTextStyle);
+        else
+            txtGoal = new Label("You failed to reach 1000 points in time...<(x_X)> \n", app.assets.largeTextStyle);
 
         table.add(titleText).center();
+        table.row();
+        table.add(txtGoal).center();
         table.row();
         table.add(scoreText).left();
         table.row();

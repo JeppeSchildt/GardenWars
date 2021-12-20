@@ -879,7 +879,7 @@ public class GameScreen extends AbstractScreen {
 
         DebugTable.setFillParent(true);
         DebugTable.setDebug(false);
-        DebugTable.setPosition(-450, 100);
+        DebugTable.setPosition(430, -50);
 
         hud.addActor(DebugTable);
 
@@ -895,6 +895,32 @@ public class GameScreen extends AbstractScreen {
                 }
             }
         });
+
+        TextButton debugGetPoint = new TextButton("Get 1000 point",skin);
+        debugGetPoint.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                world.player.points = 1000;
+            }
+        });
+
+        TextButton debugGetGold = new TextButton("Get 100 Gold",skin);
+        debugGetPoint.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                world.player.money += 100;
+            }
+        });
+
+
+        TextButton debugGetWater = new TextButton("Get 100 Water",skin);
+        debugGetPoint.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                world.player.water += 100;
+            }
+        });
+
 
         TextButton debugEvenButton = new TextButton("GameOver",skin);
         debugEvenButton.addListener(new ChangeListener() {
@@ -913,12 +939,21 @@ public class GameScreen extends AbstractScreen {
             System.out.println("DebugMode = " + app.debugMode + ": add");
             DebugTable.add(debugSeasonButton).left();
             DebugTable.row();
+            DebugTable.add(debugGetPoint).left();
+            DebugTable.row();
+            DebugTable.add(debugGetGold).left();
+            DebugTable.row();
+            DebugTable.add(debugGetWater).left();
+            DebugTable.row();
             DebugTable.add(debugEvenButton).left();
         }
 
         if (!app.debugMode){
             System.out.println("DebugMode = " + app.debugMode + ": removeActor");
             DebugTable.removeActor(debugSeasonButton);
+            DebugTable.removeActor(debugGetPoint);
+            DebugTable.removeActor(debugGetGold);
+            DebugTable.removeActor(debugGetWater);
             DebugTable.removeActor(debugEvenButton);
 
         }

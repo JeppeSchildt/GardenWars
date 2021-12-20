@@ -279,7 +279,7 @@ public class GameScreen extends AbstractScreen {
         // ------ QuestBox draw --------- //
         Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
         shapeRendererQuestBox.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRendererQuestBox.rect(20,40,535,100);
+        shapeRendererQuestBox.rect(20,40,700,100);
         shapeRendererQuestBox.setColor(0,0,0,0.2f);
         shapeRendererQuestBox.setProjectionMatrix(camera.combined);
         shapeRendererQuestBox.end();

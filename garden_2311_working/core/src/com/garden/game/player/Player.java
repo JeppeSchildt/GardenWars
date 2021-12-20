@@ -56,8 +56,6 @@ public class Player {
         nHarvested = 0;
 
         money = 100;
-
-
     }
 
     private void initQuests() {

@@ -45,13 +45,16 @@ public class Player {
         availablePlants.add(Constants.CUCUMBER);
 
         initQuests();
-        // Skal fejnes igen - ER her kun fo viso
+
         water = 10;
         maxWater = 500;
         waterPerTurn = 100;
         waterSize = 5;
         maxPoint = 1000;
         nHarvested = 0;
+
+        money = 100;
+
 
     }
 

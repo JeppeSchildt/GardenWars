@@ -18,7 +18,7 @@ public class Plant extends Actor {
     TiledMapTileLayer.Cell cell;
     Sprite activeSprite;
     TextureRegion[] textureRegions;
-    public int profit;
+    public float profit;
     public Map<PlantState, Vector2> waterStateMap;
     public Map<PlantState, Float> waterStateMap_;
     private ArrayList<Sprite> sprites;
@@ -198,10 +198,8 @@ public class Plant extends Actor {
     public void changeState_() {
         if(water <= waterStateMap_.get(state.prevState())) {
             state = state.prevState();
-            profit -= profit;
         } else if (water > waterStateMap_.get(state)) {
             state = state.nextState();
-            profit += profit;
         }
 
         if(state == PlantState.DEAD) {
@@ -241,19 +239,19 @@ public class Plant extends Actor {
     }
 
     /* Harvest plant. Get some gold and set plant to the small state. */
-    public int harvest() {
+    public float harvest() {
         // Can only harvest healthy plants.
         if(getState() != PlantState.HEALTHY) {
             return 0;
         }
 
-        int profit_ = profit;
-        profit = 2*Constants.idProfitMap.get(typeID);
+        //float profit_ = profit;
+        //profit = 2*Constants.idProfitMap.get(typeID);
         water = waterStateMap_.get(PlantState.SMALL)+1f;
         setState(PlantState.SMALL);
         setActiveAnimation();
 
-        return  profit_;
+        return profit;
     }
 
     public int getTypeID() {

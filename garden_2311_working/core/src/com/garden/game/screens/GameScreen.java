@@ -98,9 +98,6 @@ public class GameScreen extends AbstractScreen {
         shapeRendererQuestBox = new ShapeRenderer();
         shapeRendererGuidBox = new ShapeRenderer();
 
-        world.player.money = 200;
-        world.dayCount = 1;
-
         spriteHighlight = app.assets.textureAtlas.createSprite("border_tile");
 
         initHUD();

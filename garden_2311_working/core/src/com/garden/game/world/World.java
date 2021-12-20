@@ -36,7 +36,8 @@ public class World extends Stage {
     public int dayCount, weekCount, monthCount;
     public MapLayers mapLayers;
 
-    private int maxGold = 9999;
+    private int maxGold = 9999, salary = 50;
+
 
     public Boss boss;
 
@@ -56,10 +57,12 @@ public class World extends Stage {
         mapInput = new MapInput(app, this);
         player = new Player(app);
         turnNumber = 1;
+        dayCount = 1;
         boss = new Boss(app);
 
         // Dry season event
         drySeason = false;
+
 
     }
 
@@ -173,7 +176,7 @@ public class World extends Stage {
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);
             if (player.money <= maxGold)
-                player.money += 100;
+                player.money += salary;
         }
 
         player.money += profit;

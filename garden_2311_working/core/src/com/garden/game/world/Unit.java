@@ -161,11 +161,9 @@ public class Unit extends Actor {
     }
 
 
-
     public void setDirec(int dir) {
         direc = dir;
     }
-
 
     public void setPlayerMovLocked(boolean b) {
         app.gameScreen.world.player.setMovementLocked(b);

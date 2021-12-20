@@ -15,6 +15,7 @@ public class Boss extends Unit {
     public List<String> introDialog;
     public List<String> currentDialog;
     Random random;
+    public boolean lastEnter = false;
 
     public Boss(GardenGame app) {
         super(app);
@@ -51,9 +52,12 @@ public class Boss extends Unit {
     }
 
     public void gameWon(float x, float y) {
-        gameWonDialog();
-        setInitialPosition();
-        setPosition(x+50, y);
+        if(!lastEnter) {
+            lastEnter = true;
+            gameWonDialog();
+            setInitialPosition();
+            setPosition(x + 50, y);
+        }
     }
 
     public void leave() {

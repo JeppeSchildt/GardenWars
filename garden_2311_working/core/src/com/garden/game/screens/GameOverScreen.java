@@ -98,7 +98,7 @@ public class GameOverScreen implements Screen {
         Label highscoreText = new Label("highest Score: " + Math.round(highestScore*100.0)/100.0, app.assets.largeTextStyle);
 
 
-        TextButton newgameButton = new TextButton("New Game",skin);
+        TextButton newgameButton = new TextButton("Continue Playing",skin);
         newgameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

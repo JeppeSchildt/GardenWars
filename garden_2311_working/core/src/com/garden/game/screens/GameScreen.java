@@ -517,6 +517,13 @@ public class GameScreen extends AbstractScreen {
 
         updateTxtQuests();
         dialogIndex = 0;
+
+        if (world.monthCount == 2){
+            if(app.gameOverScreen == null) {
+                app.gameOverScreen = new GameOverScreen(app, world.player.points);
+            }
+            app.setScreen(app.gameOverScreen);
+        }
     }
 
     public void updateTxtQuests() {

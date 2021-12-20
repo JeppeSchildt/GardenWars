@@ -798,15 +798,7 @@ public class GameScreen extends AbstractScreen {
                 DebugTable.remove();
             }
         }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X))
-        {
-            showDialog = true;
-            updateDialog(currentDialogList.get(0));
-            dialogBackground();
-        }
-
-
+        
     }
 
     void guidBoxSetup(){

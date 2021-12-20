@@ -6,8 +6,8 @@ import java.util.List;
 public class Dialogue {
 
 
-    public static String BOSS = "Boss Ladies: \n";
-    public static String MainCharacter = "Me: \n";
+    public static String BOSS = "Boss: \n";
+    public static String MainCharacter = "You: \n";
     private static int readingSpeed = 12;
     public static String dia_1 = "Hello you motherfucker, are you okay? I wish to help you, ok? ";
     public static String dia_2 = "Your mother is worried, you're not planting enough plants. You don't want to make the spaghetti God angry, do you?";

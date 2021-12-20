@@ -169,33 +169,22 @@ public class GameScreen extends AbstractScreen {
         tableButtons.setPosition(430, -254);
         hud.addActor(tableButtons);
 
-        /*tableTileInfo = new Table();
-        tableTileInfo.setFillParent(true);
-        tableTileInfo.setDebug(false);
-        tableTileInfo.setPosition(200, -366);*/
-
     }
 
     /* Size of entire window has been fixed, so we can setup UI using constant values */
     private void setupTextIcons() {
 
-        //hud.addActor(tableResources);
         txtResources = new Label("", skin);
         txtResources.setPosition(30,16);
         hud.addActor(txtResources);
-        //tableResources.add(txtResources);
 
-        //hud.addActor(tableDay);
         txtMonthWeekDay = new Label("", skin);
         txtMonthWeekDay.setPosition(824,16);
         hud.addActor(txtMonthWeekDay);
-        //tableDay.add(txtMonthWeekDay);
 
-        //hud.addActor(tableTileInfo);
         txtTileInfo = new Label("", skin);
         txtTileInfo.setPosition(30, 700);
         hud.addActor(txtTileInfo);
-        //tableTileInfo.add(txtTileInfo);
 
     }
 
@@ -248,6 +237,20 @@ public class GameScreen extends AbstractScreen {
         Plant plant = world.player.getPlantAtPosition(plantX, plantY);
 
         String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
+        if(plant != null) {
+            improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName();
+            if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned) {
+                String on_off = !plant.stopAutoHarvest ? ": on" : ": off";
+                improvement += "\n Auto Harvest" + on_off;
+            }
+            if(world.player.skillTree.skills.get(Constants.IRRIGATION).learned) {
+                String on_off = !plant.stopIrrigation ? ": on" : ": off";
+                improvement += "\n Irrigation" + on_off;
+            }
+        }
+
+
+
         return coordinates + improvement;
     }
 
@@ -363,32 +366,7 @@ public class GameScreen extends AbstractScreen {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         buttonList.clear();
-        if(isPlant) {
-            float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
-            float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
-            if(world.player.getPlantAtPosition(plantX, plantY).getState() == Plant.PlantState.HEALTHY) {
-                addHarvestButton();
-            }
-
-            TextButton waterTile = new TextButton("Water Tile", skin);
-            waterTile.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
-                    float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
-                    if (world.player.canWater(plantX, plantY)) {
-                        world.player.water(plantX, plantY);
-
-                    }
-                    outerTable.remove();
-                }
-            });
-            buttonList.add(waterTile);
-        }
-
-
-
-        TextButton getWater = new TextButton("Get Water From Lake", skin);
+        TextButton getWater = new TextButton("Get Water", skin);
         getWater.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -400,21 +378,57 @@ public class GameScreen extends AbstractScreen {
         if (!world.drySeason)
             buttonList.add(getWater);
 
-        if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned && isPlant) {
-            TextButton removeAutoHarvest = new TextButton("Auto Harvest", skin);
-            removeAutoHarvest.addListener(new ClickListener() {
+        if(isPlant) {
+            final float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+            final float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+            final Plant p = world.player.getPlantAtPosition(plantX, plantY);
+
+            if (world.player.getPlantAtPosition(plantX, plantY).getState() == Plant.PlantState.HEALTHY) {
+                addHarvestButton();
+            }
+
+            TextButton waterTile = new TextButton("Water Plant", skin);
+            waterTile.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
-                    float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
-                    Plant p = world.player.getPlantAtPosition(plantX, plantY);
-                    if(p != null) {
-                        p.stopAutoHarvest = !p.stopAutoHarvest;
+                    if (world.player.canWater(plantX, plantY)) {
+                        world.player.water(plantX, plantY);
+
                     }
                     outerTable.remove();
                 }
             });
+            buttonList.add(waterTile);
+
+            if (world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned) {
+                String txtButton = "Toggle Auto Harvest";
+                TextButton toggleAutoHarvest = new TextButton(txtButton, skin);
+
+                toggleAutoHarvest.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        p.toggleAutoHarvest();
+                        outerTable.remove();
+                    }
+                });
+                buttonList.add(toggleAutoHarvest);
+            }
+
+            if (world.player.skillTree.skills.get(Constants.IRRIGATION).learned) {
+                String txtButton = "Toggle Irrigation";
+                TextButton removeAutoHarvest = new TextButton(txtButton, skin);
+
+                removeAutoHarvest.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        p.toggleIrrigation();
+                        outerTable.remove();
+                    }
+                });
+                buttonList.add(removeAutoHarvest);
+            }
         }
+
 
         if(!isPlant) {
             for (final int i : world.player.getAvailablePlants()) {
@@ -792,18 +806,25 @@ public class GameScreen extends AbstractScreen {
         // ------ QuestBox draw --------- //
         Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
         shapeRendererGuidBox.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRendererGuidBox.rect(20,300,250,300);
+        shapeRendererGuidBox.rect(20,300,400,300);
         shapeRendererGuidBox.setColor(0,0,0,0.2f);
         shapeRendererGuidBox.setProjectionMatrix(camera.combined);
         shapeRendererGuidBox.end();
         // -------- Quests hud setup -------- //
-        txtGuid.setPosition(27, 490);
+        txtGuid.setPosition(27, 450);
         updateTxtQuests();
         hud.addActor(txtGuid);
 
-        txtGuid.setText("Beginner’s Guide: \n\n" +
-                "More info 'Press key 'K' \n" +
-                "To hide me 'Press key 'I'");
+        txtGuid.setText("Beginner’s Guide:\n\n" +
+                "Right click to do action. \n" +
+                "Hold the mouse over a plant to see its properties. \n" +
+                "Remember to keep an eye on the weather stadium \n at the bottom of the screen. \n" +
+                "Water plants will let them grow next day. \n" +
+                "You can only fetch water once a day. \n" +
+
+                "More info 'Press 'K' \n\n\n\n\n" +
+                "                                                                       Hide 'Press 'I'");
+
 
     }
 

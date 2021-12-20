@@ -98,20 +98,6 @@ public class SkillTreeScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        /*
-
-        //ImageButton playButton = new ImageButton(app.assets.goldIcon);
-        playButton = new TextButton("Resume",skin);
-        playButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                resumeGame();
-            }
-        });
-
-         */
-
-
         basicPlants = new TextButton("Basic Plants",skin);
 
         basicPlants.addListener(new ChangeListener() {
@@ -227,7 +213,6 @@ public class SkillTreeScreen implements Screen {
                 //world.player.skillTree.skills.get(8).skillLearned();
                 //water.setTouchable(Touchable.disabled);
                 manageButtons();
-
             }
         });
         water.setPosition(waterX, waterY);
@@ -240,7 +225,6 @@ public class SkillTreeScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 skillTree.setCurrentlyLearning(Constants.FERTILIZER_2);
                 manageButtons();
-
             }
         });
 
@@ -255,7 +239,6 @@ public class SkillTreeScreen implements Screen {
                 skillTree.setCurrentlyLearning(Constants.WATER_2);
                 //irrigation.setTouchable(Touchable.enabled);
                 manageButtons();
-
             }
         });
         waterPlus.setPosition(waterPlusX, waterPlusY);
@@ -287,8 +270,6 @@ public class SkillTreeScreen implements Screen {
         irrigation.setPosition(irrigationX, irrigationY);
         stage.addActor(irrigation);
 
-
-
         backButton = new TextButton("Back",skin);
         backButton.addListener(new ChangeListener() {
             @Override
@@ -313,7 +294,6 @@ public class SkillTreeScreen implements Screen {
         lockedMap.put(Constants.WATER_2, waterPlus);
         lockedMap.put(Constants.IRRIGATION, irrigation);
         lockedMap.put(Constants.AUTO_HARVEST, autoHarvest);
-
 
         /*fertilizer.setTouchable(Touchable.disabled);
         moreFlowers.setTouchable(Touchable.disabled);

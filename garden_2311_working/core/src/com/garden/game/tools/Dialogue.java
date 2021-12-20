@@ -9,14 +9,6 @@ public class Dialogue {
     public static String BOSS = "Boss: \n";
     public static String MainCharacter = "You: \n";
     private static int readingSpeed = 12;
-    public static String dia_1 = "Hello you motherfucker, are you okay? I wish to help you, ok? ";
-    public static String dia_2 = "Your mother is worried, you're not planting enough plants. You don't want to make the spaghetti God angry, do you?";
-    public static String dia_3 = "Hello!!";
-
-
-    // Er er ansat i en park hvor vi har opgaver vi skal læse hver uge.
-    //Intro - ParksChefen kommer ud og fortæller hvordan verden hænger sammen
-    // Spil guide kan - vises som en pop op box når spillet starter - og kan skjules ved at trykke på I key
 
     /* -------- Intro ---------- */
     public static String dia_intro_00 = "";
@@ -50,6 +42,7 @@ public class Dialogue {
 
     public static String dia_intro_18 = BOSS + "Nope!";
     public static String dia_intro_19 = BOSS + "As long as you give them water once in a while, it should all work out";
+    public static String dia_intro_20 = BOSS + "Bye bye";
 
 
     public static final List<String> DIALOG_INTRO = new ArrayList<String>() {{
@@ -74,17 +67,13 @@ public class Dialogue {
         add(dia_intro_17);
         add(dia_intro_18);
         add(dia_intro_19);
+        add(dia_intro_20);
     }};
-
-
 
     public static int getReadingSpeed() {
         return readingSpeed;
     }
     public static void setReadingSpeed(int val) {
         readingSpeed = val;
-    }
-    public String test() {
-        return dia_2;
     }
 }

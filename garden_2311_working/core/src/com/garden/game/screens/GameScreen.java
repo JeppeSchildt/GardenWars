@@ -68,7 +68,7 @@ public class GameScreen extends AbstractScreen {
     private List<String> currentDialogList;
 
 
-    private Table tableResources, tableDay, tableButtons, tableTileInfo, dropOutTable;
+    private Table tableButtons;
 
     private boolean nextTurnClicked;
 
@@ -80,14 +80,6 @@ public class GameScreen extends AbstractScreen {
         hud = new Stage(new ScreenViewport(camera));
         mux = new InputMultiplexer();
 
-
-        //hud = new Stage(new ScreenViewport(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
-
-        //hud = new Stage(new ScreenViewport(world.worldCamera));
-        //hudColor = new Color(1, 1, 1, 0.5f);
-
-        //app.maxWidth = world.tileSize*world.worldWidth;
-        //app.maxHeight = Gdx.graphics.getHeight()-100;
         plantFactory = new PlantFactory(app.assets);
 
         shapeRenderer = new ShapeRenderer();
@@ -153,15 +145,6 @@ public class GameScreen extends AbstractScreen {
 
     private void tableSetup(){
         // Create a table that fills the screen. Everything else will go inside this table.
-        /*tableResources = new Table();
-        tableResources.setFillParent(true);
-        tableResources.setDebug(false);
-        tableResources.setPosition(-320, -366);*/
-
-        /*tableDay = new Table();
-        tableDay.setFillParent(true);
-        tableDay.setDebug(false);
-        tableDay.setPosition(400, -366);*/
 
         tableButtons = new Table();
         tableButtons.setFillParent(true);
@@ -190,7 +173,6 @@ public class GameScreen extends AbstractScreen {
 
     private void drawButtons(){
         // ----- NextTurn Icon Setup----- //
-        //TextButton btnEndTurn = new TextButton("Next Day", skin);
         textureNextTurn = new Texture(Gdx.files.internal("inGameDesign/ButtonNextTurn.png"));
         imgNextTurn = new Image(textureNextTurn);
         imgNextTurn.addListener(new ClickListener() {
@@ -257,7 +239,6 @@ public class GameScreen extends AbstractScreen {
 
     public void updateHUD() {
         //txtSelectedTileCoordinates.setText(world.hoveredX + "," + world.hoveredY);
-        //txtTurnNumber.setText("Days: " + world.turnNumber);
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
@@ -575,7 +556,6 @@ public class GameScreen extends AbstractScreen {
         return false;
     }
 
-
     // Scroll improvements menu when shown.
     @Override
     public boolean scrolled(float amountX, float amountY) {
@@ -707,7 +687,6 @@ public class GameScreen extends AbstractScreen {
 
         txtSkills.setText(currentlyLearning);
 
-
     }
 
     private void checkInput() {
@@ -824,8 +803,6 @@ public class GameScreen extends AbstractScreen {
 
                 "More info 'Press 'K' \n\n\n\n" +
                 "                                                                       Press 'I' to hide");
-
-
     }
 
 

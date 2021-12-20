@@ -28,8 +28,6 @@ public class PauseScreen implements Screen {
 		stage = new Stage(new ScreenViewport(camera));
 
 		initStage();
-
-
 	}
 
 	private void initStage() {
@@ -122,24 +120,11 @@ public class PauseScreen implements Screen {
 		app.currentGameBool = false;
 		app.sound.SoundButtonClick();
 
-		/*
-		app.gameScreen.dispose();
-		app.gameScreen.world.dispose();
-
-		if (app.gameScreen == null){
-			app.gameScreen = new GameScreen(app);
-			app.setScreen(app.gameScreen);
-			app.gameScreen.world.init("World.tmx");
-		}
-		 */
-
 		app.gameScreen = new GameScreen(app);
 		app.setScreen(app.gameScreen);
 		app.gameScreen.world.init("World.tmx");
 
-
 		app.setScreen(app.gameScreen);
-
 	}
 
 	private void preferences(){
@@ -157,9 +142,6 @@ public class PauseScreen implements Screen {
 		}
 		app.setScreen(app.keyboardControlsScreen);
 	}
-
-
-
 
 	@Override
 	public void show() {

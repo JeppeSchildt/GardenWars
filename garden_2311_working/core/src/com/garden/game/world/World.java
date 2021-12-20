@@ -21,30 +21,23 @@ public class World extends Stage {
     private final GardenGame app;
     public OrthographicCamera worldCamera;
     public TiledMap tiledMap;
-    TiledMapRenderer tiledMapRenderer;
+    private TiledMapRenderer tiledMapRenderer;
     public TiledMapTileLayer soilLayer, improvementLayer, grassLayer, waterLayer, noWaterLayer, fenceLayer, buildingsLayer, treesLayer;
     private int[] mapLayerIndices, mapLayerIndicesDry, activeIndices;
     public Player player;
-    Sprite spriteHighlight;
-
+    private Sprite spriteHighlight;
     public MapInput mapInput;
-
     public int worldWidth, worldHeight, tileSize;
     public int hoveredX, hoveredY;
     public int turnNumber;
-
     public int dayCount, weekCount, monthCount;
     public MapLayers mapLayers;
-
     private int maxGold = 9999, salary = 50;
-
-
     public Boss boss;
 
     public int DrySeasonCount_RandomNumber, WetSeasonCount_RandomNumber;
     public int lengthForDrySeason, lengthForWetSeason;
     public boolean drySeason, isStartDrySeason = false, isStartWetSeason = false, isBossEvent = false;
-
 
     public World(GardenGame app) {
         this.app = app;
@@ -62,47 +55,19 @@ public class World extends Stage {
 
         // Dry season event
         drySeason = false;
-
-
     }
 
     public void init(String map) {
         tiledMap = app.assets.get(map, TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        //soilLayer = (TiledMapTileLayer) tiledMap.getLayers().get("GrassLayer");
-        //improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
-        /*
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("TreesDead Layer");
 
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
-
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
-
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("WaterPlants Layer");
-
-
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Road Layer");
-
-        improvementLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Improvement Layer");
-
-
-        noWaterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NoWater Layer");
-        grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
-         */
-
-        /* Get some layers, cast to TiledMapLayer. We can't walk/plant on certain layers */
         waterLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Water Layer");
         grassLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Grass Layer");
-        /*fenceLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Fence Layer");
-        buildingsLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Buildings Layer");
-        treesLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Trees Layer");
-         */
 
         mapLayers = tiledMap.getLayers();
         mapLayerIndices = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("Water Layer"), mapLayers.getIndex("WaterPlants Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("Trees Layer")};
 
         mapLayerIndicesDry = new int[] {mapLayers.getIndex("Grass Layer"), mapLayers.getIndex("Improvement Layer"), mapLayers.getIndex("Road Layer"), mapLayers.getIndex("NoWater Layer"), mapLayers.getIndex("Fence Layer"), mapLayers.getIndex("Buildings Layer"), mapLayers.getIndex("TreesDead Layer")};
-
 
         activeIndices = mapLayerIndicesDry;
         tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
@@ -111,9 +76,7 @@ public class World extends Stage {
 
         resetMap();
 
-
         addActor(player.unit);
-
 
         spriteHighlight = app.assets.textureAtlas.createSprite("highlight_test");
     }
@@ -132,7 +95,6 @@ public class World extends Stage {
 
         worldCamera.update();
         tiledMapRenderer.setView(worldCamera);
-
 
         if (drySeason) {
             tiledMapRenderer.render(mapLayerIndicesDry);
@@ -156,7 +118,6 @@ public class World extends Stage {
         draw();
 
         spriteHighlight.draw(app.batch);
-
     }
 
     public void nextTurn() {
@@ -171,7 +132,6 @@ public class World extends Stage {
         }
 
         player.nextTurn();
-
 
         if (dayCount == 7){
             //app.setScreen(app.weekDayScreen);
@@ -207,7 +167,6 @@ public class World extends Stage {
         if (weekCount == 4){
             weekCount = 0;
             monthCount++;
-            //startEvent("magazine");
         }
 
     }
@@ -236,8 +195,6 @@ public class World extends Stage {
 
     public void drySeasonEvent(){
 
-        // DrySeasonCount_RandomNumber = Random number
-
         if (lengthForWetSeason == DrySeasonCount_RandomNumber){
             // Make Map DrySeason
             drySeason = true;
@@ -250,9 +207,6 @@ public class World extends Stage {
                 isStartWetSeason = true;
                 WetSeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_DRY_SEASONS_DAYS) + Constants.MIN_DRY_SEASONS_DAYS;
             }
-            // WetSeasonCount_RandomNumber = Random number
-            // lengthForDrySeason = 0 counter
-
             if (lengthForDrySeason == WetSeasonCount_RandomNumber){
                 // Make Map WetSeason
                 drySeason = false;

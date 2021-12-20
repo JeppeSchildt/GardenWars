@@ -40,8 +40,6 @@ public class SkillTree {
         skills.add(Constants.IRRIGATION, new Irrigation(3, player));
         skills.add(Constants.AUTO_HARVEST, new AutoHarvest(6, player));
 
-
-
         adj = new ArrayList<ArrayList<Integer> >(V);
 
         for (int i = 0; i < V; i++)
@@ -68,8 +66,6 @@ public class SkillTree {
             }
         }
     }
-
-
 
 }
 

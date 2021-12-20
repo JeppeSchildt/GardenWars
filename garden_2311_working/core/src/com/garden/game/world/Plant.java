@@ -174,26 +174,6 @@ public class Plant extends Actor {
         super.setPosition(x*Constants.TILE_WIDTH, y*Constants.TILE_HEIGHT); // 32 is length of a tile...
     }
 
-   /* public void changeState() {
-        if(water <= waterStateMap.get(state).x) {
-            state = state.prevState();
-            profit -= profit;
-        } else if (water > waterStateMap.get(state).y) {
-            state = state.nextState();
-            profit += profit;
-        }
-
-        if(state == PlantState.DEAD) {
-            activeSprite = null;
-            cell = null;
-            sprites = null;
-            return;
-            // Something is wrong here.... null pointer exception :O !!!
-        }
-        setActiveSprite();
-
-    }*/
-
     public void changeState() {
         if(water <= waterStateMap.get(state.prevState())) {
             state = state.prevState();
@@ -244,8 +224,6 @@ public class Plant extends Actor {
             return 0;
         }
 
-        //float profit_ = profit;
-        //profit = 2*Constants.idProfitMap.get(typeID);
         water = water/2;
         setState(PlantState.SMALL);
         setActiveAnimation();

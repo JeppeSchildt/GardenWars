@@ -19,15 +19,11 @@ import com.garden.game.GardenGame;
 public class PreferencesScreen implements Screen {
     private GardenGame app;
     private Stage stage;
-
     private Label titleLabel, volumeMusicLabel, volumeSoundLabel, volumeSoundEffectLabel, musicOnOffLabel, soundOnOffLabel, soundEffectTestLabel;
-
     private TextButton soundAmbientBirdTestButton, soundSoundEffectTestButton;
-
     private Slider volumeMusicSlider;
     private CheckBox musicCheckbox;
     private Slider dialougeSpeedSlider;
-
 
     // Once this reaches 1.0f the next scene is shown
     private float alpha = 0;

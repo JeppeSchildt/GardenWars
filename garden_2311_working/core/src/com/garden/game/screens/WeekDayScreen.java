@@ -22,7 +22,7 @@ public class WeekDayScreen implements Screen {
     private Stage stage;
     private Table table;
 
-    public Label txtGold, title;
+    public Label title;
 
     Skin skin;
     public WeekDayScreen(GardenGame app) {
@@ -33,7 +33,6 @@ public class WeekDayScreen implements Screen {
         stage = new Stage(new ScreenViewport(camera));
 
         initStage();
-
     }
 
     private void initStage() {
@@ -50,7 +49,6 @@ public class WeekDayScreen implements Screen {
         title = new Label("Week: " + world.weekCount, app.assets.largeTextStyle);
         title.setFontScale(5);
 
-
         // return to main screen button
         final TextButton backButton = new TextButton("Back", skin); // the extra argument here "small" is used to set the button to the smaller version instead of the big default version
         backButton.addListener(new ChangeListener() {
@@ -60,13 +58,11 @@ public class WeekDayScreen implements Screen {
             }
         });
 
-
         table.add(title).colspan(2).center();
         table.row();
         table.add(backButton).colspan(6).center();
 
     }
-
 
     private void resumeGame(){
         app.sound.SoundButtonClick();
@@ -78,12 +74,9 @@ public class WeekDayScreen implements Screen {
         title.setText("Week: " + world.weekCount);
     }
 
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
-
     }
 
     @Override
@@ -100,7 +93,6 @@ public class WeekDayScreen implements Screen {
 
         stage.act();
         stage.draw();
-
 
     }
 

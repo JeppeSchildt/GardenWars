@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,14 +28,11 @@ public class GameOverScreen implements Screen {
 
     private GardenGame app;
     private Stage stage;
-
     private Table table;
-
     private float score, highestScore;
     private Label txtGoal, scoreText, highscoreText, titleText;
     private TextButton newgameButton, mainMenuButton;
-
-    Skin skin;
+    private Skin skin;
 
     public GameOverScreen(GardenGame app, float score) {
         this.app = app;
@@ -52,7 +50,6 @@ public class GameOverScreen implements Screen {
 
             } else{
 
-                // E:/computerspille/GardenWars/garden_2311_working/core/assets
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(app.assets.scoreFile), StandardCharsets.UTF_8))) {
                     writer.write(score + "\n");
 
@@ -67,14 +64,9 @@ public class GameOverScreen implements Screen {
             System.out.println("nope read");
         }
 
-
-
-
-
         // Get highscore from save file
         Preferences prefs = Gdx.app.getPreferences("gardengame");
         this.highestScore = prefs.getFloat("highestscore", highestScore);
-
 
         initStage();
     }
@@ -116,24 +108,7 @@ public class GameOverScreen implements Screen {
             }
         });
 
-
-
-
-    }
-
-
-    @Override
-    public void show() {
-
-        app.sound.GameOver_Sound();
-        app.preferencesBool = false;
-
-
-        if (app.gameScreen.world.player.gameWon)
-            txtGoal = new Label("You reached 1000 scores in time !! Congratulations !!\n", app.assets.largeTextStyle);
-        else
-            txtGoal = new Label("You failed to reach 1000 points in time...<(x_X)> \n", app.assets.largeTextStyle);
-
+        txtGoal = new Label("", app.assets.largeTextStyle);
 
         table.add(titleText).center();
         table.row();
@@ -148,19 +123,24 @@ public class GameOverScreen implements Screen {
         table.row();
         table.add(mainMenuButton).center();
 
+    }
+
+    @Override
+    public void show() {
+
+        app.preferencesBool = false;
+
+        if (app.gameScreen.world.player.gameWon){
+            app.sound.GameWon_Sound();
+            txtGoal.setText("You reached 1000 scores in time !! Congratulations !!\n");
+        }
+        else{
+            app.sound.GameOver_Sound();
+            txtGoal.setText("You failed to reach 1000 points in time...<(x_X)> \n");
+        }
+
 
         Gdx.input.setInputProcessor(stage);
-
-        /*
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                app.setScreen(app.titleScreen);
-                app.sound.Play_Music();
-            }
-        },4.2f);
-         */
-
     }
 
     private void newGame(){
@@ -197,7 +177,6 @@ public class GameOverScreen implements Screen {
 
         stage.act();
         stage.draw();
-
     }
 
     @Override

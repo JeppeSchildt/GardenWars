@@ -64,7 +64,6 @@ public class Constants {
         idNameMap.put(AVOCADO, "Avocado");
         idNameMap.put(CORN, "Corn");
         idNameMap.put(SUNFLOWER, "Sunflower");
-
     }
 
     // Indices of sprites associated with state of plant.
@@ -185,8 +184,6 @@ public class Constants {
 
     }
 
-
-
     public static final Map<Integer, Boolean> idIsFlowerMap;
     static {
         idIsFlowerMap = new HashMap<Integer, Boolean>();
@@ -194,7 +191,6 @@ public class Constants {
         idIsFlowerMap.put(ROSE, true);
         idIsFlowerMap.put(TULIP, true);
     }
-
 
     public static final int BASIC_PLANTS = 0;
     public static final int FERTILIZER_1 = 1;

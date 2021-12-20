@@ -18,6 +18,10 @@ import com.garden.game.GardenGame;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 
 public class GameOverScreen implements Screen {
 
@@ -38,13 +42,29 @@ public class GameOverScreen implements Screen {
         stage = new Stage(new ScreenViewport(camera));
 
         initStage();
-       // E:/computerspille/GardenWars/garden_2311_working/core/assets
+
+        try (BufferedReader br = new BufferedReader(new FileReader("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"))) {
+            String text = br.readLine(); // first line only
+            System.out.println(text);
+            float tmp = Float.parseFloat(text);
+            if( tmp >= score){
+                highestScore = tmp;
+            } else{
+                highestScore = score;
+            }
+        }
+        catch (IOException ex) {
+            System.out.println("nope read");
+        }
+
+
+        // E:/computerspille/GardenWars/garden_2311_working/core/assets
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"), StandardCharsets.UTF_8))) {
             writer.write(score + "\n");
             System.out.println("Score" + score);
         }
         catch (IOException ex) {
-            System.out.println("nope");
+            System.out.println("nope write");
         }
 
 

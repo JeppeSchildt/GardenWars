@@ -47,10 +47,10 @@ public class TitleScreen implements Screen {
 		final int midX = Gdx.graphics.getWidth() / 2;
 		final int butY = Gdx.graphics.getHeight() / 3;
 
-		title = new Label("Garden", app.assets.largeTextStyle);
+		title = new Label("Park", app.assets.largeTextStyle);
 		title.setFontScale(8);
 
-		titleSub = new Label("Game", app.assets.largeTextStyle);
+		titleSub = new Label("Life", app.assets.largeTextStyle);
 		titleSub.setFontScale(6);
 
 		playButton = new TextButton("New Game",skin);

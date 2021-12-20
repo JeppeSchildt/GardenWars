@@ -28,7 +28,7 @@ public class Player {
     public float points, questPointFactor = 1f;
     private ArrayList<Integer> availablePlants;
     public ArrayList<Quest> quests;
-    private boolean gotWater, isMovementLocked;
+    public boolean gotWater, isMovementLocked;
 
     private ArrayList<Plant> plants;
     private Map<Vector2, Plant> plants_; // Use map data structure to store plants? Pros: position encoded and used for indexing. Cons: bad for iterating.
@@ -138,8 +138,6 @@ public class Player {
         // You get water once per round
         if(!gotWater && !app.gameScreen.world.drySeason) {
             unit.gotoAndGetMoreWater();
-            water += waterPerTurn;
-            gotWater = true;
             setMovementLocked(true);
         }
     }

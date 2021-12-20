@@ -158,28 +158,28 @@ public class Constants {
         idWaterLossMap.put(RICE, 1);
 
         // -------- Basic Plants -------- //
-        idWaterLossMap.put(TOMATO, 2);
-        idWaterLossMap.put(POTATO, 2);
-        idWaterLossMap.put(TURNIP, 2);
-        idWaterLossMap.put(WHEAT, 3);
-        idWaterLossMap.put(CORN, 3);
-        idWaterLossMap.put(CASSAVA, 3);
-        idWaterLossMap.put(EGGPLANT, 3);
-        idWaterLossMap.put(COFFEE, 4);
+        idWaterLossMap.put(TOMATO, 1);
+        idWaterLossMap.put(POTATO, 1);
+        idWaterLossMap.put(TURNIP, 1);
+        idWaterLossMap.put(WHEAT, 2);
+        idWaterLossMap.put(CORN, 2);
+        idWaterLossMap.put(CASSAVA, 2);
+        idWaterLossMap.put(EGGPLANT, 2);
+        idWaterLossMap.put(COFFEE, 3);
 
         // -------- More Fruits -------- //
-        idWaterLossMap.put(ORANGE, 3);
-        idWaterLossMap.put(LEMON, 3);
-        idWaterLossMap.put(STRAWBERRY, 4);
-        idWaterLossMap.put(GRAPES, 4);
-        idWaterLossMap.put(AVOCADO, 4);
-        idWaterLossMap.put(MELON, 5);
-        idWaterLossMap.put(PINEAPPLE, 5);
+        idWaterLossMap.put(ORANGE, 2);
+        idWaterLossMap.put(LEMON, 2);
+        idWaterLossMap.put(STRAWBERRY, 2);
+        idWaterLossMap.put(GRAPES, 3);
+        idWaterLossMap.put(AVOCADO, 3);
+        idWaterLossMap.put(MELON, 3);
+        idWaterLossMap.put(PINEAPPLE, 3);
 
         // -------- More Flowers -------- //
-        idWaterLossMap.put(SUNFLOWER, 5);
-        idWaterLossMap.put(ROSE, 5);
-        idWaterLossMap.put(TULIP, 5);
+        idWaterLossMap.put(SUNFLOWER, 2);
+        idWaterLossMap.put(ROSE, 2);
+        idWaterLossMap.put(TULIP, 3);
 
         // -------- Bonus Plants -------- //
 
@@ -214,8 +214,8 @@ public class Constants {
     public static final float FRONT_PORCH_X = 546.128f, FRONT_PORCH_Y = 797.53f;
 
     // -------- Dry Season Event -------- //
-    public static final int MAX_WET_SEASONS_DAYS = 5, MAX_DRY_SEASONS_DAYS = 3;
-    public static final int MIN_WET_SEASONS_DAYS = 3, MIN_DRY_SEASONS_DAYS = 2;
+    public static final int MAX_WET_SEASONS_DAYS = 15, MAX_DRY_SEASONS_DAYS = 7;
+    public static final int MIN_WET_SEASONS_DAYS = 5, MIN_DRY_SEASONS_DAYS = 3;
 
     /* Quest stuff */
     public static final int KEEP_HEALTHY_QUEST_ID = 0;

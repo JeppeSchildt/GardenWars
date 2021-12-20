@@ -806,7 +806,7 @@ public class GameScreen extends AbstractScreen {
         // ------ QuestBox draw --------- //
         Gdx.gl.glEnable(GL20.GL_BLEND); //Enable blending
         shapeRendererGuidBox.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRendererGuidBox.rect(20,300,400,300);
+        shapeRendererGuidBox.rect(20,300,410,300);
         shapeRendererGuidBox.setColor(0,0,0,0.2f);
         shapeRendererGuidBox.setProjectionMatrix(camera.combined);
         shapeRendererGuidBox.end();
@@ -818,12 +818,13 @@ public class GameScreen extends AbstractScreen {
         txtGuid.setText("Beginner’s Guide:\n\n" +
                 "Right click to do action. \n" +
                 "Hold the mouse over a plant to see its properties. \n" +
-                "Remember to keep an eye on the weather stadium \n at the bottom of the screen. \n" +
-                "Water plants will let them grow next day. \n" +
+                "Remember to keep an eye on the weather situation \n at the bottom of the screen. \n" +
+                "Water plants to keep them alive. \n" +
                 "You can only fetch water once a day. \n" +
+                "Click on the book in the right corner to learn new skills. \n" +
 
-                "More info 'Press 'K' \n\n\n\n\n" +
-                "                                                                       Hide 'Press 'I'");
+                "More info 'Press 'K' \n\n\n\n" +
+                "                                                                       Press 'I' to hide");
 
 
     }

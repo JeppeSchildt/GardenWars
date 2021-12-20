@@ -45,7 +45,7 @@ public class GameOverScreen implements Screen {
 
         try (BufferedReader br = new BufferedReader(new FileReader(app.assets.scoreFile))) {
             String text = br.readLine(); // first line only
-            System.out.println("score file:" + text);
+
             float scoreFile = Float.parseFloat(text);
             if( scoreFile >= score){
                 highestScore = scoreFile;
@@ -55,7 +55,7 @@ public class GameOverScreen implements Screen {
                 // E:/computerspille/GardenWars/garden_2311_working/core/assets
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(app.assets.scoreFile), StandardCharsets.UTF_8))) {
                     writer.write(score + "\n");
-                    System.out.println("Score" + score);
+
                 }
                 catch (IOException ex) {
                     System.out.println("nope write");
@@ -74,7 +74,7 @@ public class GameOverScreen implements Screen {
         // Get highscore from save file
         Preferences prefs = Gdx.app.getPreferences("gardengame");
         this.highestScore = prefs.getFloat("highestscore", highestScore);
-        System.out.println("highest score : " + highestScore);
+
 
         initStage();
     }

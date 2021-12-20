@@ -46,10 +46,12 @@ public class Player {
 
         initQuests();
 
-        water = 10;
-        maxWater = 500;
-        waterPerTurn = 100;
-        waterSize = 5;
+        water = 0;
+
+        maxWater = 50;
+        waterPerTurn = 15;
+
+        waterSize = 4;
         maxPoint = 1000;
         nHarvested = 0;
 
@@ -195,6 +197,7 @@ public class Player {
 
         // Reset number of harvested plants per turn.
         nHarvested = 0;
+        setMovementLocked(false);
     }
 
     // Call nextTurn on each quests. Checks if conditions for completion are met.

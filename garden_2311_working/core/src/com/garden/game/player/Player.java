@@ -132,6 +132,14 @@ public class Player {
         setMovementLocked(true);
     }
 
+    public void water(Plant plant) {
+        if(plant == null) { return; }
+        if(water-waterSize < 0) { return; }
+        plant.water(waterSize);
+        water -= waterSize;
+
+    }
+
     public void getMoreWater(){
         // Tile 17, 12
         // You get water once per round

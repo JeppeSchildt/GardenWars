@@ -40,7 +40,8 @@ public class MainCharacter extends Unit{
                         if(isComplete()) {
                             activeAnimation = stopAnimations.get(direc);
                             setPlayerMovLocked(false);
-                            app.gameScreen.world.player.water += app.gameScreen.world.player.waterPerTurn;
+                            int waterTmp = app.gameScreen.world.player.water + app.gameScreen.world.player.waterPerTurn;
+                            app.gameScreen.world.player.water = Math.min(waterTmp, app.gameScreen.world.player.maxWater);
                             app.gameScreen.world.player.gotWater = true;
                         }
                     }

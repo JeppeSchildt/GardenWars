@@ -252,6 +252,7 @@ public class World extends Stage {
         boss.remove();
         addActor(boss);
         boss.gameWon(player.unit.getX(), player.unit.getY());
+        player.gameWon = false;
     }
 
 }

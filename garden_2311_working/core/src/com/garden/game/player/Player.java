@@ -132,6 +132,14 @@ public class Player {
         setMovementLocked(true);
     }
 
+    public void water(Plant plant) {
+        if(plant == null) { return; }
+        if(water-waterSize < 0) { return; }
+        plant.water(waterSize);
+        water -= waterSize;
+
+    }
+
     public void getMoreWater(){
         // Tile 17, 12
         // You get water once per round
@@ -208,14 +216,14 @@ public class Player {
 
     public void setNewQuest(int i) {
         switch (i) {
-            case 0:
+            case Constants.KEEP_HEALTHY_QUEST_ID:
                 quests.set(i, new KeepHealthyQuest(this));
                 break;
-            case 1:
-                quests.set(i, new FlowerQuest(this));
-                break;
-            case 2:
+            case Constants.HARVEST_QUEST_ID:
                 quests.set(i, new HarvestQuest(this));
+                break;
+            case Constants.FLOWER_QUEST_ID:
+                quests.set(i, new FlowerQuest(this));
         }
     }
 

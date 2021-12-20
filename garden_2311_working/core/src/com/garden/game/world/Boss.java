@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-// Journalist class
+// Boss class
 public class Boss extends Unit {
     public List<String> introDialog;
     public List<String> currentDialog;

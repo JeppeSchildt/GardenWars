@@ -123,6 +123,7 @@ public class GameOverScreen implements Screen {
         table.row();
         table.add(mainMenuButton).center();
 
+
     }
 
     @Override
@@ -138,7 +139,6 @@ public class GameOverScreen implements Screen {
             app.sound.GameOver_Sound();
             txtGoal.setText("You failed to reach 1000 points in time...<(x_X)> \n");
         }
-
 
         Gdx.input.setInputProcessor(stage);
     }

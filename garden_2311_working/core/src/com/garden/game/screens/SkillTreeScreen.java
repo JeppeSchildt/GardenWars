@@ -80,7 +80,7 @@ public class SkillTreeScreen implements Screen {
         stage.addActor(curentL);
 
         learnedSkills = new Label(strLearned, skin);
-        learnedSkills.setPosition(25, 700);
+        learnedSkills.setPosition(25, 300);
         learnedSkills.setColor(0.184f, 0.505f, 0.211f,1);
         stage.addActor(learnedSkills);
 

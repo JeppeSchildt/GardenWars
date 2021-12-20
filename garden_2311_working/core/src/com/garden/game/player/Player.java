@@ -56,8 +56,6 @@ public class Player {
         nHarvested = 0;
 
         money = 100;
-
-
     }
 
     private void initQuests() {
@@ -184,7 +182,7 @@ public class Player {
                     entryIt.remove();
                     break;
                 case HEALTHY:
-                    points += plant.profit*0.001;
+                    points += plant.profit*0.1;
                     break;
             }
 

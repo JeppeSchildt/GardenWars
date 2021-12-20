@@ -362,22 +362,8 @@ public class GameScreen extends AbstractScreen {
             app.batch.begin();
         }
 
-        /*
+    }
 
-        Group grp = new Group();
-        grp.addActor();
-        lbl.setColor(Color.RED);
-        lbl.setSize(100,100);
-        lbl.toFront();
-        hud.addActor(lbl); */
-        //lbl.draw(app.batch,1f);
-        //fnt.draw(app.batch,"Hello",10,10);
-    }
-    void setButton (String text, Skin skin) {
-    	buttonList.add(new TextButton(text,skin));
-    }
-    // Consider: Individual setup button methods and update scrollpane methods.
-    // Can also be used when new skills are learned.
     void setupTileImprovementBox(boolean canHarvest) {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
@@ -704,14 +690,10 @@ public class GameScreen extends AbstractScreen {
             world.isStartDrySeason = true;
             world.DrySeasonCount_RandomNumber = new Random().nextInt(Constants.MAX_WET_SEASONS_DAYS) + Constants.MIN_WET_SEASONS_DAYS;
         }
-
-        /*if (world.isBossEvent) {
-            weekBoss();
-        }*/
     }
 
     private void weekBoss(){
-        //currentDialogList = world.boss.currentDialog;
+        currentDialogList = world.boss.currentDialog;
         showDialog = true;
         updateDialog(currentDialogList.get(dialogIndex));
         dialogBackground();
@@ -728,13 +710,17 @@ public class GameScreen extends AbstractScreen {
     private void nextTurnInfo() {
         if(nextTurnClicked) {
             showDialog = false;
-            if(blkScreenAlpha >= 4.5f) {
+            if(blkScreenAlpha >= 2f) {
 
                 nextTurnClicked = false;
                 imgBlkScreen.remove();
                 txtNextTurn.remove();
                 txtSkills.remove();
                 blkScreenAlpha = 0.0f;
+
+                if(world.isBossEvent) {
+                    weekBoss();
+                }
 
                 // Move character to front porch instantly.
                 moveToPorch();
@@ -894,7 +880,7 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtGuid);
 
         txtGuid.setText("Beginner’s Guide: \n\n" +
-                "More info 'Press key 'S' \n" +
+                "More info 'Press key 'K' \n" +
                 "To hide me 'Press key 'I'");
 
     }

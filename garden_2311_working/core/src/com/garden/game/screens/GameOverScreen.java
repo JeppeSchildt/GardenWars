@@ -82,9 +82,6 @@ public class GameOverScreen implements Screen {
 
     private void initStage() {
 
-
-
-
         // Create a table that fills the screen. Everything else will go inside this table.
         table = new Table();
         table.setFillParent(true);

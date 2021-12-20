@@ -128,7 +128,7 @@ public class GameOverScreen implements Screen {
         app.preferencesBool = false;
 
 
-        if (app.gameScreen.world.player.gameWon)
+        if (app.gameScreen.world.player.points >= 1000)
             txtGoal = new Label("You reached 1000 scores in time !! Congratulations !!\n", app.assets.largeTextStyle);
         else
             txtGoal = new Label("You failed to reach 1000 points in time...<(x_X)> \n", app.assets.largeTextStyle);

@@ -322,8 +322,8 @@ public class GameScreen extends AbstractScreen {
         int step = (int) (time*12);//Dialogue.readingSpeed);
         if (step > text.length()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-                dialogStep = 0;
-                showDialog = false;
+            //    dialogStep = 0;
+            //    showDialouge = false;
             }
             //dialogStep = 0;
             //showDialouge = false;

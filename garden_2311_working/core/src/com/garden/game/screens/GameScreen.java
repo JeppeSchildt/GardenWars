@@ -256,8 +256,6 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
-
-
         return coordinates + improvement;
     }
 
@@ -554,7 +552,6 @@ public class GameScreen extends AbstractScreen {
         	float goY = (float)(posY * world.tileSize + dist);
             //outerTable.setPosition(goX-200,goY-300); //-200, -300 is found by trial and error
 
-
             outerTable.setPosition(test.x-200, test.y-200); //-200, -300 is found by trial and error
             scrollPane.setScrollPercentY(0);
             hud.addActor(outerTable);
@@ -790,13 +787,6 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X))
-        {
-            showDialog = true;
-            updateDialog(currentDialogList.get(0));
-            dialogBackground();
-        }
-
 
     }
 
@@ -822,8 +812,6 @@ public class GameScreen extends AbstractScreen {
 
                 "More info 'Press 'K' \n\n\n\n\n" +
                 "                                                                       Hide 'Press 'I'");
-
-
     }
 
 

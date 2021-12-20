@@ -249,7 +249,7 @@ public class Plant extends Actor {
 
         int profit_ = profit;
         profit = 2*Constants.idProfitMap.get(typeID);
-        water = waterStateMap.get(PlantState.SMALL).x+2;
+        water = waterStateMap_.get(PlantState.SMALL)+1f;
         setState(PlantState.SMALL);
         setActiveAnimation();
 

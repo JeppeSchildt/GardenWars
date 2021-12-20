@@ -762,10 +762,6 @@ public class GameScreen extends AbstractScreen {
         }
 
         if(world.isBossEvent) {
-            //System.out.println("World boss event");
-            showDialog = true;
-            //updateDialog(currentDialogList.get(dialogIndex));
-            //dialogBackground();
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                 app.sound.SoundButtonClick();
                 if(currentDialogList == null) {

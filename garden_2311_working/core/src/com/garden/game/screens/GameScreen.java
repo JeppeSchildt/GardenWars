@@ -602,7 +602,7 @@ public class GameScreen extends AbstractScreen {
         }
 
         if (showDialog) {
-            System.out.println("showdialog true");
+            //System.out.println("showdialog true");
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;

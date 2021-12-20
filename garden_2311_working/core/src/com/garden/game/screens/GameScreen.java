@@ -727,7 +727,7 @@ public class GameScreen extends AbstractScreen {
 
     private void nextTurnInfo() {
         if(nextTurnClicked) {
-            showDialouge = false;
+            showDialog = false;
             if(blkScreenAlpha >= 4.5f) {
 
                 nextTurnClicked = false;

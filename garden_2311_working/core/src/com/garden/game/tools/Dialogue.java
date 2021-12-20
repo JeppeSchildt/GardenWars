@@ -19,7 +19,7 @@ public class Dialogue {
     // Spil guide kan - vises som en pop op box når spillet starter - og kan skjules ved at trykke på I key
 
     /* -------- Intro ---------- */
-
+    public static String dia_intro_00 = "";
     public static String dia_intro_0 = BOSS + "Good morning Johnny boy";
 
     public static String dia_intro_1 = MainCharacter + "Jonny boy!";
@@ -53,6 +53,7 @@ public class Dialogue {
 
 
     public static final List<String> DIALOG_INTRO = new ArrayList<String>() {{
+        add(dia_intro_00);
         add(dia_intro_0);
         add(dia_intro_1);
         add(dia_intro_2);

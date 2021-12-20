@@ -581,15 +581,10 @@ public class GameScreen extends AbstractScreen {
             dialogBackground();
             showQuest = false;
             txtQuests.remove();
-
-            showGuid = false;
-            txtGuid.remove();
         }
         else {
             if (!questKeyPress)
                 showQuest = true;
-            if (!guidKeyPress)
-                showGuid = true;
         }
         camera.update();
         app.batch.end(); // End batch here, finishing rendering.
@@ -709,7 +704,6 @@ public class GameScreen extends AbstractScreen {
             }
             else{
                 showGuid = false;
-
                 txtGuid.remove();
                 guidKeyPress = true;
             }
@@ -748,8 +742,6 @@ public class GameScreen extends AbstractScreen {
 
             }
         }
-
-
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT))
         {

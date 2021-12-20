@@ -25,9 +25,7 @@ public class Plant extends Actor {
     private float waterLoss;
 
     // Stuff used for learned skills
-    public boolean isFertilizer1, isFertilizer2, isGeneral;
-
-
+    public boolean isFertilizer1, isFertilizer2, isGeneral, stopAutoHarvest;
 
     // Reconsider this... what happens if water increases a lot one round watering many times fx ??
     // Make simpler maybe, state machine by doing switch(water) somewhere ....
@@ -156,6 +154,7 @@ public class Plant extends Actor {
         this.textureRegions = textureRegions;
         state = PlantState.SEED;
         this.cell = cell;
+        stopAutoHarvest = false;
         setPosition((float) (x+ Constants.PLANT_OFFSET_X), (float) (y + Constants.PLANT_OFFSET_Y));
         setName(Constants.idNameMap.get(id));
         initSprites();

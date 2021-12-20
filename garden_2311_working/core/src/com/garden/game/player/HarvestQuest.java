@@ -16,6 +16,7 @@ public class HarvestQuest extends Quest{
         selectNumber();
         selectPlantType();
         initDescription();
+        points = 15f;
         //description = "";
     }
 
@@ -53,7 +54,7 @@ public class HarvestQuest extends Quest{
     public void onCompleted() {
         super.onCompleted();
         nCompleted += 1;
-        player.points += 10*player.questPointFactor;
+        player.points += (points+nCompleted)*player.questPointFactor;
     }
 
     @Override

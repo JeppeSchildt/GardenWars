@@ -11,6 +11,7 @@ public class Quest {
     public Player player;
     public Random random;
     public int questID;
+    public float points;
 
     public Quest(Player player){
         this.player = player;

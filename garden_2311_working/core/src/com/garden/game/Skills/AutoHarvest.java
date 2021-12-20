@@ -36,7 +36,7 @@ public class AutoHarvest extends Skill{
         while (entryIt.hasNext()) {
             Map.Entry<Vector2, Plant> entry = entryIt.next();
             Plant plant = entry.getValue();
-            if (plant.getState() == Plant.PlantState.HEALTHY) {
+            if (plant.getState() == Plant.PlantState.HEALTHY && !plant.stopAutoHarvest) {
                 player.money += plant.harvest();
             }
         }

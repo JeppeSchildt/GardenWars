@@ -3,7 +3,6 @@ package com.garden.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.garden.game.GardenGame;
 import com.garden.game.player.Quest;
@@ -260,7 +258,7 @@ public class GameScreen extends AbstractScreen {
         String longSpace = "          ";
         String txtWater = "Water: " + world.player.water + "/" + world.player.maxWater + longSpace;
         String txtGold = "Gold: " + world.player.money + longSpace;
-        String txtPoint= "Score: " + String.format("%.2f", world.player.points)  + "/" + world.player.maxPoint;
+        String txtPoint= "Score: " + String.format("%.0f", world.player.points)  + "/" + world.player.maxPoint;
         // Chance season string if it is dry season or not
         String txtSeason = "";
         if (world.drySeason)
@@ -361,29 +359,34 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-    void setupTileImprovementBox(boolean canHarvest) {
+    void setupTileImprovementBox(boolean isPlant) {
         buttonTable = new Table(skin);
         outerTable = new Table(skin);
         buttonList.clear();
-        if(canHarvest) {
-            addHarvestButton();
-        }
-        TextButton waterTile = new TextButton("Water Tile", skin);
-
-        waterTile.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
-                float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
-                if(world.player.canWater(plantX, plantY)) {
-                    //world.player.unit.setPosition(plantX, plantY);
-                    world.player.water(plantX, plantY);
-                    //world.player.unit.gotoAndWater(plantX, plantY, );
-                }
-                outerTable.remove();
+        if(isPlant) {
+            float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+            float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+            if(world.player.getPlantAtPosition(plantX, plantY).getState() == Plant.PlantState.HEALTHY) {
+                addHarvestButton();
             }
-        });
-        buttonList.add(waterTile);
+
+            TextButton waterTile = new TextButton("Water Tile", skin);
+            waterTile.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+                    float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                    if (world.player.canWater(plantX, plantY)) {
+                        world.player.water(plantX, plantY);
+
+                    }
+                    outerTable.remove();
+                }
+            });
+            buttonList.add(waterTile);
+        }
+
+
 
         TextButton getWater = new TextButton("Get Water From Lake", skin);
         getWater.addListener(new ClickListener() {
@@ -397,23 +400,41 @@ public class GameScreen extends AbstractScreen {
         if (!world.drySeason)
             buttonList.add(getWater);
 
-
-        for(final int i : world.player.getAvailablePlants()) {
-            TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
-           b.addListener(new ClickListener() {
-               @Override
-               public void clicked(InputEvent event, float x, float y) {
-                   float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
-                   float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
-                   if (world.player.canPlant(i, world.hoveredX, world.hoveredY)) {
-                       Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
-                       world.player.plant(plantX, plantY, plant);
-                   }
-                   outerTable.remove();
-               }
-           });
-            buttonList.add(b);
+        if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned && isPlant) {
+            TextButton removeAutoHarvest = new TextButton("Auto Harvest", skin);
+            removeAutoHarvest.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+                    float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                    Plant p = world.player.getPlantAtPosition(plantX, plantY);
+                    if(p != null) {
+                        p.stopAutoHarvest = !p.stopAutoHarvest;
+                    }
+                    outerTable.remove();
+                }
+            });
         }
+
+        if(!isPlant) {
+            for (final int i : world.player.getAvailablePlants()) {
+                TextButton b = new TextButton("Plant: " + Constants.idNameMap.get(i) + " " + Constants.idPriceMap.get(i) + ",-", skin);
+                b.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
+                        float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                        if (world.player.canPlant(i, world.hoveredX, world.hoveredY)) {
+                            Plant plant = plantFactory.createPlant(i, world.hoveredX, world.hoveredY);
+                            world.player.plant(plantX, plantY, plant);
+                        }
+                        outerTable.remove();
+                    }
+                });
+                buttonList.add(b);
+            }
+        }
+
         ensureWidthButtonTable();
         buttonTable.setSize(200, 100);
         outerTable.setSize(600, 400);
@@ -426,16 +447,19 @@ public class GameScreen extends AbstractScreen {
      * Add harvest button to improvement box
      * */
     public void addHarvestButton() {
+
         TextButton harvestPlant = new TextButton("Harvest Plant", skin);
         harvestPlant.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 float plantX = (float) (world.hoveredX + Constants.PLANT_OFFSET_X) * Constants.TILE_WIDTH;
                 float plantY = (float) (world.hoveredY + Constants.PLANT_OFFSET_Y) * Constants.TILE_HEIGHT;
+                Plant p = world.player.getPlantAtPosition(plantX, plantY);
                 world.player.harvest(plantX, plantY);
                 outerTable.remove();
             }
         });
+
         buttonList.add(harvestPlant);
     }
     
@@ -504,14 +528,12 @@ public class GameScreen extends AbstractScreen {
         outerTable.remove(); // Remove the right click table on new click.
 
         if(button == Input.Buttons.RIGHT) {
-            boolean canHarvest = false;
+            boolean isPlant = false;
             Plant p = world.player.getPlantAtPosition((world.hoveredX+Constants.PLANT_OFFSET_X)*Constants.TILE_WIDTH, (world.hoveredY+Constants.PLANT_OFFSET_Y)*Constants.TILE_HEIGHT);
             if(p != null) {
-                if (p.getState() == Plant.PlantState.HEALTHY) {
-                    canHarvest = true;
-                }
+                isPlant = true;
             }
-            setupTileImprovementBox(canHarvest);
+            setupTileImprovementBox(isPlant);
         	int posX = (int) (position.x) / world.tileSize;  // / world.tileSize;
         	int posY = (int) (position.y) / world.tileSize; // / world.tileSize;
         	double cat = world.tileSize/2;

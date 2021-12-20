@@ -17,6 +17,7 @@ public class KeepHealthyQuest extends Quest {
         selectNumber();
         selectPlantType();
         initDescription();
+        points = 10f;
         //description = "";
 
     }
@@ -64,8 +65,7 @@ public class KeepHealthyQuest extends Quest {
     public void onCompleted() {
         super.onCompleted();
         nCompleted += 1;
-        player.points += 10*player.questPointFactor;
-        System.out.println(10*player.questPointFactor);
+        player.points += (points+nCompleted)*player.questPointFactor;
     }
 
     @Override

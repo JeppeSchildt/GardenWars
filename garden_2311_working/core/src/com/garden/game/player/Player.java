@@ -62,9 +62,9 @@ public class Player {
 
     private void initQuests() {
         quests = new ArrayList<>();
-        quests.add(0, new KeepHealthyQuest(this));
-        quests.add(1, new FlowerQuest(this));
-        quests.add(2, new HarvestQuest(this));
+        quests.add(new KeepHealthyQuest(this));
+        quests.add(new HarvestQuest(this));
+        quests.add(new FlowerQuest(this));
     }
 
     public void makePlantAvailable(int plantID) {
@@ -157,10 +157,12 @@ public class Player {
     public void harvest(float x, float y) {
         Plant p = plants_.get(new Vector2(x, y));
         if(p != null) {
-            setMovementLocked(true);
-            unit.setPosition(x, y);
-            money += p.harvest();
-            nHarvested++;
+            if(p.getState() == Plant.PlantState.HEALTHY) {
+                setMovementLocked(true);
+                unit.setPosition(x, y);
+                money += p.harvest();
+                nHarvested++;
+            }
         }
     }
 
@@ -184,7 +186,7 @@ public class Player {
                     entryIt.remove();
                     break;
                 case HEALTHY:
-                    points += plant.profit*0.001;
+                    points += plant.profit*0.1;
                     break;
             }
 

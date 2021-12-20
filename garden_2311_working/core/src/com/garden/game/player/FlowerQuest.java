@@ -15,6 +15,7 @@ public class FlowerQuest extends Quest {
         questID = Constants.FLOWER_QUEST_ID;
         selectNumber();
         selectPlantType();
+        points = 20f;
     }
 
     /* Determine size of square */
@@ -46,7 +47,7 @@ public class FlowerQuest extends Quest {
     public void onCompleted() {
         super.onCompleted();
         nCompleted += 1;
-        player.points += 10*player.questPointFactor;
+        player.points += (points+nCompleted)*player.questPointFactor;
     }
 
     @Override

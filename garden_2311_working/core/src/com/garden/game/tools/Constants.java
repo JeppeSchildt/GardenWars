@@ -219,30 +219,11 @@ public class Constants {
 
     /* Quest stuff */
     public static final int KEEP_HEALTHY_QUEST_ID = 0;
-    public static final int FLOWER_QUEST_ID = 1;
-    public static final int HARVEST_QUEST_ID = 2;
+    public static final int HARVEST_QUEST_ID = 1;
+    public static final int FLOWER_QUEST_ID = 2;
+
 
 
 }
 
 
- /*
-- Rose
-- Cucumber
-- Tulip
-- Tomato
-- Melon
-- Eggplant
-- Lemon
-- Pineapple
-- Rice
-- Wheat
-- Grapes
-- Straberry
-- Cassava
-- Potato
-- Coffee
-- Orange
-- Avocado
-- Corn
-- Sunflower*/

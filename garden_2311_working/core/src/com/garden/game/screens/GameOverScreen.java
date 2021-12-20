@@ -43,7 +43,7 @@ public class GameOverScreen implements Screen {
 
 
 
-        try (BufferedReader br = new BufferedReader(new FileReader("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(app.assets.scoreFile))) {
             String text = br.readLine(); // first line only
             System.out.println("score file:" + text);
             float scoreFile = Float.parseFloat(text);
@@ -53,7 +53,7 @@ public class GameOverScreen implements Screen {
             } else{
 
                 // E:/computerspille/GardenWars/garden_2311_working/core/assets
-                try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("E:/computerspille/GardenWars/garden_2311_working/core/assets/scores.txt"), StandardCharsets.UTF_8))) {
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(app.assets.scoreFile), StandardCharsets.UTF_8))) {
                     writer.write(score + "\n");
                     System.out.println("Score" + score);
                 }

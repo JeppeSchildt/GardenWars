@@ -494,10 +494,6 @@ public class GameScreen extends AbstractScreen {
 
         world.nextTurn();
 
-
-        //txtQuests.setText(world.player.quests.get(0).description);
-        //System.out.println(world.player.quests.get(0).description);
-
         updateTxtQuests();
         dialogIndex = 0;
     }
@@ -602,7 +598,6 @@ public class GameScreen extends AbstractScreen {
         }
 
         if (showDialog) {
-            System.out.println("showdialog true");
             //startIntroDialogue(); //here
             dialogBackground();
             showQuest = false;
@@ -662,7 +657,6 @@ public class GameScreen extends AbstractScreen {
                 moveToPorch();
                  if (world.isBossEvent) {
                     weekBoss(); //updates dialouge
-                    System.out.println("boss thingy");
                 }
                 app.sound.SoundNewDay();
             }
@@ -770,7 +764,6 @@ public class GameScreen extends AbstractScreen {
                 dialogStep = 0;
                 dialogIndex++;
                 if (dialogIndex >= currentDialogList.size()) {
-                    System.out.println("End of dialouge");
                     world.isBossEvent = false;
                     showDialog = false;
                     dialogIndex = 0;
@@ -778,8 +771,6 @@ public class GameScreen extends AbstractScreen {
                 } else {
                     showDialog = true;
                     updateDialog(currentDialogList.get(dialogIndex));
-                    System.out.println(currentDialogList.get(dialogIndex));
-                    //dialogBackground();
                 }
             }
         }

@@ -55,6 +55,8 @@ public class Player {
 
         money = 100;
 
+        skillTree.skills.get(Constants.IRRIGATION).skillLearned();
+
     }
 
     private void initQuests() {

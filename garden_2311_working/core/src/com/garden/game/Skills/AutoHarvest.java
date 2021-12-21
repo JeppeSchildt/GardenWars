@@ -12,7 +12,6 @@ public class AutoHarvest extends Skill{
         super(turns, player);
         name = "Auto Harvest";
         hasTurnWork = true;
-
     }
 
     @Override

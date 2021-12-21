@@ -6,15 +6,12 @@ import com.garden.game.GardenGame;
 import java.sql.Time;
 
 public class SoundFunctions {
-
-
     private GardenGame app;
 
     public SoundFunctions(GardenGame app) {
         this.app = app;
 
     }
-
 
     /* -------- Music Function Setup -------- */
     public void Chance_Music(){
@@ -45,7 +42,6 @@ public class SoundFunctions {
         }
     }
 
-
     public void Play_Pause_Music(){
         if (app.preferencesBool){
             if(app.assets.inGameMusic.isPlaying()){
@@ -70,7 +66,6 @@ public class SoundFunctions {
         }
     }
 
-
     public void Chance_InGameMusic(){
         if (app.assets.inGameMusic.isPlaying()){
 
@@ -88,7 +83,6 @@ public class SoundFunctions {
             app.assets.ambientSound_Bird.play();
         }
     }
-
 
     public void Play_Music(){
         if (app.preferencesBool){
@@ -124,7 +118,6 @@ public class SoundFunctions {
         }
     }
 
-
     public void Play_Ambient_Sound(){
         if(!app.assets.ambientSound_Bird.isPlaying()){
             Timer.schedule(new Timer.Task() {
@@ -143,7 +136,6 @@ public class SoundFunctions {
         }
 
     }
-
 
     public void Play_Pause_Ambient_Sound(){
         if (app.assets.ambientSound_Bird.isPlaying()){
@@ -193,6 +185,17 @@ public class SoundFunctions {
 
     }
 
+    public void GameWon_Sound(){
+        StopAll();
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                app.assets.soundGameWon.play();
+            }
+        },0.3f);
+    }
+
     public void EndGame_Sound(){
         StopAll();
 
@@ -204,7 +207,6 @@ public class SoundFunctions {
         },0.3f);
 
     }
-
 
 
     public void StopAll(){
@@ -231,9 +233,5 @@ public class SoundFunctions {
     public void SoundNewDay(){
         app.assets.soundNewDay.play();
     }
-
-
-
-
 
 }

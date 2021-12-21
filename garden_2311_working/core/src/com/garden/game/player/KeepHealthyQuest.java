@@ -18,8 +18,6 @@ public class KeepHealthyQuest extends Quest {
         selectPlantType();
         initDescription();
         points = 10f;
-        //description = "";
-
     }
 
     /**

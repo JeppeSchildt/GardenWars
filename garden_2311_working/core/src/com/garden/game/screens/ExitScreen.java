@@ -71,17 +71,12 @@ public class ExitScreen implements Screen {
         table.row();
         table.add(titleSub).center();
 
-
-
-
         /*
         String  reallyLongString = "This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has\" +\n" +
                 "\" lots of lines and repeats itself over and over again This is a really long string that has lots of lines and repeats itself over and over\"+\n" +
                 "\" again This is a really long string that has lots of lines and repeats itself over and over again\"+\n" +
                 "\" This is a really long string that has lots of lines and repeats itself over and over again This is a really long string that has lots\"+\n" +
                 "\" of lines and repeats itself over and over again";
-
-
 
         ScrollPane scroll = new ScrollPane(table, skin);
         scroll.setFadeScrollBars(false);

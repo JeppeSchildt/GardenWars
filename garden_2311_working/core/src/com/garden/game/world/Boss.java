@@ -15,6 +15,7 @@ public class Boss extends Unit {
     public List<String> introDialog;
     public List<String> currentDialog;
     Random random;
+    public boolean lastEnter = false;
 
     public Boss(GardenGame app) {
         super(app);
@@ -51,9 +52,12 @@ public class Boss extends Unit {
     }
 
     public void gameWon(float x, float y) {
-        gameWonDialog();
-        setInitialPosition();
-        setPosition(x+50, y);
+        if(!lastEnter) {
+            lastEnter = true;
+            gameWonDialog();
+            setInitialPosition();
+            setPosition(x + 50, y);
+        }
     }
 
     public void leave() {
@@ -114,8 +118,8 @@ public class Boss extends Unit {
 
     public void gameWonDialog() {
         currentDialog.clear();
-        currentDialog.add(Dialogue.BOSS + "The park has never looked better. People from near and far are talking about this place. All due to your dedication and hard work");
-        currentDialog.add(Dialogue.MainCharacter + "It's been a pleasure and an honor");
+        currentDialog.add(Dialogue.BOSS + "The park has never looked better. People from near and far are talking about this place. All due to your dedication and hard work.");
+        currentDialog.add(Dialogue.MainCharacter + "It's been a pleasure and an honor.");
         currentDialog.add(Dialogue.BOSS + "If you want you can keep this job for life. The city thanks you and the mayor wants to give you the keys to the city!");
         currentDialog.add(Dialogue.MainCharacter + "*blushes*");
     }

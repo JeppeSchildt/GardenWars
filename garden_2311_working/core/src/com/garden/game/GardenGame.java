@@ -13,15 +13,10 @@ public class GardenGame extends Game {
 	public Assets assets;
 	public Screen titleScreen, pauseScreen, preferencesScreen, exitScreen, gameOverScreen, keyboardControlsScreen, skillTreeScreen;
 	public GameScreen gameScreen;
-
 	public float musicVolume = 1.0f;
-
-
 	public SoundFunctions sound;
-
 	public Boolean preferencesBool, currentGameBool, debugMode;
 	public int maxWidth, maxHeight, score;
-
 
 	@Override
 	public void create () {
@@ -40,10 +35,8 @@ public class GardenGame extends Game {
 		/* --------- Screen setup  ---------  Lazy loading, loading them we need them might be better. */
 		titleScreen = new TitleScreen(this);
 
-
 		setScreen(titleScreen);
 	}
-
 
 	@Override
 	public void dispose () {

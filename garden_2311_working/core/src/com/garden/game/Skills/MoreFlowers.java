@@ -16,7 +16,6 @@ public class MoreFlowers  extends Skill{
         player.makePlantAvailable(Constants.SUNFLOWER);
         player.makePlantAvailable(Constants.ROSE);
         player.makePlantAvailable(Constants.TULIP);
-
     }
     @Override
     public void nextTurn() {

@@ -18,9 +18,7 @@ public class Skill {
      this.player = player;
      this.learned = false;
      adjacent = new ArrayList<>();
-
     }
-
 
     public void skillLearned(){
         learned = true;

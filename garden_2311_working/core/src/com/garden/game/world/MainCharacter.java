@@ -26,7 +26,6 @@ public class MainCharacter extends Unit{
         this.wateringAnimations = app.assets.wateringAnimations;
         activeAnimation = stopAnimations.get(0);
     }
-
     @Override
     public void initPools() {
         super.initPools();
@@ -40,7 +39,8 @@ public class MainCharacter extends Unit{
                         if(isComplete()) {
                             activeAnimation = stopAnimations.get(direc);
                             setPlayerMovLocked(false);
-                            app.gameScreen.world.player.water += app.gameScreen.world.player.waterPerTurn;
+                            int waterTmp = app.gameScreen.world.player.water + app.gameScreen.world.player.waterPerTurn;
+                            app.gameScreen.world.player.water = Math.min(waterTmp, app.gameScreen.world.player.maxWater);
                             app.gameScreen.world.player.gotWater = true;
                         }
                     }
@@ -65,12 +65,10 @@ public class MainCharacter extends Unit{
         };
     }
 
-
     // Go to plant and give it water.
     public void gotoAndWater(final float x, final float y) {
         clearActions();
         selectAnimation(x, y);
-        //MoveToAction moveToAction = new MoveToAction();
         MoveToAction moveToAction = moveToActionPool.obtain();
         moveToAction.setPosition(x, y);
         float duration = (float) Math.sqrt(Math.pow(x-getX(), 2) + Math.pow(y-getY(), 2))/100f;
@@ -157,7 +155,6 @@ public class MainCharacter extends Unit{
             float x = getX();
             float y = getY();
 
-            // app.gameScreen.world.mapInput.... lol
             if (app.gameScreen.world.mapInput.keyPressed[Input.Keys.UP] || app.gameScreen.world.mapInput.keyPressed[Input.Keys.W]) {
                 y += velocity * Gdx.graphics.getDeltaTime();
             }

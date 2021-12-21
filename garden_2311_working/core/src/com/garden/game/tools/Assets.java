@@ -20,19 +20,17 @@ import java.util.ArrayList;
 
 
 public class Assets extends AssetManager {
-    public TextureAtlas textureAtlas, styleAtlas, textureCrops;
+    public TextureAtlas textureAtlas, styleAtlas;
     public Label.LabelStyle largeTextStyle;
-    public TextureRegionDrawable btnNextTurn, btnSetting, btnTalent,  goldIcon, waterIcon , dirtIcon, inGameBorder, buttonBorder;
-    public TiledMapTileSet tileSet, tileSetNew;
+    public TiledMapTileSet tileSet;
     public TiledMapTileLayer.Cell dirtCell, grassCell;
     public ArrayList<Animation<TextureRegion>> walkAnimations, stopAnimations, bucketAnimations,
             wateringAnimations, journalistWalkAnimations, journalistStopAnimations;
     public String scoreFile;
 
-    public Music menuMusic, inGameMusic, inGameDryMusic, ambientSound_Bird, ambientSound_Crickets, soundButtonPress, soundEnd, soundGameOver,
+    public Music menuMusic, inGameMusic, inGameDryMusic, ambientSound_Bird, ambientSound_Crickets, soundButtonPress, soundEnd, soundGameWon, soundGameOver,
             soundGetWater, soundUseWater, soundUseGold, soundNewDay, soundTestEffektBeat;
 
-    //public Sound soundButtonPress, soundEnd, soundGameOver, soundGetWater, soundUseWater, soundUseGold, soundNewDay;
     public float musicVolume = 1.0f;
     public TextureRegion[][] plantTextures;
     public TextureRegion[][] bucketTextures;
@@ -56,7 +54,6 @@ public class Assets extends AssetManager {
     public void unloadAll() {
         this.unload("pack_171221.atlas");
         this.unload("uiskin.atlas");
-        //this.unload("NewDesign/.png");
     }
     public void loadSound(){
 
@@ -66,7 +63,6 @@ public class Assets extends AssetManager {
         inGameMusic.setVolume(musicVolume);
 
         /* --------- InGameMusic Dry Season setup  ---------  */
-        //inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-sadistic-game-short.mp3"));
         inGameDryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/POL-fragments-short.mp3"));
         inGameDryMusic.setLooping(true);
         inGameDryMusic.setVolume(musicVolume);
@@ -86,10 +82,11 @@ public class Assets extends AssetManager {
         ambientSound_Crickets.setVolume(0.5f); //1.0f max
         ambientSound_Crickets.setLooping(true);
 
-        //soundButtonPress = Gdx.audio.newSound(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-flute-alert-2307.mp3"));
         soundButtonPress = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/ButtonPressSound_mixkit-game-ball-tap-2073.mp3"));
         soundEnd = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/EndSound_mixkit-medieval-show-fanfare.mp3"));
+
         soundGameOver = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/GameOver_mixkit-game-over-trombone-1940.mp3"));
+        soundGameWon = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/456968__funwithsound__success-resolution-video-game-fanfare-sound-effect.mp3"));
 
         soundTestEffektBeat = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/josefpres_bass-loops-063-with-drums-short-loop-120-bpm.mp3"));
 
@@ -98,7 +95,6 @@ public class Assets extends AssetManager {
         soundUseWater = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/watering_plant.mp3"));
         soundUseGold = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/use_gold.mp3"));
         soundNewDay = Gdx.audio.newMusic(Gdx.files.internal("soundEffect/inGame/newDay_cock_hahn.mp3"));
-
 
     }
 
@@ -123,7 +119,6 @@ public class Assets extends AssetManager {
             animation.setPlayMode(Animation.PlayMode.LOOP);
             this.walkAnimations.add(animation);
         }
-
     }
 
     private void initStopAnimations() {
@@ -143,7 +138,6 @@ public class Assets extends AssetManager {
             animation.setPlayMode(Animation.PlayMode.LOOP);
             this.stopAnimations.add(animation);
         }
-
     }
 
     private void initWateringAnimations() {
@@ -162,8 +156,6 @@ public class Assets extends AssetManager {
             Animation<TextureRegion> animation = new Animation<TextureRegion>(1f/4f, animationFrames);
             animation.setPlayMode(Animation.PlayMode.NORMAL);
             this.bucketAnimations.add(animation);
-
-
         }
 
         index = 0;
@@ -258,11 +250,9 @@ public class Assets extends AssetManager {
         /* --------- Keyboard Controls img  ---------  */
         this.load("KeyboardControls.png", Texture.class);
 
-
         this.load("black_screen.png", Texture.class);
 
         scoreFile = "scores.txt";
-
 
         setLoader(TiledMap.class, new TmxMapLoader());
         load("World.tmx", TiledMap.class);
@@ -275,7 +265,6 @@ public class Assets extends AssetManager {
 
         grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(this.tileSet.getTile(0x125));
-
     }
 
 
@@ -284,10 +273,8 @@ public class Assets extends AssetManager {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.incremental = true;
 
-
         parameter.size = 23;
         largeTextStyle = new Label.LabelStyle(generator.generateFont(parameter), Color.BROWN);
-
 
         generator.dispose();
     }

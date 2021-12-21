@@ -33,7 +33,7 @@ public class TitleScreen implements Screen {
 		app.sound.Play_Music();
 
 		//Delete when done debug/testing
- 		app.sound.Play_Pause_Music();
+ 		//app.sound.Play_Pause_Music();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
@@ -67,11 +67,9 @@ public class TitleScreen implements Screen {
 		settingsButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				//stage.addAction(Actions.sequence(Actions.fadeOut(5f),Actions.hide ()));
 				preferences();
 			}
 		});
-
 
 		quitButton = new TextButton("Exit",skin);
 		quitButton.setPosition(midX - 200, butY - 30 - 30);
@@ -106,7 +104,6 @@ public class TitleScreen implements Screen {
 		});
 
 		debugModeButton.setPosition(app.maxWidth - 125, 15);
-		//stage.addActor(debugModeButton);
 
 	}
 
@@ -132,7 +129,6 @@ public class TitleScreen implements Screen {
 		app.sound.SoundButtonClick();
 		app.gameOverScreen = null;
 		app.setScreen(app.gameScreen);
-		//app.gameScreen.world.init("World.tmx");
 	}
 
 	// Lazy load screens
@@ -159,7 +155,6 @@ public class TitleScreen implements Screen {
 					}
 				});
 
-
 				table.add(playButton).left();
 				table.row();
 				table.add(continueButton).left();
@@ -168,8 +163,6 @@ public class TitleScreen implements Screen {
 				table.row();
 				table.add(quitButton).left();
 				table.row();
-
-
 			}
 		}
 

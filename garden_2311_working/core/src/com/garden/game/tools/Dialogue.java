@@ -14,11 +14,10 @@ public class Dialogue {
     public static String dia_intro_00 = "";
     public static String dia_intro_0 = BOSS + "Good morning Johnny boy";
 
-    public static String dia_intro_1 = MainCharacter + "Jonny boy!";
-    public static String dia_intro_2 = MainCharacter + "Good morning to you also. Boss Ladies!";
+    public static String dia_intro_1 = MainCharacter + "Johnny boy..?!\n Good morning to you too boss... lady!";
 
-    public static String dia_intro_3 = BOSS + "So you are our new park employee";
-    public static String dia_intro_4 = BOSS + "And you are of course aware of what your need to do!";
+    public static String dia_intro_3 = BOSS + "So you are our new park employee. \n And you are of course aware of what you need to do?";
+    //public static String dia_intro_4 = BOSS + "";
 
     public static String dia_intro_5 = MainCharacter + "No! not at all";
 
@@ -49,9 +48,9 @@ public class Dialogue {
         add(dia_intro_00);
         add(dia_intro_0);
         add(dia_intro_1);
-        add(dia_intro_2);
+        //add(dia_intro_2);
         add(dia_intro_3);
-        add(dia_intro_4);
+        //add(dia_intro_4);
         add(dia_intro_5);
         add(dia_intro_6);
         add(dia_intro_7);

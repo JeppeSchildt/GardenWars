@@ -166,7 +166,7 @@ public class GameScreen extends AbstractScreen {
         hud.addActor(txtMonthWeekDay);
 
         txtTileInfo = new Label("", skin);
-        txtTileInfo.setPosition(30, 700);
+        txtTileInfo.setPosition(30, 650);
         hud.addActor(txtTileInfo);
 
     }
@@ -218,9 +218,10 @@ public class GameScreen extends AbstractScreen {
 
         Plant plant = world.player.getPlantAtPosition(plantX, plantY);
 
-        String improvement = (plant != null) ? plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() : "Grass";
+        String improvement =  "Grass";
+
         if(plant != null) {
-            improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName();
+            improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() + "\nProfit: " + plant.profit;
             if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned) {
                 String on_off = !plant.stopAutoHarvest ? ": on" : ": off";
                 improvement += "\n Auto Harvest" + on_off;

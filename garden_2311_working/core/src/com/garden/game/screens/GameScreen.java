@@ -221,7 +221,7 @@ public class GameScreen extends AbstractScreen {
         String improvement =  "Grass";
 
         if(plant != null) {
-            improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() + "\nProfit: " + plant.profit;
+            improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() + "\nProfit: " + String.format("%.1f",plant.profit);
             if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned) {
                 String on_off = !plant.stopAutoHarvest ? ": on" : ": off";
                 improvement += "\n Auto Harvest" + on_off;

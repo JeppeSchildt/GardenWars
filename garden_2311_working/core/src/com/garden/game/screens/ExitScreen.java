@@ -62,7 +62,7 @@ public class ExitScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        Label title = new Label("Thank you so much for playing", app.assets.largeTextStyle);
+        Label title = new Label("Thank you so much for playing Park Life", app.assets.largeTextStyle);
         title.setFontScale(2);
         Label titleSub = new Label("Hope to see you again", app.assets.largeTextStyle);
         titleSub.setFontScale(2);

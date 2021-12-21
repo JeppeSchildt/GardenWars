@@ -326,12 +326,12 @@ public class GameScreen extends AbstractScreen {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.end();
         lbl.setWrap(true);
-        lbl.setPosition(240,85);
+        lbl.setPosition(245,80);
         spaceToSkip.setPosition(580,45);
        //spaceToSkip.setColor(210/255f,229/255f,216/255f,0.80f); //green-gray ish
         spaceToSkip.setColor(241/255f,241/255f,208/255f,0.60f); //yellow ish
        //spaceToSkip.setColor(205/255f,253/255f,254/255f,0.90f); //blue ish
-        lbl.setWidth(500); //500
+        lbl.setWidth(495); //500
         lbl.setHeight(150);
         app.batch.begin();
         lbl.draw(app.batch,10f);

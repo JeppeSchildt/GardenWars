@@ -115,7 +115,7 @@ public class Constants {
     }
 
     private static final float ProfitRate = 0.3f;
-    public static final Map<Integer, Float> idProfitMap;
+    public static Map<Integer, Float> idProfitMap;
     static {
         idProfitMap = new HashMap<Integer, Float>();
         // -------- Start -------- //

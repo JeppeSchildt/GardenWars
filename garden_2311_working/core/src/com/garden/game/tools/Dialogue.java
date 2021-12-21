@@ -43,7 +43,7 @@ public class Dialogue {
 
 
     public static final List<String> DIALOG_INTRO = new ArrayList<String>() {{
-        add(BOSS, dia_intro_00);
+        add(dia_intro_00);
         add(dia_intro_0);
         add(dia_intro_1);
         //add(dia_intro_2);

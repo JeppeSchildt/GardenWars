@@ -118,8 +118,8 @@ public class Boss extends Unit {
 
     public void gameWonDialog() {
         currentDialog.clear();
-        currentDialog.add(Dialogue.BOSS + "The park has never looked better. People from near and far are talking about this place. All due to your dedication and hard work");
-        currentDialog.add(Dialogue.MainCharacter + "It's been a pleasure and an honor");
+        currentDialog.add(Dialogue.BOSS + "The park has never looked better. People from near and far are talking about this place. All due to your dedication and hard work.");
+        currentDialog.add(Dialogue.MainCharacter + "It's been a pleasure and an honor.");
         currentDialog.add(Dialogue.BOSS + "If you want you can keep this job for life. The city thanks you and the mayor wants to give you the keys to the city!");
         currentDialog.add(Dialogue.MainCharacter + "*blushes*");
     }

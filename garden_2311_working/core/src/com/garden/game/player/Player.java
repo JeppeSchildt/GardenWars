@@ -54,7 +54,7 @@ public class Player {
         nHarvested = 0;
 
         money = 100;
-
+        
     }
 
     private void initQuests() {
@@ -172,7 +172,6 @@ public class Player {
     }
 
     public void nextTurn() {
-
         gotWater = false;
         skillWork();
         skillTree.nextTurn();

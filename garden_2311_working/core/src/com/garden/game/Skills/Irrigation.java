@@ -30,7 +30,7 @@ public class Irrigation extends Skill {
             Map.Entry<Vector2, Plant> entry = entryIt.next();
             Plant plant = entry.getValue();
 
-            if(plant.water-plant.getWaterLoss() <= plant.waterStateMap.get(plant.getState().prevState()) && !plant.stopIrrigation) {
+            if(plant.getState() != Plant.PlantState.HEALTHY && !plant.stopIrrigation) {
                 player.water(plant);
             }
 

@@ -224,11 +224,11 @@ public class GameScreen extends AbstractScreen {
             improvement = plant.getName() + "\nWater: " + plant.getWater() + "\n"+ plant.getState().getStateName() + "\nProfit: " + String.format("%.1f",plant.profit);
             if(world.player.skillTree.skills.get(Constants.AUTO_HARVEST).learned) {
                 String on_off = !plant.stopAutoHarvest ? ": on" : ": off";
-                improvement += "\n Auto Harvest" + on_off;
+                improvement += "\nAuto Harvest" + on_off;
             }
             if(world.player.skillTree.skills.get(Constants.IRRIGATION).learned) {
                 String on_off = !plant.stopIrrigation ? ": on" : ": off";
-                improvement += "\n Irrigation" + on_off;
+                improvement += "\nIrrigation" + on_off;
             }
         }
 

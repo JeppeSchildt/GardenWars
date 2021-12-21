@@ -341,7 +341,6 @@ public class GameScreen extends AbstractScreen {
         if (start) {
             app.batch.begin();
         }
-
     }
 
     void setupTileImprovementBox(boolean isPlant) {

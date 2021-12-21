@@ -12,30 +12,17 @@ public class General extends Skill {
     public General(int turns, Player player) {
         super(turns, player);
         name = "General";
-        hasTurnWork = true;
         adjacent.add(Constants.CONSTRUCTION);
         adjacent.add(Constants.COMMUNICATION);
         adjacent.add(Constants.WATER_1);
     }
 
+    // Visit plants and make them more profitable.
     @Override
     public void skillLearned() {
         super.skillLearned();
-    }
-
-    // Visit plants and make them more profitable.
-    @Override
-    public void turnWork() {
-        Iterator<Map.Entry<Vector2, Plant>> entryIt = player.getPlants_().entrySet().iterator();
-
-        while (entryIt.hasNext()) {
-            Map.Entry<Vector2, Plant> entry = entryIt.next();
-            Plant plant = entry.getValue();
-
-            if (!plant.isGeneral) {
-                plant.profit += 2;
-
-            }
+        for (Map.Entry<Integer, Float> entry : Constants.idProfitMap.entrySet()) {
+            entry.setValue(entry.getValue()+2f);
         }
     }
 

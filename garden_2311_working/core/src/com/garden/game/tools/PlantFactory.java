@@ -222,16 +222,10 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, 3.1f);
                 waterStateMap.put(Plant.PlantState.DEAD, 0f);
 
-
                 return new Plant(Constants.PINEAPPLE, x, y, assets.plantTextures[Constants.PINEAPPLE], waterStateMap, assets.dirtCell);
 
             }
         });
-
-
-
-
-
 
         createActorMap.put(Constants.GRAPES, new IFCreatePlant() {
             @Override
@@ -243,7 +237,6 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.HEALTHY, 2000f);
                 waterStateMap.put(Plant.PlantState.WITHERING, 4f);
                 waterStateMap.put(Plant.PlantState.DEAD, 0f);
-
 
                 return new Plant(Constants.GRAPES, x, y, assets.plantTextures[Constants.GRAPES], waterStateMap, assets.dirtCell);
 
@@ -261,7 +254,6 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, 3f);
                 waterStateMap.put(Plant.PlantState.DEAD, 0f);
 
-
                 return new Plant(Constants.STRAWBERRY, x, y, assets.plantTextures[Constants.STRAWBERRY], waterStateMap, assets.dirtCell);
 
             }
@@ -278,12 +270,10 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.WITHERING, 2f);
                 waterStateMap.put(Plant.PlantState.DEAD, 0f);
 
-
                 return new Plant(Constants.CASSAVA, x, y, assets.plantTextures[Constants.CASSAVA], waterStateMap, assets.dirtCell);
 
             }
         });
-
 
 
         createActorMap.put(Constants.COFFEE, new IFCreatePlant() {
@@ -296,7 +286,6 @@ public class PlantFactory {
                 waterStateMap.put(Plant.PlantState.HEALTHY, 2000f);
                 waterStateMap.put(Plant.PlantState.WITHERING, 5f);
                 waterStateMap.put(Plant.PlantState.DEAD, 0f);
-
 
                 return new Plant(Constants.COFFEE, x, y, assets.plantTextures[Constants.COFFEE], waterStateMap, assets.dirtCell);
 
@@ -370,7 +359,6 @@ public class PlantFactory {
 
             }
         });
-
 
     }
 

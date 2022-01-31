@@ -34,7 +34,6 @@ public class PreferencesScreen implements Screen {
 
     public PreferencesScreen(GardenGame app) {
 
-
         this.app = app;
 
         final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

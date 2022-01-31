@@ -232,8 +232,6 @@ public class GameScreen extends AbstractScreen {
             }
         }
 
-
-
         return coordinates + improvement;
     }
 
